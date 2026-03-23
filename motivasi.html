@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Motivasi - Dwi Farhan Hidayat</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap');
+
+        html {
+            background-color: #0f172a; 
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(-45deg, #0f172a, #1e1b4b, #312e81, #000000);
+            background-size: 400% 400%;
+            animation: gradientBG 12s ease infinite;
+            color: #e2e8f0;
+            min-height: 100vh;
+            line-height: 1.6;
+            overscroll-behavior: none; 
+            background-attachment: fixed;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .glass-nav {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 15px 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .nav-item a {
+            color: #cbd5e1;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: 8px 18px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .nav-item a:hover, .nav-item a.active {
+            background: rgba(129, 140, 248, 0.15);
+            color: #ffffff;
+            border: 1px solid #818cf8;
+            box-shadow: 0 0 15px rgba(129, 140, 248, 0.4);
+        }
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        h1 { 
+            font-size: 2.8rem; 
+            text-align: center; 
+            margin-bottom: 40px;
+            font-weight: 700; 
+            background: linear-gradient(to right, #22c55e, #eab308);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: fadeInUp 1s ease-out forwards;
+        }
+
+        @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .quote-box {
+            background: linear-gradient(135deg, rgba(49, 46, 129, 0.6), rgba(15, 23, 42, 0.8));
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-left: 5px solid #a855f7;
+            border-radius: 0 20px 20px 0;
+            padding: 40px;
+            margin-bottom: 50px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            position: relative;
+            animation: fadeInUp 1.2s ease-out forwards;
+        }
+
+        .quote-box::before {
+            content: '"';
+            font-size: 6rem;
+            color: rgba(98, 247, 140, 0.2);
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            font-family: serif;
+        }
+
+        .quote-text {
+            font-size: 1.4rem;
+            font-style: italic;
+            color: #e2e8f0;
+            line-height: 1.6;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+        .motive-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .motive-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 30px;
+            transition: all 0.4s ease;
+            animation: fadeInUp 1.4s ease-out forwards;
+            opacity: 0;
+        }
+        .motive-card:nth-child(1) { animation-delay: 0.2s; }
+        .motive-card:nth-child(2) { animation-delay: 0.4s; }
+        .motive-card:nth-child(3) { animation-delay: 0.6s; }
+
+        .motive-card:hover {
+            background: rgba(129, 140, 248, 0.1);
+            border-color: #818cf8;
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .motive-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        .motive-title {
+            color: #ffffff;
+            font-size: 1.2rem;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .motive-desc {
+            color: #94a3b8;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            text-align: justify;
+        }
+
+        a.back-btn { 
+            color: #22d3ee; 
+            text-decoration: none; 
+            font-weight: bold; 
+            transition: all 0.3s; 
+            display: inline-block;
+            margin-top: 40px;
+        }
+        
+        a.back-btn:hover { 
+            color: #ffffff; 
+            text-shadow: 0 0 10px #22d3ee; 
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <nav class="glass-nav">
+        <ul class="nav-list">
+            <li class="nav-item"><a href="index.html">Home</a></li>
+            <li class="nav-item"><a href="about.html">About Me</a></li>
+            <li class="nav-item"><a href="education.html">Education</a></li>
+            <li class="nav-item"><a href="skills.html">Skills</a></li>
+            <li class="nav-item"><a href="experience.html">Experience</a></li>
+            <li class="nav-item"><a href="hobbies.html">Hobbies</a></li>
+            <li class="nav-item"><a href="university.html">University</a></li>
+            <li class="nav-item"><a href="motivasi.html" class="active">Motivasi</a></li>
+            <li class="nav-item"><a href="contact.html">Contact Me</a></li>
+            <li class="nav-item"><a href="help.html">Help & Support</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <h1>Motivasi & Tujuan</h1>
+
+        <div class="quote-box">
+            <p class="quote-text">
+                "Apakah Wajar merasa takut pada masa depan??"
+            </p>
+            <p class="quote-text">
+                "Ya, wajar sebagai manusia. Namun rasa takut itu jangan sampai membuat kita lemah, sebab Allah telah menjamin rezeki dan takdir setiap hambanya. Yang penting kita tetap berusaha, berdoa, dan bertawakal. InsyaAllah, dengan usaha yang sungguh-sungguh, kita bisa meraih masa depan yang cerah."
+            </p>
+        </div>
+        <div class="quote-box">
+            <p class="quote-text">
+                "Pendidikan bukan cuma pergi ke sekolah dan mendapatkan gelar. Tapi, juga soal memperluas pengetahuan dan menyerap ilmu kehidupan."
+            </p>
+        </div>
+        <div class="quote-box">
+            <p class="quote-text">
+                "Semakin kamu belajar, maka semakin kamu sadar bahwa banyak hal yang belum kamu ketahui."
+            </p>
+        </div>
+        <div class="quote-box">
+            <p class="quote-text">
+                "Saya terus semangat untuk mngejar mimpi di masa depan, yaitu membahagiakan Orang tua saya dan menjadi orang yang bermanfaat bagi banyak orang."
+            </p>
+        </div>
+        <div style="text-align: center;">
+            <a href="indexfarhan.html" class="back-btn">⭠ Kembali ke Beranda</a>
+        </div>
+
+    </div>
+
+</body>
+</html>

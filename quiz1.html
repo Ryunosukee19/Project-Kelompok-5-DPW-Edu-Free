@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Modul Kuis Edu-Free - Dasar HTML</title>
+	<link rel="stylesheet" href="styleQuiz.css">
+</head>
+<body>
+
+	<div class="header-container">
+		<h1>Modul Kuis Edu-Free</h1>
+		<p>
+			<b>Imel Fiana Safira</b><br>
+            NIM: 250411100206<br>
+			Sistem Kuis: Dasar HTML (Interface 6–10)
+		</p>
+		<div class="nav-container">
+			<b>Navigasi Modul:</b><br>
+			<a href="#intro-kuis">[Intro]</a> | 
+			<a href="#soal-kuis">[Soal]</a> | 
+			<a href="#skor-akhir">[Skor Akhir]</a> | 
+			<a href="#pembahasan">[Pembahasan]</a> | 
+			<a href="#kontak">[Kontak]</a>
+		</div>
+	</div>
+
+	<div class="main-content">
+
+		<h2 id="intro-kuis">6. Interface: Intro Kuis (Modul Edu-Free)</h2>
+		<p><i>Aktor: Siswa | Progres: 100%</i></p>
+		<div class="intro-kuis-card">
+			<div class="intro-header">
+				<div>
+					<h2>Kuis Evaluasi: Dasar HTML</h2>
+					<p class="intro-subtitle">Modul penutup untuk memastikan konsep dasar HTML benar-benar dipahami.</p>
+				</div>
+				<span class="intro-badge">Level Pemula → Mahir</span>
+			</div>
+			<div class="intro-meta">
+				<div class="intro-meta-item">
+					<h4>10 Soal</h4>
+					<p>Pilihan ganda seputar tag, atribut, dan struktur dasar HTML.</p>
+				</div>
+				<div class="intro-meta-item">
+					<h4>Target Nilai 100%</h4>
+					<p>Latihan sampai tuntas. Siswa bisa mengulang kuis kapan saja.</p>
+				</div>
+				<div class="intro-meta-item">
+					<h4>Sertifikat Otomatis</h4>
+					<p>Jika semua soal benar, sistem akan memproses sertifikat digital.</p>
+				</div>
+			</div>
+			<p class="intro-note">Tips: Kerjakan dengan santai, baca setiap soal dengan teliti, dan fokus pada konsep, bukan sekadar menghafal.</p>
+			<a href="#soal-kuis" class="btn-primary">Mulai Kuis Sekarang</a>
+		</div>
+		<hr><br>
+
+		<h2 id="soal-kuis">7. Interface: Soal Kuis</h2>
+		<p><i>Aktor: Siswa | Progres: 100%</i></p>
+		<div class="interface-card quiz-layout">
+			<div class="quiz-main">
+			<form action="#skor-akhir">
+				<fieldset class="quiz-question">
+					<legend><b>Pertanyaan 1 dari 10</b></legend>
+					<p>Tag HTML apa yang digunakan untuk membuat paragraf?</p>
+					<input type="radio" id="p1a" name="q1" value="a"> <label for="p1a">A. &lt;h1&gt;</label><br>
+					<input type="radio" id="p1b" name="q1" value="b"> <label for="p1b">B. &lt;p&gt;</label><br>
+					<input type="radio" id="p1c" name="q1" value="c"> <label for="p1c">C. &lt;br&gt;</label>
+				</fieldset>
+				<br>
+				<fieldset class="quiz-question">
+					<legend><b>Pertanyaan 2 dari 10</b></legend>
+					<p>Atribut apa yang digunakan untuk menentukan alamat link pada tag &lt;a&gt;?</p>
+					<input type="radio" id="p2a" name="q2" value="a"> <label for="p2a">A. src</label><br>
+					<input type="radio" id="p2b" name="q2" value="b"> <label for="p2b">B. alt</label><br>
+					<input type="radio" id="p2c" name="q2" value="c"> <label for="p2c">C. href</label>
+				</fieldset>
+				<br>
+				<fieldset class="quiz-question">
+					<legend><b>Pertanyaan 3 dari 10</b></legend>
+					<p>Manakah tag yang digunakan untuk membuat *Unordered List*?</p>
+					<input type="radio" id="p3a" name="q3" value="a"> <label for="p3a">A. &lt;ol&gt;</label><br>
+					<input type="radio" id="p3b" name="q3" value="b"> <label for="p3b">B. &lt;ul&gt;</label><br>
+					<input type="radio" id="p3c" name="q3" value="c"> <label for="p3c">C. &lt;li&gt;</label>
+				</fieldset>
+				<br>
+				<fieldset class="quiz-question">
+					<legend><b>Pertanyaan 4 dari 10</b></legend>
+					<p>Tag apa yang digunakan untuk menampilkan gambar di halaman web?</p>
+					<input type="radio" id="p4a" name="q4" value="a"> <label for="p4a">A. &lt;img&gt;</label><br>
+					<input type="radio" id="p4b" name="q4" value="b"> <label for="p4b">B. &lt;picture&gt;</label><br>
+					<input type="radio" id="p4c" name="q4" value="c"> <label for="p4c">C. &lt;src&gt;</label>
+				</fieldset>
+				<br>
+				<fieldset class="quiz-question">
+					<legend><b>Pertanyaan 5 dari 10</b></legend>
+					<p>Untuk membuat baris baru di dalam sebuah tabel, tag yang tepat adalah...</p>
+					<input type="radio" id="p5a" name="q5" value="a"> <label for="p5a">A. &lt;td&gt;</label><br>
+					<input type="radio" id="p5b" name="q5" value="b"> <label for="p5b">B. &lt;th&gt;</label><br>
+					<input type="radio" id="p5c" name="q5" value="c"> <label for="p5c">C. &lt;tr&gt;</label>
+				</fieldset>
+				<br>
+				<fieldset class="quiz-question">
+					<legend><b>Pertanyaan 6 dari 10</b></legend>
+					<p>Tag mana yang menghasilkan teks judul (heading) dengan ukuran paling besar?</p>
+					<input type="radio" id="p6a" name="q6" value="a"> <label for="p6a">A. &lt;h1&gt;</label><br>
+					<input type="radio" id="p6b" name="q6" value="b"> <label for="p6b">B. &lt;h6&gt;</label><br>
+					<input type="radio" id="p6c" name="q6" value="c"> <label for="p6c">C. &lt;header&gt;</label>
+				</fieldset>
+				<br>
+				<fieldset class="quiz-question">
+					<legend><b>Pertanyaan 7 dari 10</b></legend>
+					<p>Bagaimana cara membuat teks pindah ke baris baru (line break) tanpa membuat paragraf baru?</p>
+					<input type="radio" id="p7a" name="q7" value="a"> <label for="p7a">A. &lt;lb&gt;</label><br>
+					<input type="radio" id="p7b" name="q7" value="b"> <label for="p7b">B. &lt;br&gt;</label><br>
+					<input type="radio" id="p7c" name="q7" value="c"> <label for="p7c">C. &lt;break&gt;</label>
+				</fieldset>
+				<br>
+				<fieldset class="quiz-question">
+					<legend><b>Pertanyaan 8 dari 10</b></legend>
+					<p>Tag yang secara semantik digunakan untuk menebalkan teks yang memiliki penekanan penting adalah...</p>
+					<input type="radio" id="p8a" name="q8" value="a"> <label for="p8a">A. &lt;i&gt;</label><br>
+					<input type="radio" id="p8b" name="q8" value="b"> <label for="p8b">B. &lt;mark&gt;</label><br>
+					<input type="radio" id="p8c" name="q8" value="c"> <label for="p8c">C. &lt;strong&gt;</label>
+				</fieldset>
+				<br>
+				<fieldset class="quiz-question">
+					<legend><b>Pertanyaan 9 dari 10</b></legend>
+					<p>Deklarasi apa yang wajib diletakkan di baris paling atas untuk menentukan bahwa dokumen tersebut adalah HTML5?</p>
+					<input type="radio" id="p9a" name="q9" value="a"> <label for="p9a">A. &lt;!DOCTYPE html&gt;</label><br>
+					<input type="radio" id="p9b" name="q9" value="b"> <label for="p9b">B. &lt;html version="5"&gt;</label><br>
+					<input type="radio" id="p9c" name="q9" value="c"> <label for="p9c">C. &lt;?html5?&gt;</label>
+				</fieldset>
+				<br>
+				<fieldset class="quiz-question">
+					<legend><b>Pertanyaan 10 dari 10</b></legend>
+					<p>Jika ingin membuat daftar yang memiliki nomor urut (1, 2, 3), tag pembungkus yang digunakan adalah...</p>
+					<input type="radio" id="p10a" name="q10" value="a"> <label for="p10a">A. &lt;dl&gt;</label><br>
+					<input type="radio" id="p10b" name="q10" value="b"> <label for="p10b">B. &lt;ol&gt;</label><br>
+					<input type="radio" id="p10c" name="q10" value="c"> <label for="p10c">C. &lt;list&gt;</label>
+				</fieldset>
+				<br>
+				<button type="submit" class="btn-success">Kumpulkan Jawaban</button>
+			</form>
+			</div>
+			<aside class="quiz-sidebar">
+				<h4>Ringkasan Kuis</h4>
+				<ul>
+					<li>Topik: Dasar HTML &amp; struktur dokumen.</li>
+					<li>Jumlah Soal: 10 pilihan ganda.</li>
+					<li>Target nilai: 100% untuk sertifikat.</li>
+				</ul>
+				<h4>Tips Pengerjaan</h4>
+				<p>Baca setiap pertanyaan sampai selesai, perhatikan kata kunci seperti nama tag, atribut, dan fungsi semantik sebelum memilih jawaban.</p>
+			</aside>
+		</div>
+		<hr><br>
+
+		<h2 id="skor-akhir">8. Interface: Skor Akhir</h2>
+		<p><i>Aktor: Siswa | Progres: 100%</i></p>
+		<div class="skor-card">
+			<h1>Selamat! Kuis Selesai.</h1>
+			<h2 class="skor-nilai">Skor Anda: 100 / 100</h2>
+			<p>Progres materi ini telah <b>selesai ditonton dan dipahami (100%)</b>. Sertifikat digital Anda sedang diproses oleh sistem.</p>
+			<div class="score-details">
+				<div class="score-item">
+					<h4>Jawaban Benar</h4>
+					<p>10 dari 10 soal dijawab dengan tepat.</p>
+				</div>
+				<div class="score-item">
+					<h4>Status Kelulusan</h4>
+					<p><span class="score-badge pass">Lulus (Perfect Score)</span></p>
+				</div>
+				<div class="score-item">
+					<h4>Sertifikat</h4>
+					<p>Akan dikirim ke email yang terdaftar di sistem.</p>
+				</div>
+			</div>
+			<a href="#pembahasan" class="link-pembahasan">Lihat Kunci Jawaban & Pembahasan &rarr;</a>
+		</div>
+		<hr><br>
+
+		<h2 id="pembahasan">9. Interface: Pembahasan</h2>
+		<p><i>Aktor: Siswa | Progres: 100%</i></p>
+		<div class="pembahasan-card">
+			<h3>Kunci Jawaban & Evaluasi</h3>
+			<p class="pembahasan-intro">Berikut ringkasan kunci jawaban beserta penjelasan singkat untuk setiap soal. Gunakan bagian ini untuk mereview kembali konsep-konsep penting HTML.</p>
+			<dl class="pembahasan-list">
+				<dt><span class="answer-badge">1</span> Jawaban B (&lt;p&gt;)</dt>
+				<dd>Tag &lt;p&gt; merupakan singkatan dari <i>paragraph</i> dan digunakan untuk membungkus teks paragraf.</dd>
+
+				<dt><span class="answer-badge">2</span> Jawaban C (href)</dt>
+				<dd><i>Hypertext Reference</i> (href) digunakan di dalam tag anchor &lt;a&gt; untuk menentukan alamat/URL tujuan.</dd>
+
+				<dt><span class="answer-badge">3</span> Jawaban B (&lt;ul&gt;)</dt>
+				<dd>&lt;ul&gt; singkatan dari <i>Unordered List</i>, yaitu daftar dengan bullet tanpa penomoran.</dd>
+
+				<dt><span class="answer-badge">4</span> Jawaban A (&lt;img&gt;)</dt>
+				<dd>Tag &lt;img&gt; digunakan untuk menyematkan gambar dengan atribut penting seperti <code>src</code> dan <code>alt</code>.</dd>
+
+				<dt><span class="answer-badge">5</span> Jawaban C (&lt;tr&gt;)</dt>
+				<dd>&lt;tr&gt; (<i>table row</i>) berfungsi membuat baris pada tabel yang berisi sel &lt;td&gt; atau &lt;th&gt;.</dd>
+
+				<dt><span class="answer-badge">6</span> Jawaban A (&lt;h1&gt;)</dt>
+				<dd>&lt;h1&gt; adalah heading dengan tingkat kepentingan tertinggi dalam struktur dokumen HTML.</dd>
+
+				<dt><span class="answer-badge">7</span> Jawaban B (&lt;br&gt;)</dt>
+				<dd>&lt;br&gt; (<i>line break</i>) digunakan untuk memindahkan teks ke baris berikutnya tanpa membuat paragraf baru.</dd>
+
+				<dt><span class="answer-badge">8</span> Jawaban C (&lt;strong&gt;)</dt>
+				<dd>Secara semantik &lt;strong&gt; menandakan teks yang memiliki penekanan penting, biasanya ditampilkan tebal.</dd>
+
+				<dt><span class="answer-badge">9</span> Jawaban A (&lt;!DOCTYPE html&gt;)</dt>
+				<dd>Deklarasi &lt;!DOCTYPE html&gt; memberi tahu browser bahwa dokumen menggunakan standar HTML5.</dd>
+
+				<dt><span class="answer-badge">10</span> Jawaban B (&lt;ol&gt;)</dt>
+				<dd>&lt;ol&gt; (<i>Ordered List</i>) digunakan untuk daftar yang memiliki urutan bernomor (1, 2, 3, ...).</dd>
+			</dl>
+		</div>
+		<hr><br>
+
+		<h2 id="kontak">10. Interface: Kontak</h2>
+		<p><i>Aktor: Pengunjung / Siswa / Admin | Progres: 100%</i></p>
+		<div class="interface-card contact-layout">
+			<div class="contact-info">
+				<h3>Butuh Bantuan Terkait Kuis?</h3>
+				<p>Silakan kirimkan pesan jika menemukan bug, kesulitan mengerjakan soal, atau memiliki saran pengembangan fitur baru untuk sistem kuis Edu-Free.</p>
+				<ul>
+					<li>Email utama: <b>fianasfr@email.com</b></li>
+					<li>Respon maksimal 1x24 jam pada hari kerja.</li>
+					<li>Harap sertakan nama dan deskripsi masalah secara jelas.</li>
+				</ul>
+			</div>
+			<div class="contact-form">
+				<form action="mailto:fianasfr@email.com" method="POST" enctype="text/plain">
+					<label for="nama">Nama Lengkap</label><br>
+					<input type="text" id="nama" name="nama" size="30"><br><br>
+					<label for="pesan">Pesan / Kendala Kuis</label><br>
+					<textarea id="pesan" name="pesan" rows="4" cols="40"></textarea><br><br>
+					<input type="submit" value="Kirim Pesan" class="btn-success">
+				</form>
+			</div>
+		</div>
+
+	</div>
+</body>
+</html>
+
