@@ -242,3 +242,33 @@ footer {
     .hero-image { margin-top: 40px; justify-content: center; }
     .nav-menu { display: none; }
 }
+.theme-checkbox {
+    display: none;
+}
+
+.theme-toggle-label {
+    cursor: pointer;
+    font-size: 1.5rem;
+    margin-left: 15px;
+    user-select: none;
+}
+
+.icon-sun { display: none; }
+
+body:has(#theme-toggle:checked) {
+    --bg-dark: #f8fafc;        
+    --bg-card: #ffffff;        
+    --primary: #0284c7;        
+    --secondary: #9333ea;      
+    --text-main: #0f172a;      
+    --text-muted: #475569;     
+    --glass-border: rgba(0, 0, 0, 0.1); 
+}
+
+body:has(#theme-toggle:checked) header { background: rgba(248, 250, 252, 0.9); }
+body:has(#theme-toggle:checked) footer { background: #e2e8f0; }
+body:has(#theme-toggle:checked) .team-section { background: rgba(0, 0, 0, 0.03); }
+body:has(#theme-toggle:checked) .team-img { background: #ffffff; }
+
+body:has(#theme-toggle:checked) .icon-moon { display: none; }
+body:has(#theme-toggle:checked) .icon-sun { display: inline; }
