@@ -271,6 +271,48 @@ body:has(#theme-toggle:checked) .team-img { background: #ffffff; }
 
 body:has(#theme-toggle:checked) .icon-moon { display: none; }
 body:has(#theme-toggle:checked) .icon-sun { display: inline; }
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* --- Variabel Warna CSS --- */
+:root {
+    --bg-main: #0f172a;
+    --bg-panel: #1e293b;
+    --primary: #38bdf8; /* Biru terang */
+    --secondary: #c084fc; /* Ungu */
+    --success: #10b981; /* Hijau Selesai */
+    --text-light: #f8fafc;
+    --text-dim: #94a3b8;
+    --border: rgba(255, 255, 255, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: var(--bg-main);
+    color: var(--text-light);
+    line-height: 1.6;
+}
+
+/* --- Navbar Singkat --- */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 5%;
+    background-color: var(--bg-panel);
+    border-bottom: 1px solid var(--border);
+}
+
+.logo {
+    font-weight: 700;
+    font-size: 1.4rem;
+    color: var(--primary);
+}
 
 .btn-back {
     color: var(--text-dim);
@@ -491,5 +533,7 @@ body:has(#theme-toggle:checked) .icon-sun { display: inline; }
     .btn-materi-selanjutnya {
         margin-left: 0;
         width: 100%;
+    }
+}
     }
 }
