@@ -1,119 +1,343 @@
-/* BODY */
 body {
-    font-family: 'Segoe UI', Arial;
     margin: 0;
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    color: #333;
+    font-family: Arial, sans-serif;
 }
 
-/* CONTAINER */
-.container {
-    max-width: 995px;
-    margin: 30px auto;
-    background: rgba(255, 255, 255, 0.9);
-    padding: 30px;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-}
-
-/* TITLE */
-h1 {
-    text-align: center;
-    letter-spacing: 2px;
-    color: #4b3ca7;
-}
-
-/* NAV */
-a {
-    text-decoration: none;
-    color: #6c5ce7;
-    font-weight: bold;
-    margin: 0 8px;
-    transition: 0.3s;
-}
-
-a:hover {
-    color: #00cec9;
-}
-
-/* TEXT */
-p {
-    line-height: 1.7;
-}
-
-/* IMAGE */
-img {
-    border-radius: 0;
-    border: 4px solid #6c5ce7;
-    margin-top: 10px;
-}
-
-/* GRID */
-.interface-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-    gap: 20px;
-    margin-top: 20px;
-}
-
-/* CARD */
-.card {
-    position: relative;
-    background: linear-gradient(135deg, #ffffff, #f1f1f1);
-    border-radius: 15px;
-    padding: 20px;
-    transition: 0.4s;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-    overflow: hidden;
-}
-
-/* GARIS ATAS */
-.card::before {
-    content: "";
-    position: absolute;
-    height: 5px;
-    width: 100%;
+/* Navbar */
+.navbar {
+    position: sticky;
     top: 0;
-    left: 0;
-    background: linear-gradient(90deg, #6c5ce7, #00cec9);
-}
-
-/* HOVER */
-.card:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 15px 35px rgba(0,0,0,0.3);
-}
-
-/* TITLE CARD */
-.card h3 {
-    margin-top: 0;
-    color: #6c5ce7;
-}
-
-input, textarea, select {
-    width: 100%;
-    padding: 8px;
-    margin-top: 5px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-family: inherit;
-}
-
-button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
     padding: 10px 20px;
-    background: #2c3e50;
+    z-index: 1000;
+}
+
+.navbar a {
     color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+    text-decoration: none;
+    margin: 0 10px;
+    font-size: 14px;
 }
 
-button:hover {
-    background: #000;
+.navbar a:hover {
+    text-decoration: underline;
 }
 
-.profile {
-    border-radius: 50%;
-    border: 2px solid #ccc;
+.nav-center h1 {
+    color: white;
+    font-size: 20px;
+}
+
+/* Biodata*/
+.biodata-container {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.biodata-foto-box {
+    width: 200px;
+    height: 200px;
+    background-color: #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+}
+
+.biodata-foto-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.biodata-info-box {
+    flex: 1;
+}
+
+.biodata-info-box h2 {
+    margin-bottom: 15px;
+}
+
+/* Pendidikan */
+.pendidikan-title {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 28px;
+}
+
+.pendidikan-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+}
+
+.pendidikan-item {
+    text-align: center;
+}
+
+.pendidikan-img {
+    width: 800px;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.pendidikan-nama {
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+/* Hard Skill */
+.hardskill-title {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 28px;
+}
+
+.hardskill-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.hardskill-card {
+    background-color: #ffffff;
+    color: #333;
+    width: 280px;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.hardskill-card:hover {
+    transform: translateY(-5px);
+}
+
+.hardskill-card h3 {
+    margin-bottom: 10px;
+}
+
+.hardskill-card p {
+    font-size: 14px;
+    color: #ccc;
+}
+
+/* Soft Skill */
+.softskill-title {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 28px;
+}
+
+.softskill-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.softskill-card {
+    background-color: #ffffff;
+    color: #333;
+    width: 280px;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+    text-align: center;
+}
+
+.softskill-card:hover {
+    transform: translateY(-5px);
+}
+
+.softskill-card h3 {
+    margin-bottom: 10px;
+}
+
+.softskill-card p {
+    font-size: 14px;
+    color: #555;
+}
+
+/* Project */
+.project-title {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 28px;
+}
+
+.project-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.project-card {
+    background-color: #ffffff;
+    width: 300px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    overflow: hidden;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+}
+
+.project-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.project-card h3 {
+    padding: 15px;
+}
+
+/* Pengalaman */
+.pengalaman-title {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 28px;
+}
+
+.pengalaman-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.pengalaman-card {
+    background-color: #ffffff;
+    color: #333;
+    width: 280px;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.pengalaman-card:hover {
+    transform: translateY(-5px);
+}
+
+.pengalaman-card h3 {
+    margin-bottom: 10px;
+}
+
+.pengalaman-card p {
+    font-size: 14px;
+    color: #555;
+}
+
+/* Hobi */
+.hobi-title {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 28px;
+}
+
+.hobi-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.hobi-card {
+    background-color: #ffffff;
+    color: #333;
+    width: 200px;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.hobi-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Kontak */
+.kontak-title {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 28px;
+}
+
+.kontak-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.kontak-card {
+    background-color: #ffffff;
+    color: #333;
+    width: 280px;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.kontak-card:hover {
+    transform: translateY(-5px);
+}
+
+.kontak-card h3 {
+    margin-bottom: 10px;
+}
+
+.kontak-card p {
+    font-size: 14px;
+    color: #555;
+}
+
+/* Section */
+.section {
+    padding: 80px 20px;
+    min-height: 100vh;
+}
+
+.section:nth-child(even) {
+    background-color: #f4f4f4;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .nav-left, .nav-right {
+        margin: 5px 0;
+    }
+
+    .navbar a {
+        display: inline-block;
+        margin: 5px;
+    }
+    
+    .biodata-container {
+        flex-direction: column;
+        text-align: center;
+    }
 }
