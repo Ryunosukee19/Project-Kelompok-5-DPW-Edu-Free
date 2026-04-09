@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beranda | Edu-Free.</title>
-    <!-- Memanggil file CSS eksternal -->
-    <link rel="stylesheet" href="styletampilanproject.css">
+    <title>Beranda | Edu Free. - Platform Kursus Online</title>
+    <link rel="stylesheet" href="styleindex.css">
 </head>
 <body>
-
-    <!-- Navigasi -->
+    <a href="https://wa.me/082143511969" class="floating-wa" target="_blank" title="Hubungi Kami di WhatsApp">
+    <img src="logowa.png" alt="WhatsApp Icon" width="40" height="35">
+    </a>
+    <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" id="backToTop" class="back-to-top" title="Kembali ke atas">↑</button>
     <header>
         <div class="logo">Edu-Free.</div>
         <ul class="nav-menu">
@@ -22,24 +23,124 @@
             <button class="btn btn-register">Daftar Gratis</button>
         </div>
         <input type="checkbox" id="theme-toggle" class="theme-checkbox" hidden>
-        <label for="theme-toggle" class="theme-toggle-label" aria-label="Ganti tema">
+        <label for="theme-toggle" class="theme-toggle-label">
             <span class="icon-moon">🌙Gelap</span>
             <span class="icon-sun">☀️Terang</span>
         </label>
     </header>
-
-    <!-- Bagian Hero / Sambutan (Beranda) -->
-    <section class="hero">
-        <div class="hero-content">
-            <span class="badge-hero">Platform Kursus Online</span>
-            <h1>Tingkatkan Skil Coding Kamu Bersama Kelompok Kami.</h1>
-            <p>Kuis Singkat, Video Player Page <b>Live Progress Tracker</b> dan raih sertifikat kompetensi kamu.</p>
-            <a href="katalog.html" class="btn btn-register" style="padding: 15px 35px; font-size: 1.1rem;">Jelajahi Kelas</a>
-        </div>
-        <div class="hero-image">
-            <img src="program.jpg" alt="Dashboard Belajar">
-        </div>
-    </section>
-
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <span class="badge-hero">Platform Kursus Online</span>
+                <h1>Tingkatkan Skil Coding Kamu Bersama Kelompok Kami.</h1>
+                <p>Kuis Singkat, Video Player Page <b>Live Progress Tracker</b> dan raih sertifikat kompetensi Anda.</p>
+                <a href="katalog.html" class="btn btn-register" style="padding: 15px 35px; font-size: 1.1rem;">Jelajahi Kelas</a>
+            </div>
+            <div class="hero-image">
+                <img src="program.jpg" alt="Dashboard Belajar">
+            </div>
+        </section>
+        <section class="categories">
+            <div class="section-header">
+                <h2>Materi Pembelajaran: HTML</h2>
+                <p>Pelajari fondasi utama dalam membangun struktur halaman web dari nol.</p>
+            </div>
+            <div class="cat-grid">
+                <div class="cat-card">
+                    <div class="cat-icon">📄</div>
+                    <h3>HTML DASAR</h3>
+                    <span>Struktur Dasar HTML & Tag-Tag dasar pada HTML</span>
+                </div>
+                <div class="cat-card">
+                    <div class="cat-icon">📄</div>
+                    <h3>HTML LANJUTAN</h3>
+                    <span>Tag-Tag Lanjutan Pada HTML</span>
+                </div>
+            </div>
+        </section>
+        <section class="certificate-section">
+            <div class="cert-text">
+                <span class="badge-hero">Pencapaian</span>
+                <h2>Raih Sertifikat Digital Kamu Sekarang!!</h2>
+                <p>Sertifikat ini hanya untuk siswa yang telah terdaftar ke edu-free, dan juga yang telah melakukan pembelajaran materi serta mengerjakan Quiz yang tersedia.</p>
+            </div>
+            <div class="cert-visual">
+                <div class="cert-mockup">
+                    <div class="cert-border">
+                        <h3>Sertifikat Kelulusan</h3>
+                        <p>Diberikan kepada:</p>
+                        <h4>Nama Peserta</h4>
+                        <p>Telah menyelesaikan kelas "Fullstack Web Development"</p>
+                        <div class="cert-footer-mock">Edu-Free.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="calendar-section">
+            <div class="section-header">
+                <h2>Kalender Kegiatan</h2>
+                <p>Jangan lewatkan sesi Materi HTML Lanjutan dan CSS.</p>
+            </div>
+            <div class="calendar-grid">
+                <div class="event-card">
+                    <div class="event-date">
+                        <span class="date">15</span>
+                        <span class="month">Mei</span>
+                    </div>
+                    <div class="event-details">
+                        <h3>Materi HTML Lanjutan</h3>
+                        <p>Upload pada 07:00</p>
+                    </div>
+                </div>
+                <div class="event-card">
+                    <div class="event-date">
+                        <span class="date">22</span>
+                        <span class="month">Mei</span>
+                    </div>
+                    <div class="event-details">
+                        <h3>Materi CSS</h3>
+                        <p>Upload Pada 18:30</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="reviews-section">
+            <div class="section-header">
+                <h2>Beri Ulasan untuk Developer</h2>
+                <p>Kritik dan saran Kamu sangat berarti untuk pengembangan platform Edu-Free Kelompok Kembali.</p>
+            </div>
+            <div class="feedback-wrapper">
+                <form class="feedback-form" onsubmit="event.preventDefault(); alert('Terima kasih! Ulasan Anda telah terkirim ke Developer.');">
+                    <div class="form-group">
+                        <input type="text" placeholder="Nama Anda" required>
+                    </div>
+                    <div class="form-group">
+                        <select required>
+                            <option value="" disabled selected>Beri Rating (1-5 Bintang)</option>
+                            <option value="5">⭐⭐⭐⭐⭐ (Sangat Puas)</option>
+                            <option value="4">⭐⭐⭐⭐ (Puas)</option>
+                            <option value="3">⭐⭐⭐ (Cukup)</option>
+                            <option value="2">⭐⭐ (Kurang)</option>
+                            <option value="1">⭐ (Sangat Kurang)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <textarea placeholder="Tuliskan masukan, fitur yang diinginkan, atau kendala yang Kamu alami..." rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-register" style="width: 100%; padding: 15px; font-size: 1.1rem;">Kirim Ulasan</button>
+                </form>
+            </div>
+        </section>
+        <section class="newsletter-section">
+            <div class="newsletter-box">
+                <h2>Belajar Coding Tapi Takut Ketiggalan??</h2>
+                <p>Berlangganan newsletter kami untuk mendapatkan informasi langsung ke Gmail kamu.</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Masukkan alamat email Anda" required>
+                    <button type="submit" class="btn btn-register">Berlangganan</button>
+                </form>
+            </div>
+        </section>
+    </main>
 </body>
 </html>
