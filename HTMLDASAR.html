@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Dasar | Edu Free.</title>
+    <link rel="stylesheet" href="stylemateri.css">
+</head>
+<body>
+    <a href="https://wa.me/082143511969" class="floating-wa" target="_blank" title="Hubungi Developer">
+        <img src="logowa.png" alt="WA">
+    </a>
+    <a href="#" class="back-to-top" title="Kembali ke atas">↑</a>
+
+    <header>
+        <div class="logo">Edu-Free.</div>
+        <ul class="nav-menu">
+            <li><a href="../index.html">Beranda</a></li>
+            <li><a href="../html dasar materi/HTMLDASAR.html" class="active">Materi</a></li>
+        </ul>
+        <div class="auth-buttons">
+            <button class="btn btn-login">Masuk</button>
+            <button class="btn btn-register">Daftar Gratis</button>
+        </div>
+        <input type="checkbox" id="theme-toggle" class="theme-checkbox" hidden>
+        <label for="theme-toggle" class="theme-toggle-label">
+            <span class="icon-moon">🌙Gelap</span>
+            <span class="icon-sun">☀️Terang</span>
+        </label>
+    </header>
+
+    <main style="padding: 40px 5%;">
+        <div class="materi-container">
+            
+            <h1 class="judul-materi">Dokumen HTML</h1>
+            <div class="teks-penjelasan">
+                <p>Semua File HTML harus diawali dengan deklarasi tipe dokumen: <code>&lt; !DOCTYPE html &gt;</code></p>
+                <p>Dokumen HTML itu sendiri dimulai dengan <code>&lt; html &gt;</code> dan diakhiri dengan <code>&lt; /html &gt;</code>.</p>
+                <p>Bagian yang terlihat dari dokumen HTML berada di antara <code>&lt; body &gt;</code>dan <code> &lt; /body &gt;</code></p>
+            </div>
+
+            <div class="contoh-box">
+                <h2>Contoh Penulisan:</h2>
+                
+                <img src="h1p.png" alt="Contoh Code HTML" class="gambar-code">
+            </div>
+            <br>
+            <br>
+            <h1 class="judul-materi">Deklarasi <code>&lt; !Doctype &gt;</code></h1>
+            <div class="teks-penjelasan">
+                <p>Deklarasi tersebut<code>&lt; !DOCTYPE &gt;</code> mewakili tipe dokumen, dan membantu browser menampilkan halaman web dengan benar.</p>
+                <p>Ini hanya boleh muncul sekali, di bagian atas halaman (sebelum tag HTML apa pun).</p>
+                <p>Deklarasi tersebut<code>&lt; !Doctype &gt;</code> tidak peka terhadap huruf besar dan kecil.</p>
+                <p> Deklarasi<code> &lt; !Doctype &gt;</code>untuk HTML5 adalah:</p>
+            </div>
+
+            <div class="contoh-box">
+                <h2>Contoh Penulisan:</h2>
+                
+                <img src="doctype.png" alt="Contoh Code HTML" class="gambar-code">
+            </div>
+            <br>
+            <br>
+            <h1 class="judul-materi">Judul HTML</h1>
+            <div class="teks-penjelasan">
+                <p>Judul HTML didefinisikan dengan tag <code>&lt; h1 &gt;</code> - <code>&lt; h6 &gt;</code></p>
+                <p><code>&lt; h1 &gt;</code>Menentukan judul yang paling penting. <code>&lt; h6 &gt;</code>Menentukan judul yang paling tidak penting: </p>
+            </div>
+
+            <div class="contoh-box">
+                <h2>Contoh Penulisan:</h2>
+                
+                <img src="heading.png" alt="Contoh Code HTML" class="gambar-code">
+            </div>
+            <br>
+            <br>
+            <h1 class="judul-materi">Paragraf HTML</h1>
+            <div class="teks-penjelasan">
+                <p>Paragraf HTML didefinisikan dengan <code>&lt; p &gt;</code>tag</p>
+            </div>
+
+            <div class="contoh-box">
+                <h2>Contoh Penulisan:</h2>
+                
+                <img src="paragraf.png" alt="Contoh Code HTML" class="gambar-code">
+            </div>
+            <br>
+            <br>
+            <h1 class="judul-materi">Komentar HTML</h1>
+            <div class="teks-penjelasan">
+                <p>Dengan komentar, Kamu dapat menempatkan pemberitahuan dan pengingat dalam kode HTML kamu:</p>
+            </div>
+
+            <div class="contoh-box">
+                <h2>Contoh Penulisan:</h2>
+                <img src="komentar.png" alt="Contoh Code HTML" class="gambar-code">
+            </div>
+            <br>
+            <br>
+            <h1 class="judul-materi">HTML <code>&lt; blockquete &gt;</code> untuk kutipan</h1>
+            <div class="teks-penjelasan">
+                <p>Elemen HTML tersebut <code>&lt; blockquete &gt;</code> mendefinisikan bagian yang dikutip dari sumber lain.</p>
+                <p>Browser biasanya memberi indentasi <code>&lt; blockquete &gt;</code>pada elemen.</p>
+            </div>
+
+            <div class="contoh-box">
+                <h2>Contoh Penulisan:</h2>
+                
+                <img src="blocquote.png" alt="Contoh Code HTML" class="gambar-code">
+            </div>
+            <br>
+            <br>
+            <h1 class="judul-materi">Warna Latar Belakang</h1>
+            <div class="teks-penjelasan">
+                <p>Properti CSS <code>background-color</code> menentukan warna latar belakang untuk elemen HTML.</p>
+            </div>
+
+            <div class="contoh-box">
+                <h2>Contoh Penulisan:</h2>
+                
+                <img src="backgrouncolor.png" alt="Contoh Code HTML" class="gambar-code">
+            </div>
+            <br>
+            <br>
+            <h1 class="judul-materi">HTML <code>&lt; q &gt;</code> untuk kutipan</h1>
+            <div class="teks-penjelasan">
+                <p>Tag HTML <code>&lt; q &gt;</code> tersebut mendefinisikan kutipan singkat.</p>
+                <p>Browser biasanya menyisipkan tanda kutip di sekitar kutipan tersebut.</p>
+            </div>
+
+            <div class="contoh-box">
+                <h2>Contoh Penulisan:</h2>
+                
+                <img src="tagq.png" alt="Contoh Code HTML" class="gambar-code">
+            </div>
+            <br>
+            <br>
+            <h1 class="judul-materi">Tautan HTML</h1>
+            <div class="teks-penjelasan">
+                <p>Tautan HTML didefinisikan dengan <code>&lt; a &gt;</code>tag</p>
+            </div>
+
+            <div class="contoh-box">
+                <h2>Contoh Penulisan:</h2>
+                
+                <img src="tautan.png" alt="Contoh Code HTML" class="gambar-code">
+            </div>
+            <br>
+            <br>
+            <h1 class="judul-materi">Gambar HTML</h1>
+            <div class="teks-penjelasan">
+                <p>Gambar HTML didefinisikan dengan <code>&lt; img &gt;</code>tag</p>
+                <p>File sumber <code> src </code>, teks alternatif<code>alt</code>,<code>width</code> dan <code>height</code> buat atribut</p>
+            </div>
+
+            <div class="contoh-box">
+                <h2>Contoh Penulisan:</h2>
+                
+                <img src="materigambar.png" alt="Contoh Code HTML" class="gambar-code">
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>
