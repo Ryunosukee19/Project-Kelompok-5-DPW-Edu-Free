@@ -1,13 +1,85 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Internal CSS-Materi</title>
+    <title>How to|Internal CSS | Edu Free.</title>
+    <link rel="stylesheet" href="materi.css">
 </head>
-<body text="red">
-    <p align="center"><img src="menunggu.jpg" width="450" height="400"></p>
-    <h3 align="center" style="font-family: Arial, Helvetica, sans-serif;" >Mohon maaf halaman ini kosong karena Materi belum di-upload oleh developer.</h3>
-    <p align="center"><a href="index.html">Silahkan Klik Ini untuk Kembali ke halaman Beranda</a></p>
+<body>
+
+    <a href="https://wa.me/082143511969" class="floating-wa" target="_blank" title="Hubungi Developer">
+        <img src="logowa.png" alt="WA">
+    </a>
+    <a href="#" class="back-to-top" title="Kembali ke atas">↑</a>
+
+    <header>
+        <div class="logo">Edu-Free.</div>
+        <ul class="nav-menu">
+            <li><a href="/Project Kelompok Edu Free/index.html">Beranda</a></li>
+            <li><a href="internalcss.html" class="active">Materi</a></li>
+        </ul>
+        <div></div>
+        <input type="checkbox" id="theme-toggle" class="theme-checkbox" hidden>
+        <label for="theme-toggle" class="theme-toggle-label">
+            <span class="icon-moon">🌙Gelap</span>
+            <span class="icon-sun">☀️Terang</span>
+        </label>
+    </header>
+
+    <div class="main-wrapper">
+        
+        <aside class="sidebar">
+            <ul class="sidebar-menu">
+                <li><a href="syntaxcss.html">CSS Syntax</a></li>
+                <li><a href="selectorcss.html">CSS Selectors</a></li>
+                <li class="has-submenu">
+                    <input type="checkbox" id="margin-toggle">
+                    <label for="margin-toggle" class="menu-title">
+                        How To <span class="arrow">▼</span>
+                    </label>
+                    <ul class="submenu">
+                        <li><a href="inlinecss.html" class="active">Inline CSS</a></li>
+                        <li><a href="internalcss.html">Internal CSS</a></li>
+                        <li><a href="externalcss.html">External CSS</a></li>
+                    </ul>
+                </li>
+                <li><a href="commentcss.html">CSS Comments</a></li>
+                <li><a href="errorcss.html">CSS Errors</a></li>
+                <li><a href="colorcss.html">CSS Colors</a></li>
+                <li><a href="backgroundcss.html">CSS Backgrounds</a></li>
+                <li><a href="bordercss.html">CSS Borders</a></li>
+                <li><a href="paddingcss.html">CSS Padding</a></li>
+                <li><a href="heightcss.html">CSS Height / Width</a></li>
+                <li><a href="boxmodelcss.html">CSS Box Model</a></li>
+                <li><a href="outlinecss.html">CSS Outline</a></li>
+                <li><a href="textcss.html">CSS Text</a></li>
+                <li><a href="fontcss.html">CSS Fonts</a></li>
+                <li><a href="iconscss.html">CSS Icons</a></li>
+                <li><a href="linkscss.html">CSS Links</a></li>
+                <li><a href="listcss.html">CSS Lists</a></li>
+                <li><a href="tablecss.html">CSS Tables</a></li>
+            </ul>
+        </aside>
+
+        <main class="content-area">
+            <div class="materi-container">
+                <h1 class="judul-materi">Internal CSS</h1>
+                <div class="teks-penjelasan">
+                    <p>Lembar gaya internal dapat digunakan jika satu halaman HTML memiliki gaya yang unik. <br> Gaya internal didefinisikan di dalam elemen <code>&lt; style &gt;</code>, di dalam bagian head.</p>
+                </div>
+                <div class="contoh-box">
+                    <h2>Contoh Penulisan:</h2>
+                    <img src="internalcss.png" alt="Contoh Code HTML" class="gambar-code">
+                </div>
+                <div>
+                    <p>Gaya internal didefinisikan di dalam elemen <code>&lt; style &gt;</code>, di dalam bagian <code> &lt; head &gt;</code> dari halaman </p>
+                </div>
+                
+            </div>
+        </main>
+
+    </div>
+
 </body>
 </html>

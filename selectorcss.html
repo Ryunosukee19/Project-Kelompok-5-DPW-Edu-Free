@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>How to|Inline CSS | Edu Free.</title>
+    <title>Selector CSS | Edu Free.</title>
     <link rel="stylesheet" href="materi.css">
 </head>
 <body>
@@ -17,7 +17,7 @@
         <div class="logo">Edu-Free.</div>
         <ul class="nav-menu">
             <li><a href="/Project Kelompok Edu Free/index.html">Beranda</a></li>
-            <li><a href="inlinecss.html" class="active">Materi</a></li>
+            <li><a href="selectorcss.html" class="active">Materi</a></li>
         </ul>
         <div></div>
         <input type="checkbox" id="theme-toggle" class="theme-checkbox" hidden>
@@ -64,16 +64,42 @@
 
         <main class="content-area">
             <div class="materi-container">
-                <h1 class="judul-materi">Inline CSS</h1>
+                <h1 class="judul-materi">CSS element Selector</h1>
                 <div class="teks-penjelasan">
-                    <p>Gaya inline dapat digunakan untuk menerapkan gaya unik pada satu elemen. <br> Untuk menggunakan gaya inline, tambahkan atribut style ke elemen yang relevan. Atribut style dapat berisi properti CSS apa pun.</p>
+                    <p>Selektor ini <code>element</code>memilih elemen HTML berdasarkan nama elemen.</p>
                 </div>
                 <div class="contoh-box">
                     <h2>Contoh Penulisan:</h2>
-                    <img src="inline.png" alt="Contoh Code HTML" class="gambar-code">
+                    <img src="selector element.png" alt="Contoh Code HTML" class="gambar-code">
                 </div>
                 <div>
-                    <p>Gaya inline didefinisikan di dalam atribut "style" dari elemen yang bersangkutan </p>
+                    <p>Di sini, semua elemen <code>&lt; p &gt;</code> pada halaman akan disejajarkan di tengah, dengan warna teks merah: </p>
+                </div>
+                <br>
+                <br>
+                <h1 class="judul-materi">CSS id Selector</h1>
+                <div class="teks-penjelasan">
+                    <p>Selektor ini <code>id</code>menggunakan atribut id dari elemen HTML untuk memilih elemen tertentu. <br> ID suatu elemen bersifat unik dalam satu halaman, sehingga selektor ID digunakan untuk memilih satu elemen unik! <br> Untuk memilih elemen dengan id tertentu, tuliskan karakter tanda pagar (#), diikuti dengan id elemen tersebut.</p>
+                </div>
+                <div class="contoh-box">
+                    <h2>Contoh Penulisan:</h2>
+                    <img src="idselector.png" alt="Contoh Code HTML" class="gambar-code">
+                </div>
+                <div>
+                    <p>Aturan CSS di bawah ini akan diterapkan pada elemen HTML dengan id="para1": </p>
+                </div>
+                <br>
+                <br>
+                <h1 class="judul-materi">CSS class Selector</h1>
+                <div class="teks-penjelasan">
+                    <p>Selektor ini <code>class</code> memilih elemen HTML dengan atribut kelas tertentu. <br> Untuk memilih elemen dengan kelas tertentu, tuliskan karakter titik (.), diikuti dengan nama kelas.</p>
+                </div>
+                <div class="contoh-box">
+                    <h2>Contoh Penulisan:</h2>
+                    <img src="classselector.png" alt="Contoh Code HTML" class="gambar-code">
+                </div>
+                <div>
+                    <p>Dalam contoh ini, semua elemen HTML dengan class="center" akan berwarna merah dan sejajar di tengah: </p>
                 </div>
                 
             </div>

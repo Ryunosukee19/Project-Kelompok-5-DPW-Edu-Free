@@ -1,0 +1,325 @@
+/* ========================================= */
+/* === BAGIAN 1: VARIABEL & RESET DASAR === */
+/* ========================================= */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+    --bg-dark: #0f172a;
+    --bg-card: #1e293b;
+    --primary: #38bdf8;
+    --secondary: #c084fc;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --glass-border: rgba(255, 255, 255, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    line-height: 1.6;
+    overflow-x: hidden;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+
+/* ========================================= */
+/* === BAGIAN 2: HEADER & THEME TOGGLE === */
+/* ========================================= */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 5%;
+    background: rgba(15, 23, 42, 0.9);
+    backdrop-filter: blur(10px);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 1px solid var(--glass-border);
+    height: 70px;
+}
+
+.logo {
+    font-size: 1.8rem;
+    font-weight: 800;
+    background: linear-gradient(to right, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.nav-menu { display: flex; gap: 30px; }
+.nav-menu a { font-weight: 500; color: var(--text-muted); transition: color 0.3s ease; }
+.nav-menu a:hover, .nav-menu a.active { color: var(--primary); }
+
+/* --- Theme Toggle (Terang/Gelap) --- */
+.theme-checkbox { display: none; }
+.theme-toggle-label {
+    cursor: pointer;
+    font-size: 1.5rem;
+    user-select: none;
+}
+.icon-sun { display: none; }
+
+/* Jika mode terang aktif */
+body:has(#theme-toggle:checked) {
+    --bg-dark: #f8fafc;        
+    --bg-card: #ffffff;        
+    --primary: #0284c7;        
+    --secondary: #9333ea;      
+    --text-main: #0f172a;      
+    --text-muted: #475569;     
+    --glass-border: rgba(0, 0, 0, 0.1); 
+}
+body:has(#theme-toggle:checked) header { background: rgba(248, 250, 252, 0.9); }
+body:has(#theme-toggle:checked) .icon-moon { display: none; }
+body:has(#theme-toggle:checked) .icon-sun { display: inline; }
+
+/* ========================================= */
+/* === BAGIAN 3: LAYOUT (SIDEBAR & KONTEN) ===*/
+/* ========================================= */
+.main-wrapper {
+    display: flex;
+    align-items: flex-start;
+}
+
+/* --- Sidebar Styling --- */
+.sidebar {
+    width: 260px;
+    height: calc(100vh - 70px); /* Sisa tinggi layar setelah header */
+    background: var(--bg-card);
+    border-right: 1px solid var(--glass-border);
+    position: sticky;
+    top: 70px; /* Nempel di bawah header */
+    overflow-y: auto; /* Agar bisa discroll */
+    flex-shrink: 0;
+    padding-bottom: 20px;
+}
+
+/* Custom Scrollbar Sidebar */
+.sidebar::-webkit-scrollbar { width: 6px; }
+.sidebar::-webkit-scrollbar-track { background: transparent; }
+.sidebar::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 10px; }
+
+.sidebar-menu {
+    list-style: none;
+    padding: 10px 0;
+}
+
+.sidebar-menu > li > a, 
+.menu-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+    color: var(--text-main);
+    text-decoration: none;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.2s;
+}
+
+.sidebar-menu > li > a:hover, 
+.menu-title:hover {
+    background: var(--glass-border);
+}
+
+/* --- Dropdown CSS Tanpa JavaScript (Checkbox Hack) --- */
+.has-submenu input[type="checkbox"] {
+    display: none; /* Sembunyikan checkbox */
+}
+
+.submenu {
+    display: none; /* Sembunyikan submenu secara default */
+    list-style: none;
+    background: transparent;
+}
+
+.submenu a {
+    display: block;
+    padding: 10px 20px 10px 40px; /* Indentasi submenu */
+    font-size: 0.95rem;
+    color: var(--text-main);
+}
+
+.submenu a:hover {
+    background: var(--glass-border);
+}
+
+.submenu a.active {
+    background-color: #04AA6D; /* Warna hijau seperti di foto */
+    color: #ffffff;
+}
+
+.arrow {
+    font-size: 0.7rem;
+    transition: transform 0.3s ease;
+}
+
+/* AKSI: Saat checkbox dicentang (Label di-klik) */
+.has-submenu input[type="checkbox"]:checked ~ .submenu {
+    display: block; /* Munculkan submenu */
+}
+
+.has-submenu input[type="checkbox"]:checked + .menu-title .arrow {
+    transform: rotate(180deg); /* Putar panah */
+}
+
+/* Warna latar judul menu saat dropdown terbuka (Dark Mode) */
+.has-submenu input[type="checkbox"]:checked + .menu-title {
+    background: #334155; 
+    color: #ffffff;
+}
+
+/* Warna latar judul menu saat dropdown terbuka (Light Mode) */
+body:has(#theme-toggle:checked) .has-submenu input[type="checkbox"]:checked + .menu-title {
+    background: #e2e8f0; /* Abu-abu terang sesuai foto */
+    color: #000000;
+}
+
+/* --- Area Konten Utama --- */
+.content-area {
+    flex-grow: 1;
+    padding: 40px 5%;
+    width: calc(100% - 260px);
+}
+
+.materi-container {
+    max-width: 900px; 
+    margin: 0 auto;
+    padding: 40px;
+    background: var(--bg-card);
+    border-radius: 16px;
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.judul-materi {
+    font-size: 2.5rem;
+    color: var(--primary);
+    margin-bottom: 25px;
+    border-bottom: 2px solid var(--glass-border);
+    padding-bottom: 15px;
+}
+
+.teks-penjelasan p {
+    font-size: 1.15rem;
+    line-height: 1.8;
+    margin-bottom: 18px;
+    text-align: justify;
+}
+
+.teks-penjelasan code {
+    background: rgba(255, 255, 255, 0.1);
+    color: #e83e8c; 
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-family: Consolas, monospace;
+}
+
+body:has(#theme-toggle:checked) .teks-penjelasan code {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.contoh-box {
+    background: rgba(0, 0, 0, 0.15);
+    padding: 30px;
+    border-radius: 12px;
+    margin-top: 40px;
+    border-left: 6px solid var(--secondary);
+}
+
+body:has(#theme-toggle:checked) .contoh-box {
+    background: rgba(0, 0, 0, 0.03);
+}
+
+.contoh-box h2 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+.gambar-code {
+    width: 100%; 
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    border: 1px solid var(--glass-border);
+    display: block;
+}
+
+/* ========================================= */
+/* === BAGIAN 4: BUTTON WA & BACK TO TOP === */
+/* ========================================= */
+.floating-wa {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    width: 60px;
+    height: 60px;
+    background: #25d366;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    z-index: 999;
+    transition: transform 0.3s;
+}
+.floating-wa:hover { transform: scale(1.1); }
+.floating-wa img { width: 35px; height: 35px; object-fit: contain; }
+
+.back-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    background: var(--primary);
+    color: white;
+    border-radius: 50%;
+    z-index: 999;
+    font-size: 1.5rem;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(56, 189, 248, 0.4);
+    transition: background 0.3s, transform 0.3s;
+    display: flex; justify-content: center; align-items: center;
+}
+.back-to-top:hover { background: #0284c7; transform: translateY(-3px); }
+
+/* ========================================= */
+/* === RESPONSIVE UTK HP === */
+/* ========================================= */
+@media (max-width: 768px) {
+    .main-wrapper { flex-direction: column; }
+    .sidebar { 
+        width: 100%; 
+        height: auto; 
+        max-height: 250px; 
+        position: relative; 
+        top: 0; 
+        border-right: none;
+        border-bottom: 1px solid var(--glass-border);
+    }
+    .content-area { width: 100%; padding: 20px 5%; }
+    .materi-container { padding: 20px; }
+    .judul-materi { font-size: 2rem; }
+    .floating-wa { bottom: 20px; left: 20px; width: 50px; height: 50px; }
+    .back-to-top { bottom: 20px; right: 20px; width: 45px; height: 45px; font-size: 1.2rem; }
+}
+code {
+  font-family: Consolas, "Courier New", monospace; /* Memaksa font kembali ke gaya mesin ketik */
+  background-color: #f3717117; /* Memberi warna latar belakang abu-abu terang */
+  color: #ef3b3e; /* Memberi warna merah muda khas sintaks kode */
+  padding: 2px 6px; /* Memberi sedikit ruang di sekitar teks */
+  border-radius: 4px; /* Membuat sudut latar belakang agak membulat */
+}
