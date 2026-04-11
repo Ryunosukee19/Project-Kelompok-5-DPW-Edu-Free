@@ -323,3 +323,15 @@ code {
   padding: 2px 6px; /* Memberi sedikit ruang di sekitar teks */
   border-radius: 4px; /* Membuat sudut latar belakang agak membulat */
 }
+.sidebar-menu > li > a.active {
+    background: rgba(56, 189, 248, 0.15); /* Latar belakang biru transparan tipis */
+    color: var(--primary); /* Teks berubah menjadi warna primary */
+    border-left: 4px solid var(--primary); /* Garis penanda di sebelah kiri */
+    font-weight: 600; /* Teks sedikit lebih tebal */
+    padding-left: 16px; /* Dikurangi 4px karena ada border-left agar teks tidak bergeser */
+}
+
+/* Penyesuaian latar belakang menu aktif saat Light Mode (Terang) */
+body:has(#theme-toggle:checked) .sidebar-menu > li > a.active {
+    background: rgba(2, 132, 199, 0.1); 
+}
