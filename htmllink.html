@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Tautan | Edu Free.</title>
+    <link rel="stylesheet" href="materi.css">
+</head>
+<body>
+
+    <a href="https://wa.me/082143511969" class="floating-wa" target="_blank" title="Hubungi Developer">
+        <img src="logowa.png" alt="WA">
+    </a>
+    <a href="#" class="back-to-top" title="Kembali ke atas">↑</a>
+
+    <header>
+        <div class="logo">Edu-Free.</div>
+        <ul class="nav-menu">
+            <li><a href="index.html">Beranda</a></li>
+            <li><a href="htmllink.html" class="active">Materi</a></li>
+        </ul>
+        <div></div>
+        <input type="checkbox" id="theme-toggle" class="theme-checkbox" hidden>
+        <label for="theme-toggle" class="theme-toggle-label">
+            <span class="icon-moon">🌙Gelap</span>
+            <span class="icon-sun">☀️Terang</span>
+        </label>
+    </header>
+
+    <div class="main-wrapper">
+        
+        <aside class="sidebar">
+            <ul class="sidebar-menu">
+                <li><a href="htmlbasic.html">HTML Basic</a></li>
+                <li><a href="htmlelement.html">HTML Elements</a></li>
+                <li><a href="htmlatribut.html">HTML Attributes</a></li>
+                <li><a href="htmlheading.html" >HTML Headings</a></li>
+                <li><a href="htmlparagraph.html">HTML Paragraphs</a></li>
+                <li><a href="htmlstyle.html">HTML Styles</a></li>
+                <li><a href="htmlformat.html">HTML Text Formatting</a></li>
+                <li><a href="htmlquotation.html">HTML Quotation</a></li>
+                <li><a href="htmlcomments.html">HTML Comments</a></li>
+                <li><a href="htmlcolors.html">HTML Colors</a></li>
+                <li><a href="htmllink.html" class="active">HTML Links</a></li>
+                <li class="has-submenu">
+                    <input type="checkbox" id="margin-toggle">
+                    <label for="margin-toggle" class="menu-title">
+                        HTML Table <span class="arrow">▼</span>
+                    </label>
+                    <ul class="submenu">
+                        <li><a href="htmltable.html">HTML table</a></li>
+                        <li><a href="htmltableborder.html">Table border</a></li>
+                        <li><a href="htmltablesize.html">Table Size</a></li>
+                    </ul>
+                </li>
+                <li><a href="htmlclasses.html">HTML Classes</a></li>
+            </ul>
+        </aside>
+
+        <main class="content-area">
+            <div class="materi-container">
+                <h1 class="judul-materi">Tautan HTML</h1>
+                <div class="teks-penjelasan">
+                    <p>Tautan dapat ditemukan di hampir semua halaman web. Tautan memungkinkan pengguna untuk berpindah dari satu halaman ke halaman lain dengan sekali klik.</p>
+                </div>
+                <h1 class="judul-materi">Tautan HTML - Hyperlink</h1>
+                <div class="teks-penjelasan">
+                    <p>Tautan HTML adalah hyperlink. <br> Anda dapat mengklik tautan dan langsung menuju ke dokumen lain. <br> Saat Anda mengarahkan kursor mouse ke tautan, panah mouse akan berubah menjadi tangan kecil.</p>
+                </div>
+                <h1 class="judul-materi">Tautan HTML - Sintaksis</h1>
+                <div class="teks-penjelasan">
+                    <p>Tag HTML <code>&lt; a &gt;</code>mendefinisikan sebuah hyperlink. Sintaksnya adalah sebagai berikut:</p>
+                </div>
+                <div class="contoh-box">
+                    <h2>Contoh Penulisan:</h2>
+                    
+                    <img src="htmllink1.png" alt="Contoh Code HTML" class="gambar-code">
+                </div>
+                <div class="teks-penjelasan">
+                    <p>Atribut terpenting dari <code>&lt; a &gt;</code> elemen tersebut adalah hrefatribut yang menunjukkan tujuan tautan. <br> Teks tautan adalah bagian yang akan terlihat oleh pembaca. Mengklik teks tautan akan mengarahkan pembaca ke alamat URL yang ditentukan.<br></p>
+                </div>
+                <br>
+                <br>
+                <h1 class="judul-materi">Tautan HTML - Atribut target</h1>
+                <div class="teks-penjelasan">
+                    <p>Secara default, halaman yang ditautkan akan ditampilkan di jendela browser saat ini. Untuk mengubah ini, Anda harus menentukan target lain untuk tautan tersebut. <br> Atribut tersebut <code>target</code>menentukan di mana dokumen yang ditautkan akan dibuka. <br>Atribut tersebut targetdapat memiliki salah satu nilai berikut:</p>
+                </div>
+                <div class="teks-penjelasan">
+                    <ul>
+                        <li type="disc"><code>_self</code>- Default. Membuka dokumen di jendela/tab yang sama seperti saat diklik.</li>
+                        <li type="disc"><code>_blank</code>- Membuka dokumen di jendela atau tab baru</li>
+                        <li type="disc"><code>_parent</code>- Membuka dokumen di dalam frame induk</li>
+                        <li type="disc"><code>_top</code>- Membuka dokumen dalam tampilan penuh jendela</li>
+                    </ul>
+                </div>
+                <div class="contoh-box">
+                    <h2>Contoh Penulisan:</h2>
+                    
+                    <img src="htmllink2.png" alt="Contoh Code HTML" class="gambar-code">
+                </div>
+                <br>
+                <br>
+                <h1 class="judul-materi">URL Absolut vs. URL Relatif</h1>
+                <div class="teks-penjelasan">
+                    <p>Kedua contoh di atas menggunakan URL absolut (alamat web lengkap) pada hrefatribut tersebut. <br> Tautan lokal (tautan ke halaman dalam situs web yang sama) ditentukan dengan URL relatif (tanpa bagian "https://www"):</p>
+                </div>
+                <div class="contoh-box">
+                    <h2>Contoh Penulisan:</h2>
+                    
+                    <img src="htmllink3".png" alt="Contoh Code HTML" class="gambar-code">
+                </div>
+                <br>
+                <br>
+                <h1 class="judul-materi">Tautan HTML - Gunakan Gambar sebagai Tautan</h1>
+                <div class="teks-penjelasan">
+                    <p>Untuk menggunakan gambar sebagai tautan, cukup letakkan <code>&lt; img &gt;</code> tag di dalam <code>&lt; a &gt;</code>tag:</p>
+                </div>
+                <div class="contoh-box">
+                    <h2>Contoh Penulisan:</h2>
+                    
+                    <img src="htmllink4".png" alt="Contoh Code HTML" class="gambar-code">
+                </div>
+                <br>
+                <br>
+                <h1 class="judul-materi">Tautan ke Alamat Email</h1>
+                <div class="teks-penjelasan">
+                    <p>Gunakan <code>mailto:</code>di dalam <code>href</code>atribut untuk membuat tautan yang membuka program email pengguna (agar mereka dapat mengirim email baru):</p>
+                </div>
+                <div class="contoh-box">
+                    <h2>Contoh Penulisan:</h2>
+                    
+                    <img src="htmllink5".png" alt="Contoh Code HTML" class="gambar-code">
+                </div>
+                <br>
+                <br>
+                <h1 class="judul-materi">Tombol sebagai Tautan</h1>
+                <div class="teks-penjelasan">
+                    <p>Untuk menggunakan tombol HTML sebagai tautan, Anda harus menambahkan beberapa kode JavaScript. <br> JavaScript memungkinkan Anda untuk menentukan apa yang terjadi pada peristiwa tertentu, seperti mengklik tombol:</p>
+                </div>
+                <div class="contoh-box">
+                    <h2>Contoh Penulisan:</h2>
+                    
+                    <img src="htmllink6".png" alt="Contoh Code HTML" class="gambar-code">
+                </div>
+                <br>
+                <br>
+                <h1 class="judul-materi">Judul Tautan</h1>
+                <div class="teks-penjelasan">
+                    <p>Atribut ini <code>title</code>menentukan informasi tambahan tentang suatu elemen. Informasi ini paling sering ditampilkan sebagai teks tooltip ketika kursor mouse diarahkan ke elemen tersebut.</p>
+                </div>
+                <div class="contoh-box">
+                    <h2>Contoh Penulisan:</h2>
+                    
+                    <img src="htmllink7".png" alt="Contoh Code HTML" class="gambar-code">
+                </div>
+            </div>
+        </main>
+
+    </div>
+
+</body>
+</html>
