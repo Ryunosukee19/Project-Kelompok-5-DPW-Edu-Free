@@ -3,188 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edu-Free | Dashboard Dosen</title>
+    <title>Daftar Mahasiswa | Edu-Free Dosen</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* --- CSS STYLING --- */
-        :root {
-            --bg-dark: #0d1117;
-            --bg-sidebar: #161b22;
-            --bg-card: #161b22;
-            --blue-accent: #58a6ff;
-            --border-color: #30363d;
-            --text-gray: #8b949e;
-            --success-green: #238636;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', 'Segoe UI', sans-serif;
-        }
-
-        body {
-            background-color: var(--bg-dark);
-            color: #ffffff;
-            display: flex;
-            min-height: 100vh;
-        }
-
-        /* Sidebar */
-        .sidebar {
-            width: 260px;
-            background-color: var(--bg-sidebar);
-            padding: 30px 20px;
-            border-right: 1px solid var(--border-color);
-            position: fixed;
-            height: 100vh;
-        }
-
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-            color: var(--blue-accent);
-            margin-bottom: 40px;
-        }
-
-        .logo span { color: #a371f7; }
-
-        .nav-menu ul { list-style: none; }
-
-        .nav-menu li { margin-bottom: 5px; }
-
-        .nav-menu li a {
-            text-decoration: none;
-            color: var(--text-gray);
-            display: flex;
-            align-items: center;
-            padding: 12px 15px;
-            border-radius: 8px;
-            transition: 0.3s;
-            font-size: 15px;
-        }
-
+        :root { --bg-dark: #0d1117; --bg-sidebar: #161b22; --bg-card: #161b22; --blue-accent: #58a6ff; --border-color: #30363d; --text-gray: #8b949e; --success-green: #238636; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', 'Segoe UI', sans-serif; }
+        body { background-color: var(--bg-dark); color: #ffffff; display: flex; min-height: 100vh; }
+        .sidebar { width: 260px; background-color: var(--bg-sidebar); padding: 30px 20px; border-right: 1px solid var(--border-color); position: fixed; height: 100vh; }
+        .logo { font-size: 24px; font-weight: bold; color: var(--blue-accent); margin-bottom: 40px; } .logo span { color: #a371f7; }
+        .nav-menu ul { list-style: none; } .nav-menu li { margin-bottom: 5px; }
+        .nav-menu li a { text-decoration: none; color: var(--text-gray); display: flex; align-items: center; padding: 12px 15px; border-radius: 8px; transition: 0.3s; font-size: 15px; }
         .nav-menu li a i { margin-right: 12px; width: 20px; }
-
-        .nav-menu li a:hover, .nav-menu li.active a {
-            color: #ffffff;
-            background-color: #21262d;
-        }
-
-        .submenu { padding-left: 32px; margin-top: 5px; }
-
-        /* Main Content */
-        .main-content {
-            margin-left: 260px;
-            flex: 1;
-            padding: 50px;
-        }
-
-        header { margin-bottom: 40px; }
-        header h2 { font-size: 2.2rem; margin-bottom: 10px; }
-        header p { color: var(--text-gray); }
-
-        /* Sections Control */
-        .content-section {
-            display: none;
-            animation: fadeIn 0.4s ease-out;
-        }
-
-        .content-section.active { display: block; }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Cards & Tables */
-        .card-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-        }
-
-        .card {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            padding: 30px;
-            border-radius: 15px;
-            text-align: center;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .card:hover { border-color: var(--blue-accent); transform: translateY(-5px); }
-
-        .table-container {
-            background: var(--bg-card);
-            padding: 25px;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-        }
-
+        .nav-menu li a:hover, .nav-menu li.active a { color: #ffffff; background-color: #21262d; }
+        .main-content { margin-left: 260px; flex: 1; padding: 50px; }
+        header { margin-bottom: 40px; } header h2 { font-size: 2.2rem; margin-bottom: 10px; } header p { color: var(--text-gray); }
+        .table-container { background: var(--bg-card); padding: 25px; border-radius: 12px; border: 1px solid var(--border-color); }
         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
         th { text-align: left; color: var(--text-gray); padding: 12px; border-bottom: 1px solid var(--border-color); }
         td { padding: 15px 12px; border-bottom: 1px solid #21262d; }
-
-        .badge {
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 12px;
-            background: rgba(88, 166, 255, 0.1);
-            color: var(--blue-accent);
-            border: none;
-            cursor: pointer;
-        }
-
-        /* Modal / Form Styles */
-        .modal-bg {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .modal-content {
-            background: var(--bg-card);
-            padding: 30px;
-            border-radius: 15px;
-            width: 400px;
-            border: 1px solid var(--border-color);
-        }
-
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 8px; font-size: 14px; color: var(--text-gray); }
-        input {
-            width: 100%;
-            padding: 10px;
-            background: var(--bg-dark);
-            border: 1px solid var(--border-color);
-            color: white;
-            border-radius: 6px;
-        }
-
-        .btn-primary {
-            background: var(--success-green);
-            color: white;
-            border: none;
-            padding: 12px;
-            width: 100%;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-
-        /* Stats */
-        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-        .stat-card { background: var(--bg-card); padding: 25px; border-radius: 15px; border: 1px solid var(--border-color); }
-        .stat-value { font-size: 36px; font-weight: bold; color: var(--blue-accent); }
+        .badge { padding: 6px 14px; border-radius: 20px; font-size: 12px; background: rgba(88, 166, 255, 0.1); color: var(--blue-accent); border: none; cursor: pointer; }
+        .modal-bg { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); justify-content: center; align-items: center; z-index: 1000; }
+        .modal-content { background: var(--bg-card); padding: 30px; border-radius: 15px; width: 400px; border: 1px solid var(--border-color); }
+        .form-group { margin-bottom: 15px; } label { display: block; margin-bottom: 8px; font-size: 14px; color: var(--text-gray); }
+        input { width: 100%; padding: 10px; background: var(--bg-dark); border: 1px solid var(--border-color); color: white; border-radius: 6px; }
+        .btn-primary { background: var(--success-green); color: white; border: none; padding: 12px; width: 100%; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 10px; }
     </style>
 </head>
 <body>
@@ -193,109 +35,33 @@
         <h1 class="logo">Edu-Free<span>.</span></h1>
         <nav class="nav-menu">
             <ul>
-                <li id="li-beranda" class="active"><a href="#" onclick="showSection('beranda', 'li-beranda')"><i class="fas fa-home"></i> Beranda</a></li>
-                <li id="li-mahasiswa"><a href="#" onclick="showSection('mahasiswa', 'li-mahasiswa')"><i class="fas fa-users"></i> Daftar Mahasiswa</a></li>
-                <li id="li-tugas"><a href="#" onclick="showSection('tugas', 'li-tugas')"><i class="fas fa-file-upload"></i> Rekap Tugas</a></li>
-                <li id="li-statistik"><a href="#" onclick="showSection('statistik', 'li-statistik')"><i class="fas fa-chart-bar"></i> Statistik</a></li>
+                <li><a href="indexlogindosen.html"><i class="fas fa-home"></i> Beranda</a></li>
+                <li class="active"><a href="daftarmahasiswa.html"><i class="fas fa-users"></i> Daftar Mahasiswa</a></li>
+                <li><a href="rekaptugas.html"><i class="fas fa-file-upload"></i> Rekap Tugas</a></li>
+                <li><a href="statistik.html"><i class="fas fa-chart-bar"></i> Statistik</a></li>
             </ul>
         </nav>
     </aside>
 
     <main class="main-content">
         <header>
-            <h2 id="page-title">Beranda</h2>
-            <p id="page-desc">Halo Dosen, kelola perkuliahan Anda di sini.</p>
+            <h2>Daftar Mahasiswa</h2>
+            <p>Input nilai & data mahasiswa kelas Anda.</p>
         </header>
 
-        <section id="beranda" class="content-section active">
-            <div class="card-grid">
-                <div class="card" onclick="showSection('mahasiswa', 'li-mahasiswa')">
-                    <h3>Daftar Mahasiswa</h3>
-                    <p>Input nilai & data mahasiswa</p>
-                </div>
-                <div class="card" onclick="showSection('tugas', 'li-tugas')">
-                    <h3>Rekap Tugas</h3>
-                    <p>Upload materi & cek tugas</p>
-                </div>
-                <div class="card" onclick="showSection('statistik', 'li-statistik')">
-                    <h3>Statistik</h3>
-                    <p>Grafik performa kelas</p>
-                </div>
-            </div>
-        </section>
-
-        <section id="mahasiswa" class="content-section">
-            <div class="table-container">
-                <h3>Mahasiswa Kelas IF 2B</h3>
-                <table>
-                    <thead>
-                        <tr><th>NIM</th><th>Nama</th><th>Nilai</th><th>Aksi</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>25041110145</td>
-                            <td>Rifana Sari</td>
-                            <td id="val-rifana">90</td>
-                            <td><button class="badge" onclick="openNilaiModal('Rifana Sari', 'val-rifana')">Update Nilai</button></td>
-                        </tr>
-                        <tr>
-                            <td>25041110157</td>
-                            <td>Dwi Farhan Hidayat</td>
-                            <td id="val-ahmad">90</td>
-                            <td><button class="badge" onclick="openNilaiModal('Ahmad Fauzi', 'val-ahmad')">Update Nilai</button></td>
-                        </tr>
-                        <tr>
-                            <td>25041110206</td>
-                            <td>Imel Fiana Safira</td>
-                            <td id="val-ahmad">90</td>
-                            <td><button class="badge" onclick="openNilaiModal('Ahmad Fauzi', 'val-ahmad')">Update Nilai</button></td>
-                        </tr>
-                        <tr>
-                            <td>25041110027</td>
-                            <td>Rafli Alfarisi</td>
-                            <td id="val-ahmad">90</td>
-                            <td><button class="badge" onclick="openNilaiModal('Ahmad Fauzi', 'val-ahmad')">Update Nilai</button></td>
-                        </tr>
-                        <tr>
-                            <td>22041110011</td>
-                            <td>Erick Surya Saputra</td>
-                            <td id="val-ahmad">90</td>
-                            <td><button class="badge" onclick="openNilaiModal('Ahmad Fauzi', 'val-ahmad')">Update Nilai</button></td>
-                        </tr>
-                        <tr>
-                            <td>25041110179</td>
-                            <td>Alif Indra Aufakhi Akrom</td>
-                            <td id="val-ahmad">90</td>
-                            <td><button class="badge" onclick="openNilaiModal('Ahmad Fauzi', 'val-ahmad')">Update Nilai</button></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-        <section id="tugas" class="content-section">
-            <div class="table-container">
-                <div style="display: flex; justify-content: space-between;">
-                    <h3>Daftar Tugas</h3>
-                    <button class="badge" style="background: var(--success-green); color: white;" onclick="document.getElementById('modalUpload').style.display='flex'">+ Upload Tugas Baru</button>
-                </div>
-                <table>
-                    <thead>
-                        <tr><th>Tugas</th><th>Deadline</th><th>Status</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>Struktur Data: Dequeue</td><td>25 Mei 2026</td><td><span class="badge">Aktif</span></td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-        <section id="statistik" class="content-section">
-            <div class="stats-grid">
-                <div class="stat-card"><h4>Rata-rata Kelas</h4><div class="stat-value">82.4</div></div>
-                <div class="stat-card"><h4>Tugas Masuk</h4><div class="stat-value">28/30</div></div>
-                <div class="stat-card"><h4>Kehadiran</h4><div class="stat-value">95%</div></div>
-            </div>
+        <section class="table-container">
+            <h3>Mahasiswa Kelas IF 2B</h3>
+            <table>
+                <thead>
+                    <tr><th>NIM</th><th>Nama</th><th>Nilai DPW</th><th>Aksi</th></tr>
+                </thead>
+                <tbody id="tabel-mahasiswa-body">
+                    <tr><td>25041110145</td><td>Rifana Sari</td><td id="val-25041110145">Belum dinilai</td><td><button class="badge" onclick="openNilaiModal('25041110145', 'Rifana Sari')">Update Nilai</button></td></tr>
+                    <tr><td>25041110157</td><td>Dwi Farhan Hidayat</td><td id="val-25041110157">Belum dinilai</td><td><button class="badge" onclick="openNilaiModal('25041110157', 'Dwi Farhan Hidayat')">Update Nilai</button></td></tr>
+                    <tr><td>25041110206</td><td>Imel Fiana Safira</td><td id="val-25041110206">Belum dinilai</td><td><button class="badge" onclick="openNilaiModal('25041110206', 'Imel Fiana Safira')">Update Nilai</button></td></tr>
+                    <tr><td>25041110027</td><td>Rafli Alfarisi</td><td id="val-25041110027">Belum dinilai</td><td><button class="badge" onclick="openNilaiModal('25041110027', 'Rafli Alfarisi')">Update Nilai</button></td></tr>
+                </tbody>
+            </table>
         </section>
     </main>
 
@@ -304,55 +70,62 @@
             <h3 id="modalName">Input Nilai</h3>
             <div class="form-group" style="margin-top: 15px;">
                 <label>Nilai Baru (0-100)</label>
-                <input type="number" id="newScore">
+                <input type="text" id="newScore" placeholder="Contoh: 95 / A">
             </div>
-            <button class="btn-primary" onclick="saveNilai()">Simpan</button>
+            <button class="btn-primary" onclick="saveNilai()">Simpan ke Database</button>
             <button onclick="document.getElementById('modalNilai').style.display='none'" style="background:none; border:none; color:var(--text-gray); width:100%; margin-top:10px; cursor:pointer;">Batal</button>
         </div>
     </div>
 
-    <div id="modalUpload" class="modal-bg">
-        <div class="modal-content">
-            <h3>Upload Tugas Baru</h3>
-            <div class="form-group" style="margin-top: 15px;">
-                <label>Judul Tugas</label>
-                <input type="text" placeholder="Masukkan judul...">
-            </div>
-            <div class="form-group">
-                <label>File Materi</label>
-                <input type="file">
-            </div>
-            <button class="btn-primary" onclick="alert('Tugas Berhasil Diupload!'); document.getElementById('modalUpload').style.display='none'">Publish Tugas</button>
-            <button onclick="document.getElementById('modalUpload').style.display='none'" style="background:none; border:none; color:var(--text-gray); width:100%; margin-top:10px; cursor:pointer;">Batal</button>
-        </div>
-    </div>
-
     <script>
-        let targetId = "";
+        let targetNim = "";
+        let targetName = "";
 
-        function showSection(sectionId, liId) {
-            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.nav-menu li').forEach(l => l.classList.remove('active'));
-            
-            document.getElementById(sectionId).classList.add('active');
-            document.getElementById(liId).classList.add('active');
-            
-            const titles = {'beranda': 'Beranda', 'mahasiswa': 'Daftar Mahasiswa', 'tugas': 'Rekap Tugas', 'statistik': 'Statistik Kelas'};
-            document.getElementById('page-title').innerText = titles[sectionId];
-        }
+        // Load data saat halaman dibuka agar nilai tidak hilang saat refresh
+        document.addEventListener("DOMContentLoaded", function() {
+            const dbNilaiRaw = localStorage.getItem('global_database_nilai');
+            if (dbNilaiRaw) {
+                const databaseNilai = JSON.parse(dbNilaiRaw);
+                databaseNilai.forEach(data => {
+                    const selTarget = document.getElementById(`val-${data.nim}`);
+                    if (selTarget) selTarget.innerText = data.nilai;
+                });
+            }
+        });
 
-        function openNilaiModal(name, id) {
-            targetId = id;
-            document.getElementById('modalName').innerText = "Nilai: " + name;
+        function openNilaiModal(nim, name) {
+            targetNim = nim;
+            targetName = name;
+            document.getElementById('modalName').innerText = "Nilai untuk: " + name;
             document.getElementById('modalNilai').style.display = 'flex';
         }
 
         function saveNilai() {
-            const val = document.getElementById('newScore').value;
-            if(val) {
-                document.getElementById(targetId).innerText = val;
+            const val = document.getElementById('newScore').value.trim();
+            if (val) {
+                // 1. Update tampilan tabel dosen
+                document.getElementById(`val-${targetNim}`).innerText = val;
+                
+                // 2. Simpan ke database lokal (LocalStorage)
+                let databaseNilai = JSON.parse(localStorage.getItem('global_database_nilai')) || [];
+                
+                // Cek apakah data mahasiswa ini sudah pernah ada, jika ada di-update
+                let index = databaseNilai.findIndex(item => item.nim === targetNim);
+                const dataBaru = { 
+                    nim: targetNim, 
+                    matkul: "Desain Pemrograman Web (DPW)", 
+                    nilai: val, 
+                    tanggalInput: new Date().toLocaleDateString('id-ID') 
+                };
+
+                if (index >= 0) databaseNilai[index] = dataBaru; 
+                else databaseNilai.push(dataBaru);
+
+                localStorage.setItem('global_database_nilai', JSON.stringify(databaseNilai));
+
                 document.getElementById('modalNilai').style.display = 'none';
                 document.getElementById('newScore').value = "";
+                alert("Nilai berhasil disimpan!");
             }
         }
     </script>
