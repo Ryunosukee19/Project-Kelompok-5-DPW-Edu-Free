@@ -88,19 +88,17 @@
                 if (this.value === 'dosen') {
                     labelId.textContent = 'NIP';
                     inputId.placeholder = 'Masukkan NIP Anda';
-                    // Sembunyikan dan hilangkan kewajiban mengisi semester
                     semesterContainer.style.display = 'none';
                     semesterSelect.removeAttribute('required');
                 } else {
                     labelId.textContent = 'NIM';
                     inputId.placeholder = 'Masukkan NIM Anda';
-                    // Tampilkan kembali form semester
                     semesterContainer.style.display = 'block';
                     semesterSelect.setAttribute('required', 'true');
                 }
             });
 
-            // LOGIKA SAAT TOMBOL DAFTAR DITEKAN
+            // LOGIKA MENYIMPAN AKUN KE LOCAL STORAGE SAAT DAFTAR
             const registerForm = document.getElementById('registerForm');
             if (registerForm) {
                 registerForm.addEventListener('submit', function(e) {
@@ -108,11 +106,10 @@
                     
                     const role = roleSelect.value;
                     const nama = document.getElementById('nama').value;
-                    const userId = inputId.value; // Bisa berisi NIM atau NIP
+                    const userId = inputId.value; 
                     const password = document.getElementById('password').value;
-                    const semester = semesterSelect.value;
+                    const semester = semesterSelect.value || "-";
 
-                    // Simpan data ke memori
                     const userData = {
                         role: role,
                         nama: nama,
@@ -121,17 +118,19 @@
                         semester: semester
                     };
                     
+                    // Simpan data akun ke memori dengan kunci NIM/NIP
                     localStorage.setItem(userId, JSON.stringify(userData));
+                    
+                    // Langsung otomatis login
                     localStorage.setItem('loggedInUser', JSON.stringify(userData));
 
                     alert(`Registrasi Berhasil, ${nama}! Anda akan diarahkan ke Dashboard.`);
 
-                    // Arahkan ke halaman sesuai peran
                     if (role === 'dosen') {
-                        window.location.href = "indexlogindosen.html"; // Harus buat file ini
+                        window.location.href = "indexlogindosen.html"; 
                     } else {
                         if (semester === "1") window.location.href = "indexsetelahlogin.html"; 
-                        else if (semester === "2") window.location.href = "indexsetelahlogin2.html"; 
+                        else window.location.href = "indexsetelahlogin2.html"; 
                     }
                 });
             }
