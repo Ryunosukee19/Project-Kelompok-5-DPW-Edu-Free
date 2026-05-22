@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rekap Tugas | Edu-Free Dosen</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --bg-dark: #0d1117; --bg-sidebar: #161b22; --bg-card: #161b22; --blue-accent: #58a6ff; --border-color: #30363d; --text-gray: #8b949e; --success-green: #238636; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', 'Segoe UI', sans-serif; }
+        body { background-color: var(--bg-dark); color: #ffffff; display: flex; min-height: 100vh; overflow-x: hidden; }
+        a { text-decoration: none; color: inherit; }
+
+        .sidebar { width: 260px; background-color: var(--bg-sidebar); padding: 30px 20px; border-right: 1px solid var(--border-color); position: fixed; height: 100vh; z-index: 100;}
+        .logo { font-size: 24px; font-weight: bold; color: var(--blue-accent); margin-bottom: 40px; } .logo span { color: #a371f7; }
+        .nav-menu ul { list-style: none; } .nav-menu li { margin-bottom: 5px; }
+        .nav-menu li a { color: var(--text-gray); display: flex; align-items: center; padding: 12px 15px; border-radius: 8px; transition: 0.3s; font-size: 15px; }
+        .nav-menu li a i { margin-right: 12px; width: 20px; }
+        .nav-menu li a:hover, .nav-menu li.active a { color: #ffffff; background-color: #21262d; }
+
+        .main-content { margin-left: 260px; flex: 1; padding: 40px; position: relative; }
+        
+        header { margin-bottom: 40px; margin-top: 20px;}
+        header h2 { font-size: 2.2rem; margin-bottom: 10px; } header p { color: var(--text-gray); }
+
+        .table-container { background: var(--bg-card); padding: 25px; border-radius: 12px; border: 1px solid var(--border-color); }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th { text-align: left; color: var(--text-gray); padding: 12px; border-bottom: 1px solid var(--border-color); }
+        td { padding: 15px 12px; border-bottom: 1px solid #21262d; }
+        .badge { padding: 6px 14px; border-radius: 20px; font-size: 12px; background: rgba(88, 166, 255, 0.1); color: var(--blue-accent); border: none; cursor: pointer; transition: 0.3s;} .badge.green { background: rgba(35, 134, 54, 0.2); color: #3fb950; }
+
+        .modal-bg { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); justify-content: center; align-items: center; z-index: 3000; }
+        .modal-content { background: var(--bg-card); padding: 30px; border-radius: 15px; width: 450px; border: 1px solid var(--border-color); }
+        .form-group { margin-bottom: 15px; } label { display: block; margin-bottom: 8px; font-size: 14px; color: var(--text-gray); }
+        input, select { width: 100%; padding: 10px; background: var(--bg-dark); border: 1px solid var(--border-color); color: white; border-radius: 6px; }
+        .btn-primary { background: var(--success-green); color: white; border: none; padding: 12px; width: 100%; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <h1 class="logo">Edu-Free<span>.</span></h1>
+        <nav class="nav-menu">
+            <ul>
+                <li><a href="indexlogindosen.html"><i class="fas fa-home"></i> Beranda</a></li>
+                <li><a href="daftarmahasiswa.html"><i class="fas fa-users"></i> Daftar Mahasiswa</a></li>
+                <li class="active"><a href="rekaptugas.html"><i class="fas fa-file-upload"></i> Rekap Tugas</a></li>
+                <li><a href="statistik.html"><i class="fas fa-chart-bar"></i> Statistik</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header>
+            <h2>Rekap & Upload Tugas</h2>
+            <p>Berikan materi/tugas baru secara *real-time* ke dashboard mahasiswa.</p>
+        </header>
+
+        <section class="table-container">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h3>Daftar Tugas Aktif</h3>
+                <button class="badge green" onclick="document.getElementById('modalUpload').style.display='flex'" style="padding: 10px 20px; font-size: 14px;"><i class="fas fa-plus"></i> Buat Tugas Baru</button>
+            </div>
+            <table>
+                <thead><tr><th>Judul Tugas</th><th>Target Mahasiswa</th><th>Deadline</th><th>Aksi</th></tr></thead>
+                <tbody id="tabel-tugas-body">
+                    </tbody>
+            </table>
+        </section>
+    </main>
+
+    <div id="modalUpload" class="modal-bg">
+        <div class="modal-content">
+            <h3>Upload Tugas Baru</h3>
+            <div class="form-group" style="margin-top: 15px;">
+                <label>Judul Materi / Tugas</label>
+                <input type="text" id="tugas-judul" placeholder="Contoh: Membuat Form HTML" required>
+            </div>
+            <div class="form-group">
+                <label>Batas Waktu (Deadline)</label>
+                <input type="date" id="tugas-deadline" required>
+            </div>
+            <div class="form-group">
+                <label>Target Mahasiswa</label>
+                <select id="tugas-target">
+                    <option value="Semua">Semua Mahasiswa Kelas IF 2B</option>
+                    <option value="25041110157">Hanya Dwi Farhan Hidayat (25041110157)</option>
+                    <option value="25041110145">Hanya Rifana Sari (25041110145)</option>
+                </select>
+            </div>
+            <button class="btn-primary" onclick="simpanTugas()">Publish Tugas</button>
+            <button onclick="document.getElementById('modalUpload').style.display='none'" style="background:none; border:none; color:var(--text-gray); width:100%; margin-top:10px; cursor:pointer;">Batal</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Validasi Sesi Dosen
+            const activeUser = JSON.parse(localStorage.getItem('loggedInUser'));
+            if (!activeUser || activeUser.role !== 'dosen') { 
+                window.location.href = "login.html"; 
+                return;
+            }
+
+            renderTabelTugas(); 
+        });
+
+        // FUNGSI MENYIMPAN TUGAS KE DATABASE LOKAL
+        function simpanTugas() {
+            const judul = document.getElementById('tugas-judul').value;
+            const deadline = document.getElementById('tugas-deadline').value;
+            const target = document.getElementById('tugas-target').value;
+
+            if(!judul || !deadline) { 
+                alert("Harap isi semua kolom!"); 
+                return; 
+            }
+
+            let databaseTugas = JSON.parse(localStorage.getItem('global_database_tugas')) || [];
+
+            databaseTugas.push({
+                id: Date.now(),
+                judul: judul,
+                deadline: deadline,
+                target: target 
+            });
+
+            localStorage.setItem('global_database_tugas', JSON.stringify(databaseTugas));
+
+            alert("Tugas berhasil dipublikasikan ke Mahasiswa!");
+            document.getElementById('modalUpload').style.display = 'none';
+            
+            document.getElementById('tugas-judul').value = "";
+            document.getElementById('tugas-deadline').value = "";
+            
+            renderTabelTugas();
+        }
+
+        // FUNGSI MENAMPILKAN TUGAS DI TABEL DOSEN
+        function renderTabelTugas() {
+            let databaseTugas = JSON.parse(localStorage.getItem('global_database_tugas')) || [];
+            const tabelBody = document.getElementById('tabel-tugas-body');
+            if(!tabelBody) return;
+
+            tabelBody.innerHTML = "";
+
+            if(databaseTugas.length === 0) {
+                tabelBody.innerHTML = `<tr><td colspan="4" style="text-align:center;">Belum ada tugas yang diupload.</td></tr>`;
+            } else {
+                databaseTugas.forEach((tugas, index) => {
+                    let targetText = tugas.target === 'Semua' ? 'Semua Mahasiswa' : `NIM: ${tugas.target}`;
+                    tabelBody.innerHTML += `
+                        <tr>
+                            <td><b>${tugas.judul}</b></td>
+                            <td>${targetText}</td>
+                            <td>${tugas.deadline}</td>
+                            <td><button class="badge" style="color:#f85149; background:rgba(248,81,73,0.1);" onclick="hapusTugas(${index})">Hapus</button></td>
+                        </tr>
+                    `;
+                });
+            }
+        }
+
+        // FUNGSI HAPUS TUGAS
+        function hapusTugas(index) {
+            if(confirm("Yakin ingin menghapus tugas ini? Mahasiswa tidak akan bisa melihatnya lagi.")) {
+                let databaseTugas = JSON.parse(localStorage.getItem('global_database_tugas')) || [];
+                databaseTugas.splice(index, 1);
+                localStorage.setItem('global_database_tugas', JSON.stringify(databaseTugas));
+                renderTabelTugas();
+            }
+        }
+    </script>
+</body>
+</html>
