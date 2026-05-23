@@ -230,7 +230,7 @@
                 const user = JSON.parse(activeUserString);
 
                 // --- Teks Sapaan ---
-                welcomeMessage.innerHTML = `Selamat Datang <b>${user.nama}</b> di halaman kelas semester <b>{user.semester}</b>.`;
+                welcomeMessage.innerHTML = `Selamat Datang <b>${user.nama}</b> di halaman kelas semester <b>${user.semester}</b>.`;
                 document.getElementById('popover-greeting').textContent = `Halo, ${user.nama}.`;
                 
                 // Set Identitas Berdasarkan Role (Mahasiswa / Dosen)
