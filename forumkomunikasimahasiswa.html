@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forum Mahasiswa</title>
+  <link rel="stylesheet" href="styleforum.css">
+</head>
+<body>
+
+<div class="chat-container">
+  <div class="chat-header">
+    <h2>Forum Mahasiswa</h2>
+  </div>
+
+  <div class="chat-box" id="chatBox"></div>
+
+  <div class="chat-input">
+    <input type="text" id="messageInput" placeholder="Tulis pesan...">
+    <button onclick="sendMessage('Mahasiswa')">Kirim</button>
+  </div>
+
+  <button class="clear-btn" onclick="clearChat()">
+    Hapus Chat
+  </button>
+</div>
+
+<script src="scriptforum.js"></script>
+</body>
+</html>
