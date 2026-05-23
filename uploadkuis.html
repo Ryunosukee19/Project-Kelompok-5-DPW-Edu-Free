@@ -23,6 +23,10 @@
             --text-muted: #475569; --border-color: rgba(0, 0, 0, 0.1); 
         }
 
+        .icon-sun { display: none; }
+        body:has(#theme-toggle:checked) .icon-moon { display: none; }
+        body:has(#theme-toggle:checked) .icon-sun { display: inline; }
+
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
         body { background-color: var(--bg-dark); color: var(--text-main); display: flex; transition: all 0.3s ease; overflow-x: hidden; }
         a { text-decoration: none; color: inherit; } ul { list-style: none; }
@@ -36,6 +40,7 @@
         .logo { font-size: 1.8rem; font-weight: 800; padding: 25px 20px; background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; background-clip: text; color: transparent; border-bottom: 1px solid var(--border-color); }
         .theme-switch-wrapper { padding: 15px 20px; border-bottom: 1px solid var(--border-color); } 
         .theme-toggle-label { cursor: pointer; color: var(--text-muted); display: flex; gap: 10px; font-size: 0.95rem; font-weight: 500;} 
+        .theme-toggle-label:hover { color: var(--text-main); }
         .theme-checkbox { display: none; } 
 
         .nav-links { padding-top: 15px; padding-bottom: 30px; flex-grow: 1;}
@@ -64,7 +69,8 @@
 
         table { width: 100%; border-collapse: collapse; }
         th { text-align: left; padding: 15px; border-bottom: 1px solid var(--border-color); color: var(--text-muted); font-weight: 500; font-size: 0.9rem;}
-        td { padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.95rem; color: var(--text-main); }
+        /* Menggunakan var(--border-color) agar dinamis saat light mode */
+        td { padding: 15px; border-bottom: 1px solid var(--border-color); font-size: 0.95rem; color: var(--text-main); }
         tr:last-child td { border-bottom: none; }
         
         .btn-delete { background: rgba(239, 68, 68, 0.15); color: var(--danger-red); border: none; padding: 6px 12px; border-radius: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: 0.3s; }
@@ -95,6 +101,7 @@
 
     <nav class="sidebar">
         <div class="logo">Edu-Free.</div>
+        
         <div class="theme-switch-wrapper">
             <input type="checkbox" id="theme-toggle" class="theme-checkbox">
             <label for="theme-toggle" class="theme-toggle-label">
@@ -102,12 +109,14 @@
                 <span class="icon-sun">☀️ Mode Terang</span>
             </label>
         </div>
+        
         <ul class="nav-links">
             <li><a href="indexlogindosen.html">Beranda</a></li>
             <li><a href="uploadtugas.html">Upload Tugas</a></li>
             <li><a href="uploadkuis.html" class="active">Upload Kuis</a></li>
             <li><a href="uploadnilai.html">Upload Nilai</a></li>
             <li><a href="Absensi.html">Absensi</a></li>
+            <li><a href="#" id="logout-sidebar" style="color: #ef4444;">Log out</a></li>
         </ul>
     </nav>
 
