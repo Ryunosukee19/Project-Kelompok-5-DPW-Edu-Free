@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UTS & UAS Saya | Edu-Free Mahasiswa</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* =========================================
+           TEMA & RESET DASAR
+        ========================================= */
+        :root {
+            --bg-dark: #0f172a; --bg-sidebar: #1e293b; --bg-card: rgba(30, 41, 59, 0.85);
+            --primary: #38bdf8; --secondary: #c084fc; --text-main: #f8fafc;
+            --text-muted: #94a3b8; --border-color: rgba(255, 255, 255, 0.1); --sidebar-width: 260px;
+            --danger-red: #ef4444; --warning-yellow: #f59e0b; --success-green: #22c55e;
+        }
+
+        body:has(#theme-toggle:checked) {
+            --bg-dark: #f1f5f9; --bg-sidebar: #ffffff; --bg-card: rgba(255, 255, 255, 0.9);
+            --primary: #0284c7; --secondary: #9333ea; --text-main: #0f172a;
+            --text-muted: #475569; --border-color: rgba(0, 0, 0, 0.1); 
+        }
+        
+        .icon-sun { display: none; } body:has(#theme-toggle:checked) .icon-moon { display: none; } body:has(#theme-toggle:checked) .icon-sun { display: inline; }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background-color: var(--bg-dark); color: var(--text-main); display: flex; transition: all 0.3s ease; overflow-x: hidden;}
+        a { text-decoration: none; color: inherit; } ul { list-style: none; }
+
+        /* =========================================
+           SIDEBAR NAVIGATION & BELL NOTIF
+        ========================================= */
+        .sidebar { position: fixed; top: 0; left: 0; width: var(--sidebar-width); height: 100vh; background-color: var(--bg-sidebar); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; z-index: 1000; transition: all 0.3s ease; overflow-y: auto; }
+        .sidebar::-webkit-scrollbar { width: 5px; } .sidebar::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
+        
+        .sidebar-header { display: flex; justify-content: space-between; align-items: center; padding: 20px; border-bottom: 1px solid var(--border-color); }
+        .logo { font-size: 1.8rem; font-weight: 800; background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; color: transparent; }
+        
+        .header-notif { position: relative; display: flex; align-items: center; justify-content: center; cursor: pointer; width: 40px; height: 40px; border-radius: 50%; transition: all 0.3s ease; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); }
+        body:has(#theme-toggle:checked) .header-notif { background: rgba(0,0,0,0.05); }
+        .header-notif:hover { background: rgba(56, 189, 248, 0.1); transform: scale(1.05); }
+        .icon-bell { font-size: 1.1rem; }
+        .notif-count { position: absolute; top: -4px; right: -4px; background: var(--danger-red); color: white; width: 18px; height: 18px; border-radius: 50%; font-size: 0.7rem; display: none; justify-content: center; align-items: center; font-weight: bold; box-shadow: 0 0 8px var(--danger-red); animation: pulse 1.5s infinite; }
+
+        /* DROPDOWN NOTIFIKASI MUNCUL DI SAMPING SIDEBAR */
+        .notif-dropdown { position: fixed; top: 25px; left: 275px; width: 320px; background: var(--bg-card); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid var(--border-color); border-radius: 20px; padding: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.4); display: flex; flex-direction: column; opacity: 0; visibility: hidden; transform: translateX(-15px); transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); z-index: 2000; }
+        .notif-dropdown.show { opacity: 1; visibility: visible; transform: translateX(0); }
+        .notif-header { border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-bottom: 15px; }
+        .notif-header h3 { font-size: 1.1rem; font-weight: 600; color: var(--text-main); }
+        .notif-item { background: rgba(0,0,0,0.2); padding: 12px; border-radius: 12px; margin-bottom: 10px; border: 1px solid var(--border-color); }
+        body:has(#theme-toggle:checked) .notif-item { background: rgba(0,0,0,0.05); }
+        .notif-item span { color: var(--text-main); display: block; font-size: 0.9rem; font-weight: 500; }
+        .notif-item small { color: var(--text-muted); font-size: 0.75rem; }
+        .btn-mark-read { background: rgba(56, 189, 248, 0.15); color: var(--primary); border: none; padding: 8px 16px; border-radius: 10px; font-weight: 600; width: 100%; cursor: pointer; }
+
+        @keyframes pulse { 0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); } 70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); } 100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } }
+
+        .theme-switch-wrapper { padding: 15px 20px; border-bottom: 1px solid var(--border-color); } .theme-toggle-label { cursor: pointer; color: var(--text-muted); display: flex; gap: 10px; font-size: 0.95rem; font-weight: 500;} .theme-checkbox { display: none; } 
+        
+        .nav-links { padding-top: 15px; flex-grow: 1; } 
+        .nav-links li a { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; color: var(--text-muted); font-weight: 500; transition: all 0.3s ease; cursor: pointer; }
+        .nav-links li a:hover { background-color: rgba(148, 163, 184, 0.1); color: var(--text-main); padding-left: 25px; }
+        .nav-links li a.active { background-color: rgba(56, 189, 248, 0.15); color: var(--primary); border-left: 4px solid var(--primary); font-weight: 600; }
+        
+        .dropdown-btn { cursor: pointer; } .arrow { font-size: 0.7rem; transition: transform 0.3s ease; } .dropdown-btn.open .arrow { transform: rotate(180deg); }
+        .dropdown-container { display: none; background-color: rgba(0, 0, 0, 0.05); flex-direction: column; } .dropdown-container.show { display: flex; } .dropdown-container li a { padding: 12px 20px 12px 40px; font-size: 0.95rem; border-left: none !important; }
+
+        /* =========================================
+           KONTEN UTAMA
+        ========================================= */
+        .main-content { margin-left: var(--sidebar-width); width: calc(100% - var(--sidebar-width)); min-height: 100vh; padding: 40px; position: relative;}
+        .page-header { margin-bottom: 40px; margin-top: 10px;}
+        .page-header h2 { font-size: 2.2rem; font-weight: 700; margin-bottom: 5px; color: var(--text-main);}
+        .page-header p { color: var(--text-muted); font-size: 1.05rem; }
+
+        .table-container { background: var(--bg-card); padding: 30px; border-radius: 20px; border: 1px solid var(--border-color); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .table-container h3 { font-size: 1.2rem; font-weight: 600; margin-bottom: 20px; color: var(--primary);}
+        table { width: 100%; border-collapse: collapse; }
+        th { text-align: left; color: var(--text-muted); padding: 15px; border-bottom: 1px solid var(--border-color); font-weight: 500;}
+        td { padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); color: var(--text-main); font-size: 0.95rem;}
+        tr:last-child td { border-bottom: none; }
+        
+        .badge-status { padding: 6px 12px; border-radius: 8px; font-size: 0.8rem; font-weight: 600; }
+        .status-aman { background: rgba(34, 197, 94, 0.15); color: var(--success-green); }
+        .status-danger { background: rgba(239, 68, 68, 0.15); color: var(--danger-red); }
+
+        .btn-kerjakan { background: linear-gradient(135deg, var(--primary), #0284c7); color: white; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.3s; font-size: 0.85rem;}
+        .btn-kerjakan:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(56, 189, 248, 0.3); }
+        .exam-tag { padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; background: rgba(192, 132, 252, 0.2); color: var(--secondary); }
+        .exam-tag.uas { background: rgba(56, 189, 248, 0.2); color: var(--primary); }
+    </style>
+</head>
+<body>
+
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">Edu-Free.</div>
+            <div class="header-notif" id="notif-trigger" title="Notifikasi Baru">
+                <span class="icon-bell">🔔</span>
+                <span class="notif-count" id="notifCount">0</span>
+            </div>
+        </div>
+        <div class="theme-switch-wrapper">
+            <input type="checkbox" id="theme-toggle" class="theme-checkbox">
+            <label for="theme-toggle" class="theme-toggle-label">
+                <span class="icon-moon">🌙 Mode Gelap</span>
+                <span class="icon-sun">☀️ Mode Terang</span>
+            </label>
+        </div>
+        <ul class="nav-links">
+            <li><a href="indexsetelahlogin2.html">Beranda</a></li>
+            <li>
+                <a class="dropdown-btn">Materi Semester 2 <span class="arrow">▼</span></a>
+                <ul class="dropdown-container">
+                    <li><a href="materidpw.html">DPW</a></li>
+                    <li><a href="materistrukdat.html">Struktur Data</a></li>
+                </ul>
+            </li>
+            <li><a href="tugas2.html">Tugas</a></li>
+            <li><a href="kuis.html">Kuis</a></li>
+            <li><a href="uts_uas2.html" class="active">UTS/UAS</a></li>
+            <li><a href="nilai2.html">Nilai</a></li>
+            <li><a href="forumkomunikasimahasiswa.html">Forum Diskusi</a></li>
+        </ul>
+    </nav>
+
+    <div class="notif-dropdown" id="notifDropdown">
+        <div class="notif-header"><h3>🔔 Notifikasi</h3></div>
+        <div id="notif-list"></div>
+        <div style="text-align: center; margin-top: 10px;">
+            <button class="btn-mark-read" id="mark-read-btn">Tandai Dibaca</button>
+        </div>
+    </div>
+
+    <main class="main-content">
+        <header class="page-header">
+            <h2>Ujian Tengah & Akhir Semester</h2>
+            <p>Selesaikan berkas ujian yang diberikan dosen pengampu sebelum waktu pengerjaan berakhir.</p>
+        </header>
+
+        <section class="table-container">
+            <h3>📝 Berkas Ujian Aktif</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Jenis</th>
+                        <th>Judul Ujian / Mata Kuliah</th>
+                        <th>Batas Pengumpulan</th>
+                        <th>Sisa Waktu</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="tabel-ujian-body">
+                    </tbody>
+            </table>
+        </section>
+    </main>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const activeUserString = localStorage.getItem('loggedInUser');
+            if (!activeUserString) { window.location.href = "login.html"; return; }
+            const user = JSON.parse(activeUserString);
+
+            // Kontrol Dropdown Sidebar
+            var dropdowns = document.getElementsByClassName("dropdown-btn");
+            for (var i = 0; i < dropdowns.length; i++) {
+                dropdowns[i].addEventListener("click", function(e) {
+                    e.preventDefault(); this.classList.toggle("open");
+                    var content = this.nextElementSibling;
+                    content.classList.contains("show") ? content.classList.remove("show") : content.classList.add("show");
+                });
+            }
+
+            // =========================================================
+            // LOAD TABEL UTS/UAS & HITUNG DEADLINE
+            // =========================================================
+            const dbUjianRaw = localStorage.getItem('global_database_uts_uas');
+            const databaseUjian = dbUjianRaw ? JSON.parse(dbUjianRaw) : [];
+            const ujianSaya = databaseUjian.filter(u => u.target === 'Semua' || String(u.target) === String(user.userId));
+            
+            const tbody = document.getElementById('tabel-ujian-body');
+            const hariIni = new Date();
+            hariIni.setHours(0,0,0,0);
+
+            if (ujianSaya.length > 0) {
+                tbody.innerHTML = "";
+                ujianSaya.forEach(ujian => {
+                    const deadlineDate = new Date(ujian.deadline);
+                    const selisih = deadlineDate.getTime() - hariIni.getTime();
+                    const sisaHari = Math.ceil(selisih / (1000 * 3600 * 24));
+
+                    let statusHTML = "", tombolHTML = `<button class="btn-kerjakan" onclick="window.open('${ujian.link}', '_blank')">Mulai Ujian 🚀</button>`;
+                    let tagClass = ujian.jenis === 'UTS' ? '' : 'uas';
+
+                    if (sisaHari < 0) {
+                        statusHTML = `<span class="badge-status status-danger">Waktu Habis</span>`;
+                        tombolHTML = `<button style="background:rgba(255,255,255,0.1); color:gray; border:none; padding:8px 16px; border-radius:8px; cursor:not-allowed;" disabled>Ditutup</button>`;
+                    } else if (sisaHari === 0) {
+                        statusHTML = `<span class="badge-status status-danger">Hari Ini!</span>`;
+                    } else {
+                        statusHTML = `<span class="badge-status status-aman">${sisaHari} hari lagi</span>`;
+                    }
+
+                    tbody.innerHTML += `
+                        <tr>
+                            <td><span class="exam-tag ${tagClass}">${ujian.jenis}</span></td>
+                            <td><b>${ujian.judul}</b></td>
+                            <td>${ujian.deadline}</td>
+                            <td>${statusHTML}</td>
+                            <td>${tombolHTML}</td>
+                        </tr>
+                    `;
+                });
+            } else {
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding: 25px; color: var(--text-muted);">Hore! Tidak ada jadwal ujian aktif saat ini.</td></tr>`;
+            }
+
+            // =========================================================
+            // ENGINE NOTIFIKASI LONCENG (STRICT & DINAMIS)
+            // =========================================================
+            const dbTugasNotif = JSON.parse(localStorage.getItem('global_database_tugas')) || [];
+            const dbNilaiNotif = JSON.parse(localStorage.getItem('global_database_nilai')) || [];
+            
+            const tugasUser = dbTugasNotif.filter(t => t.target === 'Semua' || String(t.target) === String(user.userId));
+            const nilaiUser = dbNilaiNotif.filter(n => String(n.nim) === String(user.userId));
+            
+            const notifTrigger = document.getElementById('notif-trigger');
+            const notifDropdown = document.getElementById('notifDropdown');
+            const notifList = document.getElementById('notif-list');
+            const notifCountBadge = document.getElementById('notifCount');
+            
+            let notifikasiArray = [];
+
+            // Masukkan Tugas
+            tugasUser.forEach(t => notifikasiArray.push({ icon: "📝", teks: `Tugas Baru: ${t.judul}`, info: `Deadline: ${t.deadline}` }));
+            // Masukkan Nilai
+            nilaiUser.forEach(n => notifikasiArray.push({ icon: "📊", teks: `Nilai ${n.matkul} Keluar!`, info: `Skor: ${n.nilai}` }));
+            // Masukkan UTS/UAS Baru
+            ujianSaya.forEach(u => notifikasiArray.push({ icon: "🔥", teks: `Ujian ${u.jenis} Dirilis!`, info: `${u.judul}` }));
+
+            const storageKeyReadCount = `notif_read_count_${user.userId}`;
+            let readCount = parseInt(localStorage.getItem(storageKeyReadCount)) || 0;
+            let unreadCount = notifikasiArray.length - readCount;
+
+            if (notifikasiArray.length > 0) {
+                notifList.innerHTML = "";
+                notifikasiArray.reverse().forEach(notif => {
+                    notifList.innerHTML += `<div class="notif-item"><span>${notif.icon} ${notif.teks}</span><small>${notif.info}</small></div>`;
+                });
+                if (unreadCount > 0) {
+                    notifCountBadge.textContent = unreadCount;
+                    notifCountBadge.style.display = "flex";
+                }
+            } else {
+                notifList.innerHTML = `<div class="notif-item"><span style="color:gray;">Belum ada notifikasi.</span></div>`;
+            }
+
+            notifTrigger.addEventListener('click', e => { e.stopPropagation(); notifDropdown.classList.toggle('show'); });
+            document.addEventListener('click', e => { if (!notifDropdown.contains(e.target) && !notifTrigger.contains(e.target)) notifDropdown.classList.remove('show'); });
+
+            document.getElementById('mark-read-btn').addEventListener('click', function() {
+                localStorage.setItem(storageKeyReadCount, notifikasiArray.length);
+                notifCountBadge.style.display = "none";
+                alert("Notifikasi telah dibaca.");
+            });
+
+            // Pengatur Tema
+            const themeToggle = document.getElementById("theme-toggle");
+            if (localStorage.getItem("theme") === "light") themeToggle.checked = true;
+            themeToggle.addEventListener("change", function() {
+                localStorage.setItem("theme", this.checked ? "light" : "dark");
+            });
+        });
+    </script>
+</body>
+</html>
