@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Materi | Edu-Free Dosen</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --bg-dark: #0f172a; --bg-sidebar: #1e293b; --bg-card: rgba(30, 41, 59, 0.85); --primary: #38bdf8; --secondary: #c084fc; --text-main: #f8fafc; --text-muted: #94a3b8; --border-color: rgba(255, 255, 255, 0.1); --sidebar-width: 260px; --success-green: #22c55e; --danger-red: #ef4444; }
+        body:has(#theme-toggle:checked) { --bg-dark: #f8fafc; --bg-sidebar: #ffffff; --bg-card: rgba(255, 255, 255, 0.9); --primary: #0284c7; --secondary: #9333ea; --text-main: #0f172a; --text-muted: #475569; --border-color: rgba(0, 0, 0, 0.1); }
+        .icon-sun { display: none; } body:has(#theme-toggle:checked) .icon-moon { display: none; } body:has(#theme-toggle:checked) .icon-sun { display: inline; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background-color: var(--bg-dark); color: var(--text-main); display: flex; transition: all 0.3s ease; overflow-x: hidden; }
+        a { text-decoration: none; color: inherit; } ul { list-style: none; }
+
+        .sidebar { position: fixed; top: 0; left: 0; width: var(--sidebar-width); height: 100vh; background-color: var(--bg-sidebar); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; z-index: 1000; overflow-y: auto; }
+        .sidebar-header { display: flex; justify-content: space-between; align-items: center; padding: 20px; border-bottom: 1px solid var(--border-color); }
+        .logo { font-size: 1.8rem; font-weight: 800; background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; color: transparent; }
+        .theme-switch-wrapper { padding: 15px 20px; border-bottom: 1px solid var(--border-color); } .theme-toggle-label { cursor: pointer; color: var(--text-muted); display: flex; gap: 10px; font-size: 0.95rem; font-weight: 500;} .theme-checkbox { display: none; } 
+        .nav-links { padding-top: 15px; flex-grow: 1;} .nav-links li a { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; color: var(--text-muted); font-weight: 500; transition: all 0.3s ease; cursor: pointer;}
+        .nav-links li a:hover { background-color: rgba(148, 163, 184, 0.1); color: var(--text-main); padding-left: 25px; }
+        .nav-links li a.active { background-color: rgba(56, 189, 248, 0.15); color: var(--primary); border-left: 4px solid var(--primary); font-weight: 600; }
+
+        .main-content { margin-left: var(--sidebar-width); width: calc(100% - var(--sidebar-width)); min-height: 100vh; padding: 30px 40px; }
+        .top-header { margin-bottom: 30px; margin-top: 10px; } .top-header h2 { font-size: 2.2rem; margin-bottom: 5px; } .top-header p { color: var(--text-muted); }
+        
+        .table-container { background: var(--bg-card); padding: 30px; border-radius: 20px; border: 1px solid var(--border-color); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .table-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .table-header h3 { font-size: 1.3rem; font-weight: 600; color: var(--primary); }
+        .btn-add { background: rgba(34, 197, 94, 0.15); color: var(--success-green); border: 1px solid rgba(34, 197, 94, 0.3); padding: 8px 16px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.3s;}
+        .btn-add:hover { background: var(--success-green); color: #fff; }
+        table { width: 100%; border-collapse: collapse; } th { text-align: left; padding: 15px; border-bottom: 1px solid var(--border-color); color: var(--text-muted); font-weight: 500;} td { padding: 15px; border-bottom: 1px solid var(--border-color); font-size: 0.95rem; color: var(--text-main); } tr:last-child td { border-bottom: none; }
+        .btn-delete { background: rgba(239, 68, 68, 0.15); color: var(--danger-red); border: none; padding: 6px 12px; border-radius: 6px; font-weight: 600; cursor: pointer; }
+        .badge-matkul { padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; background: rgba(56, 189, 248, 0.2); color: var(--primary); }
+
+        .modal-bg { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); justify-content: center; align-items: center; z-index: 2000; }
+        .modal-content { background: var(--bg-card); padding: 30px; border-radius: 20px; width: 450px; border: 1px solid var(--border-color); }
+        .form-group { margin-bottom: 18px; } .form-group label { display: block; margin-bottom: 8px; font-size: 0.9rem; color: var(--text-muted);} .form-group input, .form-group select { width: 100%; padding: 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); color: var(--text-main); border-radius: 10px; }
+        body:has(#theme-toggle:checked) .form-group input, body:has(#theme-toggle:checked) .form-group select { background: rgba(0,0,0,0.05); color: #0f172a;}
+        .btn-publish { background: linear-gradient(135deg, var(--primary), #0284c7); color: white; border: none; padding: 12px; width: 100%; border-radius: 10px; font-weight: 600; cursor: pointer; margin-top: 10px; }
+        .btn-cancel { background: transparent; border: none; color: var(--text-muted); width: 100%; padding: 10px; margin-top: 5px; cursor: pointer; font-weight: 500; }
+    </style>
+</head>
+<body>
+
+    <nav class="sidebar">
+        <div class="sidebar-header"><div class="logo">Edu-Free.</div></div>
+        <div class="theme-switch-wrapper">
+            <input type="checkbox" id="theme-toggle" class="theme-checkbox">
+            <label for="theme-toggle" class="theme-toggle-label">
+                <span class="icon-moon">🌙 Mode Gelap</span><span class="icon-sun">☀️ Mode Terang</span>
+            </label>
+        </div>
+        <ul class="nav-links">
+            <li><a href="indexlogindosen.html">Beranda</a></li>
+            <li><a href="uploadmateri.html" class="active">Upload Materi</a></li>
+            <li><a href="uploadtugas.html">Upload Tugas</a></li>
+            <li><a href="uploadkuis.html">Upload Kuis</a></li>
+            <li><a href="daftarmahasiswa.html">Upload Nilai</a></li>
+            <li><a href="absensidosen.html">Absensi</a></li>
+            <li><a href="uploaduts_uas.html">Upload UTS/UAS</a></li>
+            <li><a href="#" id="logout-sidebar" style="color: var(--danger-red);">Log out</a></li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+        <header class="top-header">
+            <div class="header-title">
+                <h2>Manajemen Materi Kuliah</h2>
+                <p>Publikasikan materi baru yang akan langsung muncul di dashboard mahasiswa.</p>
+            </div>
+        </header>
+
+        <section class="table-container">
+            <div class="table-header">
+                <h3>Daftar Materi Aktif</h3>
+                <button class="btn-add" onclick="document.getElementById('modalMateri').style.display='flex'">+ Tambah Materi Baru</button>
+            </div>
+            <table>
+                <thead>
+                    <tr><th>Mata Kuliah</th><th>Judul Materi</th><th>Deskripsi</th><th>Tautan</th><th>Aksi</th></tr>
+                </thead>
+                <tbody id="tabel-materi-body"></tbody>
+            </table>
+        </section>
+    </main>
+
+    <div id="modalMateri" class="modal-bg">
+        <div class="modal-content">
+            <h3 style="border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-bottom: 20px;">Upload Materi Baru</h3>
+            <div class="form-group">
+                <label>Mata Kuliah</label>
+                <select id="materi-matkul">
+                    <option value="DPW">Desain Pemrograman Web (DPW)</option>
+                    <option value="Struktur Data">Struktur Data</option>
+                    <option value="PTI">Pengantar Teknologi Informasi (PTI)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Judul Materi (Contoh: HTML Dasar)</label>
+                <input type="text" id="materi-judul" placeholder="Masukkan judul..." autocomplete="off" required>
+            </div>
+            <div class="form-group">
+                <label>Deskripsi Singkat</label>
+                <input type="text" id="materi-desc" placeholder="Penjelasan materi singkat..." autocomplete="off" required>
+            </div>
+            <div class="form-group">
+                <label>Tautan Materi (Link GDrive / YouTube)</label>
+                <input type="url" id="materi-link" placeholder="https://..." autocomplete="off" required>
+            </div>
+            <button class="btn-publish" onclick="simpanMateri()">Publish Materi</button>
+            <button class="btn-cancel" onclick="document.getElementById('modalMateri').style.display='none'">Batal</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const activeUser = JSON.parse(localStorage.getItem('loggedInUser'));
+            if (!activeUser || activeUser.role !== 'dosen') { window.location.href = "login.html"; return; }
+            renderTabelMateri();
+
+            document.getElementById('logout-sidebar').addEventListener('click', () => { 
+                localStorage.removeItem('loggedInUser'); window.location.href = "index.html"; 
+            });
+
+            // TEMA
+            const themeToggle = document.getElementById("theme-toggle");
+            if (localStorage.getItem("theme") === "light") { themeToggle.checked = true; }
+            themeToggle.addEventListener("change", function() { localStorage.setItem("theme", this.checked ? "light" : "dark"); });
+        });
+
+        function simpanMateri() {
+            const matkul = document.getElementById('materi-matkul').value;
+            const judul = document.getElementById('materi-judul').value.trim();
+            const desc = document.getElementById('materi-desc').value.trim();
+            const link = document.getElementById('materi-link').value.trim();
+
+            if(!judul || !link || !desc) { alert("Harap isi semua kolom!"); return; }
+
+            let db = JSON.parse(localStorage.getItem('global_database_materi')) || [];
+            db.push({ id: Date.now(), matkul: matkul, judul: judul, deskripsi: desc, link: link });
+            localStorage.setItem('global_database_materi', JSON.stringify(db));
+
+            alert("Materi berhasil dipublikasikan ke Mahasiswa!");
+            document.getElementById('modalMateri').style.display = 'none';
+            document.getElementById('materi-judul').value = ""; document.getElementById('materi-desc').value = ""; document.getElementById('materi-link').value = "";
+            renderTabelMateri();
+        }
+
+        function renderTabelMateri() {
+            let db = JSON.parse(localStorage.getItem('global_database_materi')) || [];
+            const tbody = document.getElementById('tabel-materi-body');
+            tbody.innerHTML = "";
+
+            if(db.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding: 25px; color: var(--text-muted);">Belum ada materi yang diupload.</td></tr>`;
+            } else {
+                db.forEach((materi, index) => {
+                    tbody.innerHTML += `
+                        <tr>
+                            <td><span class="badge-matkul">${materi.matkul}</span></td>
+                            <td><b>${materi.judul}</b></td>
+                            <td>${materi.deskripsi}</td>
+                            <td><a href="${materi.link}" target="_blank" style="color:var(--primary); text-decoration:none;">Buka 🔗</a></td>
+                            <td><button class="btn-delete" onclick="hapusMateri(${index})">Hapus</button></td>
+                        </tr>
+                    `;
+                });
+            }
+        }
+
+        function hapusMateri(index) {
+            if(confirm("Hapus materi ini? Mahasiswa tidak akan bisa melihatnya lagi.")) {
+                let db = JSON.parse(localStorage.getItem('global_database_materi')) || [];
+                db.splice(index, 1);
+                localStorage.setItem('global_database_materi', JSON.stringify(db));
+                renderTabelMateri();
+            }
+        }
+    </script>
+</body>
+</html>
