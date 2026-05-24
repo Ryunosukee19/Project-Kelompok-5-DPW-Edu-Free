@@ -117,6 +117,9 @@
             align-items: center;
         }
 
+        /* =========================================
+           DASHBOARD HERO BODY (Kontainer Utama)
+        ========================================= */
         .hero { 
             display: flex; align-items: center; justify-content: space-between; gap: 40px; 
             background: radial-gradient(circle at top right, rgba(56, 189, 248, 0.05), transparent 50%); 
@@ -143,7 +146,9 @@
         .header-profile:hover { background: rgba(56, 189, 248, 0.1); transform: scale(1.05); }
         .header-avatar { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); background-color: #fff;}
 
-        /* POP-UP PROFIL */
+        /* =========================================
+           POP-UP PROFIL MELAYANG
+        ========================================= */
         .profile-popover {
             position: absolute; top: 90px; right: 30px;
             width: 320px; background: var(--bg-card);
@@ -155,17 +160,35 @@
             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); z-index: 2000;
         }
         .profile-popover.show { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+
         .popover-avatar-wrapper { position: relative; width: 100px; height: 100px; margin-bottom: 10px; cursor: pointer; }
         .popover-avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid var(--border-color); transition: all 0.3s ease; background-color: #fff;}
         .popover-avatar-wrapper:hover .popover-avatar { border-color: var(--primary); opacity: 0.8; }
-        .camera-badge { position: absolute; bottom: 0; right: 0; background: var(--bg-sidebar); border: 1px solid var(--border-color); width: 32px; height: 32px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 0.9rem; box-shadow: 0 4px 10px rgba(0,0,0,0.2); transition: transform 0.3s ease; }
+        
+        .camera-badge {
+            position: absolute; bottom: 0; right: 0;
+            background: var(--bg-sidebar); border: 1px solid var(--border-color);
+            width: 32px; height: 32px; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 0.9rem; box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
         .popover-avatar-wrapper:hover .camera-badge { transform: scale(1.1); background: var(--primary); color: #fff;}
+        
         #file-input { display: none; }
-        .btn-hapus-foto { background: transparent; border: none; color: #ef4444; font-size: 0.8rem; font-weight: 500; cursor: pointer; margin-bottom: 15px; padding: 5px 10px; border-radius: 10px; transition: all 0.3s ease; display: none; }
+
+        .btn-hapus-foto {
+            background: transparent; border: none; color: #ef4444;
+            font-size: 0.8rem; font-weight: 500; cursor: pointer;
+            margin-bottom: 15px; padding: 5px 10px; border-radius: 10px;
+            transition: all 0.3s ease; display: none; 
+        }
         .btn-hapus-foto:hover { background-color: rgba(239, 68, 68, 0.1); }
+
         .popover-greeting { font-size: 1.25rem; font-weight: 600; color: var(--text-main); margin-bottom: 2px; line-height: 1.3;}
         .popover-email { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 12px; font-weight: 500;}
         .popover-role { display: inline-block; padding: 4px 12px; border-radius: 20px; background: rgba(56, 189, 248, 0.15); color: var(--primary); font-size: 0.75rem; font-weight: 600; margin-bottom: 25px;}
+
         .btn-popover-action { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--border-color); background: transparent; color: var(--text-main); font-weight: 500; font-size: 0.95rem; cursor: pointer; transition: all 0.3s ease; margin-bottom: 10px; }
         .btn-popover-action:hover { background: rgba(255,255,255,0.05); border-color: var(--primary); }
         .btn-logout { color: #ef4444; border-color: rgba(239, 68, 68, 0.3); }
@@ -264,38 +287,28 @@
     </a>
 
     <script>
-        function triggerUpload() {
-            document.getElementById('file-input').click();
-        }
+        function triggerUpload() { document.getElementById('file-input').click(); }
 
         document.addEventListener("DOMContentLoaded", function() {
             
             const defaultAvatarUrl = "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png";
 
-            // 1. MEMBACA SESI DAN PASANG DATA USER SECARA DINAMIS
-            const welcomeMessage = document.getElementById('welcome-message');
+            // 1. CEK LOGIN
             const activeUserString = localStorage.getItem('loggedInUser');
-
             if (!activeUserString) {
-                window.location.href = "login.html"; // Jaga halaman dari pembukaan paksa
+                window.location.href = "login.html"; 
                 return;
             }
             
             const user = JSON.parse(activeUserString);
 
-            // --- Teks Sapaan ---
-            welcomeMessage.innerHTML = `Selamat Datang <b>${user.nama}</b> di halaman kelas semester <b>${user.semester}</b>.`;
-            document.getElementById('popover-greeting').textContent = `Halo, ${user.nama}.`;
-            
-            // Set Identitas
-            if (user.role === 'dosen') {
-                document.getElementById('popover-id').textContent = `NIP: ${user.userId}`;
-                document.getElementById('popover-role').textContent = "Dosen";
-                document.getElementById('popover-role').style.color = "var(--secondary)";
-                document.getElementById('popover-role').style.background = "rgba(192, 132, 252, 0.15)";
-            } else {
-                document.getElementById('popover-id').textContent = `NIM: ${user.userId}`;
+            // Teks Sapaan
+            const welcomeMessage = document.getElementById('welcome-message');
+            if (welcomeMessage) {
+                welcomeMessage.innerHTML = `Selamat Datang <b>${user.nama}</b> di halaman kelas semester <b>${user.semester}</b>.`;
             }
+            document.getElementById('popover-greeting').textContent = `Halo, ${user.nama}.`;
+            document.getElementById('popover-id').textContent = `NIM: ${user.userId}`;
 
             // --- Logika Sinkronisasi Gambar Avatar ---
             const photoStorageKey = 'profilePic_' + user.userId;
@@ -334,28 +347,25 @@
             });
 
             // ==========================================
-            // 2. KONTROL INTERAKSI POP-UP PROFIL & NOTIFIKASI
+            // 2. KONTROL INTERAKSI POP-UP & NOTIFIKASI
             // ==========================================
             const profileTrigger = document.getElementById('profile-trigger');
             const profilePopover = document.getElementById('profile-popover');
             const notifTrigger = document.getElementById('notif-trigger');
             const notifDropdown = document.getElementById('notifDropdown');
 
-            // Toggle Profil
             profileTrigger.addEventListener('click', function(e) {
                 e.stopPropagation(); 
                 profilePopover.classList.toggle('show');
-                notifDropdown.classList.remove('show'); // Tutup notif jika terbuka
+                notifDropdown.classList.remove('show'); 
             });
 
-            // Toggle Notifikasi (Dari Sidebar)
             notifTrigger.addEventListener('click', function(e) {
                 e.stopPropagation();
                 notifDropdown.classList.toggle('show');
-                profilePopover.classList.remove('show'); // Tutup profil jika terbuka
+                profilePopover.classList.remove('show'); 
             });
 
-            // Tutup jika klik area kosong
             document.addEventListener('click', function(e) {
                 if (!profilePopover.contains(e.target) && !profileTrigger.contains(e.target)) {
                     profilePopover.classList.remove('show');
@@ -366,14 +376,14 @@
             });
 
             // ==========================================
-            // 3. LOGIKA NOTIFIKASI DINAMIS DARI DOSEN
+            // 3. LOGIKA NOTIFIKASI (SUPER AMAN & DINAMIS)
             // ==========================================
             const dbTugasNotif = JSON.parse(localStorage.getItem('global_database_tugas')) || [];
             const dbNilaiNotif = JSON.parse(localStorage.getItem('global_database_nilai')) || [];
             
-            // Saring khusus user ini
-            const tugasUser = dbTugasNotif.filter(t => t.target === 'Semua' || t.target === user.userId);
-            const nilaiUser = dbNilaiNotif.filter(n => n.nim === user.userId);
+            // FILTER KETAT: Gunakan String() agar tidak ada kesalahan deteksi NIM (Angka vs Teks)
+            const tugasUser = dbTugasNotif.filter(t => String(t.target) === 'Semua' || String(t.target) === String(user.userId));
+            const nilaiUser = dbNilaiNotif.filter(n => String(n.nim) === String(user.userId));
             
             const notifList = document.getElementById('notif-list');
             const notifCountBadge = document.getElementById('notifCount');
@@ -387,20 +397,24 @@
                 });
             });
 
-            // Masukkan data nilai
+            // Masukkan data nilai yang KHUSUS untuk NIM yang sedang login
             nilaiUser.forEach(n => {
                 notifikasiArray.push({
                     icon: "📊", teks: `Nilai ${n.matkul} Keluar!`, waktu: `Mendapat Nilai: ${n.nilai}`
                 });
             });
 
-            // Cek apakah sudah diklik "Tandai Dibaca" sebelumnya
-            let notifTerbaca = localStorage.getItem(`notif_read_${user.userId}`) === 'true';
+            // Sistem Pengecekan Riwayat Baca Notifikasi Dinamis
+            const storageKeyReadCount = `notif_read_count_${user.userId}`;
+            let readCount = parseInt(localStorage.getItem(storageKeyReadCount)) || 0;
+            let totalNotif = notifikasiArray.length;
+            let unreadCount = totalNotif - readCount;
 
             // Render ke HTML
-            if (notifikasiArray.length > 0) {
+            if (totalNotif > 0) {
                 notifList.innerHTML = "";
-                notifikasiArray.forEach(notif => {
+                // Render dibalik agar yang terbaru di atas
+                notifikasiArray.reverse().forEach(notif => {
                     notifList.innerHTML += `
                         <div class="notif-item">
                             <span>${notif.icon} ${notif.teks}</span>
@@ -409,18 +423,18 @@
                     `;
                 });
 
-                // Tampilkan badge angka merah jika belum dibaca
-                if (!notifTerbaca) {
-                    notifCountBadge.textContent = notifikasiArray.length;
+                // Jika ada notifikasi baru yang belum diklik 'Tandai Dibaca'
+                if (unreadCount > 0) {
+                    notifCountBadge.textContent = unreadCount;
                     notifCountBadge.style.display = "flex";
                 }
             } else {
                 notifList.innerHTML = `<div class="notif-item"><span style="text-align:center; color: var(--text-muted);">Belum ada notifikasi.</span></div>`;
             }
 
-            // Fungsi Tandai Dibaca
+            // Fungsi Tandai Dibaca (Menyimpan jumlah total notifikasi saat ini ke memori)
             document.getElementById('mark-read-btn').addEventListener('click', function() {
-                localStorage.setItem(`notif_read_${user.userId}`, 'true');
+                localStorage.setItem(storageKeyReadCount, totalNotif); 
                 notifCountBadge.style.display = "none";
                 alert("Semua notifikasi telah ditandai dibaca.");
             });
@@ -443,12 +457,10 @@
             }
 
             // ==========================================
-            // 5. PENGATUR MEMORI TEMA & LOGOUT
+            // 5. TEMA & LOGOUT
             // ==========================================
             const themeToggle = document.getElementById("theme-toggle");
-            if (localStorage.getItem("theme") === "light") {
-                themeToggle.checked = true;
-            }
+            if (localStorage.getItem("theme") === "light") themeToggle.checked = true;
             themeToggle.addEventListener("change", function() {
                 if (this.checked) localStorage.setItem("theme", "light");
                 else localStorage.setItem("theme", "dark");
