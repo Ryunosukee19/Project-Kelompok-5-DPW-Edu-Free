@@ -1,30 +1,220 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Forum Mahasiswa</title>
-  <link rel="stylesheet" href="styleforum.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forum Diskusi | Edu-Free Mahasiswa</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --bg-dark: #0f172a; --bg-sidebar: #1e293b; --bg-card: rgba(30, 41, 59, 0.85); --primary: #38bdf8; --secondary: #c084fc; --text-main: #f8fafc; --text-muted: #94a3b8; --border-color: rgba(255, 255, 255, 0.1); --sidebar-width: 260px; --danger-red: #ef4444; }
+        body:has(#theme-toggle:checked) { --bg-dark: #f1f5f9; --bg-sidebar: #ffffff; --bg-card: rgba(255, 255, 255, 0.9); --primary: #0284c7; --secondary: #9333ea; --text-main: #0f172a; --text-muted: #475569; --border-color: rgba(0, 0, 0, 0.1); }
+        .icon-sun { display: none; } body:has(#theme-toggle:checked) .icon-moon { display: none; } body:has(#theme-toggle:checked) .icon-sun { display: inline; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background-color: var(--bg-dark); color: var(--text-main); display: flex; transition: all 0.3s ease; overflow-x: hidden; height: 100vh;}
+        a { text-decoration: none; color: inherit; } ul { list-style: none; }
+
+        /* SIDEBAR MAHASISWA */
+        .sidebar { position: fixed; top: 0; left: 0; width: var(--sidebar-width); height: 100vh; background-color: var(--bg-sidebar); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; z-index: 1000; overflow-y: auto; }
+        .sidebar::-webkit-scrollbar { width: 5px; } .sidebar::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
+        .sidebar-header { display: flex; justify-content: space-between; align-items: center; padding: 20px; border-bottom: 1px solid var(--border-color); }
+        .logo { font-size: 1.8rem; font-weight: 800; background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; color: transparent; }
+        .theme-switch-wrapper { padding: 15px 20px; border-bottom: 1px solid var(--border-color); } .theme-toggle-label { cursor: pointer; color: var(--text-muted); display: flex; gap: 10px; font-size: 0.95rem; font-weight: 500;} .theme-checkbox { display: none; } 
+        
+        .nav-links { padding-top: 15px; flex-grow: 1; } 
+        .nav-links li a { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; color: var(--text-muted); font-weight: 500; transition: all 0.3s ease; cursor: pointer;}
+        .nav-links li a:hover { background-color: rgba(148, 163, 184, 0.1); color: var(--text-main); padding-left: 25px; }
+        .nav-links li a.active { background-color: rgba(56, 189, 248, 0.15); color: var(--primary); border-left: 4px solid var(--primary); font-weight: 600; }
+        
+        .dropdown-btn { cursor: pointer; } .arrow { font-size: 0.7rem; transition: transform 0.3s ease; } .dropdown-btn.open .arrow { transform: rotate(180deg); }
+        .dropdown-container { display: none; background-color: rgba(0, 0, 0, 0.05); flex-direction: column; } .dropdown-container.show { display: flex; } .dropdown-container li a { padding: 12px 20px 12px 40px; font-size: 0.95rem; border-left: none !important; }
+
+        /* KONTEN UTAMA & FORUM CHAT */
+        .main-content { margin-left: var(--sidebar-width); width: calc(100% - var(--sidebar-width)); height: 100vh; padding: 30px 40px; display: flex; flex-direction: column;}
+        .top-header { margin-bottom: 20px; } .top-header h2 { font-size: 2.2rem; margin-bottom: 5px; } .top-header p { color: var(--text-muted); }
+        
+        .chat-container { flex: 1; background: var(--bg-card); border-radius: 20px; border: 1px solid var(--border-color); display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .chat-header { padding: 20px; border-bottom: 1px solid var(--border-color); background: rgba(0,0,0,0.1); font-weight: 600; font-size: 1.1rem; color: var(--primary); display: flex; align-items: center; gap: 10px;}
+        body:has(#theme-toggle:checked) .chat-header { background: rgba(0,0,0,0.02); }
+        
+        .chat-messages { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
+        .chat-messages::-webkit-scrollbar { width: 6px; } .chat-messages::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
+        
+        /* BUBBLE CHAT */
+        .msg-wrapper { display: flex; flex-direction: column; max-width: 75%; }
+        .msg-wrapper.me { align-self: flex-end; align-items: flex-end; }
+        .msg-wrapper.other { align-self: flex-start; align-items: flex-start; }
+        
+        .msg-info { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 5px; display: flex; gap: 8px; align-items: center; }
+        .msg-info .role-badge { padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 0.65rem; }
+        .role-badge.dosen { background: rgba(192, 132, 252, 0.2); color: var(--secondary); }
+        .role-badge.mahasiswa { background: rgba(56, 189, 248, 0.2); color: var(--primary); }
+
+        .msg-bubble { padding: 12px 18px; border-radius: 16px; font-size: 0.95rem; line-height: 1.4; word-wrap: break-word;}
+        .msg-wrapper.me .msg-bubble { background: linear-gradient(135deg, var(--primary), #0284c7); color: #fff; border-bottom-right-radius: 2px; }
+        .msg-wrapper.other .msg-bubble { background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); border-bottom-left-radius: 2px; }
+        body:has(#theme-toggle:checked) .msg-wrapper.other .msg-bubble { background: rgba(0,0,0,0.05); }
+
+        /* INPUT AREA */
+        .chat-input-area { padding: 20px; border-top: 1px solid var(--border-color); display: flex; gap: 15px; background: rgba(0,0,0,0.2); }
+        body:has(#theme-toggle:checked) .chat-input-area { background: rgba(0,0,0,0.02); }
+        .chat-input { flex: 1; padding: 15px 20px; background: var(--bg-dark); border: 1px solid var(--border-color); color: var(--text-main); border-radius: 12px; font-size: 0.95rem; outline: none; transition: 0.3s; }
+        .chat-input:focus { border-color: var(--primary); }
+        .btn-send { background: var(--primary); color: #0f172a; border: none; width: 50px; height: 50px; border-radius: 12px; font-size: 1.2rem; cursor: pointer; display: flex; justify-content: center; align-items: center; transition: 0.3s; }
+        .btn-send:hover { transform: scale(1.05); background: #0284c7; color: #fff;}
+    </style>
 </head>
 <body>
 
-<div class="chat-container">
-  <div class="chat-header">
-    <h2>Forum Mahasiswa</h2>
-  </div>
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">Edu-Free.</div>
+        </div>
+        <div class="theme-switch-wrapper">
+            <input type="checkbox" id="theme-toggle" class="theme-checkbox">
+            <label for="theme-toggle" class="theme-toggle-label">
+                <span class="icon-moon">🌙 Mode Gelap</span>
+                <span class="icon-sun">☀️ Mode Terang</span>
+            </label>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#">Beranda</a></li>
+            <li>
+                <a class="dropdown-btn">
+                    Materi Semester 2 
+                    <span class="arrow">▼</span>
+                </a>
+                <ul class="dropdown-container">
+                    <li><a href="materidpw.html">DPW</a></li>
+                    <li><a href="materistrukdat.html">Struktur Data</a></li>
+                </ul>
+            </li>
+            <li><a href="absensimahasiswa.html">Absensi</a></li>
+            <li><a href="tugas2.html">Tugas</a></li>
+            <li><a href="kuis.html">Kuis</a></li>
+            <li><a href="uts_uas.html">UTS/UAS</a></li>
+            <li><a href="nilai2.html">Nilai</a></li>
+            <li><a href="forumkomunikasimahasiswa.html" class="active">Forum Diskusi</a></li>
+        </ul>
+    </nav>
 
-  <div class="chat-box" id="chatBox"></div>
+    <main class="main-content">
+        <header class="top-header">
+            <h2>Forum Diskusi Kelas</h2>
+            <p>Tanya jawab langsung bersama dosen dan teman sekelas Anda di sini.</p>
+        </header>
 
-  <div class="chat-input">
-    <input type="text" id="messageInput" placeholder="Tulis pesan...">
-    <button onclick="sendMessage('Mahasiswa')">Kirim</button>
-  </div>
+        <div class="chat-container">
+            <div class="chat-header">
+                <i class="fas fa-comments"></i> Ruang Diskusi Terbuka (IF 2B)
+            </div>
+            
+            <div class="chat-messages" id="chat-messages">
+                </div>
 
-  <button class="clear-btn" onclick="clearChat()">
-    Hapus Chat
-  </button>
-</div>
+            <form class="chat-input-area" id="chat-form">
+                <input type="text" id="chat-input" class="chat-input" placeholder="Ketik pertanyaan atau balasan..." autocomplete="off" required>
+                <button type="submit" class="btn-send"><i class="fas fa-paper-plane"></i></button>
+            </form>
+        </div>
+    </main>
 
-<script src="scriptforum.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 1. Cek User & Dropdown Menu Sidebar
+            const activeUser = JSON.parse(localStorage.getItem('loggedInUser'));
+            if (!activeUser) { window.location.href = "login.html"; return; }
+
+            var dropdowns = document.getElementsByClassName("dropdown-btn");
+            for (var i = 0; i < dropdowns.length; i++) {
+                dropdowns[i].addEventListener("click", function(e) {
+                    e.preventDefault(); this.classList.toggle("open");
+                    var content = this.nextElementSibling;
+                    content.classList.contains("show") ? content.classList.remove("show") : content.classList.add("show");
+                });
+            }
+
+            // 2. Logika Tema (Gelap/Terang)
+            const themeToggle = document.getElementById("theme-toggle");
+            if (localStorage.getItem("theme") === "light") { themeToggle.checked = true; }
+            themeToggle.addEventListener("change", function() { localStorage.setItem("theme", this.checked ? "light" : "dark"); });
+
+            // =====================================
+            // 3. LOGIKA FORUM DISKUSI (REAL-TIME)
+            // =====================================
+            const chatMessages = document.getElementById('chat-messages');
+            const chatForm = document.getElementById('chat-form');
+            const chatInput = document.getElementById('chat-input');
+
+            function loadChat() {
+                const dbForum = JSON.parse(localStorage.getItem('global_database_forum')) || [];
+                chatMessages.innerHTML = "";
+
+                if(dbForum.length === 0) {
+                    chatMessages.innerHTML = `<div style="text-align:center; color:var(--text-muted); margin-top: auto; margin-bottom: auto;">Belum ada percakapan di kelas ini. Sapa dosen atau teman Anda!</div>`;
+                }
+
+                dbForum.forEach(msg => {
+                    // Filter: Apakah ID pengirim pesan sama dengan ID user yang sedang login?
+                    const isMe = String(msg.senderId) === String(activeUser.userId);
+                    const wrapperClass = isMe ? "me" : "other";
+                    
+                    // Identifikasi Role (Pembeda warna label)
+                    const roleClass = msg.senderRole === "dosen" ? "dosen" : "mahasiswa";
+                    const roleText = msg.senderRole === "dosen" ? "Dosen" : "Mahasiswa";
+
+                    // Info pengirim menyesuaikan posisi (Kanan/Kiri)
+                    const infoHTML = isMe 
+                        ? `<span>${msg.time}</span> <b>Anda</b> <span class="role-badge ${roleClass}">${roleText}</span>` 
+                        : `<span class="role-badge ${roleClass}">${roleText}</span> <b>${msg.senderName} (${msg.senderId})</b> <span>${msg.time}</span>`;
+
+                    chatMessages.innerHTML += `
+                        <div class="msg-wrapper ${wrapperClass}">
+                            <div class="msg-info">${infoHTML}</div>
+                            <div class="msg-bubble">${msg.text}</div>
+                        </div>
+                    `;
+                });
+
+                // Set scroll selalu ke bawah (pesan terbaru)
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+
+            // Fungsi Kirim Pesan
+            chatForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const text = chatInput.value.trim();
+                if(!text) return;
+
+                const dbForum = JSON.parse(localStorage.getItem('global_database_forum')) || [];
+                
+                // Ambil jam saat ini (Format: HH:MM)
+                const now = new Date();
+                const timeString = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
+
+                // Simpan Pesan ke Array
+                dbForum.push({
+                    id: Date.now(),
+                    senderId: activeUser.userId,
+                    senderName: activeUser.nama,
+                    senderRole: activeUser.role, // role akan direkam sebagai "mahasiswa"
+                    text: text,
+                    time: timeString
+                });
+
+                // Simpan kembali ke localStorage
+                localStorage.setItem('global_database_forum', JSON.stringify(dbForum));
+                
+                // Bersihkan input dan render ulang layar chat
+                chatInput.value = "";
+                loadChat();
+            });
+
+            // Set interval agar chat me-refresh otomatis setiap 2 detik 
+            // (Jadi jika Dosen membalas, pesan akan langsung muncul)
+            setInterval(loadChat, 2000);
+            loadChat(); // Muat chat saat halaman pertama dibuka
+        });
+    </script>
 </body>
 </html>
