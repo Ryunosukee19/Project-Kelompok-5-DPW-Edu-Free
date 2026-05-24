@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Absensi Mahasiswa | Edu-Free Dosen</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0f172a; --bg-sidebar: #1e293b; --bg-card: rgba(30, 41, 59, 0.85); --primary: #38bdf8; --secondary: #c084fc; --text-main: #f8fafc; --text-muted: #94a3b8; --border-color: rgba(255, 255, 255, 0.1); --sidebar-width: 260px; --success-green: #22c55e; --warning-yellow: #f59e0b; --danger-red: #ef4444; }
+        body:has(#theme-toggle:checked) { --bg-dark: #f8fafc; --bg-sidebar: #ffffff; --bg-card: rgba(255, 255, 255, 0.9); --primary: #0284c7; --secondary: #9333ea; --text-main: #0f172a; --text-muted: #475569; --border-color: rgba(0, 0, 0, 0.1); }
+        .icon-sun { display: none; } body:has(#theme-toggle:checked) .icon-moon { display: none; } body:has(#theme-toggle:checked) .icon-sun { display: inline; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background-color: var(--bg-dark); color: var(--text-main); display: flex; transition: all 0.3s ease; overflow-x: hidden; }
+        a { text-decoration: none; color: inherit; } ul { list-style: none; }
+
+        /* SIDEBAR */
+        .sidebar { position: fixed; top: 0; left: 0; width: var(--sidebar-width); height: 100vh; background-color: var(--bg-sidebar); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; z-index: 1000; overflow-y: auto; }
+        .sidebar-header { display: flex; justify-content: space-between; align-items: center; padding: 20px; border-bottom: 1px solid var(--border-color); }
+        .logo { font-size: 1.8rem; font-weight: 800; background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; color: transparent; }
+        .theme-switch-wrapper { padding: 15px 20px; border-bottom: 1px solid var(--border-color); } .theme-toggle-label { cursor: pointer; color: var(--text-muted); display: flex; gap: 10px; font-size: 0.95rem; font-weight: 500;} .theme-checkbox { display: none; } 
+        .nav-links { padding-top: 15px; flex-grow: 1;}
+        .nav-links li a { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; color: var(--text-muted); font-weight: 500; transition: all 0.3s ease; cursor: pointer;}
+        .nav-links li a:hover { background-color: rgba(148, 163, 184, 0.1); color: var(--text-main); padding-left: 25px; }
+        .nav-links li a.active { background-color: rgba(56, 189, 248, 0.15); color: var(--primary); border-left: 4px solid var(--primary); font-weight: 600; }
+
+        /* MAIN CONTENT */
+        .main-content { margin-left: var(--sidebar-width); width: calc(100% - var(--sidebar-width)); min-height: 100vh; padding: 40px; }
+        header { margin-bottom: 30px; } header h2 { font-size: 2rem; font-weight: 700; margin-bottom: 5px; } header p { color: var(--text-muted); }
+
+        .form-kontrol { display: flex; gap: 20px; margin-bottom: 25px; background: rgba(0,0,0,0.2); padding: 20px; border-radius: 15px; border: 1px solid var(--border-color); }
+        .form-group { display: flex; flex-direction: column; width: 100%; }
+        .form-group label { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 8px; font-weight: 500; }
+        .form-group select, .form-group input { padding: 10px 15px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-dark); color: var(--text-main); outline: none; font-size: 0.95rem; }
+        
+        .table-container { background: var(--bg-card); padding: 30px; border-radius: 20px; border: 1px solid var(--border-color); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        table { width: 100%; border-collapse: collapse; }
+        th { text-align: left; color: var(--text-muted); padding: 15px; border-bottom: 1px solid var(--border-color); font-weight: 500;}
+        td { padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); color: var(--text-main); font-size: 0.95rem; vertical-align: middle;}
+        
+        .status-opsi { display: flex; gap: 15px; flex-wrap: wrap;}
+        .status-opsi label { display: flex; align-items: center; cursor: pointer; font-size: 0.9rem; color: var(--text-main); }
+        .status-opsi input[type="radio"] { margin-right: 6px; transform: scale(1.2); accent-color: var(--primary); cursor: pointer;}
+        
+        .btn-simpan { background: linear-gradient(135deg, var(--primary), #0284c7); color: white; border: none; padding: 15px 30px; border-radius: 10px; font-weight: 600; font-size: 1rem; cursor: pointer; margin-top: 25px; width: 100%; transition: 0.3s; }
+        .btn-simpan:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(56, 189, 248, 0.3); }
+    </style>
+</head>
+<body>
+
+    <nav class="sidebar">
+        <div class="sidebar-header"><div class="logo">Edu-Free.</div></div>
+        <div class="theme-switch-wrapper">
+            <input type="checkbox" id="theme-toggle" class="theme-checkbox">
+            <label for="theme-toggle" class="theme-toggle-label"><span class="icon-moon">🌙 Mode Gelap</span><span class="icon-sun">☀️ Mode Terang</span></label>
+        </div>
+        <ul class="nav-links">
+            <li><a href="indexlogindosen.html">Beranda</a></li>
+            <li><a href="uploadtugas.html">Upload Tugas</a></li>
+            <li><a href="daftarmahasiswa.html">Upload Nilai</a></li>
+            <li><a href="absensidosen.html" class="active">Absensi</a></li>
+            <li><a href="#" id="logout-sidebar" style="color: var(--danger-red);">Log out</a></li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+        <header>
+            <h2>Absensi Kelas IF 2B</h2>
+            <p>Pilih pertemuan dan tanggal, lalu centang kehadiran mahasiswa.</p>
+        </header>
+
+        <div class="form-kontrol">
+            <div class="form-group">
+                <label>Pilih Pertemuan</label>
+                <select id="select-pertemuan" onchange="loadAbsenTabel()">
+                    </select>
+            </div>
+            <div class="form-group">
+                <label>Tanggal Pertemuan</label>
+                <input type="date" id="input-tanggal">
+            </div>
+        </div>
+
+        <section class="table-container">
+            <table>
+                <thead><tr><th>NIM</th><th>Nama Mahasiswa</th><th>Status Kehadiran</th></tr></thead>
+                <tbody id="tabel-absen-body">
+                    </tbody>
+            </table>
+            <button class="btn-simpan" onclick="simpanAbsen()">Simpan Data Absensi</button>
+        </section>
+    </main>
+
+    <script>
+        // Data Statis Mahasiswa Kelas IF 2B
+        const daftarMahasiswa = [
+            { nim: "250411100145", nama: "Rifana Sari" },
+            { nim: "250411100157", nama: "Dwi Farhan Hidayat" },
+            { nim: "250411100206", nama: "Imel Fiana Safira" },
+            { nim: "250411100027", nama: "Rafli Alfarisi" },
+            { nim: "220411100011", nama: "Erick Surya Saputra" },
+            { nim: "250411100179", nama: "Alif Indra Aufakhi Akrom" }
+        ];
+
+        document.addEventListener("DOMContentLoaded", function() {
+            // Verifikasi Login Dosen
+            const user = JSON.parse(localStorage.getItem('loggedInUser'));
+            if (!user || user.role !== 'dosen') { window.location.href = "login.html"; return; }
+
+            // Generate Opsi Pertemuan 1 - 16
+            const selectPertemuan = document.getElementById('select-pertemuan');
+            for(let i=1; i<=16; i++) {
+                selectPertemuan.innerHTML += `<option value="${i}">Pertemuan ${i}</option>`;
+            }
+
+            loadAbsenTabel(); // Load tabel pertama kali dibuka
+
+            // Tema & Logout
+            const themeToggle = document.getElementById("theme-toggle");
+            if (localStorage.getItem("theme") === "light") themeToggle.checked = true;
+            themeToggle.addEventListener("change", function() {
+                localStorage.setItem("theme", this.checked ? "light" : "dark");
+            });
+
+            document.getElementById('logout-sidebar').addEventListener('click', (e) => { 
+                e.preventDefault(); localStorage.removeItem('loggedInUser'); window.location.href = "index.html"; 
+            });
+        });
+
+        // ==========================================
+        // FUNGSI MEMUAT DATA KE TABEL SESUAI PERTEMUAN
+        // ==========================================
+        function loadAbsenTabel() {
+            const pertemuan = document.getElementById('select-pertemuan').value;
+            const dbAbsensi = JSON.parse(localStorage.getItem('global_database_absensi')) || [];
+            const tbody = document.getElementById('tabel-absen-body');
+            const inputTanggal = document.getElementById('input-tanggal');
+            
+            tbody.innerHTML = "";
+            let tanggalDitemukan = "";
+
+            daftarMahasiswa.forEach(mhs => {
+                // Cari apakah mahasiswa ini sudah diabsen di pertemuan ini sebelumnya
+                const record = dbAbsensi.find(x => String(x.pertemuan) === String(pertemuan) && String(x.nim) === String(mhs.nim));
+                const status = record ? record.status : 'Hadir'; // Default "Hadir" jika kosong
+                if (record && record.tanggal) tanggalDitemukan = record.tanggal;
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${mhs.nim}</td>
+                        <td><strong>${mhs.nama}</strong></td>
+                        <td>
+                            <div class="status-opsi">
+                                <label><input type="radio" name="absen_${mhs.nim}" value="Hadir" ${status==='Hadir'?'checked':''}> Hadir</label>
+                                <label><input type="radio" name="absen_${mhs.nim}" value="Izin" ${status==='Izin'?'checked':''}> Izin</label>
+                                <label><input type="radio" name="absen_${mhs.nim}" value="Sakit" ${status==='Sakit'?'checked':''}> Sakit</label>
+                                <label><input type="radio" name="absen_${mhs.nim}" value="Alpha" ${status==='Alpha'?'checked':''}> Alpha</label>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            // Set input tanggal sesuai data yang pernah disimpan (jika ada)
+            inputTanggal.value = tanggalDitemukan || "";
+        }
+
+        // ==========================================
+        // FUNGSI MENYIMPAN ABSENSI KE DATABASE
+        // ==========================================
+        function simpanAbsen() {
+            const pertemuan = document.getElementById('select-pertemuan').value;
+            const tanggal = document.getElementById('input-tanggal').value;
+
+            if (!tanggal) { alert("Harap isi Tanggal Pertemuan terlebih dahulu!"); return; }
+
+            let dbAbsensi = JSON.parse(localStorage.getItem('global_database_absensi')) || [];
+
+            daftarMahasiswa.forEach(mhs => {
+                const radioTerpilih = document.querySelector(`input[name="absen_${mhs.nim}"]:checked`);
+                if (radioTerpilih) {
+                    const status = radioTerpilih.value;
+                    const index = dbAbsensi.findIndex(x => String(x.pertemuan) === String(pertemuan) && String(x.nim) === String(mhs.nim));
+                    
+                    const dataBaru = { nim: mhs.nim, pertemuan: pertemuan, tanggal: tanggal, status: status };
+
+                    if (index >= 0) dbAbsensi[index] = dataBaru; // Update jika sudah ada
+                    else dbAbsensi.push(dataBaru); // Tambah baru jika belum ada
+                }
+            });
+
+            localStorage.setItem('global_database_absensi', JSON.stringify(dbAbsensi));
+            alert(`Berhasil! Absensi Pertemuan ${pertemuan} pada tanggal ${tanggal} telah disimpan.`);
+        }
+    </script>
+</body>
+</html>
