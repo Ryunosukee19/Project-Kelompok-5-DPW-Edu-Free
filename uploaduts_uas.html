@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload UTS/UAS | Edu-Free Dosen</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root { --bg-dark: #0f172a; --bg-sidebar: #1e293b; --bg-card: rgba(30, 41, 59, 0.85); --primary: #38bdf8; --secondary: #c084fc; --text-main: #f8fafc; --text-muted: #94a3b8; --border-color: rgba(255, 255, 255, 0.1); --sidebar-width: 260px; --success-green: #22c55e; --danger-red: #ef4444; }
@@ -72,7 +71,7 @@
         <header class="top-header">
             <div class="header-title">
                 <h2>Manajemen UTS & UAS</h2>
-                <p>Publikasikan lembar ujian tengah semester atau akhir semester ke mahasiswa kelas IF 2B.</p>
+                <p>Publikasikan lembar ujian tengah/akhir semester ke mahasiswa kelas IF 2B.</p>
             </div>
         </header>
 
@@ -83,25 +82,18 @@
             </div>
             <table>
                 <thead>
-                    <tr>
-                        <th>Jenis</th>
-                        <th>Judul Ujian</th>
-                        <th>Target Mahasiswa</th>
-                        <th>Deadline</th>
-                        <th>Aksi</th>
-                    </tr>
+                    <tr><th>Jenis</th><th>Judul Ujian</th><th>Target Mahasiswa</th><th>Deadline</th><th>Aksi</th></tr>
                 </thead>
-                <tbody id="tabel-ujian-body">
-                    </tbody>
+                <tbody id="tabel-ujian-body"></tbody>
             </table>
         </section>
     </main>
 
     <div id="modalUjian" class="modal-bg">
         <div class="modal-content">
-            <h3>Upload Ujian Baru</h3>
+            <h3 style="border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-bottom: 20px;">Upload Ujian Baru</h3>
             <div class="form-group">
-                <label>Jenis Pembelajaran/Ujian</label>
+                <label>Jenis Ujian</label>
                 <select id="ujian-jenis">
                     <option value="UTS">UTS (Ujian Tengah Semester)</option>
                     <option value="UAS">UAS (Ujian Akhir Semester)</option>
@@ -109,10 +101,10 @@
             </div>
             <div class="form-group">
                 <label>Judul Ujian / Mata Kuliah</label>
-                <input type="text" id="ujian-judul" placeholder="Contoh: UTS Desain Pemrograman Web" autocomplete="off" required>
+                <input type="text" id="ujian-judul" placeholder="Contoh: UTS Web Dev" autocomplete="off" required>
             </div>
             <div class="form-group">
-                <label>Link Lembar Ujian (Google Form / Link Drive)</label>
+                <label>Link Lembar Ujian</label>
                 <input type="url" id="ujian-link" placeholder="https://forms.gle/..." autocomplete="off" required>
             </div>
             <div class="form-group">
@@ -125,6 +117,10 @@
                     <option value="Semua">Semua Mahasiswa Kelas IF 2B</option>
                     <option value="250411100157">Dwi Farhan Hidayat (250411100157)</option>
                     <option value="250411100145">Rifana Sari (250411100145)</option>
+                    <option value="250411100206">Imel Fiana Safira (250411100206)</option>
+                    <option value="250411100027">Rafli Alfarisi (250411100027)</option>
+                    <option value="220411100011">Erick Surya Saputra (220411100011)</option>
+                    <option value="250411100179">Alif Indra Aufakhi Akrom (250411100179)</option>
                 </select>
             </div>
             <button class="btn-publish" onclick="simpanUjian()">Publish Ujian</button>
@@ -142,12 +138,14 @@
                 localStorage.removeItem('loggedInUser'); window.location.href = "index.html"; 
             });
 
-           // Tema & Logout
+            // LOGIKA MENGINGAT TEMA
             const themeToggle = document.getElementById("theme-toggle");
-            if (localStorage.getItem("theme") === "light") themeToggle.checked = true;
+            if (localStorage.getItem("theme") === "light") { themeToggle.checked = true; }
             themeToggle.addEventListener("change", function() {
-                localStorage.setItem("theme", this.checked ? "light" : "dark");
+                if (this.checked) localStorage.setItem("theme", "light");
+                else localStorage.setItem("theme", "dark");
             });
+        });
 
         function simpanUjian() {
             const jenis = document.getElementById('ujian-jenis').value;
