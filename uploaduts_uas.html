@@ -142,14 +142,12 @@
                 localStorage.removeItem('loggedInUser'); window.location.href = "index.html"; 
             });
 
-            // LOGIKA MENGINGAT TEMA
+           // Tema & Logout
             const themeToggle = document.getElementById("theme-toggle");
-            if (localStorage.getItem("theme") === "light") { themeToggle.checked = true; }
+            if (localStorage.getItem("theme") === "light") themeToggle.checked = true;
             themeToggle.addEventListener("change", function() {
-                if (this.checked) localStorage.setItem("theme", "light");
-                else localStorage.setItem("theme", "dark");
+                localStorage.setItem("theme", this.checked ? "light" : "dark");
             });
-        });
 
         function simpanUjian() {
             const jenis = document.getElementById('ujian-jenis').value;
