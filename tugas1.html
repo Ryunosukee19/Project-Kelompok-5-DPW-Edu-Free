@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Tugas | Edu-Free Mahasiswa</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* =========================================
+           TEMA & RESET DASAR
+        ========================================= */
+        :root {
+            --bg-dark: #0f172a; --bg-sidebar: #1e293b; --bg-card: rgba(30, 41, 59, 0.85);
+            --primary: #38bdf8; --secondary: #c084fc; --text-main: #f8fafc;
+            --text-muted: #94a3b8; --border-color: rgba(255, 255, 255, 0.1); --sidebar-width: 260px;
+            --danger-red: #ef4444; --warning-yellow: #f59e0b; --success-green: #22c55e;
+        }
+
+        body:has(#theme-toggle:checked) {
+            --bg-dark: #f8fafc; --bg-sidebar: #ffffff; --bg-card: rgba(255, 255, 255, 0.9);
+            --primary: #0284c7; --secondary: #9333ea; --text-main: #0f172a;
+            --text-muted: #475569; --border-color: rgba(0, 0, 0, 0.1); 
+        }
+
+        .icon-sun { display: none; }
+        body:has(#theme-toggle:checked) .icon-moon { display: none; }
+        body:has(#theme-toggle:checked) .icon-sun { display: inline; }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background-color: var(--bg-dark); color: var(--text-main); display: flex; transition: all 0.3s ease; overflow-x: hidden; }
+        a { text-decoration: none; color: inherit; } ul { list-style: none; }
+
+        /* =========================================
+           SIDEBAR NAVIGATION & NOTIFIKASI
+        ========================================= */
+        .sidebar { position: fixed; top: 0; left: 0; width: var(--sidebar-width); height: 100vh; background-color: var(--bg-sidebar); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; z-index: 1000; overflow-y: auto; }
+        .logo { font-size: 1.8rem; font-weight: 800; padding: 25px 20px; background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; background-clip: text; color: transparent; border-bottom: 1px solid var(--border-color); }
+        .theme-switch-wrapper { padding: 15px 20px; border-bottom: 1px solid var(--border-color); } 
+        .theme-toggle-label { cursor: pointer; color: var(--text-muted); display: flex; gap: 10px; font-size: 0.95rem; font-weight: 500;} 
+        .theme-checkbox { display: none; } 
+
+        .nav-links { padding-top: 15px; padding-bottom: 30px; flex-grow: 1;}
+        .nav-links li a { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; color: var(--text-muted); font-weight: 500; transition: all 0.3s ease; cursor: pointer; position: relative;}
+        .nav-links li a:hover { background-color: rgba(148, 163, 184, 0.1); color: var(--text-main); padding-left: 25px; }
+        .nav-links li a.active { background-color: rgba(56, 189, 248, 0.15); color: var(--primary); border-left: 4px solid var(--primary); font-weight: 600; }
+
+        /* TITIK NOTIFIKASI MERAH (Pojok Kanan Atas Menu Tugas) */
+        .notif-dot {
+            display: none; /* Disembunyikan secara default, dimunculkan via JS */
+            position: absolute;
+            right: 20px;
+            top: 18px;
+            width: 10px;
+            height: 10px;
+            background-color: var(--danger-red);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--danger-red);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+
+        .dropdown-btn { cursor: pointer; } .arrow { font-size: 0.7rem; transition: transform 0.3s ease; } .dropdown-btn.open .arrow { transform: rotate(180deg); }
+        .dropdown-container { display: none; background-color: rgba(0, 0, 0, 0.1); flex-direction: column; } .dropdown-container.show { display: flex; } .dropdown-container li a { padding: 12px 20px 12px 40px; font-size: 0.95rem; border-left: none !important; }
+        #logout-sidebar { color: var(--danger-red); } #logout-sidebar:hover { background-color: rgba(239, 68, 68, 0.1); }
+
+        /* =========================================
+           KONTEN UTAMA & TABEL TUGAS
+        ========================================= */
+        .main-content { margin-left: var(--sidebar-width); width: calc(100% - var(--sidebar-width)); min-height: 100vh; padding: 40px; }
+        header { margin-bottom: 30px; } header h2 { font-size: 2rem; font-weight: 700; margin-bottom: 5px; } header p { color: var(--text-muted); }
+
+        .table-container { background: var(--bg-card); padding: 30px; border-radius: 20px; border: 1px solid var(--border-color); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .table-container h3 { font-size: 1.2rem; font-weight: 600; margin-bottom: 20px; color: var(--primary);}
+        table { width: 100%; border-collapse: collapse; }
+        th { text-align: left; color: var(--text-muted); padding: 15px; border-bottom: 1px solid var(--border-color); font-weight: 500;}
+        td { padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); color: var(--text-main); font-size: 0.95rem;}
+        tr:last-child td { border-bottom: none; }
+        
+        .badge-status { padding: 6px 12px; border-radius: 8px; font-size: 0.8rem; font-weight: 600; }
+        .status-aman { background: rgba(34, 197, 94, 0.15); color: var(--success-green); }
+        .status-warning { background: rgba(245, 158, 11, 0.15); color: var(--warning-yellow); }
+        .status-danger { background: rgba(239, 68, 68, 0.15); color: var(--danger-red); }
+
+        .btn-kerjakan { background: linear-gradient(135deg, var(--primary), #0284c7); color: white; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.3s; font-size: 0.85rem;}
+        .btn-kerjakan:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(56, 189, 248, 0.3); }
+        .btn-terlewat { background: rgba(255,255,255,0.1); color: var(--text-muted); border: none; padding: 8px 16px; border-radius: 8px; font-weight: 600; cursor: not-allowed; font-size: 0.85rem;}
+
+    </style>
+</head>
+<body>
+
+    <nav class="sidebar">
+        <div class="logo">Edu-Free.</div>
+        <div class="theme-switch-wrapper">
+            <input type="checkbox" id="theme-toggle" class="theme-checkbox">
+            <label for="theme-toggle" class="theme-toggle-label">
+                <span class="icon-moon">🌙 Mode Gelap</span>
+                <span class="icon-sun">☀️ Mode Terang</span>
+            </label>
+        </div>
+        <ul class="nav-links">
+            <li><a href="indexsetelahlogin2.html">Beranda</a></li>
+            <li>
+                <a class="dropdown-btn">Materi Semester 1 <span class="arrow">▼</span></a>
+                <ul class="dropdown-container">
+                    <li><a href="materipti.html">PTI</a></li>
+                    <li><a href="materialpro.html">Alpro</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="tugas.html" class="active">
+                    Tugas
+                    <span class="notif-dot" id="notif-tugas" title="Ada Tugas Baru / Deadline Dekat!"></span>
+                </a>
+            </li>
+            <li><a href="kuis.html">Kuis</a></li>
+            <li><a href="#" id="logout-sidebar">Log out</a></li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+        <header>
+            <h2>Daftar Tugas Anda</h2>
+            <p>Selesaikan tugas dari dosen sebelum tenggat waktu berakhir.</p>
+        </header>
+
+        <section class="table-container">
+            <h3>📝 Tugas Aktif & Tertunda</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Judul Tugas</th>
+                        <th>Batas Pengumpulan</th>
+                        <th>Sisa Waktu</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="tabel-tugas-body">
+                    </tbody>
+            </table>
+        </section>
+    </main>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 1. Verifikasi Login Mahasiswa
+            const activeUserString = localStorage.getItem('loggedInUser');
+            if (!activeUserString) { 
+                window.location.href = "login.html"; 
+                return;
+            }
+            const user = JSON.parse(activeUserString);
+
+            // 2. Logika Sidebar Dropdown
+            var dropdowns = document.getElementsByClassName("dropdown-btn");
+            for (var i = 0; i < dropdowns.length; i++) {
+                dropdowns[i].addEventListener("click", function(e) {
+                    e.preventDefault(); this.classList.toggle("open");
+                    var content = this.nextElementSibling;
+                    content.classList.contains("show") ? content.classList.remove("show") : content.classList.add("show");
+                });
+            }
+
+            // 3. Menarik Data Tugas & Logika Notifikasi
+            const dbTugasRaw = localStorage.getItem('global_database_tugas');
+            const databaseTugas = dbTugasRaw ? JSON.parse(dbTugasRaw) : [];
+            
+            // Saring tugas yang ditujukan untuk "Semua" mahasiswa atau khusus NIM mahasiswa ini
+            const tugasSaya = databaseTugas.filter(t => t.target === 'Semua' || t.target === user.userId);
+            
+            const tabelTugasBody = document.getElementById('tabel-tugas-body');
+            const notifDot = document.getElementById('notif-tugas');
+            
+            let butuhPerhatian = false; // Penanda apakah notifikasi merah harus menyala
+            const hariIni = new Date();
+            hariIni.setHours(0,0,0,0); // Set ke awal hari untuk perbandingan adil
+
+            if (tugasSaya.length > 0) {
+                tabelTugasBody.innerHTML = ""; 
+
+                tugasSaya.forEach(tugas => {
+                    const tanggalDeadline = new Date(tugas.deadline);
+                    const selisihWaktu = tanggalDeadline.getTime() - hariIni.getTime();
+                    const sisaHari = Math.ceil(selisihWaktu / (1000 * 3600 * 24));
+
+                    let statusHTML = "";
+                    let tombolHTML = `<button class="btn-kerjakan" onclick="alert('Membuka form pengumpulan untuk: ${tugas.judul}')">Kumpulkan Tugas</button>`;
+
+                    if (sisaHari < 0) {
+                        statusHTML = `<span class="badge-status status-danger">Terlewat (${Math.abs(sisaHari)} hari lalu)</span>`;
+                        tombolHTML = `<button class="btn-terlewat" disabled>Waktu Habis</button>`;
+                    } else if (sisaHari === 0) {
+                        statusHTML = `<span class="badge-status status-danger">Hari ini terakhir!</span>`;
+                        butuhPerhatian = true; // Nyalakan Notif
+                    } else if (sisaHari <= 3) {
+                        statusHTML = `<span class="badge-status status-warning">Hampir Habis (${sisaHari} hari lagi)</span>`;
+                        butuhPerhatian = true; // Nyalakan Notif
+                    } else {
+                        statusHTML = `<span class="badge-status status-aman">${sisaHari} hari lagi</span>`;
+                        butuhPerhatian = true; // Nyalakan Notif (Karena ada tugas baru yang aktif)
+                    }
+
+                    tabelTugasBody.innerHTML += `
+                        <tr>
+                            <td><b>${tugas.judul}</b></td>
+                            <td>${tugas.deadline}</td>
+                            <td>${statusHTML}</td>
+                            <td>${tombolHTML}</td>
+                        </tr>
+                    `;
+                });
+
+                // Menyalakan titik merah jika ada tugas aktif atau hampir habis
+                if (butuhPerhatian) {
+                    notifDot.style.display = "block";
+                }
+
+            } else {
+                tabelTugasBody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding: 25px; color: var(--text-muted);">Belum ada tugas baru dari dosen.</td></tr>`;
+            }
+
+            // 4. Logika Log out & Tema
+            document.getElementById('logout-sidebar').addEventListener('click', (e) => { 
+                e.preventDefault();
+                localStorage.removeItem('loggedInUser'); 
+                window.location.href = "index.html"; 
+            });
+
+            const themeToggle = document.getElementById("theme-toggle");
+            if (localStorage.getItem("theme") === "light") themeToggle.checked = true;
+            themeToggle.addEventListener("change", function() {
+                if (this.checked) localStorage.setItem("theme", "light");
+                else localStorage.setItem("theme", "dark");
+            });
+        });
+    </script>
+</body>
+</html>
