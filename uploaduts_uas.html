@@ -215,6 +215,14 @@
             document.getElementById('ujian-link').value = "";
             renderTabelUjian();
         }
+        // LOGIKA MENGINGAT TEMA
+            const themeToggle = document.getElementById("theme-toggle");
+            if (localStorage.getItem("theme") === "light") { themeToggle.checked = true; }
+            themeToggle.addEventListener("change", function() {
+                if (this.checked) localStorage.setItem("theme", "light");
+                else localStorage.setItem("theme", "dark");
+            });
+        });
 
         function renderTabelUjian() {
             let databaseUjian = JSON.parse(localStorage.getItem('global_database_uts_uas')) || [];
