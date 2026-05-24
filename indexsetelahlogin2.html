@@ -14,6 +14,7 @@
             --bg-dark: #0f172a; --bg-sidebar: #1e293b; --bg-card: rgba(30, 41, 59, 0.85);
             --primary: #38bdf8; --secondary: #c084fc; --text-main: #f8fafc;
             --text-muted: #94a3b8; --border-color: rgba(255, 255, 255, 0.1); --sidebar-width: 260px;
+            --danger-red: #ef4444;
         }
 
         body:has(#theme-toggle:checked) {
@@ -59,9 +60,6 @@
             align-items: center;
         }
 
-        /* =========================================
-           DASHBOARD HERO BODY (Kontainer Utama)
-        ========================================= */
         .hero { 
             display: flex; align-items: center; justify-content: space-between; gap: 40px; 
             background: radial-gradient(circle at top right, rgba(56, 189, 248, 0.05), transparent 50%); 
@@ -75,8 +73,53 @@
         .hero-content p { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 35px; line-height: 1.6; }
         .hero-image { flex: 1; display: flex; justify-content: flex-end; z-index: 1;} 
         .hero-image img { width: 100%; max-width: 500px; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
-        .btn-register { display:inline-block; margin-top:15px; background: linear-gradient(135deg, var(--primary), #0284c7); color: #fff; padding: 15px 35px; border-radius: 30px; font-weight: 600; transition: transform 0.3s; }
-        .btn-register:hover { transform: translateY(-3px); }
+
+        /* =========================================
+           IKON NOTIFIKASI LONCENG (BARU DITAMBAHKAN)
+        ========================================= */
+        .header-notif {
+            position: absolute; top: 30px; right: 90px; /* Ditaruh di kiri profil */
+            display: flex; align-items: center; justify-content: center; cursor: pointer;
+            width: 45px; height: 45px; border-radius: 50%; transition: all 0.3s ease;
+            background: rgba(255,255,255,0.02); z-index: 10; border: 1px solid var(--border-color);
+        }
+        .header-notif:hover { background: rgba(56, 189, 248, 0.1); transform: scale(1.05); }
+        .icon-bell { font-size: 1.3rem; }
+        
+        .notif-count {
+            position: absolute; top: -5px; right: -5px; background: var(--danger-red); color: white;
+            width: 20px; height: 20px; border-radius: 50%; font-size: 0.75rem; display: none; /* Hidden by default */
+            justify-content: center; align-items: center; font-weight: bold;
+            box-shadow: 0 0 8px var(--danger-red); animation: pulse 1.5s infinite;
+        }
+
+        /* DROPDOWN NOTIFIKASI */
+        .notif-dropdown {
+            position: absolute; top: 90px; right: 90px; width: 320px; background: var(--bg-card);
+            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color); border-radius: 20px; padding: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4); display: flex; flex-direction: column;
+            opacity: 0; visibility: hidden; transform: translateY(-15px) scale(0.95);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); z-index: 2000;
+        }
+        .notif-dropdown.show { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+        .notif-header { border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-bottom: 15px; }
+        .notif-header h3 { font-size: 1.1rem; font-weight: 600; color: var(--text-main); }
+        
+        .notif-item { background: rgba(0,0,0,0.2); padding: 12px; border-radius: 12px; margin-bottom: 10px; border: 1px solid var(--border-color); }
+        body:has(#theme-toggle:checked) .notif-item { background: rgba(0,0,0,0.05); }
+        .notif-item span { color: var(--text-main); display: block; font-size: 0.9rem; font-weight: 500;}
+        .notif-item small { color: var(--text-muted); font-size: 0.75rem;}
+        
+        .notif-footer { text-align: center; margin-top: 10px;}
+        .btn-mark-read { background: rgba(56, 189, 248, 0.15); color: var(--primary); border: none; padding: 8px 16px; border-radius: 10px; font-weight: 600; width: 100%; cursor: pointer; transition: 0.3s;}
+        .btn-mark-read:hover { background: var(--primary); color: #fff;}
+
+        @keyframes pulse { 
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); } 
+            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); } 
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } 
+        }
 
         /* =========================================
            IKON PROFIL DI DALAM HERO (POJOK KANAN ATAS)
@@ -90,9 +133,7 @@
         .header-profile:hover { background: rgba(56, 189, 248, 0.1); transform: scale(1.05); }
         .header-avatar { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); background-color: #fff;}
 
-        /* =========================================
-           POP-UP PROFIL MELAYANG (STYLE GEMINI)
-        ========================================= */
+        /* POP-UP PROFIL */
         .profile-popover {
             position: absolute; top: 90px; right: 30px;
             width: 320px; background: var(--bg-card);
@@ -104,36 +145,17 @@
             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); z-index: 2000;
         }
         .profile-popover.show { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
-
         .popover-avatar-wrapper { position: relative; width: 100px; height: 100px; margin-bottom: 10px; cursor: pointer; }
         .popover-avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid var(--border-color); transition: all 0.3s ease; background-color: #fff;}
         .popover-avatar-wrapper:hover .popover-avatar { border-color: var(--primary); opacity: 0.8; }
-        
-        .camera-badge {
-            position: absolute; bottom: 0; right: 0;
-            background: var(--bg-sidebar); border: 1px solid var(--border-color);
-            width: 32px; height: 32px; border-radius: 50%;
-            display: flex; justify-content: center; align-items: center;
-            font-size: 0.9rem; box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            transition: transform 0.3s ease;
-        }
+        .camera-badge { position: absolute; bottom: 0; right: 0; background: var(--bg-sidebar); border: 1px solid var(--border-color); width: 32px; height: 32px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 0.9rem; box-shadow: 0 4px 10px rgba(0,0,0,0.2); transition: transform 0.3s ease; }
         .popover-avatar-wrapper:hover .camera-badge { transform: scale(1.1); background: var(--primary); color: #fff;}
-        
         #file-input { display: none; }
-
-        /* GAYA TOMBOL HAPUS FOTO */
-        .btn-hapus-foto {
-            background: transparent; border: none; color: #ef4444;
-            font-size: 0.8rem; font-weight: 500; cursor: pointer;
-            margin-bottom: 15px; padding: 5px 10px; border-radius: 10px;
-            transition: all 0.3s ease; display: none; /* Sembunyikan di awal */
-        }
+        .btn-hapus-foto { background: transparent; border: none; color: #ef4444; font-size: 0.8rem; font-weight: 500; cursor: pointer; margin-bottom: 15px; padding: 5px 10px; border-radius: 10px; transition: all 0.3s ease; display: none; }
         .btn-hapus-foto:hover { background-color: rgba(239, 68, 68, 0.1); }
-
         .popover-greeting { font-size: 1.25rem; font-weight: 600; color: var(--text-main); margin-bottom: 2px; line-height: 1.3;}
         .popover-email { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 12px; font-weight: 500;}
         .popover-role { display: inline-block; padding: 4px 12px; border-radius: 20px; background: rgba(56, 189, 248, 0.15); color: var(--primary); font-size: 0.75rem; font-weight: 600; margin-bottom: 25px;}
-
         .btn-popover-action { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--border-color); background: transparent; color: var(--text-main); font-weight: 500; font-size: 0.95rem; cursor: pointer; transition: all 0.3s ease; margin-bottom: 10px; }
         .btn-popover-action:hover { background: rgba(255,255,255,0.05); border-color: var(--primary); }
         .btn-logout { color: #ef4444; border-color: rgba(239, 68, 68, 0.3); }
@@ -178,12 +200,27 @@
     <main class="main-content">
         <section class="hero">
             
+            <div class="header-notif" id="notif-trigger" title="Notifikasi Baru">
+                <span class="icon-bell">🔔</span>
+                <span class="notif-count" id="notifCount">0</span>
+            </div>
+
+            <div class="notif-dropdown" id="notifDropdown">
+                <div class="notif-header">
+                    <h3>🔔 Notifikasi</h3>
+                </div>
+                <div id="notif-list">
+                    </div>
+                <div class="notif-footer">
+                    <button class="btn-mark-read" id="mark-read-btn">Tandai Dibaca</button>
+                </div>
+            </div>
+
             <div class="header-profile" id="profile-trigger" title="Akun Edu-Free Anda">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png" id="header-avatar" class="header-avatar" alt="Profil">
             </div>
 
             <div class="profile-popover" id="profile-popover">
-                
                 <div class="popover-avatar-wrapper" onclick="triggerUpload()" title="Ubah foto profil">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png" id="popover-avatar" class="popover-avatar" alt="Foto Profil Besar">
                     <div class="camera-badge">📷</div>
@@ -229,110 +266,153 @@
             const welcomeMessage = document.getElementById('welcome-message');
             const activeUserString = localStorage.getItem('loggedInUser');
 
-            if (activeUserString) {
-                const user = JSON.parse(activeUserString);
-
-                // --- Teks Sapaan ---
-                welcomeMessage.innerHTML = `Selamat Datang <b>${user.nama}</b> di halaman kelas semester <b>${user.semester}</b>.`;
-                document.getElementById('popover-greeting').textContent = `Halo, ${user.nama}.`;
-                
-                // Set Identitas Berdasarkan Role (Mahasiswa / Dosen)
-                if (user.role === 'dosen') {
-                    document.getElementById('popover-id').textContent = `NIP: ${user.userId}`;
-                    document.getElementById('popover-role').textContent = "Dosen";
-                    document.getElementById('popover-role').style.color = "var(--secondary)";
-                    document.getElementById('popover-role').style.background = "rgba(192, 132, 252, 0.15)";
-                } else {
-                    document.getElementById('popover-id').textContent = `NIM: ${user.userId}`;
-                }
-
-                // --- Logika Sinkronisasi & Hapus Gambar Avatar (Lokal) ---
-                const photoStorageKey = 'profilePic_' + user.userId;
-                const savedPhoto = localStorage.getItem(photoStorageKey);
-                const headerAvatar = document.getElementById('header-avatar');
-                const popoverAvatar = document.getElementById('popover-avatar');
-                const btnHapusFoto = document.getElementById('btn-hapus-foto');
-                const fileInput = document.getElementById('file-input');
-
-                // Jika ada foto yang tersimpan, tampilkan foto dan munculkan tombol hapus
-                if (savedPhoto) {
-                    headerAvatar.src = savedPhoto;
-                    popoverAvatar.src = savedPhoto;
-                    btnHapusFoto.style.display = 'block';
-                }
-
-                // Proses Upload Foto Baru
-                fileInput.addEventListener('change', function() {
-                    const file = this.files[0];
-                    if (file) {
-                        const reader = new FileReader();
-                        reader.onload = function(e) {
-                            const base64Image = e.target.result;
-                            headerAvatar.src = base64Image;
-                            popoverAvatar.src = base64Image;
-                            localStorage.setItem(photoStorageKey, base64Image);
-                            
-                            // Munculkan tombol hapus setelah berhasil upload
-                            btnHapusFoto.style.display = 'block';
-                        };
-                        reader.readAsDataURL(file);
-                    }
-                });
-
-                // Proses Hapus Foto
-                btnHapusFoto.addEventListener('click', function() {
-                    if(confirm("Apakah Anda yakin ingin menghapus foto profil?")) {
-                        // 1. Hapus dari penyimpanan browser
-                        localStorage.removeItem(photoStorageKey);
-                        
-                        // 2. Kembalikan gambar ke ikon default netral abu-abu
-                        headerAvatar.src = defaultAvatarUrl;
-                        popoverAvatar.src = defaultAvatarUrl;
-                        
-                        // 3. Sembunyikan tombol hapus karena foto sudah tidak ada
-                        btnHapusFoto.style.display = 'none';
-                        
-                        // 4. Reset input file (agar kita bisa memilih file yang sama lagi jika berubah pikiran)
-                        fileInput.value = "";
-                    }
-                });
-
-            } else {
+            if (!activeUserString) {
                 window.location.href = "login.html"; // Jaga halaman dari pembukaan paksa
+                return;
+            }
+            
+            const user = JSON.parse(activeUserString);
+
+            // --- Teks Sapaan ---
+            welcomeMessage.innerHTML = `Selamat Datang <b>${user.nama}</b> di halaman kelas semester <b>${user.semester}</b>.`;
+            document.getElementById('popover-greeting').textContent = `Halo, ${user.nama}.`;
+            
+            // Set Identitas
+            if (user.role === 'dosen') {
+                document.getElementById('popover-id').textContent = `NIP: ${user.userId}`;
+                document.getElementById('popover-role').textContent = "Dosen";
+                document.getElementById('popover-role').style.color = "var(--secondary)";
+                document.getElementById('popover-role').style.background = "rgba(192, 132, 252, 0.15)";
+            } else {
+                document.getElementById('popover-id').textContent = `NIM: ${user.userId}`;
             }
 
+            // --- Logika Sinkronisasi Gambar Avatar ---
+            const photoStorageKey = 'profilePic_' + user.userId;
+            const savedPhoto = localStorage.getItem(photoStorageKey);
+            const headerAvatar = document.getElementById('header-avatar');
+            const popoverAvatar = document.getElementById('popover-avatar');
+            const btnHapusFoto = document.getElementById('btn-hapus-foto');
+            const fileInput = document.getElementById('file-input');
+
+            if (savedPhoto) {
+                headerAvatar.src = savedPhoto; popoverAvatar.src = savedPhoto;
+                btnHapusFoto.style.display = 'block';
+            }
+
+            fileInput.addEventListener('change', function() {
+                const file = this.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const base64Image = e.target.result;
+                        headerAvatar.src = base64Image; popoverAvatar.src = base64Image;
+                        localStorage.setItem(photoStorageKey, base64Image);
+                        btnHapusFoto.style.display = 'block';
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            btnHapusFoto.addEventListener('click', function() {
+                if(confirm("Apakah Anda yakin ingin menghapus foto profil?")) {
+                    localStorage.removeItem(photoStorageKey);
+                    headerAvatar.src = defaultAvatarUrl; popoverAvatar.src = defaultAvatarUrl;
+                    btnHapusFoto.style.display = 'none';
+                    fileInput.value = "";
+                }
+            });
+
             // ==========================================
-            // 2. KONTROL INTERAKSI POP-UP PROFIL
+            // 2. KONTROL INTERAKSI POP-UP PROFIL & NOTIFIKASI
             // ==========================================
             const profileTrigger = document.getElementById('profile-trigger');
             const profilePopover = document.getElementById('profile-popover');
+            const notifTrigger = document.getElementById('notif-trigger');
+            const notifDropdown = document.getElementById('notifDropdown');
 
+            // Toggle Profil
             profileTrigger.addEventListener('click', function(e) {
                 e.stopPropagation(); 
                 profilePopover.classList.toggle('show');
+                notifDropdown.classList.remove('show'); // Tutup notif jika sedang terbuka
             });
 
+            // Toggle Notifikasi
+            notifTrigger.addEventListener('click', function(e) {
+                e.stopPropagation();
+                notifDropdown.classList.toggle('show');
+                profilePopover.classList.remove('show'); // Tutup profil jika sedang terbuka
+            });
+
+            // Tutup jika klik area kosong
             document.addEventListener('click', function(e) {
                 if (!profilePopover.contains(e.target) && !profileTrigger.contains(e.target)) {
                     profilePopover.classList.remove('show');
                 }
+                if (!notifDropdown.contains(e.target) && !notifTrigger.contains(e.target)) {
+                    notifDropdown.classList.remove('show');
+                }
             });
 
             // ==========================================
-            // 3. FUNGSI UNIFIED LOG OUT (SIDEBAR & POP-UP)
+            // 3. LOGIKA NOTIFIKASI DINAMIS DARI DOSEN
             // ==========================================
-            const logoutPopover = document.getElementById('logout-btn');
-            const logoutSidebar = document.getElementById('logout-sidebar');
+            const dbTugasNotif = JSON.parse(localStorage.getItem('global_database_tugas')) || [];
+            const dbNilaiNotif = JSON.parse(localStorage.getItem('global_database_nilai')) || [];
+            
+            // Saring khusus user ini
+            const tugasUser = dbTugasNotif.filter(t => t.target === 'Semua' || t.target === user.userId);
+            const nilaiUser = dbNilaiNotif.filter(n => n.nim === user.userId);
+            
+            const notifList = document.getElementById('notif-list');
+            const notifCountBadge = document.getElementById('notifCount');
+            
+            let notifikasiArray = [];
 
-            function prosesLogout(e) {
-                e.preventDefault();
-                localStorage.removeItem('loggedInUser'); 
-                alert("Berhasil Log Out!");
-                window.location.href = "index.html"; 
+            // Masukkan data tugas
+            tugasUser.forEach(t => {
+                notifikasiArray.push({
+                    icon: "📝", teks: `Tugas Baru: ${t.judul}`, waktu: `Deadline: ${t.deadline}`
+                });
+            });
+
+            // Masukkan data nilai
+            nilaiUser.forEach(n => {
+                notifikasiArray.push({
+                    icon: "📊", teks: `Nilai ${n.matkul} Keluar!`, waktu: `Mendapat Nilai: ${n.nilai}`
+                });
+            });
+
+            // Cek apakah sudah diklik "Tandai Dibaca" sebelumnya
+            let notifTerbaca = localStorage.getItem(`notif_read_${user.userId}`) === 'true';
+
+            // Render ke HTML
+            if (notifikasiArray.length > 0) {
+                notifList.innerHTML = "";
+                notifikasiArray.forEach(notif => {
+                    notifList.innerHTML += `
+                        <div class="notif-item">
+                            <span>${notif.icon} ${notif.teks}</span>
+                            <small>${notif.waktu}</small>
+                        </div>
+                    `;
+                });
+
+                // Tampilkan badge angka merah jika belum dibaca
+                if (!notifTerbaca) {
+                    notifCountBadge.textContent = notifikasiArray.length;
+                    notifCountBadge.style.display = "flex";
+                }
+            } else {
+                notifList.innerHTML = `<div class="notif-item"><span style="text-align:center; color: var(--text-muted);">Belum ada notifikasi.</span></div>`;
             }
 
-            if (logoutPopover) logoutPopover.addEventListener('click', prosesLogout);
-            if (logoutSidebar) logoutSidebar.addEventListener('click', prosesLogout);
+            // Fungsi Tandai Dibaca
+            document.getElementById('mark-read-btn').addEventListener('click', function() {
+                localStorage.setItem(`notif_read_${user.userId}`, 'true');
+                notifCountBadge.style.display = "none";
+            });
 
             // ==========================================
             // 4. KONTROL DROPDOWN SIDEBAR
@@ -352,19 +432,29 @@
             }
 
             // ==========================================
-            // 5. PENGATUR MEMORI TEMA (GELAP / TERANG)
+            // 5. PENGATUR MEMORI TEMA & LOGOUT
             // ==========================================
             const themeToggle = document.getElementById("theme-toggle");
             if (localStorage.getItem("theme") === "light") {
                 themeToggle.checked = true;
             }
             themeToggle.addEventListener("change", function() {
-                if (this.checked) {
-                    localStorage.setItem("theme", "light");
-                } else {
-                    localStorage.setItem("theme", "dark");
-                }
+                if (this.checked) localStorage.setItem("theme", "light");
+                else localStorage.setItem("theme", "dark");
             });
+
+            const logoutPopover = document.getElementById('logout-btn');
+            const logoutSidebar = document.getElementById('logout-sidebar');
+
+            function prosesLogout(e) {
+                e.preventDefault();
+                localStorage.removeItem('loggedInUser'); 
+                alert("Berhasil Log Out!");
+                window.location.href = "index.html"; 
+            }
+
+            if (logoutPopover) logoutPopover.addEventListener('click', prosesLogout);
+            if (logoutSidebar) logoutSidebar.addEventListener('click', prosesLogout);
             
         });
     </script>
