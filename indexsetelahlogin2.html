@@ -376,48 +376,51 @@
                 }
             });
 
-            // ==========================================
+           // ==========================================
             // 3. LOGIKA NOTIFIKASI (SUPER AMAN & DINAMIS)
             // ==========================================
+            // 1. Panggil semua database
+            const dbMateriNotif = JSON.parse(localStorage.getItem('global_database_materi')) || [];
             const dbTugasNotif = JSON.parse(localStorage.getItem('global_database_tugas')) || [];
             const dbNilaiNotif = JSON.parse(localStorage.getItem('global_database_nilai')) || [];
+            const dbUjianNotif = JSON.parse(localStorage.getItem('global_database_uts_uas')) || [];
+            const dbForumNotif = JSON.parse(localStorage.getItem('global_database_forum')) || [];
             
-            // FILTER KETAT: Gunakan String() agar tidak ada kesalahan deteksi NIM (Angka vs Teks)
+            // 2. FILTER KETAT: Gunakan String() agar tepat sasaran
             const tugasUser = dbTugasNotif.filter(t => String(t.target) === 'Semua' || String(t.target) === String(user.userId));
             const nilaiUser = dbNilaiNotif.filter(n => String(n.nim) === String(user.userId));
+            const ujianUser = dbUjianNotif.filter(u => String(u.target) === 'Semua' || String(u.target) === String(user.userId));
+            const pesanBaru = dbForumNotif.filter(msg => String(msg.senderId) !== String(user.userId)); // Chat dari orang lain
             
             const notifList = document.getElementById('notif-list');
             const notifCountBadge = document.getElementById('notifCount');
             
             let notifikasiArray = [];
 
-            // Masukkan data tugas
+            // 3. Masukkan ke dalam Array Notifikasi
+            dbMateriNotif.forEach(m => {
+                notifikasiArray.push({ icon: "📚", teks: `Materi Baru: ${m.judul}`, waktu: `Matkul: ${m.matkul}` });
+            });
             tugasUser.forEach(t => {
-                notifikasiArray.push({
-                    icon: "📝", teks: `Tugas Baru: ${t.judul}`, waktu: `Deadline: ${t.deadline}`
-                });
+                notifikasiArray.push({ icon: "📝", teks: `Tugas Baru: ${t.judul}`, waktu: `Deadline: ${t.deadline}` });
             });
-
-            // Masukkan data nilai yang KHUSUS untuk NIM yang sedang login
             nilaiUser.forEach(n => {
-                notifikasiArray.push({
-                    icon: "📊", teks: `Nilai ${n.matkul} Keluar!`, waktu: `Mendapat Nilai: ${n.nilai}`
-                });
+                notifikasiArray.push({ icon: "📊", teks: `Nilai ${n.matkul} Keluar!`, waktu: `Mendapat Nilai: ${n.nilai}` });
             });
-            // Tambahkan 3 baris ini di dalam tag <script> beranda utama kamu agar sinkron penuh:
-            const dbUjianNotif = JSON.parse(localStorage.getItem('global_database_uts_uas')) || [];
-            const ujianUser = dbUjianNotif.filter(u => u.target === 'Semua' || String(u.target) === String(user.userId));
             ujianUser.forEach(u => {
                 notifikasiArray.push({ icon: "🔥", teks: `Ujian ${u.jenis} Dirilis!`, waktu: `${u.judul}` });
             });
+            pesanBaru.forEach(msg => {
+                notifikasiArray.push({ icon: "💬", teks: `Pesan dari ${msg.senderName}`, waktu: `Forum Diskusi` });
+            });
 
-            // Sistem Pengecekan Riwayat Baca Notifikasi Dinamis
+            // 4. Sistem Pengecekan Riwayat Baca Notifikasi Dinamis
             const storageKeyReadCount = `notif_read_count_${user.userId}`;
             let readCount = parseInt(localStorage.getItem(storageKeyReadCount)) || 0;
             let totalNotif = notifikasiArray.length;
             let unreadCount = totalNotif - readCount;
 
-            // Render ke HTML
+            // 5. Render ke HTML Lonceng
             if (totalNotif > 0) {
                 notifList.innerHTML = "";
                 // Render dibalik agar yang terbaru di atas
@@ -439,13 +442,12 @@
                 notifList.innerHTML = `<div class="notif-item"><span style="text-align:center; color: var(--text-muted);">Belum ada notifikasi.</span></div>`;
             }
 
-            // Fungsi Tandai Dibaca (Menyimpan jumlah total notifikasi saat ini ke memori)
+            // 6. Fungsi Tandai Dibaca (Menyimpan jumlah total notifikasi saat ini ke memori)
             document.getElementById('mark-read-btn').addEventListener('click', function() {
                 localStorage.setItem(storageKeyReadCount, totalNotif); 
                 notifCountBadge.style.display = "none";
                 alert("Semua notifikasi telah ditandai dibaca.");
             });
-
             // ==========================================
             // 4. KONTROL DROPDOWN SIDEBAR
             // ==========================================
