@@ -31,6 +31,8 @@
         .cat-card { background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-color); border-radius: 16px; padding: 40px 30px; text-align: center; transition: all 0.3s ease; cursor: pointer; display: block; }
         .cat-card:hover { transform: translateY(-8px); border-color: var(--primary); background: rgba(30, 41, 59, 0.8); box-shadow: 0 10px 30px rgba(56, 189, 248, 0.15); }
         .cat-icon { font-size: 3.5rem; margin-bottom: 20px; display: block; } .cat-card h3 { font-size: 1.5rem; margin-bottom: 10px; color: var(--text-main); } .cat-card p { font-size: 1rem; color: var(--primary); }
+        
+        .empty-materi { text-align: center; color: var(--text-muted); font-size: 1.1rem; grid-column: 1 / -1; padding: 50px; background: rgba(0,0,0,0.1); border-radius: 16px; border: 1px dashed var(--border-color); }
     </style>
 </head>
 <body>
@@ -57,70 +59,79 @@
             </li>
             <li><a href="absensimahasiswa.html">Absensi</a></li>
             <li><a href="tugas2.html" class="menu-link">Tugas</a></li>
-            <li><a href="Kuis.html" class="menu-link">Kuis</a></li>
-            <li><a href="uts_uas.html">UTS/UAS</a></li>
+            <li><a href="kuis.html" class="menu-link">Kuis</a></li>
+            <li><a href="uts_uas2.html">UTS/UAS</a></li>
             <li><a href="nilai2.html">Nilai</a></li>
-            <li><a href="forumkomunikasimahasiswa.html.html">Forum Diskusi</a></li>
+            <li><a href="forumkomunikasimahasiswa.html">Forum Diskusi</a></li>
         </ul>
     </nav>
 
     <main class="main-content">
         <div class="section-header">
-            <h2>Materi Pembelajaran Untuk Semester 2 <br>(DPW)</h2>
-            <p>Klik Kategori dibawah ini Untuk Melihat Materi yang telah disiapkan, Semangat Belajarnyaa!!.</p>
+            <h2>Materi Pembelajaran <br>(Desain Pemrograman Web)</h2>
+            <p>Klik kotak materi di bawah ini untuk melihat modul atau tautan yang diberikan dosen.</p>
         </div>
         
-        <div class="cat-grid">
-            <a href="htmlbasic.html" class="cat-card">
-                <span class="cat-icon">📄</span>
-                <h3>HTML</h3>
-                <p>Materi Mengenai HTML</p>
-            </a>
-            <a href="syntaxcss.html" class="cat-card">
-                <span class="cat-icon">📄</span>
-                <h3>CSS</h3>
-                <p>Materi Mengenai CSS</p>
-            </a>
-            <a href="#" class="cat-card">
-                <span class="cat-icon">📄</span>
-                <h3>Java Script</h3>
-                <p>Materi Mengenai Java Script</p>
-            </a>
-        </div>
+        <div class="cat-grid" id="materi-container">
+            </div>
     </main>
 
     <script>
-        // 1. JS Dropdown Menu
-        var dropdowns = document.getElementsByClassName("dropdown-btn");
-        for (var i = 0; i < dropdowns.length; i++) {
-            dropdowns[i].addEventListener("click", function(e) {
-                e.preventDefault();
-                this.classList.toggle("open");
-                var dropdownContent = this.nextElementSibling;
-                if (dropdownContent.classList.contains("show")) { dropdownContent.classList.remove("show"); } 
-                else { dropdownContent.classList.add("show"); }
-            });
-        }
+        document.addEventListener("DOMContentLoaded", function() {
+            
+            // ==========================================
+            // 1. JS DINAMIS MENARIK MATERI DARI DOSEN
+            // ==========================================
+            const dbMateriRaw = localStorage.getItem('global_database_materi');
+            const databaseMateri = dbMateriRaw ? JSON.parse(dbMateriRaw) : [];
+            
+            // Saring hanya untuk materi yang diupload dengan label Matkul: 'DPW'
+            const materiDPW = databaseMateri.filter(m => m.matkul === "DPW");
+            const containerMateri = document.getElementById('materi-container');
 
-        // ==========================================
-        // 2. JS UNTUK MENGINGAT TEMA (LOCAL STORAGE)
-        // ==========================================
-        const themeToggle = document.getElementById("theme-toggle");
-
-        // Cek memori saat halaman pertama kali dibuka
-        if (localStorage.getItem("theme") === "light") {
-            themeToggle.checked = true;
-        }
-
-        // Dengarkan saat user mengklik tombol tema
-        themeToggle.addEventListener("change", function() {
-            if (this.checked) {
-                // Jika dicentang (Mode Terang), simpan 'light' ke memori
-                localStorage.setItem("theme", "light");
+            if (materiDPW.length > 0) {
+                containerMateri.innerHTML = ""; // Bersihkan
+                
+                materiDPW.forEach(materi => {
+                    containerMateri.innerHTML += `
+                        <a href="${materi.link}" target="_blank" class="cat-card">
+                            <span class="cat-icon">📄</span>
+                            <h3>${materi.judul}</h3>
+                            <p>${materi.deskripsi}</p>
+                        </a>
+                    `;
+                });
             } else {
-                // Jika tidak dicentang (Mode Gelap), simpan 'dark' ke memori
-                localStorage.setItem("theme", "dark");
+                containerMateri.innerHTML = `
+                    <div class="empty-materi">
+                        Belum ada materi DPW yang diunggah oleh Dosen.
+                    </div>
+                `;
             }
+
+            // ==========================================
+            // 2. JS Dropdown Menu
+            // ==========================================
+            var dropdowns = document.getElementsByClassName("dropdown-btn");
+            for (var i = 0; i < dropdowns.length; i++) {
+                dropdowns[i].addEventListener("click", function(e) {
+                    e.preventDefault();
+                    this.classList.toggle("open");
+                    var dropdownContent = this.nextElementSibling;
+                    if (dropdownContent.classList.contains("show")) { dropdownContent.classList.remove("show"); } 
+                    else { dropdownContent.classList.add("show"); }
+                });
+            }
+
+            // ==========================================
+            // 3. JS UNTUK MENGINGAT TEMA (LOCAL STORAGE)
+            // ==========================================
+            const themeToggle = document.getElementById("theme-toggle");
+            if (localStorage.getItem("theme") === "light") { themeToggle.checked = true; }
+            themeToggle.addEventListener("change", function() {
+                if (this.checked) localStorage.setItem("theme", "light");
+                else localStorage.setItem("theme", "dark");
+            });
         });
     </script>
 </body>
