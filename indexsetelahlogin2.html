@@ -34,7 +34,64 @@
         ========================================= */
         .sidebar { position: fixed; top: 0; left: 0; width: var(--sidebar-width); height: 100vh; background-color: var(--bg-sidebar); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; z-index: 1000; transition: all 0.3s ease; overflow-y: auto; }
         .sidebar::-webkit-scrollbar { width: 5px; } .sidebar::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
-        .logo { font-size: 1.8rem; font-weight: 800; padding: 25px 20px; background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; background-clip: text; color: transparent; border-bottom: 1px solid var(--border-color); }
+        
+        /* BUNGKUSAN LOGO & LONCENG */
+        .sidebar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo { font-size: 1.8rem; font-weight: 800; background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        
+        /* LONCENG NOTIFIKASI DI SIDEBAR */
+        .header-notif {
+            position: relative;
+            display: flex; align-items: center; justify-content: center; cursor: pointer;
+            width: 40px; height: 40px; border-radius: 50%; transition: all 0.3s ease;
+            background: rgba(0,0,0,0.2); border: 1px solid var(--border-color);
+        }
+        body:has(#theme-toggle:checked) .header-notif { background: rgba(0,0,0,0.05); }
+        .header-notif:hover { background: rgba(56, 189, 248, 0.1); transform: scale(1.05); }
+        .icon-bell { font-size: 1.1rem; }
+        
+        .notif-count {
+            position: absolute; top: -4px; right: -4px; background: var(--danger-red); color: white;
+            width: 18px; height: 18px; border-radius: 50%; font-size: 0.7rem; display: none; 
+            justify-content: center; align-items: center; font-weight: bold;
+            box-shadow: 0 0 8px var(--danger-red); animation: pulse 1.5s infinite;
+        }
+
+        /* DROPDOWN NOTIFIKASI MUNCUL DI SAMPING SIDEBAR */
+        .notif-dropdown {
+            position: fixed; top: 25px; left: 275px; width: 320px; background: var(--bg-card);
+            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color); border-radius: 20px; padding: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4); display: flex; flex-direction: column;
+            opacity: 0; visibility: hidden; transform: translateX(-15px);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); z-index: 2000;
+        }
+        .notif-dropdown.show { opacity: 1; visibility: visible; transform: translateX(0); }
+        .notif-header { border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-bottom: 15px; }
+        .notif-header h3 { font-size: 1.1rem; font-weight: 600; color: var(--text-main); }
+        
+        .notif-item { background: rgba(0,0,0,0.2); padding: 12px; border-radius: 12px; margin-bottom: 10px; border: 1px solid var(--border-color); }
+        body:has(#theme-toggle:checked) .notif-item { background: rgba(0,0,0,0.05); }
+        .notif-item span { color: var(--text-main); display: block; font-size: 0.9rem; font-weight: 500;}
+        .notif-item small { color: var(--text-muted); font-size: 0.75rem;}
+        
+        .notif-footer { text-align: center; margin-top: 10px;}
+        .btn-mark-read { background: rgba(56, 189, 248, 0.15); color: var(--primary); border: none; padding: 8px 16px; border-radius: 10px; font-weight: 600; width: 100%; cursor: pointer; transition: 0.3s;}
+        .btn-mark-read:hover { background: var(--primary); color: #fff;}
+
+        @keyframes pulse { 
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); } 
+            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); } 
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } 
+        }
+
         .theme-switch-wrapper { padding: 15px 20px; border-bottom: 1px solid var(--border-color); } .theme-toggle-label { cursor: pointer; color: var(--text-muted); display: flex; gap: 10px; font-size: 0.95rem; font-weight: 500;} .theme-toggle-label:hover { color: var(--text-main); } .theme-checkbox { display: none; } 
         
         .nav-links { padding-top: 15px; flex-grow: 1; } 
@@ -73,53 +130,6 @@
         .hero-content p { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 35px; line-height: 1.6; }
         .hero-image { flex: 1; display: flex; justify-content: flex-end; z-index: 1;} 
         .hero-image img { width: 100%; max-width: 500px; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
-
-        /* =========================================
-           IKON NOTIFIKASI LONCENG (BARU DITAMBAHKAN)
-        ========================================= */
-        .header-notif {
-            position: absolute; top: 30px; right: 90px; /* Ditaruh di kiri profil */
-            display: flex; align-items: center; justify-content: center; cursor: pointer;
-            width: 45px; height: 45px; border-radius: 50%; transition: all 0.3s ease;
-            background: rgba(255,255,255,0.02); z-index: 10; border: 1px solid var(--border-color);
-        }
-        .header-notif:hover { background: rgba(56, 189, 248, 0.1); transform: scale(1.05); }
-        .icon-bell { font-size: 1.3rem; }
-        
-        .notif-count {
-            position: absolute; top: -5px; right: -5px; background: var(--danger-red); color: white;
-            width: 20px; height: 20px; border-radius: 50%; font-size: 0.75rem; display: none; /* Hidden by default */
-            justify-content: center; align-items: center; font-weight: bold;
-            box-shadow: 0 0 8px var(--danger-red); animation: pulse 1.5s infinite;
-        }
-
-        /* DROPDOWN NOTIFIKASI */
-        .notif-dropdown {
-            position: absolute; top: 90px; right: 90px; width: 320px; background: var(--bg-card);
-            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--border-color); border-radius: 20px; padding: 20px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.4); display: flex; flex-direction: column;
-            opacity: 0; visibility: hidden; transform: translateY(-15px) scale(0.95);
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); z-index: 2000;
-        }
-        .notif-dropdown.show { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
-        .notif-header { border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-bottom: 15px; }
-        .notif-header h3 { font-size: 1.1rem; font-weight: 600; color: var(--text-main); }
-        
-        .notif-item { background: rgba(0,0,0,0.2); padding: 12px; border-radius: 12px; margin-bottom: 10px; border: 1px solid var(--border-color); }
-        body:has(#theme-toggle:checked) .notif-item { background: rgba(0,0,0,0.05); }
-        .notif-item span { color: var(--text-main); display: block; font-size: 0.9rem; font-weight: 500;}
-        .notif-item small { color: var(--text-muted); font-size: 0.75rem;}
-        
-        .notif-footer { text-align: center; margin-top: 10px;}
-        .btn-mark-read { background: rgba(56, 189, 248, 0.15); color: var(--primary); border: none; padding: 8px 16px; border-radius: 10px; font-weight: 600; width: 100%; cursor: pointer; transition: 0.3s;}
-        .btn-mark-read:hover { background: var(--primary); color: #fff;}
-
-        @keyframes pulse { 
-            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); } 
-            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); } 
-            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } 
-        }
 
         /* =========================================
            IKON PROFIL DI DALAM HERO (POJOK KANAN ATAS)
@@ -167,7 +177,13 @@
 <body>
 
     <nav class="sidebar">
-        <div class="logo">Edu-Free.</div>
+        <div class="sidebar-header">
+            <div class="logo">Edu-Free.</div>
+            <div class="header-notif" id="notif-trigger" title="Notifikasi Baru">
+                <span class="icon-bell">🔔</span>
+                <span class="notif-count" id="notifCount">0</span>
+            </div>
+        </div>
         
         <div class="theme-switch-wrapper">
             <input type="checkbox" id="theme-toggle" class="theme-checkbox">
@@ -197,25 +213,20 @@
         </ul>
     </nav>
 
+    <div class="notif-dropdown" id="notifDropdown">
+        <div class="notif-header">
+            <h3>🔔 Notifikasi</h3>
+        </div>
+        <div id="notif-list">
+            </div>
+        <div class="notif-footer">
+            <button class="btn-mark-read" id="mark-read-btn">Tandai Dibaca</button>
+        </div>
+    </div>
+
     <main class="main-content">
         <section class="hero">
             
-            <div class="header-notif" id="notif-trigger" title="Notifikasi Baru">
-                <span class="icon-bell">🔔</span>
-                <span class="notif-count" id="notifCount">0</span>
-            </div>
-
-            <div class="notif-dropdown" id="notifDropdown">
-                <div class="notif-header">
-                    <h3>🔔 Notifikasi</h3>
-                </div>
-                <div id="notif-list">
-                    </div>
-                <div class="notif-footer">
-                    <button class="btn-mark-read" id="mark-read-btn">Tandai Dibaca</button>
-                </div>
-            </div>
-
             <div class="header-profile" id="profile-trigger" title="Akun Edu-Free Anda">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png" id="header-avatar" class="header-avatar" alt="Profil">
             </div>
@@ -259,7 +270,6 @@
 
         document.addEventListener("DOMContentLoaded", function() {
             
-            // FOTO DEFAULT NETRAL ABU-ABU 
             const defaultAvatarUrl = "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png";
 
             // 1. MEMBACA SESI DAN PASANG DATA USER SECARA DINAMIS
@@ -335,14 +345,14 @@
             profileTrigger.addEventListener('click', function(e) {
                 e.stopPropagation(); 
                 profilePopover.classList.toggle('show');
-                notifDropdown.classList.remove('show'); // Tutup notif jika sedang terbuka
+                notifDropdown.classList.remove('show'); // Tutup notif jika terbuka
             });
 
-            // Toggle Notifikasi
+            // Toggle Notifikasi (Dari Sidebar)
             notifTrigger.addEventListener('click', function(e) {
                 e.stopPropagation();
                 notifDropdown.classList.toggle('show');
-                profilePopover.classList.remove('show'); // Tutup profil jika sedang terbuka
+                profilePopover.classList.remove('show'); // Tutup profil jika terbuka
             });
 
             // Tutup jika klik area kosong
@@ -412,6 +422,7 @@
             document.getElementById('mark-read-btn').addEventListener('click', function() {
                 localStorage.setItem(`notif_read_${user.userId}`, 'true');
                 notifCountBadge.style.display = "none";
+                alert("Semua notifikasi telah ditandai dibaca.");
             });
 
             // ==========================================
