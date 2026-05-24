@@ -140,6 +140,12 @@
             const activeUser = JSON.parse(localStorage.getItem('loggedInUser'));
             if (!activeUser || activeUser.role !== 'dosen') { window.location.href = "login.html"; return; }
 
+            // ==========================================
+            // KODE SAPU JAGAT: Tangkap ID & Nama Dosen apapun propertinya
+            // ==========================================
+            const myId = activeUser.nip || activeUser.userId || activeUser.nim || activeUser.id || "Dosen01";
+            const myName = activeUser.nama || activeUser.username || "Dosen Pengampu";
+            
             document.getElementById('logout-sidebar').addEventListener('click', () => { localStorage.removeItem('loggedInUser'); window.location.href = "index.html"; });
             
             const themeToggle = document.getElementById("theme-toggle");
@@ -159,7 +165,7 @@
                     let dbForum = [];
                     if (dbForumRaw) {
                         dbForum = JSON.parse(dbForumRaw);
-                        if (!Array.isArray(dbForum)) dbForum = []; // Paksa jadi array jika corrupt
+                        if (!Array.isArray(dbForum)) dbForum = []; 
                     }
 
                     chatMessages.innerHTML = "";
@@ -170,16 +176,16 @@
                     }
 
                     dbForum.forEach(msg => {
-                        // Failsafe: Abaikan data yang rusak (null/undefined)
                         if (!msg || typeof msg !== 'object' || !msg.text) return; 
 
-                        const isMe = String(msg.senderId) === String(activeUser.userId);
+                        // Gunakan String() untuk membandingkan ID dengan akurat
+                        const isMe = String(msg.senderId) === String(myId);
                         const wrapperClass = isMe ? "me" : "other";
                         const roleClass = msg.senderRole === "dosen" ? "dosen" : "mahasiswa";
                         const roleText = msg.senderRole === "dosen" ? "Dosen" : "Mahasiswa";
 
                         const senderName = msg.senderName || "Pengguna";
-                        const senderId = msg.senderId || "000";
+                        const senderId = msg.senderId || "-";
                         const time = msg.time || "--:--";
 
                         const infoHTML = isMe 
@@ -199,6 +205,7 @@
                 }
             }
 
+            // Fungsi Kirim Pesan
             chatForm.addEventListener('submit', function(e) {
                 e.preventDefault();
                 const text = chatInput.value.trim();
@@ -213,11 +220,12 @@
                 const now = new Date();
                 const timeString = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
 
+                // Simpan dengan ID Sapu Jagat
                 dbForum.push({
                     id: Date.now(),
-                    senderId: activeUser.userId,
-                    senderName: activeUser.nama,
-                    senderRole: activeUser.role,
+                    senderId: myId,
+                    senderName: myName,
+                    senderRole: "dosen", // Pastikan role diset sebagai dosen
                     text: text,
                     time: timeString
                 });
@@ -236,16 +244,17 @@
                     const notifList = document.getElementById('notif-list');
                     const notifCountBadge = document.getElementById('notifCount');
 
-                    if (!notifList || !notifCountBadge) return; // Mencegah crash jika elemen terhapus
+                    if (!notifList || !notifCountBadge) return; 
 
-                    const pesanBaru = dbForum.filter(msg => msg && msg.senderId && String(msg.senderId) !== String(activeUser.userId));
+                    // Hindari menghitung pesan Dosen itu sendiri di lonceng
+                    const pesanBaru = dbForum.filter(msg => msg && msg.senderId && String(msg.senderId) !== String(myId));
 
                     let notifikasiArray = [];
                     pesanBaru.forEach(msg => {
                         notifikasiArray.push({ icon: "💬", teks: `Pesan dari ${msg.senderName || 'Mahasiswa'}`, waktu: `Forum Diskusi` });
                     });
 
-                    const storageKeyReadCount = `notif_read_count_dosen_${activeUser.userId}`;
+                    const storageKeyReadCount = `notif_read_count_dosen_${myId}`;
                     let readCount = parseInt(localStorage.getItem(storageKeyReadCount)) || 0;
                     let totalNotif = notifikasiArray.length;
                     let unreadCount = totalNotif - readCount;
@@ -282,9 +291,7 @@
                 }
             }
 
-            // ==========================================
             // KONTROL TAMPILAN LONCENG
-            // ==========================================
             const notifTrigger = document.getElementById('notif-trigger');
             const notifDropdown = document.getElementById('notifDropdown');
             if (notifTrigger && notifDropdown) {
@@ -292,13 +299,16 @@
                 document.addEventListener('click', e => { if (!notifDropdown.contains(e.target) && !notifTrigger.contains(e.target)) notifDropdown.classList.remove('show'); });
             }
 
-            // Menjalankan fungsi secara berkala
-            setInterval(() => {
-                loadChat();
-                loadNotifikasi();
-            }, 2000);
+            // Trik sinkronisasi real-time instan antar tab
+            window.addEventListener('storage', function(e) {
+                if(e.key === 'global_database_forum') {
+                    loadChat();
+                    loadNotifikasi();
+                }
+            });
+
+            setInterval(() => { loadChat(); loadNotifikasi(); }, 2000);
             
-            // Muat saat halaman pertama dibuka
             loadChat();
             loadNotifikasi();
         });
