@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nilai Saya | Edu-Free</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --bg-dark: #0f172a; --bg-card: rgba(30, 41, 59, 0.85); --primary: #38bdf8; --text-main: #f8fafc; --text-muted: #94a3b8; --border-color: rgba(255, 255, 255, 0.1); }
+        body { background-color: var(--bg-dark); color: var(--text-main); font-family: 'Poppins', sans-serif; padding: 40px; }
+        
+        .table-container { 
+            background: var(--bg-card); 
+            padding: 30px; 
+            border-radius: 20px; 
+            border: 1px solid var(--border-color); 
+            max-width: 800px; 
+            margin: 0 auto; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        h2 { margin-bottom: 20px; color: var(--primary); }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th { text-align: left; padding: 15px; border-bottom: 1px solid var(--border-color); color: var(--text-muted); }
+        td { padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        
+        .nilai-box { font-weight: 700; font-size: 1.2rem; color: var(--primary); }
+    </style>
+</head>
+<body>
+
+    <div class="table-container">
+        <h2>Transkrip Nilai Semester 2</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Mata Kuliah</th>
+                    <th>Tanggal Input</th>
+                    <th>Nilai</th>
+                </tr>
+            </thead>
+            <tbody id="tabel-nilai-body">
+                </tbody>
+        </table>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 1. Ambil data user yang sedang login
+            const user = JSON.parse(localStorage.getItem('loggedInUser'));
+            if (!user) { window.location.href = "login.html"; return; }
+
+            // 2. Ambil semua data nilai dari database dosen
+            const dbNilai = JSON.parse(localStorage.getItem('global_database_nilai')) || [];
+            
+            // 3. Filter: Hanya tampilkan nilai yang NIM-nya SAMA dengan user login
+            const nilaiSaya = dbNilai.filter(n => String(n.nim) === String(user.userId));
+            
+            const tabelBody = document.getElementById('tabel-nilai-body');
+
+            if (nilaiSaya.length > 0) {
+                tabelBody.innerHTML = "";
+                nilaiSaya.forEach(n => {
+                    tabelBody.innerHTML += `
+                        <tr>
+                            <td>${n.matkul}</td>
+                            <td>${n.tanggalInput}</td>
+                            <td class="nilai-box">${n.nilai}</td>
+                        </tr>
+                    `;
+                });
+            } else {
+                tabelBody.innerHTML = `<tr><td colspan="3" style="text-align:center;">Belum ada nilai yang diinput dosen.</td></tr>`;
+            }
+        });
+    </script>
+</body>
+</html>
