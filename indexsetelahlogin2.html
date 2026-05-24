@@ -404,6 +404,12 @@
                     icon: "📊", teks: `Nilai ${n.matkul} Keluar!`, waktu: `Mendapat Nilai: ${n.nilai}`
                 });
             });
+            // Tambahkan 3 baris ini di dalam tag <script> beranda utama kamu agar sinkron penuh:
+            const dbUjianNotif = JSON.parse(localStorage.getItem('global_database_uts_uas')) || [];
+            const ujianUser = dbUjianNotif.filter(u => u.target === 'Semua' || String(u.target) === String(user.userId));
+            ujianUser.forEach(u => {
+                notifikasiArray.push({ icon: "🔥", teks: `Ujian ${u.jenis} Dirilis!`, waktu: `${u.judul}` });
+            });
 
             // Sistem Pengecekan Riwayat Baca Notifikasi Dinamis
             const storageKeyReadCount = `notif_read_count_${user.userId}`;
