@@ -24,6 +24,8 @@
         .nav-links li a:hover { background-color: rgba(148, 163, 184, 0.1); color: var(--text-main); padding-left: 25px; }
         .nav-links li a.active { background-color: rgba(56, 189, 248, 0.15); color: var(--primary); border-left: 4px solid var(--primary); font-weight: 600; }
 
+        .dropdown-btn { cursor: pointer; } .arrow { font-size: 0.7rem; transition: transform 0.3s ease; } .dropdown-btn.open .arrow { transform: rotate(180deg); }
+        .dropdown-container { display: none; background-color: rgba(0, 0, 0, 0.05); flex-direction: column; } .dropdown-container.show { display: flex; } .dropdown-container li a { padding: 12px 20px 12px 40px; font-size: 0.95rem; border-left: none !important; } .dropdown-container li a:hover { padding-left: 45px; }
         /* MAIN CONTENT */
         .main-content { margin-left: var(--sidebar-width); width: calc(100% - var(--sidebar-width)); min-height: 100vh; padding: 40px; }
         header { margin-bottom: 30px; } header h2 { font-size: 2rem; font-weight: 700; margin-bottom: 5px; } header p { color: var(--text-muted); }
@@ -53,6 +55,10 @@
             <li><a href="indexsetelahlogin2.html">Beranda</a></li>
             <li>
                 <a class="dropdown-btn">Materi Semester 2 <span class="arrow">▼</span></a>
+                <ul class="dropdown-container">
+                    <li><a href="materidpw.html">DPW</a></li>
+                    <li><a href="materistrukdat.html">Struktur Data</a></li>
+                </ul>
             </li>
             <li><a href="absensimahasiswa.html" class="active">Absensi</a></li>
             <li>
@@ -92,6 +98,23 @@
             themeToggle.addEventListener("change", function() { localStorage.setItem("theme", this.checked ? "light" : "dark"); });
             document.getElementById('logout-sidebar').addEventListener('click', (e) => { e.preventDefault(); localStorage.removeItem('loggedInUser'); window.location.href = "index.html"; });
 
+            // ==========================================
+            // 4. KONTROL DROPDOWN SIDEBAR
+            // ==========================================
+            var dropdowns = document.getElementsByClassName("dropdown-btn");
+            for (var i = 0; i < dropdowns.length; i++) {
+                dropdowns[i].addEventListener("click", function(e) {
+                    e.preventDefault(); 
+                    this.classList.toggle("open");
+                    var dropdownContent = this.nextElementSibling;
+                    if (dropdownContent.classList.contains("show")) {
+                        dropdownContent.classList.remove("show");
+                    } else {
+                        dropdownContent.classList.add("show");
+                    }
+                });
+            }
+            
             // ==========================================
             // LOGIKA MENAMPILKAN 16 PERTEMUAN
             // ==========================================
