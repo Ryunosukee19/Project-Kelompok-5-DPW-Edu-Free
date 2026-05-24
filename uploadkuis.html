@@ -277,6 +277,21 @@
                 renderTabelKuis();
             }
         }
+             // ==========================================
+            // 4. MENGINGAT TEMA (LOCAL STORAGE)
+            // ==========================================
+            const themeToggle = document.getElementById("theme-toggle");
+            if (localStorage.getItem("theme") === "light") {
+                themeToggle.checked = true;
+            }
+            themeToggle.addEventListener("change", function() {
+                if (this.checked) {
+                    localStorage.setItem("theme", "light");
+                } else {
+                    localStorage.setItem("theme", "dark");
+                }
+            });
+        });
     </script>
 </body>
 </html>
