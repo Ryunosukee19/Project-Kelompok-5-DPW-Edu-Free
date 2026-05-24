@@ -142,10 +142,12 @@
                 localStorage.removeItem('loggedInUser'); window.location.href = "index.html"; 
             });
 
+            // LOGIKA MENGINGAT TEMA
             const themeToggle = document.getElementById("theme-toggle");
-            if (localStorage.getItem("theme") === "light") themeToggle.checked = true;
+            if (localStorage.getItem("theme") === "light") { themeToggle.checked = true; }
             themeToggle.addEventListener("change", function() {
-                localStorage.setItem("theme", this.checked ? "light" : "dark");
+                if (this.checked) localStorage.setItem("theme", "light");
+                else localStorage.setItem("theme", "dark");
             });
         });
 
@@ -158,34 +160,25 @@
 
             if(!judul || !link || !deadline) { alert("Harap isi semua kolom!"); return; }
 
-            let databaseUjian = JSON.parse(localStorage.getItem('global_database_uts_uas')) || [];
-            databaseUjian.push({ id: Date.now(), jenis: jenis, judul: judul, link: link, deadline: deadline, target: target });
-            localStorage.setItem('global_database_uts_uas', JSON.stringify(databaseUjian));
+            let db = JSON.parse(localStorage.getItem('global_database_uts_uas')) || [];
+            db.push({ id: Date.now(), jenis: jenis, judul: judul, link: link, deadline: deadline, target: target });
+            localStorage.setItem('global_database_uts_uas', JSON.stringify(db));
 
             alert("Ujian berhasil dipublikasikan ke Mahasiswa!");
             document.getElementById('modalUjian').style.display = 'none';
-            document.getElementById('ujian-judul').value = "";
-            document.getElementById('ujian-link').value = "";
+            document.getElementById('ujian-judul').value = ""; document.getElementById('ujian-link').value = "";
             renderTabelUjian();
         }
-        // LOGIKA MENGINGAT TEMA
-            const themeToggle = document.getElementById("theme-toggle");
-            if (localStorage.getItem("theme") === "light") { themeToggle.checked = true; }
-            themeToggle.addEventListener("change", function() {
-                if (this.checked) localStorage.setItem("theme", "light");
-                else localStorage.setItem("theme", "dark");
-            });
-        });
 
         function renderTabelUjian() {
-            let databaseUjian = JSON.parse(localStorage.getItem('global_database_uts_uas')) || [];
+            let db = JSON.parse(localStorage.getItem('global_database_uts_uas')) || [];
             const tbody = document.getElementById('tabel-ujian-body');
             tbody.innerHTML = "";
 
-            if(databaseUjian.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding: 20px; color: var(--text-muted);">Belum ada berkas ujian yang diupload.</td></tr>`;
+            if(db.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding: 25px; color: var(--text-muted);">Belum ada berkas ujian yang diupload.</td></tr>`;
             } else {
-                databaseUjian.forEach((ujian, index) => {
+                db.forEach((ujian, index) => {
                     let targetText = ujian.target === 'Semua' ? 'Semua Mahasiswa' : `NIM: ${ujian.target}`;
                     let badgeClass = ujian.jenis === 'UTS' ? '' : 'uas';
                     tbody.innerHTML += `
@@ -203,9 +196,9 @@
 
         function hapusUjian(index) {
             if(confirm("Hapus berkas ujian ini? Mahasiswa tidak akan bisa mengaksesnya lagi.")) {
-                let databaseUjian = JSON.parse(localStorage.getItem('global_database_uts_uas')) || [];
-                databaseUjian.splice(index, 1);
-                localStorage.setItem('global_database_uts_uas', JSON.stringify(databaseUjian));
+                let db = JSON.parse(localStorage.getItem('global_database_uts_uas')) || [];
+                db.splice(index, 1);
+                localStorage.setItem('global_database_uts_uas', JSON.stringify(db));
                 renderTabelUjian();
             }
         }
