@@ -15,11 +15,26 @@
         body { background-color: var(--bg-dark); color: var(--text-main); display: flex; transition: all 0.3s ease; overflow-x: hidden; height: 100vh;}
         a { text-decoration: none; color: inherit; } ul { list-style: none; }
 
-        /* SIDEBAR (Tanpa Lonceng) */
+        /* SIDEBAR & LONCENG NOTIFIKASI */
         .sidebar { position: fixed; top: 0; left: 0; width: var(--sidebar-width); height: 100vh; background-color: var(--bg-sidebar); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; z-index: 1000; overflow-y: auto; }
         .sidebar::-webkit-scrollbar { width: 5px; } .sidebar::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
-        .sidebar-header { display: flex; justify-content: center; align-items: center; padding: 20px; border-bottom: 1px solid var(--border-color); }
-        .logo { font-size: 1.8rem; font-weight: 800; background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; color: transparent; width: 100%; text-align: left;}
+        .sidebar-header { display: flex; justify-content: space-between; align-items: center; padding: 20px; border-bottom: 1px solid var(--border-color); }
+        .logo { font-size: 1.8rem; font-weight: 800; background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; color: transparent; }
+        
+        .header-notif { position: relative; display: flex; align-items: center; justify-content: center; cursor: pointer; width: 40px; height: 40px; border-radius: 50%; transition: all 0.3s ease; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); }
+        body:has(#theme-toggle:checked) .header-notif { background: rgba(0,0,0,0.05); }
+        .header-notif:hover { background: rgba(56, 189, 248, 0.1); transform: scale(1.05); }
+        .notif-count { position: absolute; top: -4px; right: -4px; background: var(--danger-red); color: white; width: 18px; height: 18px; border-radius: 50%; font-size: 0.7rem; display: none; justify-content: center; align-items: center; font-weight: bold; box-shadow: 0 0 8px var(--danger-red); animation: pulse 1.5s infinite; }
+
+        /* DROPDOWN NOTIFIKASI */
+        .notif-dropdown { position: fixed; top: 25px; left: 275px; width: 320px; background: var(--bg-card); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid var(--border-color); border-radius: 20px; padding: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.4); display: flex; flex-direction: column; opacity: 0; visibility: hidden; transform: translateX(-15px); transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); z-index: 2000; }
+        .notif-dropdown.show { opacity: 1; visibility: visible; transform: translateX(0); }
+        .notif-header { border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-bottom: 15px; font-size: 1.1rem; font-weight: 600; color: var(--text-main); }
+        .notif-item { background: rgba(0,0,0,0.2); padding: 12px; border-radius: 12px; margin-bottom: 10px; border: 1px solid var(--border-color); }
+        body:has(#theme-toggle:checked) .notif-item { background: rgba(0,0,0,0.05); }
+        .notif-item span { color: var(--text-main); display: block; font-size: 0.9rem; font-weight: 500;}
+        .notif-item small { color: var(--text-muted); font-size: 0.75rem;}
+        .btn-mark-read { background: rgba(56, 189, 248, 0.15); color: var(--primary); border: none; padding: 8px 16px; border-radius: 10px; font-weight: 600; width: 100%; cursor: pointer; transition: 0.3s; margin-top: 10px;}
         
         .theme-switch-wrapper { padding: 15px 20px; border-bottom: 1px solid var(--border-color); } .theme-toggle-label { cursor: pointer; color: var(--text-muted); display: flex; gap: 10px; font-size: 0.95rem; font-weight: 500;} .theme-checkbox { display: none; } 
         .nav-links { padding-top: 15px; flex-grow: 1;} .nav-links li a { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; color: var(--text-muted); font-weight: 500; transition: all 0.3s ease; cursor: pointer;}
@@ -37,7 +52,6 @@
         .chat-messages { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
         .chat-messages::-webkit-scrollbar { width: 6px; } .chat-messages::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
         
-        /* BUBBLE CHAT */
         .msg-wrapper { display: flex; flex-direction: column; max-width: 75%; }
         .msg-wrapper.me { align-self: flex-end; align-items: flex-end; }
         .msg-wrapper.other { align-self: flex-start; align-items: flex-start; }
@@ -52,7 +66,6 @@
         .msg-wrapper.other .msg-bubble { background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); border-bottom-left-radius: 2px; }
         body:has(#theme-toggle:checked) .msg-wrapper.other .msg-bubble { background: rgba(0,0,0,0.05); }
 
-        /* INPUT AREA */
         .chat-input-area { padding: 20px; border-top: 1px solid var(--border-color); display: flex; gap: 15px; background: rgba(0,0,0,0.2); }
         body:has(#theme-toggle:checked) .chat-input-area { background: rgba(0,0,0,0.02); }
         .chat-input { flex: 1; padding: 15px 20px; background: var(--bg-dark); border: 1px solid var(--border-color); color: var(--text-main); border-radius: 12px; font-size: 0.95rem; outline: none; transition: 0.3s; }
@@ -70,7 +83,8 @@
         <div class="theme-switch-wrapper">
             <input type="checkbox" id="theme-toggle" class="theme-checkbox">
             <label for="theme-toggle" class="theme-toggle-label">
-                <span class="icon-moon">🌙 Mode Gelap</span><span class="icon-sun">☀️ Mode Terang</span>
+                <span class="icon-moon">🌙 Mode Gelap</span>
+                <span class="icon-sun">☀️ Mode Terang</span>
             </label>
         </div>
         <ul class="nav-links">
@@ -84,7 +98,6 @@
             <li><a href="forumkomunikasidosen.html" class="active">Forum Diskusi</a></li>
         </ul>
     </nav>
-
     <main class="main-content">
         <header class="top-header">
             <h2>Forum Diskusi Kelas</h2>
