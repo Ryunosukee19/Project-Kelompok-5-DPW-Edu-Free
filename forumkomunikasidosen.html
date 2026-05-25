@@ -109,34 +109,24 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // 1. Cek User (Dosen)
+            // 1. Cek User & Dropdown Menu Sidebar
             const activeUser = JSON.parse(localStorage.getItem('loggedInUser'));
-            // Pastikan user ada dan role-nya adalah dosen
-            if (!activeUser || activeUser.role !== 'dosen') { 
-                window.location.href = "login.html"; 
-                return; 
-            }
+            if (!activeUser || activeUser.role !== 'dosen') { window.location.href = "login.html"; return; }
 
-            // Variabel aman agar ID Dosen tidak kosong (Mencegah Error)
-            const idDosen = activeUser.nip || activeUser.userId || activeUser.nim || "Dosen01";
-            const namaDosen = activeUser.nama || activeUser.username || "Dosen Pengampu";
-
-            // 2. Logika Logout
+            // Logika Log out
             document.getElementById('logout-sidebar').addEventListener('click', function(e) {
                 e.preventDefault();
                 localStorage.removeItem('loggedInUser');
                 window.location.href = "index.html";
             });
 
-            // 3. Logika Tema (Gelap/Terang)
+            // 2. Logika Tema (Gelap/Terang)
             const themeToggle = document.getElementById("theme-toggle");
             if (localStorage.getItem("theme") === "light") { themeToggle.checked = true; }
-            themeToggle.addEventListener("change", function() { 
-                localStorage.setItem("theme", this.checked ? "light" : "dark"); 
-            });
+            themeToggle.addEventListener("change", function() { localStorage.setItem("theme", this.checked ? "light" : "dark"); });
 
             // =====================================
-            // 4. LOGIKA FORUM DISKUSI (IDENTIK DENGAN MAHASISWA)
+            // 3. LOGIKA FORUM DISKUSI (100% IDENTIK DENGAN MAHASISWA)
             // =====================================
             const chatMessages = document.getElementById('chat-messages');
             const chatForm = document.getElementById('chat-form');
@@ -151,8 +141,8 @@
                 }
 
                 dbForum.forEach(msg => {
-                    // Filter: Apakah ID pengirim sama dengan ID Dosen?
-                    const isMe = String(msg.senderId) === String(idDosen);
+                    // Filter: Apakah ID pengirim pesan sama dengan ID user yang sedang login?
+                    const isMe = String(msg.senderId) === String(activeUser.userId);
                     const wrapperClass = isMe ? "me" : "other";
                     
                     // Identifikasi Role (Pembeda warna label)
@@ -191,9 +181,9 @@
                 // Simpan Pesan ke Array
                 dbForum.push({
                     id: Date.now(),
-                    senderId: idDosen,           // Pakai variabel aman
-                    senderName: namaDosen,       // Pakai variabel aman
-                    senderRole: "dosen",         // Set mutlak sebagai dosen
+                    senderId: activeUser.userId,
+                    senderName: activeUser.nama,
+                    senderRole: activeUser.role, // role akan direkam sebagai "dosen"
                     text: text,
                     time: timeString
                 });
@@ -206,7 +196,7 @@
                 loadChat();
             });
 
-            // Set interval agar chat me-refresh otomatis setiap 2 detik
+            // Set interval agar chat me-refresh otomatis setiap 2 detik 
             setInterval(loadChat, 2000);
             loadChat(); // Muat chat saat halaman pertama dibuka
         });
