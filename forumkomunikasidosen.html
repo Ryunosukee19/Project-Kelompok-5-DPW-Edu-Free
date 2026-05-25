@@ -18,7 +18,6 @@
         /* SIDEBAR & LONCENG NOTIFIKASI */
         .sidebar { position: fixed; top: 0; left: 0; width: var(--sidebar-width); height: 100vh; background-color: var(--bg-sidebar); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; z-index: 1000; overflow-y: auto; }
         .sidebar::-webkit-scrollbar { width: 5px; } .sidebar::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
-        
         .sidebar-header { display: flex; justify-content: space-between; align-items: center; padding: 20px; border-bottom: 1px solid var(--border-color); }
         .logo { font-size: 1.8rem; font-weight: 800; background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; color: transparent; }
         
@@ -37,8 +36,6 @@
         .notif-item small { color: var(--text-muted); font-size: 0.75rem;}
         .btn-mark-read { background: rgba(56, 189, 248, 0.15); color: var(--primary); border: none; padding: 8px 16px; border-radius: 10px; font-weight: 600; width: 100%; cursor: pointer; transition: 0.3s; margin-top: 10px;}
         
-        @keyframes pulse { 0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); } 70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); } 100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } }
-
         .theme-switch-wrapper { padding: 15px 20px; border-bottom: 1px solid var(--border-color); } .theme-toggle-label { cursor: pointer; color: var(--text-muted); display: flex; gap: 10px; font-size: 0.95rem; font-weight: 500;} .theme-checkbox { display: none; } 
         .nav-links { padding-top: 15px; flex-grow: 1;} .nav-links li a { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; color: var(--text-muted); font-weight: 500; transition: all 0.3s ease; cursor: pointer;}
         .nav-links li a:hover { background-color: rgba(148, 163, 184, 0.1); color: var(--text-main); padding-left: 25px; }
@@ -55,7 +52,6 @@
         .chat-messages { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
         .chat-messages::-webkit-scrollbar { width: 6px; } .chat-messages::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
         
-        /* BUBBLE CHAT */
         .msg-wrapper { display: flex; flex-direction: column; max-width: 75%; }
         .msg-wrapper.me { align-self: flex-end; align-items: flex-end; }
         .msg-wrapper.other { align-self: flex-start; align-items: flex-start; }
@@ -70,7 +66,6 @@
         .msg-wrapper.other .msg-bubble { background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); border-bottom-left-radius: 2px; }
         body:has(#theme-toggle:checked) .msg-wrapper.other .msg-bubble { background: rgba(0,0,0,0.05); }
 
-        /* INPUT AREA */
         .chat-input-area { padding: 20px; border-top: 1px solid var(--border-color); display: flex; gap: 15px; background: rgba(0,0,0,0.2); }
         body:has(#theme-toggle:checked) .chat-input-area { background: rgba(0,0,0,0.02); }
         .chat-input { flex: 1; padding: 15px 20px; background: var(--bg-dark); border: 1px solid var(--border-color); color: var(--text-main); border-radius: 12px; font-size: 0.95rem; outline: none; transition: 0.3s; }
@@ -105,6 +100,7 @@
             <li><a href="absensidosen.html">Absensi</a></li>
             <li><a href="uploaduts_uas.html">Upload UTS/UAS</a></li>
             <li><a href="forumkomunikasidosen.html" class="active">Forum Diskusi</a></li>
+            <li><a href="#" id="logout-sidebar" style="color: var(--danger-red);">Log out</a></li>
         </ul>
     </nav>
 
@@ -139,7 +135,7 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // 1. Verifikasi Dosen
+            // 1. Cek User Dosen
             const activeUser = JSON.parse(localStorage.getItem('loggedInUser'));
             if (!activeUser || activeUser.role !== 'dosen') { window.location.href = "login.html"; return; }
 
@@ -152,44 +148,57 @@
             if (localStorage.getItem("theme") === "light") { themeToggle.checked = true; }
             themeToggle.addEventListener("change", function() { localStorage.setItem("theme", this.checked ? "light" : "dark"); });
 
-            // ==========================================
-            // 2. LOGIKA FORUM DISKUSI DOSEN (BERSIH DARI POP-UP)
-            // ==========================================
+            // =====================================
+            // 2. LOGIKA FORUM (DENGAN PERISAI ANTI-ERROR)
+            // =====================================
             const chatMessages = document.getElementById('chat-messages');
             const chatForm = document.getElementById('chat-form');
             const chatInput = document.getElementById('chat-input');
 
             function loadChat() {
-                const dbForum = JSON.parse(localStorage.getItem('global_database_forum')) || [];
-                chatMessages.innerHTML = "";
+                try {
+                    const dbForumRaw = localStorage.getItem('global_database_forum');
+                    let dbForum = [];
+                    if (dbForumRaw) {
+                        dbForum = JSON.parse(dbForumRaw);
+                        if (!Array.isArray(dbForum)) dbForum = []; // Failsafe
+                    }
 
-                if(dbForum.length === 0) {
-                    chatMessages.innerHTML = `<div style="text-align:center; color:var(--text-muted); margin-top: auto; margin-bottom: auto;">Belum ada pesan. Mulai obrolan pertama!</div>`;
-                    return;
+                    chatMessages.innerHTML = "";
+
+                    if(dbForum.length === 0) {
+                        chatMessages.innerHTML = `<div style="text-align:center; color:var(--text-muted); margin-top: auto; margin-bottom: auto;">Belum ada percakapan di kelas ini.</div>`;
+                        return;
+                    }
+
+                    dbForum.forEach(msg => {
+                        // PERISAI: Lewati data jika rusak/kosong (menghindari error)
+                        if (!msg || typeof msg !== 'object' || !msg.senderId) return;
+
+                        const isMe = String(msg.senderId) === String(idDosen);
+                        const wrapperClass = isMe ? "me" : "other";
+                        const roleClass = msg.senderRole === "dosen" ? "dosen" : "mahasiswa";
+                        const roleText = msg.senderRole === "dosen" ? "Dosen" : "Mahasiswa";
+
+                        const senderName = msg.senderName || "Pengguna";
+                        const senderId = msg.senderId || "-";
+                        const time = msg.time || "--:--";
+
+                        const infoHTML = isMe 
+                            ? `<span>${time}</span> <b>Anda</b> <span class="role-badge ${roleClass}">${roleText}</span>` 
+                            : `<span class="role-badge ${roleClass}">${roleText}</span> <b>${senderName} (${senderId})</b> <span>${time}</span>`;
+
+                        chatMessages.innerHTML += `
+                            <div class="msg-wrapper ${wrapperClass}">
+                                <div class="msg-info">${infoHTML}</div>
+                                <div class="msg-bubble">${msg.text}</div>
+                            </div>
+                        `;
+                    });
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                } catch (err) {
+                    console.error("Gagal merender chat:", err);
                 }
-
-                dbForum.forEach(msg => {
-                    const isMe = String(msg.senderId) === String(idDosen);
-                    const wrapperClass = isMe ? "me" : "other";
-                    const roleClass = msg.senderRole === "dosen" ? "dosen" : "mahasiswa";
-                    const roleText = msg.senderRole === "dosen" ? "Dosen" : "Mahasiswa";
-
-                    const senderName = msg.senderName || "Pengguna";
-                    const senderId = msg.senderId || "-";
-                    const time = msg.time || "--:--";
-
-                    const infoHTML = isMe 
-                        ? `<span>${time}</span> <b>Anda</b> <span class="role-badge ${roleClass}">${roleText}</span>` 
-                        : `<span class="role-badge ${roleClass}">${roleText}</span> <b>${senderName} (${senderId})</b> <span>${time}</span>`;
-
-                    chatMessages.innerHTML += `
-                        <div class="msg-wrapper ${wrapperClass}">
-                            <div class="msg-info">${infoHTML}</div>
-                            <div class="msg-bubble">${msg.text}</div>
-                        </div>
-                    `;
-                });
-                chatMessages.scrollTop = chatMessages.scrollHeight; // Auto scroll ke bawah
             }
 
             chatForm.addEventListener('submit', function(e) {
@@ -197,91 +206,99 @@
                 const text = chatInput.value.trim();
                 if(!text) return;
 
-                const dbForum = JSON.parse(localStorage.getItem('global_database_forum')) || [];
-                const now = new Date();
-                const timeString = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
+                try {
+                    let dbForum = JSON.parse(localStorage.getItem('global_database_forum')) || [];
+                    if (!Array.isArray(dbForum)) dbForum = [];
 
-                dbForum.push({
-                    id: Date.now(),
-                    senderId: idDosen,
-                    senderName: namaDosen,
-                    senderRole: "dosen", // Pastikan role disimpan sebagai dosen
-                    text: text,
-                    time: timeString
-                });
+                    const now = new Date();
+                    const timeString = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
 
-                localStorage.setItem('global_database_forum', JSON.stringify(dbForum));
-                chatInput.value = ""; // Bersihkan kolom ketik setelah pesan terkirim
-                loadChat();           // Langsung update layar chat
+                    dbForum.push({
+                        id: Date.now(),
+                        senderId: idDosen,
+                        senderName: namaDosen,
+                        senderRole: "dosen",
+                        text: text,
+                        time: timeString
+                    });
+
+                    localStorage.setItem('global_database_forum', JSON.stringify(dbForum));
+                    chatInput.value = ""; 
+                    loadChat();           
+                } catch (err) {
+                    console.error("Gagal mengirim chat:", err);
+                }
             });
 
-            // ==========================================
-            // 3. LOGIKA LONCENG NOTIFIKASI KHUSUS DOSEN
-            // ==========================================
+            // =====================================
+            // 3. LOGIKA LONCENG DOSEN
+            // =====================================
             function loadNotifikasi() {
-                const dbForum = JSON.parse(localStorage.getItem('global_database_forum')) || [];
-                const notifList = document.getElementById('notif-list');
-                const notifCountBadge = document.getElementById('notifCount');
+                try {
+                    const dbForum = JSON.parse(localStorage.getItem('global_database_forum')) || [];
+                    const notifList = document.getElementById('notif-list');
+                    const notifCountBadge = document.getElementById('notifCount');
 
-                // Dosen hanya mendapat notif dari pesan Mahasiswa (bukan dari chatnya sendiri)
-                const pesanBaru = dbForum.filter(msg => String(msg.senderId) !== String(idDosen));
+                    if (!notifList || !notifCountBadge) return;
 
-                let notifikasiArray = [];
-                pesanBaru.forEach(msg => {
-                    notifikasiArray.push({ icon: "💬", teks: `Pesan dari ${msg.senderName}`, waktu: `Forum Diskusi` });
-                });
+                    // Dosen hanya menerima notif dari Mahasiswa (mengabaikan chat rusak/kosong)
+                    const pesanBaru = dbForum.filter(msg => msg && msg.senderId && String(msg.senderId) !== String(idDosen));
 
-                const storageKeyReadCount = `notif_read_count_dosen_${idDosen}`;
-                let readCount = parseInt(localStorage.getItem(storageKeyReadCount)) || 0;
-                let totalNotif = notifikasiArray.length;
-                let unreadCount = totalNotif - readCount;
-
-                if (totalNotif > 0) {
-                    notifList.innerHTML = "";
-                    notifikasiArray.reverse().forEach(notif => {
-                        notifList.innerHTML += `
-                            <div class="notif-item">
-                                <span>${notif.icon} ${notif.teks}</span>
-                                <small>${notif.waktu}</small>
-                            </div>
-                        `;
+                    let notifikasiArray = [];
+                    pesanBaru.forEach(msg => {
+                        notifikasiArray.push({ icon: "💬", teks: `Pesan dari ${msg.senderName || 'Mahasiswa'}`, waktu: `Forum Diskusi` });
                     });
-                    if (unreadCount > 0) {
-                        notifCountBadge.textContent = unreadCount;
-                        notifCountBadge.style.display = "flex";
-                    } else {
-                        notifCountBadge.style.display = "none";
-                    }
-                } else {
-                    notifList.innerHTML = `<div class="notif-item"><span style="text-align:center; color: var(--text-muted);">Belum ada notifikasi.</span></div>`;
-                }
 
-                document.getElementById('mark-read-btn').onclick = function() {
-                    localStorage.setItem(storageKeyReadCount, totalNotif); 
-                    notifCountBadge.style.display = "none";
-                };
+                    const storageKeyReadCount = `notif_read_count_dosen_${idDosen}`;
+                    let readCount = parseInt(localStorage.getItem(storageKeyReadCount)) || 0;
+                    let totalNotif = notifikasiArray.length;
+                    let unreadCount = totalNotif - readCount;
+
+                    if (totalNotif > 0) {
+                        notifList.innerHTML = "";
+                        notifikasiArray.reverse().forEach(notif => {
+                            notifList.innerHTML += `
+                                <div class="notif-item">
+                                    <span>${notif.icon} ${notif.teks}</span>
+                                    <small>${notif.waktu}</small>
+                                </div>
+                            `;
+                        });
+                        if (unreadCount > 0) {
+                            notifCountBadge.textContent = unreadCount;
+                            notifCountBadge.style.display = "flex";
+                        } else {
+                            notifCountBadge.style.display = "none";
+                        }
+                    } else {
+                        notifList.innerHTML = `<div class="notif-item"><span style="text-align:center; color: var(--text-muted);">Belum ada notifikasi.</span></div>`;
+                    }
+
+                    const btnRead = document.getElementById('mark-read-btn');
+                    if(btnRead) {
+                        btnRead.onclick = function() {
+                            localStorage.setItem(storageKeyReadCount, totalNotif); 
+                            notifCountBadge.style.display = "none";
+                        };
+                    }
+                } catch (err) {
+                    console.error("Gagal memuat notifikasi:", err);
+                }
             }
 
-            // KONTROL TAMPILAN LONCENG
             const notifTrigger = document.getElementById('notif-trigger');
             const notifDropdown = document.getElementById('notifDropdown');
-            notifTrigger.addEventListener('click', e => { e.stopPropagation(); notifDropdown.classList.toggle('show'); });
-            document.addEventListener('click', e => { if (!notifDropdown.contains(e.target) && !notifTrigger.contains(e.target)) notifDropdown.classList.remove('show'); });
+            if(notifTrigger && notifDropdown) {
+                notifTrigger.addEventListener('click', e => { e.stopPropagation(); notifDropdown.classList.toggle('show'); });
+                document.addEventListener('click', e => { if (!notifDropdown.contains(e.target) && !notifTrigger.contains(e.target)) notifDropdown.classList.remove('show'); });
+            }
 
-            // Pantau pesan secara real-time
+            // Real-time inter-tab sync
             window.addEventListener('storage', function(e) {
-                if(e.key === 'global_database_forum') {
-                    loadChat();
-                    loadNotifikasi();
-                }
+                if(e.key === 'global_database_forum') { loadChat(); loadNotifikasi(); }
             });
 
-            setInterval(() => {
-                loadChat();
-                loadNotifikasi();
-            }, 2000);
-            
-            // Render saat halaman pertama dibuka
+            setInterval(() => { loadChat(); loadNotifikasi(); }, 2000);
             loadChat();
             loadNotifikasi();
         });
