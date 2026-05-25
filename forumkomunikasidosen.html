@@ -15,6 +15,17 @@
         body { background-color: var(--bg-dark); color: var(--text-main); display: flex; transition: all 0.3s ease; overflow-x: hidden; height: 100vh;}
         a { text-decoration: none; color: inherit; } ul { list-style: none; }
 
+        /* SIDEBAR & LONCENG NOTIFIKASI */
+        .sidebar { position: fixed; top: 0; left: 0; width: var(--sidebar-width); height: 100vh; background-color: var(--bg-sidebar); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; z-index: 1000; overflow-y: auto; }
+        .sidebar::-webkit-scrollbar { width: 5px; } .sidebar::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
+        .sidebar-header { display: flex; justify-content: space-between; align-items: center; padding: 20px; border-bottom: 1px solid var(--border-color); }
+        .logo { font-size: 1.8rem; font-weight: 800; background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; color: transparent; }
+        
+        .header-notif { position: relative; display: flex; align-items: center; justify-content: center; cursor: pointer; width: 40px; height: 40px; border-radius: 50%; transition: all 0.3s ease; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); }
+        body:has(#theme-toggle:checked) .header-notif { background: rgba(0,0,0,0.05); }
+        .header-notif:hover { background: rgba(56, 189, 248, 0.1); transform: scale(1.05); }
+        .notif-count { position: absolute; top: -4px; right: -4px; background: var(--danger-red); color: white; width: 18px; height: 18px; border-radius: 50%; font-size: 0.7rem; display: none; justify-content: center; align-items: center; font-weight: bold; box-shadow: 0 0 8px var(--danger-red); animation: pulse 1.5s infinite; }
+
         /* DROPDOWN NOTIFIKASI */
         .notif-dropdown { position: fixed; top: 25px; left: 275px; width: 320px; background: var(--bg-card); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid var(--border-color); border-radius: 20px; padding: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.4); display: flex; flex-direction: column; opacity: 0; visibility: hidden; transform: translateX(-15px); transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); z-index: 2000; }
         .notif-dropdown.show { opacity: 1; visibility: visible; transform: translateX(0); }
@@ -68,6 +79,7 @@
     <nav class="sidebar">
         <div class="sidebar-header">
             <div class="logo">Edu-Free.</div>
+            
         </div>
         <div class="theme-switch-wrapper">
             <input type="checkbox" id="theme-toggle" class="theme-checkbox">
@@ -85,8 +97,10 @@
             <li><a href="absensidosen.html">Absensi</a></li>
             <li><a href="uploaduts_uas.html">Upload UTS/UAS</a></li>
             <li><a href="forumkomunikasidosen.html" class="active">Forum Diskusi</a></li>
+            <li><a href="#" id="logout-sidebar" style="color: var(--danger-red);">Log out</a></li>
         </ul>
     </nav>
+
 
     <main class="main-content">
         <header class="top-header">
@@ -205,7 +219,7 @@
                     console.error("Gagal mengirim chat:", err);
                 }
             });
-
+            
             // Real-time inter-tab sync
             window.addEventListener('storage', function(e) {
                 if(e.key === 'global_database_forum') { loadChat(); loadNotifikasi(); }
