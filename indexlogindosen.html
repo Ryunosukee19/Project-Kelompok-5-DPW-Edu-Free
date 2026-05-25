@@ -217,8 +217,8 @@
             </div>
 
             <div class="hero-content">
-                <span class="badge-hero">Dashboard Administrator</span>
-                <h1>Kelola Kelas dan Materi Dengan Mudah.</h1>
+                <span class="badge-hero">Dashboard Dosen</span>
+                <h1>Kelola Kelas dan juga Materi dengan Mudah di-sini.</h1>
                 <p id="welcome-message">Selamat Datang di pusat kendali Dosen.</p>
             </div>
             <div class="hero-image">
@@ -249,7 +249,7 @@
 
             // Set Data Profil Dosen
             const idDosen = user.nip || user.userId || user.nim || "Dosen01";
-            document.getElementById('welcome-message').innerHTML = `Selamat Bekerja, <b>Bapak/Ibu ${user.nama}</b>.`;
+            document.getElementById('welcome-message').innerHTML = `Selamat Datang di Pusat kendali kelas, Bapak/Ibu <b>${user.nama}</b>.`;
             document.getElementById('popover-greeting').textContent = `Halo, ${user.nama}.`;
             document.getElementById('popover-id').textContent = `NIP: ${idDosen}`;
 
