@@ -109,97 +109,98 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // 1. Cek User & Dropdown Menu Sidebar
-            const activeUser = JSON.parse(localStorage.getItem('loggedInUser'));
-            if (!activeUser || activeUser.role !== 'dosen') { window.location.href = "login.html"; return; }
+    // 1. Cek User
+    const activeUser = JSON.parse(localStorage.getItem('loggedInUser'));
+    if (!activeUser || activeUser.role !== 'dosen') { 
+        window.location.href = "login.html"; 
+        return; 
+    }
 
-            // Logika Log out
-            document.getElementById('logout-sidebar').addEventListener('click', function(e) {
-                e.preventDefault();
-                localStorage.removeItem('loggedInUser');
-                window.location.href = "index.html";
-            });
+    // 2. Ambil Elemen HTML
+    const chatMessages = document.getElementById('chat-messages');
+    const chatForm = document.getElementById('chat-form');
+    const chatInput = document.getElementById('chat-input');
 
-            // 2. Logika Tema (Gelap/Terang)
-            const themeToggle = document.getElementById("theme-toggle");
-            if (localStorage.getItem("theme") === "light") { themeToggle.checked = true; }
-            themeToggle.addEventListener("change", function() { localStorage.setItem("theme", this.checked ? "light" : "dark"); });
+    // TAMPILKAN ALERT DIAGNOSA SAAT HALAMAN DIBUKA
+    console.log("Data Dosen aktif:", activeUser);
 
-            // =====================================
-            // 3. LOGIKA FORUM DISKUSI (100% IDENTIK DENGAN MAHASISWA)
-            // =====================================
-            const chatMessages = document.getElementById('chat-messages');
-            const chatForm = document.getElementById('chat-form');
-            const chatInput = document.getElementById('chat-input');
+    function loadChat() {
+        const dbForum = JSON.parse(localStorage.getItem('global_database_forum')) || [];
+        chatMessages.innerHTML = "";
 
-            function loadChat() {
-                const dbForum = JSON.parse(localStorage.getItem('global_database_forum')) || [];
-                chatMessages.innerHTML = "";
+        if(dbForum.length === 0) {
+            chatMessages.innerHTML = `<div style="text-align:center; color:var(--text-muted); margin-top: auto; margin-bottom: auto;">Belum ada percakapan.</div>`;
+        }
 
-                if(dbForum.length === 0) {
-                    chatMessages.innerHTML = `<div style="text-align:center; color:var(--text-muted); margin-top: auto; margin-bottom: auto;">Belum ada percakapan di kelas ini. Sapa mahasiswa Anda!</div>`;
-                }
+        dbForum.forEach(msg => {
+            const isMe = String(msg.senderId) === String(activeUser.userId);
+            const wrapperClass = isMe ? "me" : "other";
+            const roleClass = msg.senderRole === "dosen" ? "dosen" : "mahasiswa";
+            const roleText = msg.senderRole === "dosen" ? "Dosen" : "Mahasiswa";
 
-                dbForum.forEach(msg => {
-                    // Filter: Apakah ID pengirim pesan sama dengan ID user yang sedang login?
-                    const isMe = String(msg.senderId) === String(activeUser.userId);
-                    const wrapperClass = isMe ? "me" : "other";
-                    
-                    // Identifikasi Role (Pembeda warna label)
-                    const roleClass = msg.senderRole === "dosen" ? "dosen" : "mahasiswa";
-                    const roleText = msg.senderRole === "dosen" ? "Dosen" : "Mahasiswa";
+            const infoHTML = isMe 
+                ? `<span>${msg.time}</span> <b>Anda</b> <span class="role-badge ${roleClass}">${roleText}</span>` 
+                : `<span class="role-badge ${roleClass}">${roleText}</span> <b>${msg.senderName} (${msg.senderId})</b> <span>${msg.time}</span>`;
 
-                    // Info pengirim menyesuaikan posisi (Kanan/Kiri)
-                    const infoHTML = isMe 
-                        ? `<span>${msg.time}</span> <b>Anda</b> <span class="role-badge ${roleClass}">${roleText}</span>` 
-                        : `<span class="role-badge ${roleClass}">${roleText}</span> <b>${msg.senderName} (${msg.senderId})</b> <span>${msg.time}</span>`;
-
-                    chatMessages.innerHTML += `
-                        <div class="msg-wrapper ${wrapperClass}">
-                            <div class="msg-info">${infoHTML}</div>
-                            <div class="msg-bubble">${msg.text}</div>
-                        </div>
-                    `;
-                });
-
-                // Set scroll selalu ke bawah (pesan terbaru)
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            }
-
-            // Fungsi Kirim Pesan
-            chatForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                const text = chatInput.value.trim();
-                if(!text) return;
-
-                const dbForum = JSON.parse(localStorage.getItem('global_database_forum')) || [];
-                
-                // Ambil jam saat ini (Format: HH:MM)
-                const now = new Date();
-                const timeString = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
-
-                // Simpan Pesan ke Array
-                dbForum.push({
-                    id: Date.now(),
-                    senderId: activeUser.userId,
-                    senderName: activeUser.nama,
-                    senderRole: activeUser.role, // role akan direkam sebagai "dosen"
-                    text: text,
-                    time: timeString
-                });
-
-                // Simpan kembali ke localStorage
-                localStorage.setItem('global_database_forum', JSON.stringify(dbForum));
-                
-                // Bersihkan input dan render ulang layar chat
-                chatInput.value = "";
-                loadChat();
-            });
-
-            // Set interval agar chat me-refresh otomatis setiap 2 detik 
-            setInterval(loadChat, 2000);
-            loadChat(); // Muat chat saat halaman pertama dibuka
+            chatMessages.innerHTML += `
+                <div class="msg-wrapper ${wrapperClass}">
+                    <div class="msg-info">${infoHTML}</div>
+                    <div class="msg-bubble">${msg.text}</div>
+                </div>
+            `;
         });
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    // FUNGSI KIRIM PESAN DENGAN PELACAK
+    chatForm.addEventListener('submit', function(e) {
+        e.preventDefault(); // Cegah halaman refresh
+        
+        const text = chatInput.value.trim();
+        
+        // MUNCULKAN POP-UP UNTUK MEMASTIKAN TOMBOL BERFUNGSI
+        alert("Tombol berhasil ditekan! Pesan yang akan dikirim: " + text);
+
+        if(!text) {
+            alert("Teks kosong, dibatalkan.");
+            return;
+        }
+
+        try {
+            const dbForum = JSON.parse(localStorage.getItem('global_database_forum')) || [];
+            const now = new Date();
+            const timeString = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
+
+            dbForum.push({
+                id: Date.now(),
+                senderId: activeUser.userId,
+                senderName: activeUser.nama,
+                senderRole: "dosen",
+                text: text,
+                time: timeString
+            });
+
+            localStorage.setItem('global_database_forum', JSON.stringify(dbForum));
+            alert("Pesan berhasil dimasukkan ke LocalStorage!");
+            
+            chatInput.value = "";
+            loadChat();
+        } catch (error) {
+            alert("Terjadi Error saat menyimpan ke database: " + error.message);
+        }
+    });
+
+    // Logout & Tema
+    document.getElementById('logout-sidebar').addEventListener('click', function() {
+        localStorage.removeItem('loggedInUser'); window.location.href = "index.html";
+    });
+    const themeToggle = document.getElementById("theme-toggle");
+    if (localStorage.getItem("theme") === "light") themeToggle.checked = true;
+    themeToggle.addEventListener("change", function() { localStorage.setItem("theme", this.checked ? "light" : "dark"); });
+
+    setInterval(loadChat, 2000);
+    loadChat();
+});
     </script>
 </body>
 </html>
