@@ -15,17 +15,6 @@
         body { background-color: var(--bg-dark); color: var(--text-main); display: flex; transition: all 0.3s ease; overflow-x: hidden; height: 100vh;}
         a { text-decoration: none; color: inherit; } ul { list-style: none; }
 
-        /* SIDEBAR & LONCENG NOTIFIKASI */
-        .sidebar { position: fixed; top: 0; left: 0; width: var(--sidebar-width); height: 100vh; background-color: var(--bg-sidebar); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; z-index: 1000; overflow-y: auto; }
-        .sidebar::-webkit-scrollbar { width: 5px; } .sidebar::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
-        .sidebar-header { display: flex; justify-content: space-between; align-items: center; padding: 20px; border-bottom: 1px solid var(--border-color); }
-        .logo { font-size: 1.8rem; font-weight: 800; background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; color: transparent; }
-        
-        .header-notif { position: relative; display: flex; align-items: center; justify-content: center; cursor: pointer; width: 40px; height: 40px; border-radius: 50%; transition: all 0.3s ease; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); }
-        body:has(#theme-toggle:checked) .header-notif { background: rgba(0,0,0,0.05); }
-        .header-notif:hover { background: rgba(56, 189, 248, 0.1); transform: scale(1.05); }
-        .notif-count { position: absolute; top: -4px; right: -4px; background: var(--danger-red); color: white; width: 18px; height: 18px; border-radius: 50%; font-size: 0.7rem; display: none; justify-content: center; align-items: center; font-weight: bold; box-shadow: 0 0 8px var(--danger-red); animation: pulse 1.5s infinite; }
-
         /* DROPDOWN NOTIFIKASI */
         .notif-dropdown { position: fixed; top: 25px; left: 275px; width: 320px; background: var(--bg-card); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid var(--border-color); border-radius: 20px; padding: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.4); display: flex; flex-direction: column; opacity: 0; visibility: hidden; transform: translateX(-15px); transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); z-index: 2000; }
         .notif-dropdown.show { opacity: 1; visibility: visible; transform: translateX(0); }
@@ -79,10 +68,6 @@
     <nav class="sidebar">
         <div class="sidebar-header">
             <div class="logo">Edu-Free.</div>
-            <div class="header-notif" id="notif-trigger" title="Notifikasi Baru">
-                <span class="icon-bell">🔔</span>
-                <span class="notif-count" id="notifCount">0</span>
-            </div>
         </div>
         <div class="theme-switch-wrapper">
             <input type="checkbox" id="theme-toggle" class="theme-checkbox">
@@ -102,14 +87,6 @@
             <li><a href="forumkomunikasidosen.html" class="active">Forum Diskusi</a></li>
         </ul>
     </nav>
-
-    <div class="notif-dropdown" id="notifDropdown">
-        <div class="notif-header"><h3>🔔 Notifikasi Dosen</h3></div>
-        <div id="notif-list"></div>
-        <div style="text-align: center;">
-            <button class="btn-mark-read" id="mark-read-btn">Tandai Dibaca</button>
-        </div>
-    </div>
 
     <main class="main-content">
         <header class="top-header">
@@ -228,69 +205,6 @@
                     console.error("Gagal mengirim chat:", err);
                 }
             });
-
-            // =====================================
-            // 3. LOGIKA LONCENG DOSEN
-            // =====================================
-            function loadNotifikasi() {
-                try {
-                    const dbForum = JSON.parse(localStorage.getItem('global_database_forum')) || [];
-                    const notifList = document.getElementById('notif-list');
-                    const notifCountBadge = document.getElementById('notifCount');
-
-                    if (!notifList || !notifCountBadge) return;
-
-                    // Dosen hanya menerima notif dari Mahasiswa (mengabaikan chat rusak/kosong)
-                    const pesanBaru = dbForum.filter(msg => msg && msg.senderId && String(msg.senderId) !== String(idDosen));
-
-                    let notifikasiArray = [];
-                    pesanBaru.forEach(msg => {
-                        notifikasiArray.push({ icon: "💬", teks: `Pesan dari ${msg.senderName || 'Mahasiswa'}`, waktu: `Forum Diskusi` });
-                    });
-
-                    const storageKeyReadCount = `notif_read_count_dosen_${idDosen}`;
-                    let readCount = parseInt(localStorage.getItem(storageKeyReadCount)) || 0;
-                    let totalNotif = notifikasiArray.length;
-                    let unreadCount = totalNotif - readCount;
-
-                    if (totalNotif > 0) {
-                        notifList.innerHTML = "";
-                        notifikasiArray.reverse().forEach(notif => {
-                            notifList.innerHTML += `
-                                <div class="notif-item">
-                                    <span>${notif.icon} ${notif.teks}</span>
-                                    <small>${notif.waktu}</small>
-                                </div>
-                            `;
-                        });
-                        if (unreadCount > 0) {
-                            notifCountBadge.textContent = unreadCount;
-                            notifCountBadge.style.display = "flex";
-                        } else {
-                            notifCountBadge.style.display = "none";
-                        }
-                    } else {
-                        notifList.innerHTML = `<div class="notif-item"><span style="text-align:center; color: var(--text-muted);">Belum ada notifikasi.</span></div>`;
-                    }
-
-                    const btnRead = document.getElementById('mark-read-btn');
-                    if(btnRead) {
-                        btnRead.onclick = function() {
-                            localStorage.setItem(storageKeyReadCount, totalNotif); 
-                            notifCountBadge.style.display = "none";
-                        };
-                    }
-                } catch (err) {
-                    console.error("Gagal memuat notifikasi:", err);
-                }
-            }
-
-            const notifTrigger = document.getElementById('notif-trigger');
-            const notifDropdown = document.getElementById('notifDropdown');
-            if(notifTrigger && notifDropdown) {
-                notifTrigger.addEventListener('click', e => { e.stopPropagation(); notifDropdown.classList.toggle('show'); });
-                document.addEventListener('click', e => { if (!notifDropdown.contains(e.target) && !notifTrigger.contains(e.target)) notifDropdown.classList.remove('show'); });
-            }
 
             // Real-time inter-tab sync
             window.addEventListener('storage', function(e) {
