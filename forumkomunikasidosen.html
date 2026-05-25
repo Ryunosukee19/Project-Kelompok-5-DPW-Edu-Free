@@ -79,6 +79,10 @@
     <nav class="sidebar">
         <div class="sidebar-header">
             <div class="logo">Edu-Free.</div>
+            <div class="header-notif" id="notif-trigger" title="Notifikasi Baru">
+                <span class="icon-bell">🔔</span>
+                <span class="notif-count" id="notifCount">0</span>
+            </div>
         </div>
         <div class="theme-switch-wrapper">
             <input type="checkbox" id="theme-toggle" class="theme-checkbox">
@@ -98,6 +102,15 @@
             <li><a href="forumkomunikasidosen.html" class="active">Forum Diskusi</a></li>
         </ul>
     </nav>
+
+    <div class="notif-dropdown" id="notifDropdown">
+        <div class="notif-header"><h3>🔔 Notifikasi Dosen</h3></div>
+        <div id="notif-list"></div>
+        <div style="text-align: center;">
+            <button class="btn-mark-read" id="mark-read-btn">Tandai Dibaca</button>
+        </div>
+    </div>
+
     <main class="main-content">
         <header class="top-header">
             <h2>Forum Diskusi Kelas</h2>
