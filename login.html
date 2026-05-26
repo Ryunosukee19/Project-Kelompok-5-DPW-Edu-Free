@@ -66,71 +66,115 @@
     </div>
 
     <script>
-        <script>
         document.addEventListener('DOMContentLoaded', () => {
+
+            // LOGIKA DINAMIS MENGUBAH LABEL NIM/NIP
+
             const loginRole = document.getElementById('login-role');
+
             const loginLabelId = document.getElementById('login-label-id');
+
             const loginInputId = document.getElementById('login-id');
 
+
+
             loginRole.addEventListener('change', function() {
+
                 if (this.value === 'dosen') {
+
                     loginLabelId.textContent = 'NIP';
+
                     loginInputId.placeholder = 'Masukkan NIP Anda';
+
                 } else {
+
                     loginLabelId.textContent = 'NIM';
+
                     loginInputId.placeholder = 'Masukkan NIM Anda';
+
                 }
+
             });
 
+
+
+            // LOGIKA VERIFIKASI AKUN SAAT TOMBOL MASUK DITEKAN
+
             const loginForm = document.getElementById('loginForm');
+
             if (loginForm) {
+
                 loginForm.addEventListener('submit', function(e) {
+
                     e.preventDefault(); 
+
                     
-                    const loginData = {
-                        role: loginRole.value,
-                        userId: loginInputId.value,
-                        password: document.getElementById('login-password').value
-                    };
 
-                    // MENCOCOKKAN DATA DENGAN DATABASE MYSQL
-                    fetch('http://localhost:3000/api/login', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(loginData)
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            alert(`Selamat datang kembali, ${data.user.nama}!`);
+                    const inputRole = loginRole.value;
+
+                    const inputId = loginInputId.value;
+
+                    const inputPassword = document.getElementById('login-password').value;
+
+
+
+                    // MENCARI DATA DI MEMORI BROWSER
+
+                    const userDataString = localStorage.getItem(inputId);
+
+
+
+                    if (userDataString) {
+
+                        const userData = JSON.parse(userDataString);
+
+
+
+                        // Cek apakah Password DAN Peran (Role)-nya cocok
+
+                        if (userData.password === inputPassword && userData.role === inputRole) {
+
+                            alert(`Selamat datang kembali, ${userData.nama}!`);
+
                             
-                            // Simpan sesi kecil saja untuk penanda dashboard
-                            localStorage.setItem('loggedInUser', JSON.stringify({
-                                userId: data.user.id_user,
-                                nama: data.user.nama,
-                                role: data.user.role,
-                                semester: data.user.semester
-                            }));
 
-                            // Arahkan ke dashboard masing-masing
-                            if (data.user.role === 'dosen') {
+                            // Set sesi aktif
+
+                            localStorage.setItem('loggedInUser', userDataString);
+
+
+
+                            // Arahkan ke Dashboard masing-masing
+
+                            if (inputRole === 'dosen') {
+
                                 window.location.href = "indexlogindosen.html";
+
                             } else {
-                                if (data.user.semester === "1") window.location.href = "indexsetelahlogin.html"; 
+
+                                if (userData.semester === "1") window.location.href = "indexsetelahlogin.html"; 
+
                                 else window.location.href = "indexsetelahlogin2.html"; 
+
                             }
+
                         } else {
-                            alert(data.message); // Password atau NIM/NIP salah
+
+                            alert("Oops! Password salah atau Anda memilih peran (Dosen/Mahasiswa) yang tidak sesuai.");
+
                         }
-                    })
-                    .catch(err => {
-                        console.error("Error:", err);
-                        alert("Gagal terhubung ke server!");
-                    });
+
+                    } else {
+
+                        alert("Akun tidak ditemukan! Silakan daftar terlebih dahulu.");
+
+                    }
+
                 });
+
             }
+
         });
-    </script>
     </script>
 </body>
 </html>
