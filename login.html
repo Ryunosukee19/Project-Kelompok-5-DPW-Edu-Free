@@ -66,8 +66,8 @@
     </div>
 
     <script>
+        <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // LOGIKA DINAMIS MENGUBAH LABEL NIM/NIP
             const loginRole = document.getElementById('login-role');
             const loginLabelId = document.getElementById('login-label-id');
             const loginInputId = document.getElementById('login-id');
@@ -82,45 +82,55 @@
                 }
             });
 
-            // LOGIKA VERIFIKASI AKUN SAAT TOMBOL MASUK DITEKAN
             const loginForm = document.getElementById('loginForm');
             if (loginForm) {
                 loginForm.addEventListener('submit', function(e) {
                     e.preventDefault(); 
                     
-                    const inputRole = loginRole.value;
-                    const inputId = loginInputId.value;
-                    const inputPassword = document.getElementById('login-password').value;
+                    const loginData = {
+                        role: loginRole.value,
+                        userId: loginInputId.value,
+                        password: document.getElementById('login-password').value
+                    };
 
-                    // MENCARI DATA DI MEMORI BROWSER
-                    const userDataString = localStorage.getItem(inputId);
-
-                    if (userDataString) {
-                        const userData = JSON.parse(userDataString);
-
-                        // Cek apakah Password DAN Peran (Role)-nya cocok
-                        if (userData.password === inputPassword && userData.role === inputRole) {
-                            alert(`Selamat datang kembali, ${userData.nama}!`);
+                    // MENCOCOKKAN DATA DENGAN DATABASE MYSQL
+                    fetch('http://localhost:3000/api/login', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(loginData)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert(`Selamat datang kembali, ${data.user.nama}!`);
                             
-                            // Set sesi aktif
-                            localStorage.setItem('loggedInUser', userDataString);
+                            // Simpan sesi kecil saja untuk penanda dashboard
+                            localStorage.setItem('loggedInUser', JSON.stringify({
+                                userId: data.user.id_user,
+                                nama: data.user.nama,
+                                role: data.user.role,
+                                semester: data.user.semester
+                            }));
 
-                            // Arahkan ke Dashboard masing-masing
-                            if (inputRole === 'dosen') {
+                            // Arahkan ke dashboard masing-masing
+                            if (data.user.role === 'dosen') {
                                 window.location.href = "indexlogindosen.html";
                             } else {
-                                if (userData.semester === "1") window.location.href = "indexsetelahlogin.html"; 
+                                if (data.user.semester === "1") window.location.href = "indexsetelahlogin.html"; 
                                 else window.location.href = "indexsetelahlogin2.html"; 
                             }
                         } else {
-                            alert("Oops! Password salah atau Anda memilih peran (Dosen/Mahasiswa) yang tidak sesuai.");
+                            alert(data.message); // Password atau NIM/NIP salah
                         }
-                    } else {
-                        alert("Akun tidak ditemukan! Silakan daftar terlebih dahulu.");
-                    }
+                    })
+                    .catch(err => {
+                        console.error("Error:", err);
+                        alert("Gagal terhubung ke server!");
+                    });
                 });
             }
         });
+    </script>
     </script>
 </body>
 </html>
