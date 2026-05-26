@@ -75,67 +75,124 @@
         </div>
     </div>
 
-    <script>
         <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Logika Mengubah Form Sesuai Peran (Mahasiswa/Dosen)
+           document.addEventListener('DOMContentLoaded', () => {
+
+            // LOGIKA DINAMIS MENGUBAH FORM BERDASARKAN PERAN
+
             const roleSelect = document.getElementById('role');
+
             const labelId = document.getElementById('label-id');
+
             const inputId = document.getElementById('userId');
+
             const semesterContainer = document.getElementById('semester-container');
+
             const semesterSelect = document.getElementById('semester');
 
+
+
             roleSelect.addEventListener('change', function() {
+
                 if (this.value === 'dosen') {
+
                     labelId.textContent = 'NIP';
+
                     inputId.placeholder = 'Masukkan NIP Anda';
+
                     semesterContainer.style.display = 'none';
+
                     semesterSelect.removeAttribute('required');
+
                 } else {
+
                     labelId.textContent = 'NIM';
+
                     inputId.placeholder = 'Masukkan NIM Anda';
+
                     semesterContainer.style.display = 'block';
+
                     semesterSelect.setAttribute('required', 'true');
+
                 }
+
             });
 
-            // Logika MENGIRIM DATA KE SERVER NODE.JS (Bukan localStorage lagi)
+
+
+            // LOGIKA MENYIMPAN AKUN KE LOCAL STORAGE SAAT DAFTAR
+
             const registerForm = document.getElementById('registerForm');
+
             if (registerForm) {
+
                 registerForm.addEventListener('submit', function(e) {
+
                     e.preventDefault(); 
+
                     
+
+                    const role = roleSelect.value;
+
+                    const nama = document.getElementById('nama').value;
+
+                    const userId = inputId.value; 
+
+                    const password = document.getElementById('password').value;
+
+                    const semester = semesterSelect.value || "-";
+
+
+
                     const userData = {
-                        role: roleSelect.value,
-                        nama: document.getElementById('nama').value,
-                        userId: inputId.value, 
-                        password: document.getElementById('password').value,
-                        semester: semesterSelect.value || "-"
+
+                        role: role,
+
+                        nama: nama,
+
+                        userId: userId,
+
+                        password: password,
+
+                        semester: semester
+
                     };
 
-                    // Lempar data ke Node.js menggunakan Fetch API
-                    fetch('http://localhost:3000/api/register', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(userData)
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if(data.error) {
-                            alert(data.error); // Jika gagal (misal NIM sudah terdaftar)
-                        } else {
-                            alert("Registrasi Berhasil! Silakan Login.");
-                            window.location.href = "login.html"; // Arahkan ke halaman login
-                        }
-                    })
-                    .catch(err => {
-                        console.error("Error:", err);
-                        alert("Gagal terhubung ke server!");
-                    });
+                    
+
+                    // Simpan data akun ke memori dengan kunci NIM/NIP
+
+                    localStorage.setItem(userId, JSON.stringify(userData));
+
+                    
+
+                    // Langsung otomatis login
+
+                    localStorage.setItem('loggedInUser', JSON.stringify(userData));
+
+
+
+                    alert(`Registrasi Berhasil, ${nama}! Anda akan diarahkan ke Dashboard.`);
+
+
+
+                    if (role === 'dosen') {
+
+                        window.location.href = "indexlogindosen.html"; 
+
+                    } else {
+
+                        if (semester === "1") window.location.href = "indexsetelahlogin.html"; 
+
+                        else window.location.href = "indexsetelahlogin2.html"; 
+
+                    }
+
                 });
+
             }
+
         });
-    </script>
     </script>
 </body>
 </html>
