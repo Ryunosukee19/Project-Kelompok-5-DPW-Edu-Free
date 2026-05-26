@@ -1,71 +1,139 @@
 <!DOCTYPE html>
+
 <html lang="id">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Masuk | Edu-Free</title>
+
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     
+
     <style>
+
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+
         body { background-color: #0d1321; color: #ffffff; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+
         .auth-container { width: 100%; padding: 20px; display: flex; justify-content: center; }
+
         .auth-card { background-color: #151e32; padding: 40px; border-radius: 16px; width: 100%; max-width: 450px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 255, 255, 0.05); }
+
         
+
         .logo { font-size: 28px; font-weight: 700; text-align: center; margin-bottom: 20px; }
+
         .logo .edu { color: #38bdf8; } .logo .free { color: #c084fc; }
+
         .auth-title { font-size: 22px; font-weight: 600; text-align: center; margin-bottom: 5px; }
+
         .auth-subtitle { font-size: 13px; color: #9ca3af; text-align: center; margin-bottom: 30px; }
+
         
+
         .input-group { margin-bottom: 20px; transition: all 0.3s ease; }
+
         .input-group label { display: block; font-size: 13px; color: #cbd5e1; margin-bottom: 8px; }
+
         .input-group input, .input-group select { width: 100%; padding: 12px 15px; background-color: #1e293b; border: 1px solid #334155; border-radius: 8px; color: #ffffff; font-size: 14px; outline: none; transition: all 0.3s ease; }
+
         .input-group input:focus, .input-group select:focus { border-color: #38bdf8; box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2); }
+
         .input-group select option { background-color: #1e293b; color: #ffffff; }
+
         
+
         .btn-primary { width: 100%; padding: 14px; background: linear-gradient(135deg, #38bdf8, #0ea5e9); color: white; border: none; border-radius: 30px; font-size: 15px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 15px rgba(14, 165, 233, 0.4); transition: all 0.3s ease; margin-top: 10px; }
+
         .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(14, 165, 233, 0.6); }
+
         
+
         .auth-switch { text-align: center; margin-top: 25px; font-size: 13px; color: #9ca3af; }
+
         .auth-switch a { color: #38bdf8; text-decoration: none; font-weight: 600; }
+
         .auth-switch a:hover { text-decoration: underline; }
+
     </style>
+
 </head>
+
 <body>
 
+
+
     <div class="auth-container">
+
         <div class="auth-card">
+
             <div class="logo"><span class="edu">Edu</span><span class="free">-Free.</span></div>
+
             <h2 class="auth-title">Selamat Datang Kembali!</h2>
+
             <p class="auth-subtitle">Silakan masuk ke akun Anda.</p>
 
+
+
             <form id="loginForm">
+
                 <div class="input-group">
+
                     <label for="login-role">Masuk Sebagai</label>
+
                     <select id="login-role" required>
+
                         <option value="mahasiswa" selected>Mahasiswa</option>
+
                         <option value="dosen">Dosen</option>
+
                     </select>
+
                 </div>
 
+
+
                 <div class="input-group">
+
                     <label for="login-id" id="login-label-id">NIM</label>
+
                     <input type="number" id="login-id" placeholder="Masukkan NIM Anda" required>
+
                 </div>
 
+
+
                 <div class="input-group">
+
                     <label for="login-password">Password</label>
+
                     <input type="password" id="login-password" placeholder="Masukkan Password" required>
+
                 </div>
+
+
 
                 <button type="submit" class="btn-primary">Masuk</button>
+
             </form>
 
+
+
             <p class="auth-switch">Belum punya akun? <a href="register.html">Daftar di sini</a></p>
+
         </div>
+
     </div>
 
+
+
     <script>
+
         document.addEventListener('DOMContentLoaded', () => {
 
             // LOGIKA DINAMIS MENGUBAH LABEL NIM/NIP
@@ -175,6 +243,9 @@
             }
 
         });
+
     </script>
+
 </body>
+
 </html>
