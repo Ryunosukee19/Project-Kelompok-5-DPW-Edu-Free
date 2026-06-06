@@ -69,11 +69,11 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // LOGIKA DINAMIS MENGUBAH LABEL & TIPE INPUT
             const loginRole = document.getElementById('login-role');
             const loginLabelId = document.getElementById('login-label-id');
             const loginInputId = document.getElementById('login-id');
 
+            // Ganti Label dan Tipe Input Berdasarkan Peran
             loginRole.addEventListener('change', function() {
                 if (this.value === 'dosen') {
                     loginLabelId.textContent = 'NIP';
@@ -86,16 +86,16 @@
                 } else if (this.value === 'admin') {
                     loginLabelId.textContent = 'Username Admin';
                     loginInputId.placeholder = 'Ketik Username Rahasia';
-                    loginInputId.type = 'text'; // Karena username admin bisa berupa huruf
+                    loginInputId.type = 'text'; 
                 } else {
                     loginLabelId.textContent = 'NIM';
                     loginInputId.placeholder = 'Masukkan NIM Anda';
                     loginInputId.type = 'number';
                 }
-                loginInputId.value = ''; // Kosongkan kolom setiap ganti peran
+                loginInputId.value = ''; 
             });
 
-            // LOGIKA VERIFIKASI SAAT TOMBOL MASUK DITEKAN
+            // Logika Verifikasi
             const loginForm = document.getElementById('loginForm');
             if (loginForm) {
                 loginForm.addEventListener('submit', function(e) {
@@ -105,81 +105,48 @@
                     const inputId = loginInputId.value;
                     const inputPassword = document.getElementById('login-password').value;
 
-                    // ==========================================
-                    // 1. JALUR KHUSUS ADMIN (Tanpa Database)
-                    // ==========================================
+                    // 1. JALUR KHUSUS ADMIN
                     if (inputRole === 'admin') {
-                        // SILAKAN UBAH USERNAME DAN PASSWORD INI SESUAI KESEPAKATAN KELOMPOK
                         const rahasiaUsername = "admin";
                         const rahasiaPassword = "190207";
 
                         if (inputId === rahasiaUsername && inputPassword === rahasiaPassword) {
                             alert("Akses Diberikan. Selamat Datang, Admin Tertinggi!");
-                            
-                            // Simpan sesi admin
                             localStorage.setItem('loggedInUser', JSON.stringify({
-                                userId: inputId,
-                                nama: "Super Admin",
-                                role: "admin",
-                                semester: "-",
-                                matkul: []
+                                userId: inputId, nama: "Super Admin", role: "admin", semester: "-", matkul: []
                             }));
-
-                            // Arahkan ke file Dashboard Admin
                             window.location.href = "index.html"; 
                         } else {
                             alert("Akses Ditolak! Username atau Password Admin salah.");
                         }
-                        return; // Berhenti di sini, tidak lanjut ke Node.js
+                        return; 
                     }
 
-                    // ==========================================
-                    // 2. JALUR MAHASISWA, DOSEN & ASPRAK (Pakai Database Node.js)
-                    // ==========================================
-                    const loginData = {
-                        role: inputRole,
-                        userId: inputId,
-                        password: inputPassword
-                    };
+                    // 2. JALUR MAHASISWA, DOSEN & ASPRAK (Murni Menggunakan localStorage)
+                    const userDataString = localStorage.getItem(inputId);
 
-                    fetch('http://localhost:3000/api/login', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(loginData)
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            alert(`Selamat datang kembali, ${data.user.nama}!`);
+                    if (userDataString) {
+                        const userData = JSON.parse(userDataString);
+
+                        if (userData.password === inputPassword && userData.role === inputRole) {
+                            alert(`Selamat datang kembali, ${userData.nama}!`);
                             
-                            // Parsing array Matkul dari database
-                            let matkulArray = [];
-                            try { matkulArray = JSON.parse(data.user.matkul); } catch(err) {}
+                            // Set sesi aktif agar dashboard bisa membacanya
+                            localStorage.setItem('loggedInUser', userDataString);
 
-                            // Set sesi aktif ke LocalStorage agar dashboard bisa membacanya
-                            localStorage.setItem('loggedInUser', JSON.stringify({
-                                userId: data.user.id_user,
-                                nama: data.user.nama,
-                                role: data.user.role,
-                                semester: data.user.semester,
-                                matkul: matkulArray
-                            }));
-
-                            // Arahkan ke Dashboard sesuai peran
-                            if (data.user.role === 'dosen' || data.user.role === 'asprak') {
+                            // Arahkan ke Dashboard
+                            if (inputRole === 'dosen' || inputRole === 'asprak') {
                                 window.location.href = "indexlogindosen.html";
                             } else {
-                                if (data.user.semester === "1") window.location.href = "indexsetelahlogin.html"; 
+                                if (userData.semester === "1") window.location.href = "indexsetelahlogin.html"; 
                                 else window.location.href = "indexsetelahlogin2.html"; 
                             }
                         } else {
-                            alert(data.message); // Muncul jika Password salah atau NIM tidak terdaftar
+                            alert("Oops! Password salah atau Anda memilih peran yang tidak sesuai.");
                         }
-                    })
-                    .catch(err => {
-                        console.error("Error Fetch:", err);
-                        alert("Gagal terhubung ke server! Pastikan MySQL dan Node.js sudah menyala.");
-                    });
+                    } else {
+                        alert("Akun tidak ditemukan! Silakan daftar terlebih dahulu.");
+                    }
                 });
             }
         });
