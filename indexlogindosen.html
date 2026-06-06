@@ -18,7 +18,7 @@
             --bg-card: #1f2937;
             --primary: #6366f1; 
             --primary-hover: #4f46e5;
-            --secondary: #10b981; /* Emerald accent khusus Dosen */
+            --secondary: #10b981; 
             --text-main: #f8fafc;
             --text-muted: #94a3b8; 
             --border-color: rgba(255, 255, 255, 0.08); 
@@ -26,6 +26,7 @@
             --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
             --shadow-lg: 0 10px 25px -3px rgba(0, 0, 0, 0.5);
             --banner-gradient: linear-gradient(135deg, #064e3b 0%, #022c22 100%);
+            --danger-red: #ef4444;
         }
 
         body:has(#theme-toggle:checked) {
@@ -172,6 +173,13 @@
         .item-info h3 { font-size: 1.1rem; margin-bottom: 4px; color: var(--text-main); font-weight: 700;}
         .item-info p { font-size: 0.85rem; color: var(--text-muted); font-weight: 500;}
 
+        /* TABEL NILAI / PENGUMPULAN */
+        .styled-table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 0.9em; border-radius: 12px; overflow: hidden; background-color: var(--bg-card); }
+        .styled-table thead tr { background-color: var(--primary); color: #ffffff; text-align: left; }
+        .styled-table th, .styled-table td { padding: 15px 20px; border-bottom: 1px solid var(--border-color); }
+        .styled-table tbody tr:hover { background-color: rgba(255, 255, 255, 0.05); }
+        .input-nilai { width: 80px; padding: 8px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-body); color: var(--text-main); text-align: center; }
+
         /* FORUM DISKUSI DOSEN */
         .chat-box { border: 1px solid var(--border-color); border-radius: 24px; height: 500px; display: flex; flex-direction: column; background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden;}
         .chat-header-info { padding: 15px 25px; border-bottom: 1px solid var(--border-color); background: rgba(0,0,0,0.02); display: flex; align-items: center; gap: 10px;}
@@ -219,7 +227,8 @@
                     <span class="arrow"><i class="fas fa-chevron-down"></i></span>
                 </a>
                 <ul class="dropdown-container show" id="menu-matkul-saya">
-                    </ul>
+                    <!-- List Kelas -->
+                </ul>
             </li>
             
             <li><a href="#" class="btn-logout" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Keluar</a></li>
@@ -275,82 +284,99 @@
             <nav class="tabs">
                 <button class="tab-btn active" onclick="bukaTabKelas('tab-materi', this)"><i class="fas fa-file-upload"></i> Kelola Materi</button>
                 <button class="tab-btn" onclick="bukaTabKelas('tab-tugas', this)"><i class="fas fa-tasks"></i> Kelola Tugas</button>
-                <button class="tab-btn" onclick="bukaTabKelas('tab-kuis', this)"><i class="fas fa-question-circle"></i> Kuis & Ujian</button>
-                <button class="tab-btn" onclick="bukaTabKelas('tab-nilai', this)"><i class="fas fa-star-half-alt"></i> Input Nilai</button>
                 <button class="tab-btn" onclick="bukaTabKelas('tab-absensi', this)"><i class="fas fa-user-check"></i> Absensi</button>
+                <button class="tab-btn" onclick="bukaTabKelas('tab-nilai', this)"><i class="fas fa-star-half-alt"></i> Input Nilai</button>
                 <button class="tab-btn" onclick="bukaTabKelas('tab-forum', this)"><i class="fas fa-comments"></i> Forum Diskusi</button>
             </nav>
 
+            <!-- TAB MATERI -->
             <div id="tab-materi" class="tab-content active">
                 <h2 class="section-title-tab"><i class="fas fa-folder-plus" style="color: var(--secondary);"></i> Unggah Materi Baru</h2>
                 <div class="upload-form-card">
                     <div class="input-group">
                         <label>Judul Materi</label>
-                        <input type="text" placeholder="Cth: Pertemuan 1 - Pengenalan Algoritma">
+                        <input type="text" id="input-judul-materi" placeholder="Cth: Pertemuan 1 - Pengenalan Algoritma">
                     </div>
                     <div class="input-group">
-                        <label>File Materi (PDF/PPTX)</label>
-                        <input type="file" style="padding: 10px;">
+                        <label>File Materi (PDF/PPTX - Max 2MB untuk Simulasi)</label>
+                        <input type="file" id="input-file-materi" style="padding: 10px;">
                     </div>
-                    <button class="btn-action"><i class="fas fa-upload"></i> Unggah Materi</button>
+                    <button class="btn-action" id="btn-upload-materi"><i class="fas fa-upload"></i> Unggah Materi</button>
                 </div>
                 <h3 style="margin-bottom: 15px; font-size:1.1rem;">Riwayat Materi Terunggah</h3>
                 <div id="konten-materi-list">
-                    <p style="color:var(--text-muted); font-size:0.9rem;">Belum ada materi di kelas ini.</p>
+                    <!-- Render by JS -->
                 </div>
             </div>
 
+            <!-- TAB TUGAS -->
             <div id="tab-tugas" class="tab-content">
                 <h2 class="section-title-tab"><i class="fas fa-clipboard-list" style="color: var(--secondary);"></i> Buat Tugas Baru</h2>
                 <div class="upload-form-card">
                     <div class="input-group">
                         <label>Judul Tugas</label>
-                        <input type="text" placeholder="Cth: Tugas Praktikum 1">
+                        <input type="text" id="input-judul-tugas" placeholder="Cth: Tugas Praktikum 1">
                     </div>
                     <div class="input-group">
                         <label>Batas Waktu (Deadline)</label>
-                        <input type="date">
+                        <input type="date" id="input-deadline-tugas">
                     </div>
-                    <button class="btn-action"><i class="fas fa-paper-plane"></i> Publikasikan Tugas</button>
+                    <button class="btn-action" id="btn-upload-tugas"><i class="fas fa-paper-plane"></i> Publikasikan Tugas</button>
                 </div>
                 <h3 style="margin-bottom: 15px; font-size:1.1rem;">Tugas Aktif</h3>
                 <div id="konten-tugas-list">
-                    <p style="color:var(--text-muted); font-size:0.9rem;">Belum ada tugas di kelas ini.</p>
+                    <!-- Render by JS -->
                 </div>
             </div>
 
-            <div id="tab-kuis" class="tab-content">
-                <h2 class="section-title-tab"><i class="fas fa-stopwatch" style="color: var(--secondary);"></i> Panel Evaluasi</h2>
-                <div class="upload-form-card">
-                    <p style="color:var(--text-muted); margin-bottom:15px;">Gunakan menu ini untuk merilis link Kuis atau Ujian (UTS/UAS) ke mahasiswa.</p>
-                    <div class="input-group">
-                        <label>Jenis Evaluasi</label>
-                        <select>
-                            <option>Kuis Singkat</option>
-                            <option>Ujian Tengah Semester (UTS)</option>
-                            <option>Ujian Akhir Semester (UAS)</option>
-                        </select>
-                    </div>
-                    <button class="btn-action"><i class="fas fa-cogs"></i> Buat Sesi Ujian</button>
-                </div>
-            </div>
-
-            <div id="tab-nilai" class="tab-content">
-                <h2 class="section-title-tab"><i class="fas fa-chart-bar" style="color: var(--secondary);"></i> Rekapitulasi & Input Nilai</h2>
-                <div class="upload-form-card">
-                    <p style="color:var(--text-muted); margin-bottom:15px;">Pilih tugas untuk mulai memasukkan nilai mahasiswa.</p>
-                    <button class="btn-action" style="background:var(--primary);"><i class="fas fa-table"></i> Buka Spreadsheet Penilaian</button>
-                </div>
-            </div>
-
+            <!-- TAB ABSENSI -->
             <div id="tab-absensi" class="tab-content">
                 <h2 class="section-title-tab"><i class="fas fa-user-check" style="color: var(--secondary);"></i> Manajemen Kehadiran</h2>
                 <div class="upload-form-card">
-                    <button class="btn-action" style="background:#ef4444;"><i class="fas fa-door-open"></i> Buka Sesi Presensi Hari Ini</button>
-                    <button class="btn-action" style="background:transparent; color:var(--text-main); border:1px solid var(--border-color); margin-left:10px;"><i class="fas fa-file-excel"></i> Ekspor Laporan Kehadiran</button>
+                    <p style="color:var(--text-muted); margin-bottom:15px;">Klik tombol di bawah untuk membuka sesi absensi hari ini. Mahasiswa yang *login* akan melihat tombol "Hadir" pada kelas ini.</p>
+                    <button class="btn-action" id="btn-buka-absensi" style="background:#ef4444;"><i class="fas fa-door-open"></i> Buka Sesi Presensi Hari Ini</button>
+                </div>
+                <h3 style="margin-bottom: 15px; font-size:1.1rem;">Riwayat Sesi Absensi</h3>
+                <div id="konten-absensi-list">
+                    <!-- Render by JS -->
                 </div>
             </div>
 
+            <!-- TAB NILAI -->
+            <div id="tab-nilai" class="tab-content">
+                <h2 class="section-title-tab"><i class="fas fa-chart-bar" style="color: var(--secondary);"></i> Rekapitulasi & Input Nilai</h2>
+                <div class="upload-form-card">
+                    <div class="input-group">
+                        <label>Pilih Tugas untuk Dinilai</label>
+                        <select id="select-tugas-nilai">
+                            <option value="">-- Pilih Tugas --</option>
+                        </select>
+                    </div>
+                    <button class="btn-action" id="btn-load-pengumpulan" style="background:var(--primary);"><i class="fas fa-table"></i> Buka Daftar Pengumpulan</button>
+                </div>
+                
+                <div id="panel-penilaian" style="display:none;">
+                    <h3 style="margin-bottom: 15px; font-size:1.1rem;" id="judul-tabel-nilai">Daftar Pengumpulan Mahasiswa</h3>
+                    <div style="overflow-x:auto;">
+                        <table class="styled-table">
+                            <thead>
+                                <tr>
+                                    <th>Nama Mahasiswa</th>
+                                    <th>File Jawaban</th>
+                                    <th>Waktu Pengumpulan</th>
+                                    <th>Nilai</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody-pengumpulan">
+                                <!-- Data Pengumpulan from JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB FORUM -->
             <div id="tab-forum" class="tab-content">
                 <h2 class="section-title-tab" style="margin-bottom: 10px;"><i class="fas fa-comments" style="color: var(--secondary);"></i> Moderasi Forum <span id="forum-matkul-name" style="color:var(--primary); margin-left: 5px;"></span></h2>
                 <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 25px; font-weight: 500;">Anda memiliki kendali penuh atas ruang diskusi kelas ini.</p>
@@ -360,7 +386,8 @@
                         <i class="fas fa-chalkboard-teacher"></i> <span>Dosen dapat memantau dan menjawab pertanyaan mahasiswa secara real-time.</span>
                     </div>
                     <div class="chat-messages" id="chat-messages">
-                        </div>
+                        <!-- Chat render here -->
+                    </div>
                     <form class="chat-input-area" id="form-chat">
                         <input type="text" id="chat-input" placeholder="Ketik balasan atau pengumuman Anda di sini..." autocomplete="off">
                         <button type="submit"><i class="fas fa-paper-plane"></i></button>
@@ -373,7 +400,9 @@
     </main>
 
     <script>
+        // ====================================================================
         // 1. INISIALISASI & KEAMANAN DOSEN
+        // ====================================================================
         const activeUserString = localStorage.getItem('loggedInUser');
         if (!activeUserString) { window.location.href = "login.html"; }
         const user = JSON.parse(activeUserString);
@@ -386,13 +415,15 @@
         document.getElementById('top-role').textContent = user.role === 'dosen' ? 'Dosen Pengampu' : 'Asisten Praktikum';
         document.getElementById('welcome-message').innerHTML = `Selamat Datang Bapak/Ibu <b>${user.nama}</b>. Silakan pilih kelas di menu samping untuk mengelola materi dan tugas.`;
 
-        // 2. SPA & SIDEBAR
+        let activeMatkulGlobal = ""; 
+
+        // ====================================================================
+        // 2. SPA & SIDEBAR NAVIGATION
+        // ====================================================================
         const menuContainer = document.getElementById('menu-matkul-saya');
         const sectionBeranda = document.getElementById('section-beranda');
         const sectionMatkul = document.getElementById('section-matkul');
         const btnMenuBeranda = document.getElementById('menu-beranda');
-        
-        let activeMatkulGlobal = ""; 
 
         btnMenuBeranda.addEventListener('click', (e) => {
             e.preventDefault();
@@ -402,6 +433,7 @@
             btnMenuBeranda.classList.add('active');
         });
 
+        // Load Dosen's classes into sidebar
         if (user.matkul && user.matkul.length > 0) {
             menuContainer.innerHTML = ''; 
             user.matkul.forEach(mk => {
@@ -426,27 +458,26 @@
             });
         }
 
-        // 3. FUNGSI MERENDER DATA KELAS SPESIFIK
+        // ====================================================================
+        // 3. FUNGSI UTAMA: BUKA KELAS DAN RENDER DATA DARI LOCAL STORAGE
+        // ====================================================================
         function bukaHalamanMatkul(namaMatkul) {
             activeMatkulGlobal = namaMatkul; 
             document.getElementById('matkul-title-text').textContent = namaMatkul;
             document.getElementById('forum-matkul-name').textContent = `[ ${namaMatkul} ]`;
 
+            // Default to Materi tab
             const tabMateriBtn = document.querySelector('.tabs button');
             bukaTabKelas('tab-materi', tabMateriBtn);
 
-            // Fetch Mock Data (Nantinya diintegrasikan dengan logika upload sungguhan)
-            renderDaftarTugas(namaMatkul);
-            renderDaftarMateri(namaMatkul);
-            loadForumMessages(namaMatkul);
-        }
+            // Hide Nilai panel originally
+            document.getElementById('panel-penilaian').style.display = 'none';
 
-        // Fungsi Render List Dummy untuk preview UI
-        function renderDaftarTugas(matkul) {
-            document.getElementById('konten-tugas-list').innerHTML = `<div class="item-card"><div class="item-info"><h3>Tugas HTML Dasar (${matkul})</h3><p>Aktif - Deadline: Besok</p></div><button class="btn-action" style="padding:8px 15px; font-size:0.8rem; background:var(--bg-body); color:var(--danger-red); border:1px solid var(--danger-red);"><i class="fas fa-trash"></i> Hapus</button></div>`;
-        }
-        function renderDaftarMateri(matkul) {
-            document.getElementById('konten-materi-list').innerHTML = `<div class="item-card"><div class="item-info"><h3>Modul 1 ${matkul}.pdf</h3><p>Diunggah hari ini</p></div><button class="btn-action" style="padding:8px 15px; font-size:0.8rem; background:var(--bg-body); color:var(--danger-red); border:1px solid var(--danger-red);"><i class="fas fa-trash"></i> Hapus</button></div>`;
+            // Render all modules
+            renderMateri();
+            renderTugas();
+            renderAbsensi();
+            loadForumMessages(namaMatkul);
         }
 
         function bukaTabKelas(tabId, btnElement) {
@@ -459,10 +490,271 @@
             if(tabId === 'tab-forum') {
                 const chatBox = document.getElementById('chat-messages');
                 chatBox.scrollTop = chatBox.scrollHeight;
+            } else if (tabId === 'tab-nilai') {
+                populateDropdownTugas(); // Update dropdown when opening Tab Nilai
             }
         }
 
+        // Helper: Generate ID Unik
+        function generateId() {
+            return 'ID_' + Math.random().toString(36).substr(2, 9);
+        }
+
+        // ====================================================================
+        // MODUL 1: MATERI (Upload & Tampil)
+        // ====================================================================
+        document.getElementById('btn-upload-materi').addEventListener('click', function() {
+            const judul = document.getElementById('input-judul-materi').value;
+            const fileInput = document.getElementById('input-file-materi');
+            
+            if (!judul) { alert("Judul materi wajib diisi!"); return; }
+
+            const materiBaru = {
+                id: generateId(),
+                judul: judul,
+                tanggal: new Date().toLocaleDateString('id-ID'),
+                fileName: "Materi Teks (Tanpa File Lampiran)"
+            };
+
+            const saveAndRender = (base64) => {
+                if(base64) {
+                    materiBaru.fileBase64 = base64;
+                    materiBaru.fileName = fileInput.files[0].name;
+                }
+                
+                let dbMateri = JSON.parse(localStorage.getItem(`materi_${activeMatkulGlobal}`)) || [];
+                dbMateri.push(materiBaru);
+                
+                try {
+                    localStorage.setItem(`materi_${activeMatkulGlobal}`, JSON.stringify(dbMateri));
+                    alert("Materi berhasil diunggah!");
+                    document.getElementById('input-judul-materi').value = '';
+                    fileInput.value = '';
+                    renderMateri();
+                } catch (e) {
+                    alert("Gagal mengunggah! Ukuran file terlalu besar untuk Local Storage.");
+                }
+            };
+
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) { saveAndRender(e.target.result); };
+                reader.readAsDataURL(fileInput.files[0]);
+            } else {
+                saveAndRender(null);
+            }
+        });
+
+        function renderMateri() {
+            const list = document.getElementById('konten-materi-list');
+            let dbMateri = JSON.parse(localStorage.getItem(`materi_${activeMatkulGlobal}`)) || [];
+            
+            if (dbMateri.length === 0) {
+                list.innerHTML = `<p style="color:var(--text-muted); font-size:0.9rem;">Belum ada materi di kelas ini.</p>`;
+                return;
+            }
+
+            list.innerHTML = '';
+            [...dbMateri].reverse().forEach((item, index) => {
+                // Calculate original index for deletion
+                const origIndex = dbMateri.length - 1 - index; 
+                let downloadBtn = item.fileBase64 ? `<a href="${item.fileBase64}" download="${item.fileName}" class="btn-action" style="padding:6px 12px; font-size:0.8rem; margin-right:5px; background:var(--primary);"><i class="fas fa-download"></i> File</a>` : '';
+                
+                list.innerHTML += `
+                    <div class="item-card">
+                        <div class="item-info">
+                            <h3>${item.judul}</h3>
+                            <p><i class="fas fa-clock"></i> Diunggah: ${item.tanggal} | 📎 ${item.fileName}</p>
+                        </div>
+                        <div>
+                            ${downloadBtn}
+                            <button onclick="hapusData('materi', ${origIndex})" class="btn-action" style="padding:6px 12px; font-size:0.8rem; background:transparent; color:var(--danger-red); border:1px solid var(--danger-red);"><i class="fas fa-trash"></i> Hapus</button>
+                        </div>
+                    </div>`;
+            });
+        }
+
+        // ====================================================================
+        // MODUL 2: TUGAS (Upload & Tampil)
+        // ====================================================================
+        document.getElementById('btn-upload-tugas').addEventListener('click', function() {
+            const judul = document.getElementById('input-judul-tugas').value;
+            const deadline = document.getElementById('input-deadline-tugas').value;
+            
+            if (!judul || !deadline) { alert("Judul dan Deadline wajib diisi!"); return; }
+
+            const tugasBaru = {
+                id: generateId(),
+                judul: judul,
+                deadline: deadline,
+                tanggalDibuat: new Date().toLocaleDateString('id-ID')
+            };
+
+            let dbTugas = JSON.parse(localStorage.getItem(`tugas_${activeMatkulGlobal}`)) || [];
+            dbTugas.push(tugasBaru);
+            localStorage.setItem(`tugas_${activeMatkulGlobal}`, JSON.stringify(dbTugas));
+            
+            alert("Tugas berhasil dipublikasikan!");
+            document.getElementById('input-judul-tugas').value = '';
+            document.getElementById('input-deadline-tugas').value = '';
+            renderTugas();
+        });
+
+        function renderTugas() {
+            const list = document.getElementById('konten-tugas-list');
+            let dbTugas = JSON.parse(localStorage.getItem(`tugas_${activeMatkulGlobal}`)) || [];
+            
+            if (dbTugas.length === 0) {
+                list.innerHTML = `<p style="color:var(--text-muted); font-size:0.9rem;">Belum ada tugas di kelas ini.</p>`;
+                return;
+            }
+
+            list.innerHTML = '';
+            [...dbTugas].reverse().forEach((item, index) => {
+                const origIndex = dbTugas.length - 1 - index; 
+                list.innerHTML += `
+                    <div class="item-card">
+                        <div class="item-info">
+                            <h3>${item.judul}</h3>
+                            <p style="color:var(--danger-red); font-weight:700;"><i class="fas fa-exclamation-circle"></i> Deadline: ${item.deadline}</p>
+                        </div>
+                        <button onclick="hapusData('tugas', ${origIndex})" class="btn-action" style="padding:6px 12px; font-size:0.8rem; background:transparent; color:var(--danger-red); border:1px solid var(--danger-red);"><i class="fas fa-trash"></i> Hapus</button>
+                    </div>`;
+            });
+        }
+
+        // ====================================================================
+        // MODUL 3: ABSENSI (Buka Sesi)
+        // ====================================================================
+        document.getElementById('btn-buka-absensi').addEventListener('click', function() {
+            let dbAbsensi = JSON.parse(localStorage.getItem(`absensi_${activeMatkulGlobal}`)) || [];
+            const todayDate = new Date().toLocaleDateString('id-ID');
+
+            // Check if already open today
+            if(dbAbsensi.some(sesi => sesi.tanggal === todayDate)) {
+                alert("Sesi presensi untuk hari ini sudah dibuka!");
+                return;
+            }
+
+            dbAbsensi.push({
+                id: generateId(),
+                tanggal: todayDate,
+                status: 'Terbuka'
+            });
+            
+            localStorage.setItem(`absensi_${activeMatkulGlobal}`, JSON.stringify(dbAbsensi));
+            alert(`Sesi absensi untuk tanggal ${todayDate} berhasil dibuka! Mahasiswa sekarang bisa klik Hadir.`);
+            renderAbsensi();
+        });
+
+        function renderAbsensi() {
+            const list = document.getElementById('konten-absensi-list');
+            let dbAbsensi = JSON.parse(localStorage.getItem(`absensi_${activeMatkulGlobal}`)) || [];
+            
+            if (dbAbsensi.length === 0) {
+                list.innerHTML = `<p style="color:var(--text-muted); font-size:0.9rem;">Belum ada riwayat sesi absensi.</p>`;
+                return;
+            }
+
+            list.innerHTML = '';
+            [...dbAbsensi].reverse().forEach(item => {
+                list.innerHTML += `
+                    <div class="item-card">
+                        <div class="item-info">
+                            <h3>Sesi Tanggal: ${item.tanggal}</h3>
+                            <p>Status: <span style="color:var(--secondary); font-weight:bold;">${item.status}</span></p>
+                        </div>
+                    </div>`;
+            });
+        }
+
+        // ====================================================================
+        // MODUL 4: PENILAIAN (Melihat Pengumpulan Mahasiswa)
+        // ====================================================================
+        function populateDropdownTugas() {
+            const select = document.getElementById('select-tugas-nilai');
+            let dbTugas = JSON.parse(localStorage.getItem(`tugas_${activeMatkulGlobal}`)) || [];
+            
+            select.innerHTML = '<option value="">-- Pilih Tugas --</option>';
+            dbTugas.forEach(t => {
+                select.innerHTML += `<option value="${t.id}">${t.judul}</option>`;
+            });
+        }
+
+        document.getElementById('btn-load-pengumpulan').addEventListener('click', function() {
+            const tugasId = document.getElementById('select-tugas-nilai').value;
+            if(!tugasId) { alert("Silakan pilih tugas terlebih dahulu!"); return; }
+
+            document.getElementById('panel-penilaian').style.display = 'block';
+            renderTabelPengumpulan(tugasId);
+        });
+
+        function renderTabelPengumpulan(tugasId) {
+            const tbody = document.getElementById('tbody-pengumpulan');
+            // Data pengumpulan akan disimpan mahasiswa dengan key: pengumpulan_IDTUGAS
+            let pengumpulanTugas = JSON.parse(localStorage.getItem(`pengumpulan_${tugasId}`)) || [];
+
+            if (pengumpulanTugas.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:var(--text-muted);">Belum ada mahasiswa yang mengumpulkan tugas ini.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = '';
+            pengumpulanTugas.forEach((p, index) => {
+                let currentNilai = p.nilai ? p.nilai : '';
+                let fileBtn = p.fileBase64 ? `<a href="${p.fileBase64}" download="${p.fileName}" style="color:var(--primary); font-weight:bold;"><i class="fas fa-download"></i> Unduh File</a>` : 'Tidak ada file';
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td style="font-weight:bold;">${p.namaMahasiswa}</td>
+                        <td>${fileBtn}</td>
+                        <td>${p.waktu}</td>
+                        <td>
+                            <input type="number" class="input-nilai" id="nilai_${tugasId}_${index}" value="${currentNilai}" placeholder="0-100">
+                        </td>
+                        <td>
+                            <button onclick="simpanNilai('${tugasId}', ${index})" class="btn-action" style="padding:6px 12px; font-size:0.8rem;"><i class="fas fa-save"></i> Simpan</button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        // Dipanggil dari tombol "Simpan" di baris tabel
+        function simpanNilai(tugasId, index) {
+            let inputElement = document.getElementById(`nilai_${tugasId}_${index}`);
+            let nilaiBaru = inputElement.value;
+
+            if(nilaiBaru === "" || nilaiBaru < 0 || nilaiBaru > 100) {
+                alert("Masukkan angka nilai valid (0 - 100)!"); return;
+            }
+
+            let pengumpulanTugas = JSON.parse(localStorage.getItem(`pengumpulan_${tugasId}`));
+            pengumpulanTugas[index].nilai = nilaiBaru;
+            localStorage.setItem(`pengumpulan_${tugasId}`, JSON.stringify(pengumpulanTugas));
+            
+            alert(`Nilai untuk ${pengumpulanTugas[index].namaMahasiswa} berhasil disimpan!`);
+            // Opsional: ganti warna background baris agar terlihat sudah dinilai
+            inputElement.style.borderColor = "var(--secondary)";
+        }
+
+        // ====================================================================
+        // FUNGSI HAPUS GLOBAL (Materi & Tugas)
+        // ====================================================================
+        function hapusData(tipe, index) {
+            if(confirm(`Yakin ingin menghapus ${tipe} ini?`)) {
+                let db = JSON.parse(localStorage.getItem(`${tipe}_${activeMatkulGlobal}`));
+                db.splice(index, 1);
+                localStorage.setItem(`${tipe}_${activeMatkulGlobal}`, JSON.stringify(db));
+                
+                if(tipe === 'materi') renderMateri();
+                if(tipe === 'tugas') renderTugas();
+            }
+        }
+
+        // ====================================================================
         // 4. FORUM DISKUSI DOSEN
+        // ====================================================================
         const chatMessages = document.getElementById('chat-messages');
         const formChat = document.getElementById('form-chat');
         const chatInput = document.getElementById('chat-input');
@@ -507,44 +799,6 @@
             chatInput.value = '';
             loadForumMessages(activeMatkulGlobal); 
         });
-
-        // 5. NOTIFIKASI
-        const notifTrigger = document.getElementById('notif-trigger');
-        const notifDropdown = document.getElementById('notifDropdown');
-        notifTrigger.addEventListener('click', (e) => {
-            e.stopPropagation();
-            notifDropdown.classList.toggle('show');
-        });
-        document.addEventListener('click', (e) => {
-            if (!notifDropdown.contains(e.target) && !notifTrigger.contains(e.target)) {
-                notifDropdown.classList.remove('show');
-            }
-        });
-
-        function loadNotifikasiDosen() {
-            try {
-                const dbForumNotif = JSON.parse(localStorage.getItem(`forum_${activeMatkulGlobal}`)) || [];
-                const pesanBaru = dbForumNotif.filter(msg => msg.userId !== user.userId);
-                
-                const notifCountBadge = document.getElementById('notifCount');
-                const storageKeyReadCount = `notif_read_count_dosen_${user.userId}_${activeMatkulGlobal}`;
-                let readCount = parseInt(localStorage.getItem(storageKeyReadCount)) || 0;
-                let unreadCount = pesanBaru.length - readCount;
-
-                if (unreadCount > 0) {
-                    notifCountBadge.textContent = unreadCount;
-                    notifCountBadge.style.display = "flex";
-                } else {
-                    notifCountBadge.style.display = "none";
-                }
-
-                document.getElementById('mark-read-btn').onclick = function() {
-                    localStorage.setItem(storageKeyReadCount, pesanBaru.length); 
-                    notifCountBadge.style.display = "none";
-                };
-            } catch (e) {}
-        }
-        setInterval(loadNotifikasiDosen, 2000);
 
         // Sidebar & Theme Logic
         var dropdowns = document.getElementsByClassName("dropdown-btn");
