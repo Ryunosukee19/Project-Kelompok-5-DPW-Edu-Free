@@ -12,14 +12,15 @@
            TEMA & RESET DASAR (Modern UI/UX)
         ========================================= */
         :root {
-            /* TEMA GELAP (Sesuai Screenshot) */
             --bg-body: #0f172a; 
             --bg-sidebar: #1e293b; 
             --bg-card: #1e293b;
             --bg-card-hover: #334155;
-            --primary: #38bdf8; /* Light Blue */
+            --primary: #38bdf8; 
             --primary-hover: #0ea5e9;
-            --secondary: #818cf8; /* Soft Purple */
+            --secondary: #818cf8; 
+            --success: #10b981;
+            --warning: #f59e0b;
             --text-main: #f8fafc;
             --text-muted: #94a3b8; 
             --border-color: rgba(255, 255, 255, 0.05); 
@@ -30,7 +31,6 @@
         }
 
         body:has(#theme-toggle:checked) {
-            /* TEMA TERANG */
             --bg-body: #f8fafc; 
             --bg-sidebar: #ffffff; 
             --bg-card: #ffffff;
@@ -100,7 +100,7 @@
         .header-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid transparent; background-color: #fff; }
 
         /* =========================================
-           1. SECTION BERANDA (HERO DASHBOARD)
+           1. SECTION BERANDA
         ========================================= */
         #section-beranda { display: flex; align-items: center; justify-content: space-between; gap: 50px; background: var(--bg-card); padding: 60px 50px; border-radius: 30px; border: 1px solid var(--border-color); width: 100%; min-height: 450px; position: relative; overflow: hidden; box-shadow: var(--shadow-sm); margin-top: 50px;}
         
@@ -122,10 +122,7 @@
         #section-matkul { display: none; width: 100%; animation: fadeIn 0.4s ease; margin-top: 60px; padding-top: 20px;}
         @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* Banner Header Matkul Sesuai Gambar */
         .matkul-header { display: flex; flex-direction: column; justify-content: center; margin-bottom: 25px; padding: 45px 50px; border-radius: 24px; background: var(--banner-gradient); box-shadow: var(--shadow-sm); position: relative; overflow: hidden; border: 1px solid var(--border-color);}
-        
-        /* Efek Dot Pola di Background Banner */
         .matkul-header::after { content: ''; position: absolute; right: 0; top: 0; width: 40%; height: 100%; background-image: radial-gradient(rgba(255,255,255,0.08) 2px, transparent 2px); background-size: 20px 20px; pointer-events: none;}
 
         .matkul-title-box { z-index: 2; position: relative; }
@@ -134,7 +131,7 @@
         .matkul-title-box p { color: rgba(255,255,255,0.7); font-size: 1.05rem; font-weight: 500; display: flex; align-items: center; gap: 8px;}
         body:has(#theme-toggle:checked) .matkul-title-box p { color: var(--text-muted); }
         
-        /* TABS (Segmented Control Sesuai Gambar) */
+        /* TABS */
         .tabs { display: inline-flex; gap: 5px; background: rgba(255,255,255,0.02); padding: 8px; border-radius: 16px; border: 1px solid var(--border-color); margin-bottom: 35px; box-shadow: var(--shadow-sm); }
         body:has(#theme-toggle:checked) .tabs { background: #ffffff; }
         
@@ -143,41 +140,30 @@
         body:has(#theme-toggle:checked) .tab-btn:hover { background: rgba(0,0,0,0.03); }
         .tab-btn.active { background: var(--primary); color: #fff; box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3); }
 
-        /* KONTEN TAB */
         .tab-content { display: none; background: transparent; min-height: 400px; animation: fadeIn 0.3s ease;}
         .tab-content.active { display: block; }
-        
-        /* Judul Section Tab Sesuai Gambar (Modul & Referensi Belajar) */
         .section-title-tab { margin-bottom: 25px; font-size: 1.6rem; color: var(--text-main); font-weight: 800; display: flex; align-items: center; gap: 12px;}
 
-        /* =========================================
-           GRID MATERI (Sesuai Gambar Kedua)
-        ========================================= */
-        .materi-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 25px; }
-        
-        .materi-card { background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-color); border-radius: 20px; padding: 45px 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: all 0.3s ease; cursor: pointer; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.1);}
-        body:has(#theme-toggle:checked) .materi-card { background: var(--bg-card); box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
-        
-        .materi-card:hover { transform: translateY(-6px); border-color: var(--primary); background: rgba(56, 189, 248, 0.05); }
-        
-        .materi-icon { font-size: 3.8rem; color: #cbd5e1; margin-bottom: 20px; transition: 0.3s; }
-        body:has(#theme-toggle:checked) .materi-icon { color: #94a3b8; }
-        .materi-card:hover .materi-icon { color: var(--primary); transform: scale(1.1); }
-        
-        .materi-title { font-size: 1.5rem; font-weight: 800; margin-bottom: 10px; color: var(--text-main); }
-        .materi-link { color: var(--primary); font-weight: 800; font-size: 1.2rem; }
-
-        /* KARTU ITEM LIST (Tugas/Absensi Lama) */
+        /* ITEM CARD LIST */
         .item-card { background: var(--bg-card); border: 1px solid var(--border-color); padding: 24px 30px; border-radius: 20px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; transition: all 0.3s ease; }
         .item-card:hover { transform: translateY(-2px); border-color: rgba(56, 189, 248, 0.3); }
         .item-info h3 { font-size: 1.15rem; margin-bottom: 6px; color: var(--text-main); font-weight: 700;}
         .item-info p { font-size: 0.9rem; color: var(--text-muted); font-weight: 500; display: flex; align-items: center; gap: 6px;}
-        .btn-action { background: rgba(56, 189, 248, 0.1); color: var(--primary); border: 1px solid rgba(56, 189, 248, 0.2); padding: 10px 24px; border-radius: 12px; font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: all 0.3s ease; }
+        
+        .btn-action { background: rgba(56, 189, 248, 0.1); color: var(--primary); border: 1px solid rgba(56, 189, 248, 0.2); padding: 10px 24px; border-radius: 12px; font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: all 0.3s ease; display: inline-block;}
         .btn-action:hover { background: var(--primary); color: #fff; }
 
-        /* BOX KOSONG (Empty State Sesuai Gambar) */
+        .upload-tugas-area { margin-top: 15px; display: flex; gap: 10px; align-items: center; }
+        .upload-tugas-area input[type="file"] { padding: 8px; background: var(--bg-body); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-size: 0.8rem; flex: 1; }
+
         .empty-box { text-align: center; color: var(--text-muted); font-size: 1.1rem; padding: 40px; background: rgba(255,255,255,0.02); border-radius: 16px; border: 1px solid var(--border-color); }
         body:has(#theme-toggle:checked) .empty-box { background: #f8fafc; }
+
+        /* TABEL NILAI MAHASISWA */
+        .styled-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.95em; border-radius: 12px; overflow: hidden; background-color: var(--bg-card); border: 1px solid var(--border-color); }
+        .styled-table thead tr { background-color: var(--primary); color: #ffffff; text-align: left; }
+        .styled-table th, .styled-table td { padding: 15px 20px; border-bottom: 1px solid var(--border-color); }
+        .styled-table tbody tr:hover { background-color: rgba(255, 255, 255, 0.02); }
 
         /* FORUM DISKUSI */
         .chat-box { border: 1px solid var(--border-color); border-radius: 24px; height: 500px; display: flex; flex-direction: column; background: var(--bg-card); overflow: hidden;}
@@ -214,9 +200,8 @@
         </div>
 
         <ul class="nav-links">
-            <li><a href="indexsetelahlogin2.html" id="menu-beranda" class="active"><i class="fas fa-home" style="margin-right:10px;"></i> Beranda</a></li>
-            <li><a href="profil.html"><i class="fas fa-user-circle" style="margin-right:10px;"></i> Profil Saya</a></li>
-
+            <li><a href="#" id="menu-beranda" class="active"><i class="fas fa-home" style="margin-right:10px;"></i> Beranda</a></li>
+            
             <li>
                 <a class="dropdown-btn open">
                     <span><i class="fas fa-layer-group" style="margin-right:10px;"></i> Ruang Kelas</span>
@@ -225,7 +210,7 @@
                 <ul class="dropdown-container show" id="menu-matkul-saya">
                     </ul>
             </li>
-            <li style="margin-top: 15px;"><a href="index.html"></i>log out</a></li>
+            <li style="margin-top: 15px;"><a href="#" id="logout-btn" class="btn-logout"><i class="fas fa-sign-out-alt" style="margin-right:10px;"></i> Keluar</a></li>
         </ul>
     </nav>
 
@@ -273,8 +258,7 @@
             <div id="tab-absensi" class="tab-content">
                 <h2 class="section-title-tab"><i class="fas fa-calendar-check" style="color: var(--secondary);"></i> Daftar Hadir Perkuliahan</h2>
                 <div id="konten-absensi">
-                    <div class="empty-box">Belum ada sesi kehadiran yang dibuka oleh dosen pengampu.</div>
-                </div>
+                    </div>
             </div>
 
             <div id="tab-materi" class="tab-content active">
@@ -285,14 +269,14 @@
 
             <div id="tab-tugas" class="tab-content">
                 <h2 class="section-title-tab"><i class="fas fa-clipboard-list" style="color: var(--primary);"></i> Daftar Tugas & Praktikum</h2>
-                <div id="konten-tugas"></div>
+                <div id="konten-tugas">
+                    </div>
             </div>
 
             <div id="tab-nilai" class="tab-content">
-                <h2 class="section-title-tab"><i class="fas fa-chart-line" style="color: var(--primary);"></i> Transkrip & Evaluasi</h2>
+                <h2 class="section-title-tab"><i class="fas fa-chart-line" style="color: var(--primary);"></i> Transkrip & Evaluasi Nilai</h2>
                 <div id="konten-nilai">
-                    <div class="empty-box">Evaluasi dan nilai belum dipublikasikan oleh dosen.</div>
-                </div>
+                    </div>
             </div>
 
             <div id="tab-forum" class="tab-content">
@@ -316,18 +300,24 @@
     </main>
 
     <script>
-        // 1. INISIALISASI & KEAMANAN
+        // ====================================================================
+        // 1. INISIALISASI & KEAMANAN MAHASISWA
+        // ====================================================================
         const activeUserString = localStorage.getItem('loggedInUser');
         if (!activeUserString) { window.location.href = "login.html"; }
         const user = JSON.parse(activeUserString);
 
+        if(user.role !== 'mahasiswa') { window.location.href = "login.html"; }
+
         document.getElementById('top-name').textContent = user.nama;
-        document.getElementById('matkul-semester-text').textContent = user.semester;
+        document.getElementById('matkul-semester-text').textContent = user.semester || "Ganjil";
 
         const savedPhoto = localStorage.getItem('profilePic_' + user.userId);
         if (savedPhoto) document.getElementById('header-avatar').src = savedPhoto;
 
+        // ====================================================================
         // 2. LOGIKA MENU SIDEBAR & TAMPILAN MATKUL (SPA)
+        // ====================================================================
         const menuContainer = document.getElementById('menu-matkul-saya');
         const sectionBeranda = document.getElementById('section-beranda');
         const sectionMatkul = document.getElementById('section-matkul');
@@ -335,7 +325,6 @@
         
         let activeMatkulGlobal = ""; 
 
-        // Fungsi saat klik "Beranda Utama"
         btnMenuBeranda.addEventListener('click', (e) => {
             e.preventDefault();
             sectionBeranda.style.display = 'flex'; 
@@ -345,7 +334,7 @@
             window.scrollTo({ top: 0, behavior: 'smooth' }); 
         });
 
-        // Cetak Tombol Mata Kuliah
+        // Cetak Tombol Mata Kuliah Milik Mahasiswa Ini
         if (user.matkul && user.matkul.length > 0) {
             menuContainer.innerHTML = ''; 
             user.matkul.forEach(mk => {
@@ -354,18 +343,15 @@
                 linkMatkul.href = "#";
                 linkMatkul.innerHTML = `${mk}`;
                 
-                // KETIKA MATA KULIAH DIKLIK
                 linkMatkul.addEventListener('click', (e) => {
                     e.preventDefault();
-                    
-                    sectionBeranda.style.display = 'flex'; // TETAP TAMPILKAN BERANDA
-                    sectionMatkul.style.display = 'block'; // MUNCULKAN RUANG KELAS DI BAWAHNYA
+                    sectionBeranda.style.display = 'none';
+                    sectionMatkul.style.display = 'block';
                     
                     document.querySelectorAll('.nav-links li a').forEach(a => a.classList.remove('active', 'sub-active'));
                     linkMatkul.classList.add('sub-active');
 
                     bukaHalamanMatkul(mk);
-
                     setTimeout(() => { sectionMatkul.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
                 });
 
@@ -374,66 +360,231 @@
             });
         }
 
-        // 3. FUNGSI MERENDER DATA KELAS SPESIFIK
+        // ====================================================================
+        // 3. FUNGSI UTAMA: MENERIMA DATA DARI DOSEN
+        // ====================================================================
         function bukaHalamanMatkul(namaMatkul) {
             activeMatkulGlobal = namaMatkul; 
             
             document.getElementById('matkul-title-text').textContent = namaMatkul;
             document.getElementById('forum-matkul-name').textContent = `[ ${namaMatkul} ]`;
 
-            // Default buka Tab Materi saat ganti matkul
+            // Default buka Tab Materi
             const tabMateriBtn = document.querySelectorAll('.tabs button')[1]; 
             bukaTabKelas('tab-materi', tabMateriBtn);
 
-            renderMateri(namaMatkul); // Render Grid Baru
+            // Eksekusi fungsi pengambilan data Local Storage
+            renderAbsensi(namaMatkul);
+            renderMateri(namaMatkul); 
             renderTugas(namaMatkul);
+            renderNilai(namaMatkul);
             loadForumMessages(namaMatkul);
         }
 
-        // =============== RENDER MATERI (GRID KOTAK BESAR) ===============
+        // --- A. FUNGSI MATERI ---
         function renderMateri(matkul) {
-            const wadahMateri = document.getElementById('konten-materi');
-            const dbMateri = JSON.parse(localStorage.getItem('global_database_materi')) || [];
-            const materiMatkulIni = dbMateri.filter(m => m.matkul === matkul);
+            const wadah = document.getElementById('konten-materi');
+            // MENGAMBIL KEY YANG SAMA DENGAN DOSEN: materi_NAMAMATKUL
+            const dbMateri = JSON.parse(localStorage.getItem(`materi_${matkul}`)) || [];
 
-            if (materiMatkulIni.length > 0) {
-                wadahMateri.innerHTML = '<div class="materi-grid"></div>';
-                const gridWadah = wadahMateri.querySelector('.materi-grid');
-                
-                materiMatkulIni.forEach(m => {
-                    gridWadah.innerHTML += `
-                        <a href="${m.link || '#'}" target="_blank" class="materi-card">
-                            <i class="fas fa-file-alt materi-icon"></i>
-                            <div class="materi-title">${m.judul}</div>
-                            <span class="materi-link">-</span>
-                        </a>
-                    `;
-                });
-            } else {
-                wadahMateri.innerHTML = `<div class="empty-box">Belum ada materi ${matkul} yang diunggah oleh Dosen.</div>`;
+            if (dbMateri.length === 0) {
+                wadah.innerHTML = `<div class="empty-box">Belum ada materi ${matkul} yang diunggah oleh Dosen.</div>`;
+                return;
             }
+
+            wadah.innerHTML = '';
+            [...dbMateri].reverse().forEach(m => {
+                let downloadBtn = m.fileBase64 
+                    ? `<a href="${m.fileBase64}" download="${m.fileName}" class="btn-action"><i class="fas fa-download" style="margin-right:6px;"></i> Unduh Materi</a>` 
+                    : `<span style="font-size:0.8rem; color:var(--text-muted);">Tidak ada lampiran file</span>`;
+
+                wadah.innerHTML += `
+                    <div class="item-card">
+                        <div class="item-info">
+                            <h3>${m.judul}</h3>
+                            <p><i class="far fa-clock"></i> Diunggah: ${m.tanggal}</p>
+                        </div>
+                        <div>${downloadBtn}</div>
+                    </div>
+                `;
+            });
         }
 
+        // --- B. FUNGSI TUGAS & PENGUMPULAN ---
         function renderTugas(matkul) {
-            const wadahTugas = document.getElementById('konten-tugas');
-            const dbTugas = JSON.parse(localStorage.getItem('global_database_tugas')) || [];
-            const tugasMatkulIni = dbTugas.filter(t => t.matkul === matkul);
+            const wadah = document.getElementById('konten-tugas');
+            // MENGAMBIL KEY: tugas_NAMAMATKUL
+            const dbTugas = JSON.parse(localStorage.getItem(`tugas_${matkul}`)) || [];
 
-            if (tugasMatkulIni.length > 0) {
-                wadahTugas.innerHTML = '';
-                tugasMatkulIni.forEach(tugas => {
-                    wadahTugas.innerHTML += `
-                        <div class="item-card">
-                            <div class="item-info">
-                                <h3>${tugas.judul}</h3>
-                                <p><i class="far fa-clock"></i> Tenggat Waktu: <strong style="margin-left:5px; color:var(--text-main);">${tugas.deadline}</strong></p>
-                            </div>
-                            <button class="btn-action"><i class="fas fa-cloud-upload-alt" style="margin-right:6px;"></i> Kumpulkan</button>
+            if (dbTugas.length === 0) {
+                wadah.innerHTML = `<div class="empty-box">Belum ada tugas aktif untuk kelas ini.</div>`;
+                return;
+            }
+
+            wadah.innerHTML = '';
+            [...dbTugas].reverse().forEach(tugas => {
+                // Cek apakah mahasiswa ini sudah mengumpulkan tugas ini
+                const dbPengumpulan = JSON.parse(localStorage.getItem(`pengumpulan_${tugas.id}`)) || [];
+                const sudahKumpul = dbPengumpulan.find(p => p.userId === user.userId);
+
+                let aksiHtml = '';
+                if(sudahKumpul) {
+                    aksiHtml = `<span style="color:var(--success); font-weight:bold; font-size:0.9rem;"><i class="fas fa-check-circle"></i> Sudah Dikumpulkan</span>`;
+                } else {
+                    aksiHtml = `
+                        <div class="upload-tugas-area">
+                            <input type="file" id="file_tugas_${tugas.id}" title="Pilih File Jawaban">
+                            <button onclick="kumpulkanTugas('${tugas.id}')" class="btn-action" style="background:var(--primary); color:#fff; border:none;"><i class="fas fa-cloud-upload-alt"></i> Kirim</button>
                         </div>
                     `;
-                });
+                }
+
+                wadah.innerHTML += `
+                    <div class="item-card" style="flex-direction: column; align-items: stretch;">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <div class="item-info">
+                                <h3>${tugas.judul}</h3>
+                                <p><i class="far fa-calendar-times"></i> Tenggat Waktu: <strong style="margin-left:5px; color:var(--warning);">${tugas.deadline}</strong></p>
+                            </div>
+                        </div>
+                        ${aksiHtml}
+                    </div>
+                `;
+            });
+        }
+
+        // Fungsi Dipanggil Saat Tombol Kirim Tugas Diklik
+        function kumpulkanTugas(tugasId) {
+            const fileInput = document.getElementById(`file_tugas_${tugasId}`);
+            if(!fileInput.files || fileInput.files.length === 0) {
+                alert("Harap pilih file jawaban (PDF/Word/Zip) terlebih dahulu!");
+                return;
+            }
+
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                const hasilBase64 = e.target.result;
+                const dataPengumpulan = {
+                    userId: user.userId,
+                    namaMahasiswa: user.nama,
+                    waktu: new Date().toLocaleString('id-ID'),
+                    fileName: file.name,
+                    fileBase64: hasilBase64,
+                    nilai: "" // Akan diisi oleh dosen nanti
+                };
+
+                // Ambil atau buat array pengumpulan untuk ID Tugas ini
+                let dbPengumpulan = JSON.parse(localStorage.getItem(`pengumpulan_${tugasId}`)) || [];
+                dbPengumpulan.push(dataPengumpulan);
+                
+                try {
+                    localStorage.setItem(`pengumpulan_${tugasId}`, JSON.stringify(dbPengumpulan));
+                    alert("Tugas berhasil dikumpulkan!");
+                    renderTugas(activeMatkulGlobal); // Refresh UI
+                } catch(error) {
+                    alert("Gagal mengumpulkan! File terlalu besar.");
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // --- C. FUNGSI ABSENSI ---
+        function renderAbsensi(matkul) {
+            const wadah = document.getElementById('konten-absensi');
+            const dbAbsensi = JSON.parse(localStorage.getItem(`absensi_${matkul}`)) || [];
+            
+            if (dbAbsensi.length === 0) {
+                wadah.innerHTML = `<div class="empty-box">Belum ada sesi kehadiran yang dibuka oleh dosen.</div>`;
+                return;
+            }
+
+            wadah.innerHTML = '';
+            [...dbAbsensi].reverse().forEach(sesi => {
+                // Cek apakah mahasiswa ini sudah klik hadir di sesi (tanggal) ini
+                const dbHadir = JSON.parse(localStorage.getItem(`hadir_mhs_${matkul}_${sesi.tanggal}`)) || [];
+                const sudahHadir = dbHadir.includes(user.userId);
+
+                let btnHadir = '';
+                if(sudahHadir) {
+                    btnHadir = `<span style="color:var(--success); font-weight:bold;"><i class="fas fa-check-double"></i> Anda Sudah Hadir</span>`;
+                } else {
+                    btnHadir = `<button onclick="klikHadir('${sesi.tanggal}')" class="btn-action" style="background:var(--success); color:white; border:none;"><i class="fas fa-hand-paper"></i> Klik Hadir</button>`;
+                }
+
+                wadah.innerHTML += `
+                    <div class="item-card">
+                        <div class="item-info">
+                            <h3>Presensi Perkuliahan</h3>
+                            <p><i class="far fa-calendar-alt"></i> Tanggal Sesi: <strong style="color:var(--text-main); margin-left:5px;">${sesi.tanggal}</strong></p>
+                        </div>
+                        <div>${btnHadir}</div>
+                    </div>
+                `;
+            });
+        }
+
+        function klikHadir(tanggalSesi) {
+            const keyHadir = `hadir_mhs_${activeMatkulGlobal}_${tanggalSesi}`;
+            let dbHadir = JSON.parse(localStorage.getItem(keyHadir)) || [];
+            
+            dbHadir.push(user.userId);
+            localStorage.setItem(keyHadir, JSON.stringify(dbHadir));
+            
+            alert("Presensi berhasil dicatat!");
+            renderAbsensi(activeMatkulGlobal); // Refresh UI
+        }
+
+        // --- D. FUNGSI MELIHAT NILAI ---
+        function renderNilai(matkul) {
+            const wadah = document.getElementById('konten-nilai');
+            // Untuk mendapatkan nilai, kita harus mengecek satu-satu tugas di matkul ini
+            const dbTugas = JSON.parse(localStorage.getItem(`tugas_${matkul}`)) || [];
+            
+            if(dbTugas.length === 0) {
+                wadah.innerHTML = `<div class="empty-box">Belum ada tugas untuk dinilai.</div>`;
+                return;
+            }
+
+            let tabelHTML = `
+                <table class="styled-table">
+                    <thead>
+                        <tr>
+                            <th>Tugas / Praktikum</th>
+                            <th>Status Pengumpulan</th>
+                            <th>Nilai (Skala 100)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            let adaDataTerkumpul = false;
+
+            dbTugas.forEach(tugas => {
+                const dbPengumpulan = JSON.parse(localStorage.getItem(`pengumpulan_${tugas.id}`)) || [];
+                const hasilSaya = dbPengumpulan.find(p => p.userId === user.userId);
+
+                if(hasilSaya) {
+                    adaDataTerkumpul = true;
+                    let nilaiAngka = hasilSaya.nilai ? `<strong style="font-size:1.1rem; color:var(--success);">${hasilSaya.nilai}</strong>` : `<span style="color:var(--warning);">Belum Dinilai</span>`;
+                    
+                    tabelHTML += `
+                        <tr>
+                            <td style="font-weight:600;">${tugas.judul}</td>
+                            <td><span style="color:var(--success);"><i class="fas fa-check"></i> Diserahkan (${hasilSaya.waktu})</span></td>
+                            <td>${nilaiAngka}</td>
+                        </tr>
+                    `;
+                }
+            });
+
+            tabelHTML += `</tbody></table>`;
+
+            if(adaDataTerkumpul) {
+                wadah.innerHTML = tabelHTML;
             } else {
-                wadahTugas.innerHTML = `<div class="empty-box">Belum ada tugas aktif untuk kelas ini.</div>`;
+                wadah.innerHTML = `<div class="empty-box">Anda belum mengumpulkan tugas apa pun untuk mata kuliah ini.</div>`;
             }
         }
 
@@ -451,7 +602,7 @@
             }
         }
 
-        // 5. SISTEM FORUM DISKUSI TERISOLASI
+        // 5. SISTEM FORUM DISKUSI
         const chatMessages = document.getElementById('chat-messages');
         const formChat = document.getElementById('form-chat');
         const chatInput = document.getElementById('chat-input');
