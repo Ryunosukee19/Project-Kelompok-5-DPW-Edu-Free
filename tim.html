@@ -10,9 +10,10 @@
     <header>
         <div class="logo">Edu-Free.</div>
         <ul class="nav-menu">
-            <li><a href="index.html">Beranda</a></li>
-            <li><a href="tim.html" class="active">Tim Kami</a></li>
-            <li><a href="tentang.html">Tentang</a></li>
+            <li><a href="index.html" nav-link" onclick="switchContent('home-content', event)">Beranda</a></li>
+            <li><a href="tim.html" class="nav-link" class="active>Tim Kami</a></li>
+            <li><a href="tentang.html" class="nav-link">Tentang</a></li>
+            <li><a href="#" class="nav-link" onclick="switchContent('news-content', event)">Berita</a></li>
         </ul>
         <div class="auth-buttons">
             <button class="btn btn-login">Masuk</button>
