@@ -218,22 +218,15 @@
 
         <ul class="nav-links">
             <li><a href="#" class="active">Beranda</a></li>
+            <li><a href="#" id="menu-profil-sidebar">Profil Saya</a></li>
             <li>
                 <a class="dropdown-btn">
-                    Materi Semester 2 
+                    Mata Kuliah Saya 
                     <span class="arrow">▼</span>
                 </a>
-                <ul class="dropdown-container">
-                    <li><a href="materidpw.html">DPW</a></li>
-                    <li><a href="materistrukdat.html">Struktur Data</a></li>
-                </ul>
+                <ul class="dropdown-container" id="menu-matkul-saya">
+                    </ul>
             </li>
-            <li><a href="absensimahasiswa.html">Absensi</a></li>
-            <li><a href="tugas2.html">Tugas</a></li>
-            <li><a href="kuis.html">Kuis</a></li>
-            <li><a href="uts_uas.html">UTS/UAS</a></li>
-            <li><a href="nilai2.html">Nilai</a></li>
-            <li><a href="forumkomunikasimahasiswa.html">Forum Diskusi</a></li>
         </ul>
     </nav>
 
@@ -306,7 +299,7 @@
             // Teks Sapaan
             const welcomeMessage = document.getElementById('welcome-message');
             if (welcomeMessage) {
-                welcomeMessage.innerHTML = `Selamat Datang <b>${user.nama}</b> di halaman kelas semester <b>${user.semester}</b>.`;
+                welcomeMessage.innerHTML = `Selamat Datang <b>${user.nama}</b> di halaman kelas semester <b>${user.semester}</b>. Silakan pilih Mata Kuliah di menu samping untuk mulai belajar.`;
             }
             document.getElementById('popover-greeting').textContent = `Halo, ${user.nama}.`;
             document.getElementById('popover-id').textContent = `NIM: ${user.userId}`;
@@ -354,6 +347,14 @@
             const profilePopover = document.getElementById('profile-popover');
             const notifTrigger = document.getElementById('notif-trigger');
             const notifDropdown = document.getElementById('notifDropdown');
+            const menuProfilSidebar = document.getElementById('menu-profil-sidebar'); // Tombol profil di sidebar
+
+            // Buka profil popover lewat sidebar
+            menuProfilSidebar.addEventListener('click', function(e) {
+                e.preventDefault();
+                profilePopover.classList.toggle('show');
+                notifDropdown.classList.remove('show');
+            });
 
             profileTrigger.addEventListener('click', function(e) {
                 e.stopPropagation(); 
@@ -368,7 +369,7 @@
             });
 
             document.addEventListener('click', function(e) {
-                if (!profilePopover.contains(e.target) && !profileTrigger.contains(e.target)) {
+                if (!profilePopover.contains(e.target) && !profileTrigger.contains(e.target) && e.target !== menuProfilSidebar) {
                     profilePopover.classList.remove('show');
                 }
                 if (!notifDropdown.contains(e.target) && !notifTrigger.contains(e.target)) {
@@ -376,54 +377,59 @@
                 }
             });
 
-           // ==========================================
-            // 3. LOGIKA NOTIFIKASI (SUPER AMAN & DINAMIS)
             // ==========================================
-            // 1. Panggil semua database
+            // 3. CETAK DAFTAR MATA KULIAH OTOMATIS
+            // ==========================================
+            const menuContainer = document.getElementById('menu-matkul-saya');
+            
+            if (user.matkul && user.matkul.length > 0) {
+                menuContainer.innerHTML = ''; 
+                
+                user.matkul.forEach(mk => {
+                    const li = document.createElement('li');
+                    const linkMatkul = document.createElement('a');
+                    linkMatkul.href = `matkul_dashboard.html?mk=${encodeURIComponent(mk)}`;
+                    linkMatkul.textContent = mk;
+                    
+                    li.appendChild(linkMatkul);
+                    menuContainer.appendChild(li);
+                });
+            } else {
+                menuContainer.innerHTML = '<li><a href="#" style="color:#888; font-size:12px;">Belum ada matkul</a></li>';
+            }
+
+            // ==========================================
+            // 4. LOGIKA NOTIFIKASI (SUPER AMAN & DINAMIS)
+            // ==========================================
             const dbMateriNotif = JSON.parse(localStorage.getItem('global_database_materi')) || [];
             const dbTugasNotif = JSON.parse(localStorage.getItem('global_database_tugas')) || [];
             const dbNilaiNotif = JSON.parse(localStorage.getItem('global_database_nilai')) || [];
             const dbUjianNotif = JSON.parse(localStorage.getItem('global_database_uts_uas')) || [];
             const dbForumNotif = JSON.parse(localStorage.getItem('global_database_forum')) || [];
             
-            // 2. FILTER KETAT: Gunakan String() agar tepat sasaran
             const tugasUser = dbTugasNotif.filter(t => String(t.target) === 'Semua' || String(t.target) === String(user.userId));
             const nilaiUser = dbNilaiNotif.filter(n => String(n.nim) === String(user.userId));
             const ujianUser = dbUjianNotif.filter(u => String(u.target) === 'Semua' || String(u.target) === String(user.userId));
-            const pesanBaru = dbForumNotif.filter(msg => String(msg.senderId) !== String(user.userId)); // Chat dari orang lain
+            const pesanBaru = dbForumNotif.filter(msg => String(msg.senderId) !== String(user.userId));
             
             const notifList = document.getElementById('notif-list');
             const notifCountBadge = document.getElementById('notifCount');
             
             let notifikasiArray = [];
 
-            // 3. Masukkan ke dalam Array Notifikasi
-            dbMateriNotif.forEach(m => {
-                notifikasiArray.push({ icon: "📚", teks: `Materi Baru: ${m.judul}`, waktu: `Matkul: ${m.matkul}` });
-            });
-            tugasUser.forEach(t => {
-                notifikasiArray.push({ icon: "📝", teks: `Tugas Baru: ${t.judul}`, waktu: `Deadline: ${t.deadline}` });
-            });
-            nilaiUser.forEach(n => {
-                notifikasiArray.push({ icon: "📊", teks: `Nilai ${n.matkul} Keluar!`, waktu: `Mendapat Nilai: ${n.nilai}` });
-            });
-            ujianUser.forEach(u => {
-                notifikasiArray.push({ icon: "🔥", teks: `Ujian ${u.jenis} Dirilis!`, waktu: `${u.judul}` });
-            });
-            pesanBaru.forEach(msg => {
-                notifikasiArray.push({ icon: "💬", teks: `Pesan dari ${msg.senderName}`, waktu: `Forum Diskusi` });
-            });
+            dbMateriNotif.forEach(m => { notifikasiArray.push({ icon: "📚", teks: `Materi Baru: ${m.judul}`, waktu: `Matkul: ${m.matkul}` }); });
+            tugasUser.forEach(t => { notifikasiArray.push({ icon: "📝", teks: `Tugas Baru: ${t.judul}`, waktu: `Deadline: ${t.deadline}` }); });
+            nilaiUser.forEach(n => { notifikasiArray.push({ icon: "📊", teks: `Nilai ${n.matkul} Keluar!`, waktu: `Mendapat Nilai: ${n.nilai}` }); });
+            ujianUser.forEach(u => { notifikasiArray.push({ icon: "🔥", teks: `Ujian ${u.jenis} Dirilis!`, waktu: `${u.judul}` }); });
+            pesanBaru.forEach(msg => { notifikasiArray.push({ icon: "💬", teks: `Pesan dari ${msg.senderName}`, waktu: `Forum Diskusi` }); });
 
-            // 4. Sistem Pengecekan Riwayat Baca Notifikasi Dinamis
             const storageKeyReadCount = `notif_read_count_${user.userId}`;
             let readCount = parseInt(localStorage.getItem(storageKeyReadCount)) || 0;
             let totalNotif = notifikasiArray.length;
             let unreadCount = totalNotif - readCount;
 
-            // 5. Render ke HTML Lonceng
             if (totalNotif > 0) {
                 notifList.innerHTML = "";
-                // Render dibalik agar yang terbaru di atas
                 notifikasiArray.reverse().forEach(notif => {
                     notifList.innerHTML += `
                         <div class="notif-item">
@@ -433,7 +439,6 @@
                     `;
                 });
 
-                // Jika ada notifikasi baru yang belum diklik 'Tandai Dibaca'
                 if (unreadCount > 0) {
                     notifCountBadge.textContent = unreadCount;
                     notifCountBadge.style.display = "flex";
@@ -442,14 +447,14 @@
                 notifList.innerHTML = `<div class="notif-item"><span style="text-align:center; color: var(--text-muted);">Belum ada notifikasi.</span></div>`;
             }
 
-            // 6. Fungsi Tandai Dibaca (Menyimpan jumlah total notifikasi saat ini ke memori)
             document.getElementById('mark-read-btn').addEventListener('click', function() {
                 localStorage.setItem(storageKeyReadCount, totalNotif); 
                 notifCountBadge.style.display = "none";
                 alert("Semua notifikasi telah ditandai dibaca.");
             });
+
             // ==========================================
-            // 4. KONTROL DROPDOWN SIDEBAR
+            // 5. KONTROL DROPDOWN SIDEBAR
             // ==========================================
             var dropdowns = document.getElementsByClassName("dropdown-btn");
             for (var i = 0; i < dropdowns.length; i++) {
@@ -466,7 +471,7 @@
             }
 
             // ==========================================
-            // 5. TEMA & LOGOUT
+            // 6. TEMA & LOGOUT
             // ==========================================
             const themeToggle = document.getElementById("theme-toggle");
             if (localStorage.getItem("theme") === "light") themeToggle.checked = true;
@@ -476,7 +481,6 @@
             });
 
             const logoutPopover = document.getElementById('logout-btn');
-            const logoutSidebar = document.getElementById('logout-sidebar');
 
             function prosesLogout(e) {
                 e.preventDefault();
@@ -486,7 +490,6 @@
             }
 
             if (logoutPopover) logoutPopover.addEventListener('click', prosesLogout);
-            if (logoutSidebar) logoutSidebar.addEventListener('click', prosesLogout);
             
         });
     </script>
