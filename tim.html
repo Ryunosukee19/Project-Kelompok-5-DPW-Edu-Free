@@ -9,26 +9,26 @@
     
     <style>
         /* =========================================
-           TEMA & RESET DASAR
+           TEMA & RESET DASAR (Disesuaikan dengan Index)
         ========================================= */
         :root {
-            --bg-body: #0b1120; 
-            --bg-header: rgba(11, 17, 32, 0.8);
+            --bg-body: #0f172a; 
+            --bg-header: #0f172a;
             --bg-card: rgba(255, 255, 255, 0.02);
             --bg-card-hover: rgba(56, 189, 248, 0.05);
             --primary: #38bdf8; 
             --primary-hover: #0ea5e9;
             --secondary: #c084fc; 
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8; 
+            --text-main: #ffffff;
+            --text-muted: #aaa; 
             --border-color: rgba(255, 255, 255, 0.1); 
             --shadow-sm: 0 4px 10px rgba(0, 0, 0, 0.3);
         }
 
         body:has(#theme-toggle:checked) {
-            --bg-body: #f8fafc; 
-            --bg-header: rgba(255, 255, 255, 0.9);
-            --bg-card: #ffffff;
+            --bg-body: #ffffff; 
+            --bg-header: #ffffff;
+            --bg-card: #f8fafc;
             --bg-card-hover: #f1f5f9;
             --primary: #0284c7; 
             --secondary: #9333ea; 
@@ -44,34 +44,53 @@
         ul { list-style: none; }
 
         /* =========================================
-           HEADER (NAVIGASI ATAS PUBLIK)
+           HEADER (DISAMAKAN PERSIS DENGAN INDEX.HTML)
         ========================================= */
-        header { 
-            position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; 
-            background: var(--bg-header); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border-color); padding: 15px 5%;
-            display: flex; justify-content: space-between; align-items: center;
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            position: sticky; 
+            top: 0;
+            z-index: 1000;
+            background-color: var(--bg-header);
+            border-bottom: 1px solid var(--border-color); /* Garis batas agar membaur rapi */
         }
 
-        .logo { font-size: 1.8rem; font-weight: 800; background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; color: transparent; letter-spacing: -0.5px;}
+        .logo { font-size: 1.8rem; font-weight: 800; color: var(--text-main); letter-spacing: -0.5px;}
         
-        .nav-menu { display: flex; gap: 30px; align-items: center; }
-        .nav-link { font-size: 0.95rem; font-weight: 600; color: var(--text-muted); transition: 0.3s; position: relative;}
-        .nav-link:hover { color: var(--text-main); }
-        .nav-link.active { color: var(--primary); }
-        .nav-link.active::after { content: ''; position: absolute; left: 0; bottom: -5px; width: 100%; height: 2px; background: var(--primary); border-radius: 2px;}
+        .nav-menu {
+            display: flex;
+            gap: 25px;
+            margin-right: auto;
+            margin-left: 50px; 
+        }
 
-        .auth-buttons { display: flex; gap: 15px; align-items: center; }
-        .btn { padding: 10px 24px; border-radius: 30px; font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: all 0.3s; border: none; }
+        .nav-link { font-size: 1rem; color: var(--text-main); transition: 0.3s; }
+        .nav-link:hover { color: var(--primary); }
+        .nav-link.active { color: var(--primary); font-weight: bold; }
+
+        /* Area Kanan Header */
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 25px; 
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn { padding: 10px 20px; border-radius: 30px; font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: all 0.3s; border: none; }
         .btn-login { background: transparent; color: var(--text-main); border: 1px solid var(--border-color); }
         .btn-login:hover { border-color: var(--primary); color: var(--primary); }
         .btn-register { background: var(--primary); color: #fff; }
-        .btn-register:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 4px 15px rgba(56, 189, 248, 0.4); }
+        .btn-register:hover { background: var(--primary-hover); transform: translateY(-2px); }
 
-        /* TEMA TOGGLE DI HEADER */
-        .theme-toggle-label { cursor: pointer; color: var(--text-muted); display: flex; align-items: center; gap: 8px; font-size: 0.9rem; font-weight: 600; padding: 8px 16px; border-radius: 20px; background: rgba(0,0,0,0.1); transition: 0.3s;}
-        body:has(#theme-toggle:checked) .theme-toggle-label { background: rgba(0,0,0,0.05); }
-        .theme-toggle-label:hover { color: var(--text-main); }
+        /* Tema Toggle Sesuai Landing Page */
+        .theme-toggle-label { cursor: pointer; display: flex; align-items: center; font-size: 1rem; color: var(--text-main); font-weight: 600;}
         .icon-sun { display: none; } 
         body:has(#theme-toggle:checked) .icon-moon { display: none; } 
         body:has(#theme-toggle:checked) .icon-sun { display: inline; color: #f59e0b; }
@@ -79,7 +98,8 @@
         /* =========================================
            KONTEN TIM KAMI
         ========================================= */
-        .team-section { padding: 120px 5% 60px 5%; display: flex; flex-direction: column; align-items: center; flex: 1; }
+        /* Padding top dikurangi karena header sekarang sticky (bukan absolute) */
+        .team-section { padding: 40px 5% 60px 5%; display: flex; flex-direction: column; align-items: center; flex: 1; }
         
         .section-header { text-align: center; margin-bottom: 50px; animation: fadeInDown 0.6s ease;}
         @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
@@ -105,36 +125,41 @@
 
         /* RESPONSIVE */
         @media (max-width: 900px) {
-            header { flex-direction: column; gap: 15px; padding: 20px; }
-            .nav-menu { flex-wrap: wrap; justify-content: center; }
-            .team-section { padding-top: 180px; }
+            header { flex-direction: column; gap: 15px; padding: 20px; position: static; }
+            .nav-menu { flex-wrap: wrap; justify-content: center; margin-left: 0; }
+            .header-right { justify-content: center; }
         }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo">Edu<span>-Free.</span></div>
+        <div class="logo">Edu-Free.</div>
+        
         <ul class="nav-menu">
             <li><a href="index.html" class="nav-link">Beranda</a></li>
-            <li><a href="tim.html" class="nav-link active">Tim Kami</a></li>
+            <li><a href="tim.html" class="active nav-link">Tim Kami</a></li>
             <li><a href="tentang.html" class="nav-link">Tentang</a></li>
-            <li><a href="#" class="nav-link">Berita</a></li>
+            <li><a href="index.html" class="nav-link">Berita</a></li> 
         </ul>
-        <div class="auth-buttons">
+
+        <div class="header-right">
+            <div class="auth-buttons">
+                <a href="login.html"><button class="btn btn-login">Masuk</button></a>
+                <a href="register.html"><button class="btn btn-register">Daftar Gratis</button></a>
+            </div>
+            
             <input type="checkbox" id="theme-toggle" class="theme-checkbox" hidden>
-            <label for="theme-toggle" class="theme-toggle-label" aria-label="Ganti tema">
-                <i class="fas fa-moon icon-moon"></i>
-                <i class="fas fa-sun icon-sun"></i>
+            <label for="theme-toggle" class="theme-toggle-label">
+                <span class="icon-moon">🌙Gelap</span>
+                <span class="icon-sun">☀️Terang</span>
             </label>
-            <button class="btn btn-login" onclick="window.location.href='login.html'">Masuk</button>
-            <button class="btn btn-register" onclick="window.location.href='register.html'">Daftar Gratis</button>
         </div>
     </header>
 
     <section class="team-section">
         <div class="section-header">
-            <h2>Tim Pengembang</h2>
+            <h2>Anggota Kelompok</h2>
             <p>Kelompok 5 - Project DPW</p>
         </div>
 
@@ -187,12 +212,10 @@
         document.addEventListener("DOMContentLoaded", function() {
             const themeToggle = document.getElementById("theme-toggle");
 
-            // 1. Cek memori saat halaman pertama kali dibuka
             if (localStorage.getItem("theme") === "light") {
                 themeToggle.checked = true;
             }
 
-            // 2. Simpan ke LocalStorage agar saat pindah ke Login/Dashboard temanya tidak berubah
             themeToggle.addEventListener("change", function() {
                 if (this.checked) {
                     localStorage.setItem("theme", "light");
