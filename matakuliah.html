@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Data Mahasiswa</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="container">
+        <!-- Sidebar Navigation - Halaman Home -->
+        <aside class="sidebar">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i> <span>EduFree</span>
+            </div>
+            
+            <nav class="menu">
+                <!-- Hanya Home yang ACTIVE -->
+                <a href="index.html" class="menu-item"><i class="fas fa-home"></i> Home</a>
+                
+                <!-- Dropdown Peserta Perbaikan (Tanpa Select Tag) -->
+                <details class="menu-group active">
+                    <summary class="menu-item">
+                        <i class="fas fa-users"></i> Peserta <i class="fas fa-chevron-down arrow"></i>
+                    </summary>
+                    <div class="submenu-content">
+                        <a href="peserta.html" class="sub-menu-item">Mahasiswa</a>
+                        <a href="dosen.html" class="sub-menu-item">Dosen</a>
+                    </div>
+                </details>
+
+                <!-- Dropdown Mata Kuliah Perbaikan (Tanpa Select Tag) -->
+                <details class="menu-group">
+                    <summary class="menu-item">
+                        <i class="fas fa-book"></i> Mata Kuliah <i class="fas fa-chevron-down arrow"></i>
+                    </summary>
+                    <div class="submenu-content">
+                        <a href="matakuliah.html" class="sub-menu-item">Semester 1</a>
+                        <a href="matakuliah2.html" class="sub-menu-item">Semester 2</a>
+                        <a href="matakuliah3.html" class="sub-menu-item">Semester 3</a>
+                    </div>
+                </details>
+
+                <a href="pengumpulan.html" class="menu-item"><i class="fas fa-file-invoice"></i> Pengumpulan Tugas</a>
+                <a href="laporan_nilai.html" class="menu-item"><i class="fas fa-chart-bar"></i> Laporan Nilai</a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-header">
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search here...">
+                </div>
+                <div class="user-profile">
+                    <i class="far fa-bell"></i>
+                    <i class="far fa-comment-dots"></i>
+                    <div class="profile-info">
+                        <span class="name">Priscilla Lily</span>
+                        <span class="role">Admin</span>
+                    </div>
+                </div>
+            </header>
+
+            <section class="page-control-panel">
+                <div class="panel-left">
+                    <h2>Halaman Semester 1</h2>
+                </div>
+                <div class="panel-right">
+                    <button class="btn-add-student"><i class="fas fa-plus"></i> Add Matakuliah</button>
+                </div>
+            </section>
+
+            <section class="cards-layout-grid">
+                
+                <div class="student-profile-card">
+                    <div class="card-action-menu"><i class="fas fa-ellipsis-v"></i></div>
+                    <h3 class="student-card-name">Algoritma Pemrograman</h3>
+                    <p class="student-card-id">Wajib</p>
+                    
+                    <div class="card-contact-info">
+                        <p><i class="far fa-envelope"></i> Putra@gmail.com</p>
+                        <p><i class="fas fa-phone-alt"></i> (+62) 85x-xxx-xxx-xxx</p>
+                    </div>
+                    <div class="card-meta-details">
+                        <div class="meta-row"><span>Prodi</span><strong>Teknik Informatika</strong></div>
+                        <div class="meta-row"><span>Jadwal</span><strong>Senin - 07.00 - 2026</strong></div>
+                    </div>
+                </div>
+
+                <div class="student-profile-card">
+                    <div class="card-action-menu"><i class="fas fa-ellipsis-v"></i></div>
+                    <h3 class="student-card-name">Pengantar Teknologi Informasi</h3>
+                    <p class="student-card-id">Wajib</p>
+                    
+                    <div class="card-contact-info">
+                        <p><i class="far fa-envelope"></i> Putra@gmail.com</p>
+                        <p><i class="fas fa-phone-alt"></i> (+62) 85x-xxx-xxx-xxx</p>
+                    </div>
+                    <div class="card-meta-details">
+                        <div class="meta-row"><span>Prodi</span><strong>Teknik Informatika</strong></div>
+                        <div class="meta-row"><span>Jadwal</span><strong>Senin - 09.30 - 2026</strong></div>
+                    </div>
+                </div>
+
+                <div class="student-profile-card">
+                    <div class="card-action-menu"><i class="fas fa-ellipsis-v"></i></div>
+                    <h3 class="student-card-name">Bahasa Indonesia</h3>
+                    <p class="student-card-id">Pilihan</p>
+                    
+                    <div class="card-contact-info">
+                        <p><i class="far fa-envelope"></i> Putra@gmail.com</p>
+                        <p><i class="fas fa-phone-alt"></i> (+62) 85x-xxx-xxx-xxx</p>
+                    </div>
+                    <div class="card-meta-details">
+                        <div class="meta-row"><span>Prodi</span><strong>Teknik Informatika</strong></div>
+                        <div class="meta-row"><span>Jadwal</span><strong>Selasa - 09.30 - 2026</strong></div>
+                    </div>
+                </div>
+
+                <div class="student-profile-card">
+                    <div class="card-action-menu"><i class="fas fa-ellipsis-v"></i></div>
+                    <h3 class="student-card-name">PAI</h3>
+                    <p class="student-card-id">Pilihan</p>
+                    
+                    <div class="card-contact-info">
+                        <p><i class="far fa-envelope"></i> Putra@gmail.com</p>
+                        <p><i class="fas fa-phone-alt"></i> (+62) 85x-xxx-xxx-xxx</p>
+                    </div>
+                    <div class="card-meta-details">
+                        <div class="meta-row"><span>Prodi</span><strong>Teknik Informatika</strong></div>
+                        <div class="meta-row"><span>Jadwal</span><strong>Senin - 13.00 - 2026</strong></div>
+                    </div>
+                </div>
+
+            </section>
+        </main>
+    </div>
+
+</body>
+</html>

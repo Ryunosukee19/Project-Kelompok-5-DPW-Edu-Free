@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Data Mahasiswa</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="container">
+        <!-- Sidebar Navigation - Halaman Home -->
+        <aside class="sidebar">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i> <span>EduFree</span>
+            </div>
+            
+            <nav class="menu">
+                <!-- Hanya Home yang ACTIVE -->
+                <a href="index.html" class="menu-item"><i class="fas fa-home"></i> Home</a>
+                
+                <!-- Dropdown Peserta Perbaikan (Tanpa Select Tag) -->
+                <details class="menu-group active">
+                    <summary class="menu-item">
+                        <i class="fas fa-users"></i> Peserta <i class="fas fa-chevron-down arrow"></i>
+                    </summary>
+                    <div class="submenu-content active">
+                        <a href="peserta.html" class="sub-menu-item">Mahasiswa</a>
+                        <a href="dosen.html" class="sub-menu-item">Dosen</a>
+                    </div>
+                </details>
+
+                <!-- Dropdown Mata Kuliah Perbaikan (Tanpa Select Tag) -->
+                <details class="menu-group">
+                    <summary class="menu-item">
+                        <i class="fas fa-book"></i> Mata Kuliah <i class="fas fa-chevron-down arrow"></i>
+                    </summary>
+                    <div class="submenu-content">
+                        <a href="matakuliah.html" class="sub-menu-item">Semester 1</a>
+                        <a href="matakuliah2.html" class="sub-menu-item">Semester 2</a>
+                        <a href="matakuliah3.html" class="sub-menu-item">Semester 3</a>
+                    </div>
+                </details>
+
+                <a href="pengumpulan.html" class="menu-item"><i class="fas fa-file-invoice"></i> Pengumpulan Tugas</a>
+                <a href="laporan_nilai.html" class="menu-item"><i class="fas fa-chart-bar"></i> Laporan Nilai</a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-header">
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search here...">
+                </div>
+                <div class="user-profile">
+                    <i class="far fa-bell"></i>
+                    <i class="far fa-comment-dots"></i>
+                    <div class="profile-info">
+                        <span class="name">Priscilla Lily</span>
+                        <span class="role">Admin</span>
+                    </div>
+                </div>
+            </header>
+
+            <section class="page-control-panel">
+                <div class="panel-left">
+                    <h2>Halaman Dosen</h2>
+                    <div class="filter-dropdowns">
+                        <select class="filter-select">
+                            <option value="">Mata Kuliah</option>
+                            <option value="uiux">UI/UX Design</option>
+                            <option value="web">Web Development</option>
+                            <option value="db">Database System</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="panel-right">
+                    <button class="btn-add-student"><i class="fas fa-plus"></i> Add Dosen</button>
+                </div>
+            </section>
+
+            <section class="cards-layout-grid">
+                
+                <div class="student-profile-card">
+                    <div class="card-action-menu"><i class="fas fa-ellipsis-v"></i></div>
+                    <h3 class="student-card-name">Annette Black</h3>
+                    <p class="student-card-id">NIM. 2295550109</p>
+                    <span class="badge badge-active">ACTIVE</span>
+                    
+                    <div class="card-contact-info">
+                        <p><i class="far fa-envelope"></i> annette@gmail.com</p>
+                        <p><i class="fas fa-phone-alt"></i> (229) 555-0109</p>
+                    </div>
+                    <div class="card-meta-details">
+                        <div class="meta-row"><span>Prodi</span><strong>Teknik Informatika</strong></div>
+                        <div class="meta-row"><span>Angkatan</span><strong>17 Oct, 2024</strong></div>
+                    </div>
+                </div>
+
+                <div class="student-profile-card">
+                    <div class="card-action-menu"><i class="fas fa-ellipsis-v"></i></div>
+                    <h3 class="student-card-name">Fatima Nuhan</h3>
+                    <p class="student-card-id">NIM. 2295550110</p>
+                    <span class="badge badge-inactive">INACTIVE</span>
+                    
+                    <div class="card-contact-info">
+                        <p><i class="far fa-envelope"></i> fatiman@gmail.com</p>
+                        <p><i class="fas fa-phone-alt"></i> (229) 555-0110</p>
+                    </div>
+                    <div class="card-meta-details">
+                        <div class="meta-row"><span>Prodi</span><strong>Sistem Informasi</strong></div>
+                        <div class="meta-row"><span>Angkatan</span><strong>05 Jan, 2023</strong></div>
+                    </div>
+                </div>
+
+                <div class="student-profile-card">
+                    <div class="card-action-menu"><i class="fas fa-ellipsis-v"></i></div>
+                    <h3 class="student-card-name">Kristin Watson</h3>
+                    <p class="student-card-id">NIM. 2295550111</p>
+                    <span class="badge badge-active">ACTIVE</span>
+                    
+                    <div class="card-contact-info">
+                        <p><i class="far fa-envelope"></i> kristin_w@gmail.com</p>
+                        <p><i class="fas fa-phone-alt"></i> (229) 555-0111</p>
+                    </div>
+                    <div class="card-meta-details">
+                        <div class="meta-row"><span>Prodi</span><strong>Sains Data</strong></div>
+                        <div class="meta-row"><span>Angkatan</span><strong>10 Feb, 2024</strong></div>
+                    </div>
+                </div>
+
+                <div class="student-profile-card">
+                    <div class="card-action-menu"><i class="fas fa-ellipsis-v"></i></div>
+                    <h3 class="student-card-name">Makson Abbot</h3>
+                    <p class="student-card-id">NIM. 2295550112</p>
+                    <span class="badge badge-active">ACTIVE</span>
+                    
+                    <div class="card-contact-info">
+                        <p><i class="far fa-envelope"></i> makson_a@gmail.com</p>
+                        <p><i class="fas fa-phone-alt"></i> (229) 555-0112</p>
+                    </div>
+                    <div class="card-meta-details">
+                        <div class="meta-row"><span>Prodi</span><strong>Teknik Komputer</strong></div>
+                        <div class="meta-row"><span>Angkatan</span><strong>17 Jan, 2024</strong></div>
+                    </div>
+                </div>
+
+                <div class="student-profile-card">
+                    <div class="card-action-menu"><i class="fas fa-ellipsis-v"></i></div>
+                    <h3 class="student-card-name">Andrew Niles</h3>
+                    <p class="student-card-id">NIM. 2295550113</p>
+                    <span class="badge badge-active">ACTIVE</span>
+                    
+                    <div class="card-contact-info">
+                        <p><i class="far fa-envelope"></i> andrew_n@gmail.com</p>
+                        <p><i class="fas fa-phone-alt"></i> (229) 555-0113</p>
+                    </div>
+                    <div class="card-meta-details">
+                        <div class="meta-row"><span>Prodi</span><strong>Teknik Informatika</strong></div>
+                        <div class="meta-row"><span>Angkatan</span><strong>02 Mar, 2025</strong></div>
+                    </div>
+                </div>
+
+                <div class="student-profile-card">
+                    <div class="card-action-menu"><i class="fas fa-ellipsis-v"></i></div>
+                    <h3 class="student-card-name">Alberta Hussein</h3>
+                    <p class="student-card-id">NIM. 2295550114</p>
+                    <span class="badge badge-active">ACTIVE</span>
+                    
+                    <div class="card-contact-info">
+                        <p><i class="far fa-envelope"></i> alberta@gmail.com</p>
+                        <p><i class="fas fa-phone-alt"></i> (229) 555-0114</p>
+                    </div>
+                    <div class="card-meta-details">
+                        <div class="meta-row"><span>Prodi</span><strong>Sistem Informasi</strong></div>
+                        <div class="meta-row"><span>Angkatan</span><strong>17 Oct, 2024</strong></div>
+                    </div>
+                </div>
+
+                <div class="student-profile-card">
+                    <div class="card-action-menu"><i class="fas fa-ellipsis-v"></i></div>
+                    <h3 class="student-card-name">Mark Wood</h3>
+                    <p class="student-card-id">NIM. 2295550115</p>
+                    <span class="badge badge-active">ACTIVE</span>
+                    
+                    <div class="card-contact-info">
+                        <p><i class="far fa-envelope"></i> markw@gmail.com</p>
+                        <p><i class="fas fa-phone-alt"></i> (229) 555-0115</p>
+                    </div>
+                    <div class="card-meta-details">
+                        <div class="meta-row"><span>Prodi</span><strong>Teknik Komputer</strong></div>
+                        <div class="meta-row"><span>Angkatan</span><strong>17 Jan, 2023</strong></div>
+                    </div>
+                </div>
+
+                <div class="student-profile-card">
+                    <div class="card-action-menu"><i class="fas fa-ellipsis-v"></i></div>
+                    <h3 class="student-card-name">Kirgis Nuesn</h3>
+                    <p class="student-card-id">NIM. 2295550116</p>
+                    <span class="badge badge-active">ACTIVE</span>
+                    
+                    <div class="card-contact-info">
+                        <p><i class="far fa-envelope"></i> kirgis@gmail.com</p>
+                        <p><i class="fas fa-phone-alt"></i> (229) 555-0116</p>
+                    </div>
+                    <div class="card-meta-details">
+                        <div class="meta-row"><span>Prodi</span><strong>Sains Data</strong></div>
+                        <div class="meta-row"><span>Angkatan</span><strong>10 Feb, 2024</strong></div>
+                    </div>
+                </div>
+
+                <div class="student-profile-card">
+                    <div class="card-action-menu"><i class="fas fa-ellipsis-v"></i></div>
+                    <h3 class="student-card-name">Jane Cooper</h3>
+                    <p class="student-card-id">NIM. 2295550117</p>
+                    <span class="badge badge-active">ACTIVE</span>
+                    
+                    <div class="card-contact-info">
+                        <p><i class="far fa-envelope"></i> jane.c@gmail.com</p>
+                        <p><i class="fas fa-phone-alt"></i> (229) 555-0117</p>
+                    </div>
+                    <div class="card-meta-details">
+                        <div class="meta-row"><span>Prodi</span><strong>Sistem Informasi</strong></div>
+                        <div class="meta-row"><span>Angkatan</span><strong>12 Mar, 2024</strong></div>
+                    </div>
+                </div>
+
+                <div class="student-profile-card">
+                    <div class="card-action-menu"><i class="fas fa-ellipsis-v"></i></div>
+                    <h3 class="student-card-name">Ameer Hussien</h3>
+                    <p class="student-card-id">NIM. 2295550118</p>
+                    <span class="badge badge-active">ACTIVE</span>
+                    
+                    <div class="card-contact-info">
+                        <p><i class="far fa-envelope"></i> ameer_h@gmail.com</p>
+                        <p><i class="fas fa-phone-alt"></i> (229) 555-0118</p>
+                    </div>
+                    <div class="card-meta-details">
+                        <div class="meta-row"><span>Prodi</span><strong>Teknik Informatika</strong></div>
+                        <div class="meta-row"><span>Angkatan</span><strong>02 Mar, 2025</strong></div>
+                    </div>
+                </div>
+
+            </section>
+        </main>
+    </div>
+
+</body>
+</html>

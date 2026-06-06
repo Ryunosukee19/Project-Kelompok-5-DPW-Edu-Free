@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Laporan Nilai</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="container">
+        <!-- Sidebar Navigation - Halaman Home -->
+        <aside class="sidebar">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i> <span>EduFree</span>
+            </div>
+            
+            <nav class="menu">
+                <!-- Hanya Home yang ACTIVE -->
+                <a href="index.html" class="menu-item"><i class="fas fa-home"></i> Home</a>
+                
+                <!-- Dropdown Peserta Perbaikan (Tanpa Select Tag) -->
+                <details class="menu-group">
+                    <summary class="menu-item">
+                        <i class="fas fa-users"></i> Peserta <i class="fas fa-chevron-down arrow"></i>
+                    </summary>
+                    <div class="submenu-content">
+                        <a href="peserta.html" class="sub-menu-item">Mahasiswa</a>
+                        <a href="dosen.html" class="sub-menu-item">Dosen</a>
+                    </div>
+                </details>
+
+                <!-- Dropdown Mata Kuliah Perbaikan (Tanpa Select Tag) -->
+                <details class="menu-group">
+                    <summary class="menu-item">
+                        <i class="fas fa-book"></i> Mata Kuliah <i class="fas fa-chevron-down arrow"></i>
+                    </summary>
+                    <div class="submenu-content">
+                        <a href="matakuliah.html" class="sub-menu-item">Semester 1</a>
+                        <a href="matakuliah2.html" class="sub-menu-item">Semester 2</a>
+                        <a href="matakuliah3.html" class="sub-menu-item">Semester 3</a>
+                    </div>
+                </details>
+
+                <a href="pengumpulan.html" class="menu-item"><i class="fas fa-file-invoice"></i> Pengumpulan Tugas</a>
+                <a href="laporan_nilai.html" class="menu-item active"><i class="fas fa-chart-bar"></i> Laporan Nilai</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header Atas -->
+            <header class="top-header">
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search here...">
+                </div>
+                <div class="user-profile">
+                    <i class="far fa-bell"></i>
+                    <i class="far fa-comment-dots"></i>
+                    <div class="profile-info">
+                        <span class="name">Priscilla Lily</span>
+                        <span class="role">Admin</span>
+                    </div>
+                 </div>
+            </header>
+
+            <!-- Judul Kiri Atas & Tombol Aksi -->
+            <section class="page-control-panel">
+                <div class="panel-left">
+                    <h2>Laporan Nilai</h2>
+                </div>
+                <div class="panel-right">
+                    <button class="btn-add-student"><i class="fas fa-file-download"></i> Unduh Transkrip</button>
+                </div>
+            </section>
+
+            <!-- Statistik Nilai Mata Kuliah (Card Persegi Panjang Horizontal) -->
+            <section class="assignment-list-container">
+                
+                <!-- Card 1: Algoritma Pemrograman -->
+                <div class="assignment-horizontal-card card-purple">
+                    <div class="task-info-block">
+                        <h3>Algoritma Pemrograman</h3>
+                        <p>Dosen: <strong>Putra, M.T.</strong></p>
+                    </div>
+                    <div class="task-status-block">
+                        <p style="font-size: 11px; color: #888; text-transform: uppercase; margin-bottom: 4px;">Indeks Prestasi</p>
+                        <span class="badge badge-active" style="background-color: #f4ecff; color: #8a33fd; font-size: 14px; padding: 4px 15px;">A</span>
+                    </div>
+                    <div class="task-history-block">
+                        <p class="grade-label">Rata-Rata Nilai</p>
+                        <p class="grade-value">88.5<span style="font-size:12px; font-weight:normal; color:#888;"> /100</span></p>
+                    </div>
+                    <div class="task-delay-block">
+                        <p style="font-size: 11px; color: #888; text-transform: uppercase; margin-bottom: 4px;">Statistik Presensi</p>
+                        <p class="delay-text on-time" style="color: #10b981;"><i class="fas fa-percentage"></i> 100% Hadir</p>
+                    </div>
+                    <div class="task-action-block">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+
+                <!-- Card 2: Pengantar Teknologi Informasi -->
+                <div class="assignment-horizontal-card card-orange">
+                    <div class="task-info-block">
+                        <h3>Pengantar Teknologi Informasi</h3>
+                        <p>Dosen: <strong>Pratiwi, M.Kom.</strong></p>
+                    </div>
+                    <div class="task-status-block">
+                        <p style="font-size: 11px; color: #888; text-transform: uppercase; margin-bottom: 4px;">Indeks Prestasi</p>
+                        <span class="badge badge-active" style="background-color: #fff7ed; color: #fb8c00; font-size: 14px; padding: 4px 15px;">B+</span>
+                    </div>
+                    <div class="task-history-block">
+                        <p class="grade-label">Rata-Rata Nilai</p>
+                        <p class="grade-value">79.2<span style="font-size:12px; font-weight:normal; color:#888;"> /100</span></p>
+                    </div>
+                    <div class="task-delay-block">
+                        <p style="font-size: 11px; color: #888; text-transform: uppercase; margin-bottom: 4px;">Statistik Presensi</p>
+                        <p class="delay-text on-time" style="color: #10b981;"><i class="fas fa-percentage"></i> 92% Hadir</p>
+                    </div>
+                    <div class="task-action-block">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+
+                <!-- Card 3: Bahasa Indonesia -->
+                <div class="assignment-horizontal-card card-green">
+                    <div class="task-info-block">
+                        <h3>Bahasa Indonesia</h3>
+                        <p>Dosen: <strong>Siti, M.Pd.</strong></p>
+                    </div>
+                    <div class="task-status-block">
+                        <p style="font-size: 11px; color: #888; text-transform: uppercase; margin-bottom: 4px;">Indeks Prestasi</p>
+                        <span class="badge badge-active" style="background-color: #ecfdf5; color: #10b981; font-size: 14px; padding: 4px 15px;">A-</span>
+                    </div>
+                    <div class="task-history-block">
+                        <p class="grade-label">Rata-Rata Nilai</p>
+                        <p class="grade-value">84.0<span style="font-size:12px; font-weight:normal; color:#888;"> /100</span></p>
+                    </div>
+                    <div class="task-delay-block">
+                        <p style="font-size: 11px; color: #888; text-transform: uppercase; margin-bottom: 4px;">Statistik Presensi</p>
+                        <p class="delay-text on-time" style="color: #10b981;"><i class="fas fa-percentage"></i> 100% Hadir</p>
+                    </div>
+                    <div class="task-action-block">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+
+                <!-- Card 4: PAI -->
+                <div class="assignment-horizontal-card card-red">
+                    <div class="task-info-block">
+                        <h3>Pendidikan Agama Islam (PAI)</h3>
+                        <p>Dosen: <strong>Ahmad, M.Ag.</strong></p>
+                    </div>
+                    <div class="task-status-block">
+                        <p style="font-size: 11px; color: #888; text-transform: uppercase; margin-bottom: 4px;">Indeks Prestasi</p>
+                        <span class="badge badge-late" style="font-size: 14px; padding: 4px 15px;">C</span>
+                    </div>
+                    <div class="task-history-block">
+                        <p class="grade-label">Rata-Rata Nilai</p>
+                        <p class="grade-value">62.8<span style="font-size:12px; font-weight:normal; color:#888;"> /100</span></p>
+                    </div>
+                    <div class="task-delay-block">
+                        <p style="font-size: 11px; color: #888; text-transform: uppercase; margin-bottom: 4px;">Statistik Presensi</p>
+                        <p class="delay-text late" style="color: #ef4444;"><i class="fas fa-percentage"></i> 75% Hadir (Peringatan)</p>
+                    </div>
+                    <div class="task-action-block">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+
+            </section>
+        </main>
+    </div>
+
+</body>
+</html>

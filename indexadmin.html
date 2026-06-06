@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Home</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="container">
+        <!-- Sidebar Navigation - Halaman Home -->
+        <aside class="sidebar">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i> <span>EduFree</span>
+            </div>
+            
+            <nav class="menu">
+                <!-- Hanya Home yang ACTIVE -->
+                <a href="index.html" class="menu-item active"><i class="fas fa-home"></i> Home</a>
+                
+                <!-- Dropdown Peserta Perbaikan (Tanpa Select Tag) -->
+                <details class="menu-group">
+                    <summary class="menu-item">
+                        <i class="fas fa-users"></i> Peserta <i class="fas fa-chevron-down arrow"></i>
+                    </summary>
+                    <div class="submenu-content">
+                        <a href="peserta.html" class="sub-menu-item">Mahasiswa</a>
+                        <a href="dosen.html" class="sub-menu-item">Dosen</a>
+                    </div>
+                </details>
+
+                <!-- Dropdown Mata Kuliah Perbaikan (Tanpa Select Tag) -->
+                <details class="menu-group">
+                    <summary class="menu-item">
+                        <i class="fas fa-book"></i> Mata Kuliah <i class="fas fa-chevron-down arrow"></i>
+                    </summary>
+                    <div class="submenu-content">
+                        <a href="matakuliah.html" class="sub-menu-item">Semester 1</a>
+                        <a href="matakuliah2.html" class="sub-menu-item">Semester 2</a>
+                        <a href="matakuliah3.html" class="sub-menu-item">Semester 3</a>
+                    </div>
+                </details>
+
+                <a href="pengumpulan.html" class="menu-item"><i class="fas fa-file-invoice"></i> Pengumpulan Tugas</a>
+                <a href="laporan_nilai.html" class="menu-item"><i class="fas fa-chart-bar"></i> Laporan Nilai</a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-header">
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search here...">
+                </div>
+                <div class="user-profile">
+                    <i class="far fa-bell"></i>
+                    <i class="far fa-comment-dots"></i>
+                    <div class="profile-info">
+                        <span class="name">Priscilla Lily</span>
+                        <span class="role">Admin</span>
+                    </div>
+                </div>
+            </header>
+
+            <section class="cards-grid">
+                <div class="card-stat">
+                    <div class="card-info">
+                        <h3>1,254</h3>
+                        <p>Jumlah Mahasiswa</p>
+                    </div>
+                    <div class="card-icon"><i class="fas fa-user-graduate"></i></div>
+                </div>
+                
+                <div class="card-stat">
+                    <div class="card-info">
+                        <h3>78</h3>
+                        <p>Jumlah Dosen</p>
+                    </div>
+                    <div class="card-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+                </div>
+
+                <div class="card-stat">
+                    <div class="card-info">
+                        <h3>32</h3>
+                        <p>Jumlah Mata Kuliah</p>
+                    </div>
+                    <div class="card-icon"><i class="fas fa-book-open"></i></div>
+                </div>
+            </section>
+
+            <div class="dashboard-grid">
+                
+                <section class="grid-left table-card">
+                    <div class="section-header">
+                        <h3>Tugas Mata Kuliah</h3>
+                        <button class="btn-see-all">See all &rarr;</button>
+                    </div>
+                    <table class="home-table">
+                        <thead>
+                            <tr>
+                                <th>Judul Tugas</th>
+                                <th>Mata Kuliah</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>UI/UX Design App</td>
+                                <td>Desain Antarmuka</td>
+                                <td><span class="status status-review">Review</span></td>
+                            </tr>
+                            <tr>
+                                <td>Web Development Project</td>
+                                <td>Pemrograman Web</td>
+                                <td><span class="status status-progress">In Progress</span></td>
+                            </tr>
+                            <tr>
+                                <td>Ushop Mobile App</td>
+                                <td>Pemrograman Mobile</td>
+                                <td><span class="status status-pending">Pending</span></td>
+                            </tr>
+                            <tr>
+                                <td>Database Normalization</td>
+                                <td>Sistem Basis Data</td>
+                                <td><span class="status status-review">Review</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <section class="grid-right list-card">
+                    <div class="section-header">
+                        <h3>Mahasiswa yang Aktif</h3>
+                        <button class="btn-see-all">See all &rarr;</button>
+                    </div>
+                    <div class="active-students-list">
+                        <div class="student-item">
+                            <div class="student-details">
+                                <h4>Lewis S. Cunningham</h4>
+                                <p>Teknik Informatika</p>
+                            </div>
+                            <div class="student-actions">
+                                <i class="far fa-user"></i>
+                                <i class="far fa-envelope"></i>
+                                <i class="fas fa-phone-alt"></i>
+                            </div>
+                        </div>
+                        <div class="student-item">
+                            <div class="student-details">
+                                <h4>Jane Cooper</h4>
+                                <p>Sistem Informasi</p>
+                            </div>
+                            <div class="student-actions">
+                                <i class="far fa-user"></i>
+                                <i class="far fa-envelope"></i>
+                                <i class="fas fa-phone-alt"></i>
+                            </div>
+                        </div>
+                        <div class="student-item">
+                            <div class="student-details">
+                                <h4>Floyd Miles</h4>
+                                <p>Sains Data</p>
+                            </div>
+                            <div class="student-actions">
+                                <i class="far fa-user"></i>
+                                <i class="far fa-envelope"></i>
+                                <i class="fas fa-phone-alt"></i>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+</body>
+</html>

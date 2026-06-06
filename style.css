@@ -1,0 +1,1185 @@
+/*VARIABLES & BASE STYLES (Gaya Dasar & Warna Tema)*/
+   :root {
+    --primary-color: #8a33fd;
+    --bg-color: #f8f7ff;
+    --text-gray: #7e7e7e;
+    --border-color: #f1f1f1;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+}
+
+.container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/*SIDEBAR NAVIGATION (Navigasi Kiri) */
+.sidebar {
+    width: 260px;
+    background: white;
+    padding: 20px;
+    border-right: 1px solid var(--border-color);
+}
+
+.logo {
+    color: var(--primary-color);
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.menu a.menu-item {
+    text-decoration: none;
+}
+
+.menu-item {
+    padding: 12px 15px;
+    color: var(--text-gray);
+    cursor: pointer;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 5px;
+    font-size: 15px;
+    transition: all 0.3s ease;
+}
+
+.menu-item.active {
+    background: #f4ebff;
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+.arrow {
+    margin-left: auto;
+    font-size: 12px;
+}
+
+
+/* ==========================================================================
+   3. HEADER & TOP BAR (Bagian Atas Dashboard)
+   ========================================================================== */
+.main-content {
+    flex: 1;
+    padding: 20px 40px;
+}
+
+.top-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.search-bar {
+    background: #efeff4;
+    padding: 10px 20px;
+    border-radius: 10px;
+    width: 400px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.search-bar input {
+    border: none;
+    background: transparent;
+    outline: none;
+    width: 100%;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.user-profile img {
+    border-radius: 50%;
+}
+
+.profile-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-info .name {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.profile-info .role {
+    font-size: 12px;
+    color: var(--text-gray);
+}
+
+/*HOME PAGE STYLES*/
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+    margin-bottom: 30px;
+}
+
+.card-stat {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.01);
+    border: 1px solid var(--border-color);
+}
+
+.card-stat h3 {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.card-stat p {
+    color: var(--text-gray);
+    font-size: 14px;
+}
+
+.card-icon {
+    font-size: 24px;
+    color: var(--primary-color);
+    background: #f4ebff;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.card-stat.highlighted {
+    background: var(--primary-color);
+    color: white;
+}
+
+.card-stat.highlighted p {
+    color: #e1ccff;
+}
+
+.card-stat.highlighted .card-icon {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 25px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.btn-see-all {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+/* Tabel Home */
+.table-card {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.01);
+    border: 1px solid var(--border-color);
+}
+
+.home-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.home-table th {
+    font-size: 12px;
+    text-transform: uppercase;
+    color: var(--text-gray);
+    padding: 12px 8px;
+    border-bottom: 1px solid var(--border-color);
+    text-align: left;
+}
+
+.home-table td {
+    padding: 14px 8px;
+    font-size: 14px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* Badges Status */
+.status {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+}
+
+.status::before {
+    content: "•";
+    margin-right: 5px;
+    font-size: 16px;
+}
+
+.status-review { background: #efe6ff; color: #6200ea; }
+.status-progress { background: #e3f2fd; color: #1e88e5; }
+.status-pending { background: #fff3e0; color: #fb8c00; }
+
+/* List Mahasiswa Aktif */
+.list-card {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.01);
+    border: 1px solid var(--border-color);
+}
+
+.active-students-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.student-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.student-item:last-child {
+    border-bottom: none;
+}
+
+.avatar {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+}
+
+.student-details {
+    flex: 1;
+}
+
+.student-details h4 {
+    font-size: 14px;
+    margin-bottom: 2px;
+}
+
+.student-details p {
+    font-size: 12px;
+    color: var(--text-gray);
+}
+
+.student-actions {
+    display: flex;
+    gap: 12px;
+    color: #b5b5b5;
+    font-size: 13px;
+}
+
+/*Halaman Peserta & Dosen - Bersih & Putih*/
+.page-control-panel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: transparent;
+    padding: 20px 0;
+    margin-bottom: 10px;
+}
+
+.panel-left h2 {
+    color: #111111;
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.filter-dropdowns {
+    display: flex;
+    gap: 12px;
+}
+
+.filter-select {
+    background: #ffffff;
+    color: #555555;
+    border: 1px solid var(--border-color);
+    padding: 8px 16px;
+    border-radius: 20px;
+    outline: none;
+    font-size: 13px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+
+.btn-add-student {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.cards-layout-grid {
+    background-color: transparent;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+    padding: 10px 0 30px 0;
+}
+
+.student-profile-card {
+    background: white;
+    border-radius: 16px;
+    padding: 25px 15px;
+    text-align: center;
+    position: relative;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.card-action-menu {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    color: #9e9e9e;
+    cursor: pointer;
+}
+
+.card-avatar {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 12px;
+}
+
+.student-card-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: #111;
+    margin-bottom: 4px;
+}
+
+.student-card-id {
+    font-size: 12px;
+    color: var(--text-gray);
+    margin-bottom: 10px;
+}
+
+.badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 10px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.badge-active { background-color: #e8f7f0; color: #10b981; }
+.badge-inactive { background-color: #fee2e2; color: #ef4444; }
+
+.card-contact-info {
+    background: #f8f9fc;
+    padding: 10px;
+    border-radius: 10px;
+    text-align: left;
+    margin-bottom: 15px;
+}
+
+.card-contact-info p {
+    font-size: 11px;
+    color: #4b5563;
+    margin-bottom: 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.card-contact-info i {
+    color: #9ca3af;
+    margin-right: 6px;
+    width: 12px;
+}
+
+.card-meta-details {
+    border-top: 1px dashed #e5e7eb;
+    padding-top: 12px;
+    text-align: left;
+}
+
+.meta-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    margin-bottom: 6px;
+}
+
+.meta-row span { color: #6b7280; }
+.meta-row strong { color: #1f2937; }
+
+/* ==========================================================================
+   6. MEDIA QUERIES (RESPONSIVE DESIGN)
+   ========================================================================== */
+@media screen and (max-width: 1400px) {
+    .cards-layout-grid { grid-template-columns: repeat(4, 1fr); }
+}
+
+@media screen and (max-width: 1100px) {
+    .cards-layout-grid { grid-template-columns: repeat(3, 1fr); }
+    .dashboard-grid { grid-template-columns: 1fr; }
+}
+
+@media screen and (max-width: 768px) {
+    .container { flex-direction: column; }
+    .sidebar { width: 100%; border-right: none; border-bottom: 1px solid var(--border-color); }
+    .menu { display: flex; flex-wrap: wrap; gap: 10px; }
+    .menu-item { margin-bottom: 0; }
+    .sidebar-select { width: 100%; margin-left: 0; }
+    .cards-grid { grid-template-columns: 1fr; }
+    .top-header { flex-direction: column-reverse; align-items: flex-start; gap: 15px; }
+    .search-bar { width: 100%; }
+    .page-control-panel { flex-direction: column; align-items: flex-start; gap: 15px; }
+    .cards-layout-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media screen and (max-width: 480px) {
+    .cards-layout-grid { grid-template-columns: 1fr; }
+    .filter-dropdowns { flex-direction: column; width: 100%; }
+}
+
+/*VARIABLES & BASE STYLES*/
+   :root {
+    --primary-color: #8a33fd;
+    --primary-light: #f4ecff;
+    --bg-body: #f8f9fa;
+    --text-dark: #111111;
+    --text-gray: #888888;
+    --border-color: #eaeaea;
+    --white: #ffffff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--bg-body);
+    color: var(--text-dark);
+}
+
+.container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/*SIDEBAR NAVIGATION*/
+.sidebar {
+    width: 260px;
+    background-color: var(--white);
+    border-right: 1px solid var(--border-color);
+    padding: 25px 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 35px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.menu {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 15px;
+    color: var(--text-gray);
+    text-decoration: none;
+    font-weight: 500;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.menu-item:hover, .menu-item.active {
+    color: var(--primary-color);
+    background-color: var(--primary-light);
+}
+
+.menu-group {
+    width: 100%;
+}
+
+.menu-group summary {
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.menu-group summary::-webkit-details-marker {
+    display: none;
+}
+
+.submenu-content {
+    padding-left: 28px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.sidebar-select {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-dark);
+    background-color: var(--bg-body);
+    outline: none;
+    font-size: 13px;
+}
+
+/*TOP HEADER (SEARCH & PROFILE)*/
+.main-content {
+    flex: 1;
+    padding: 30px;
+}
+
+.top-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 35px;
+}
+
+.search-bar {
+    background-color: #f1f3f6;
+    padding: 12px 20px;
+    border-radius: 12px;
+    width: 400px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.search-bar i {
+    color: var(--text-gray);
+}
+
+.search-bar input {
+    background: none;
+    border: none;
+    outline: none;
+    width: 100%;
+    font-size: 14px;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.user-profile i {
+    font-size: 20px;
+    color: #333;
+    cursor: pointer;
+}
+
+.profile-info {
+    text-align: right;
+}
+
+.profile-info .name {
+    display: block;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.profile-info .role {
+    font-size: 12px;
+    color: var(--text-gray);
+}
+
+.user-profile img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/*PAGE CONTROL PANEL (JUDUL KIRI ATAS & BUTTON)*/
+.page-control-panel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.panel-left h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-dark);
+}
+
+.btn-add-student {
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: none;
+    padding: 12px 20px;
+    border-radius: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.2s;
+}
+
+.btn-add-student:hover {
+    background-color: #7220d7;
+}
+
+/*LAYOUT PENGUMPUAN TUGAS (CARD PERSEGI PANJANG)*/
+.assignment-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.assignment-horizontal-card {
+    background: var(--white);
+    border-radius: 14px;
+    padding: 20px 25px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.01);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Garis aksen warna vertikal di paling kiri card */
+.assignment-horizontal-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 6px;
+}
+
+.card-purple::before { background-color: var(--primary-color); }
+.card-orange::before { background-color: #fb8c00; }
+.card-green::before { background-color: #10b981; }
+.card-red::before { background-color: #ef4444; }
+
+/* Pembagian Blok Informasi Dalam Card */
+.task-info-block {
+    flex: 2;
+}
+
+.task-info-block h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 4px;
+}
+
+.task-info-block p {
+    font-size: 13px;
+    color: var(--text-gray);
+}
+
+.task-status-block {
+    flex: 1.5;
+}
+
+.task-history-block {
+    flex: 1.2;
+}
+
+.task-history-block .grade-label {
+    font-size: 11px;
+    color: var(--text-gray);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+}
+
+.task-history-block .grade-value {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-dark);
+}
+
+.task-delay-block {
+    flex: 1.5;
+}
+
+.delay-text {
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.delay-text.on-time { color: #10b981; }
+.delay-text.late { color: #ef4444; }
+
+.task-action-block {
+    flex: 0.3;
+    text-align: right;
+    color: #b0b0b0;
+    cursor: pointer;
+}
+
+/* Badges Status Pengumpulan */
+.badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.badge-active {
+    background-color: #ecfdf5;
+    color: #10b981;
+}
+
+.badge-late {
+    background-color: #fee2e2;
+    color: #ef4444;
+}
+
+.badge-submitted {
+    background-color: #eff6ff;
+    color: #3b82f6;
+}
+
+/* Responsive Grid Breakpoint */
+@media screen and (max-width: 992px) {
+    .assignment-horizontal-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    .task-action-block {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+    }
+}
+
+/*VARIABLES & BASE STYLES*/
+   :root {
+    --primary-color: #8a33fd;
+    --primary-light: #f4ecff;
+    --bg-body: #f8f9fa;
+    --text-dark: #111111;
+    --text-gray: #888888;
+    --border-color: #eaeaea;
+    --white: #ffffff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--bg-body);
+    color: var(--text-dark);
+}
+
+.container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/*SIDEBAR NAVIGATION */
+.sidebar {
+    width: 260px;
+    background-color: var(--white);
+    border-right: 1px solid var(--border-color);
+    padding: 25px 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 35px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.menu {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 15px;
+    color: var(--text-gray);
+    text-decoration: none;
+    font-weight: 500;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.menu-item:hover, .menu-item.active {
+    color: var(--primary-color);
+    background-color: var(--primary-light);
+}
+
+.menu-group {
+    width: 100%;
+}
+
+.menu-group summary {
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.menu-group summary::-webkit-details-marker {
+    display: none;
+}
+
+.submenu-content {
+    padding-left: 28px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.sidebar-select {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-dark);
+    background-color: var(--bg-body);
+    outline: none;
+    font-size: 13px;
+}
+
+/*TOP HEADER (SEARCH & PROFILE)*/
+.main-content {
+    flex: 1;
+    padding: 30px;
+}
+
+.top-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 35px;
+}
+
+.search-bar {
+    background-color: #f1f3f6;
+    padding: 12px 20px;
+    border-radius: 12px;
+    width: 400px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.search-bar i {
+    color: var(--text-gray);
+}
+
+.search-bar input {
+    background: none;
+    border: none;
+    outline: none;
+    width: 100%;
+    font-size: 14px;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.user-profile i {
+    font-size: 20px;
+    color: #333;
+    cursor: pointer;
+}
+
+.profile-info {
+    text-align: right;
+}
+
+.profile-info .name {
+    display: block;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.profile-info .role {
+    font-size: 12px;
+    color: var(--text-gray);
+}
+
+.user-profile img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/*PAGE CONTROL PANEL (JUDUL KIRI ATAS & BUTTON)*/
+.page-control-panel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.panel-left h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-dark);
+}
+
+.btn-add-student {
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: none;
+    padding: 12px 20px;
+    border-radius: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.2s;
+}
+
+.btn-add-student:hover {
+    background-color: #7220d7;
+}
+
+/*LAYOUT KARTU HORIZONTAL (PENGUMPULAN & LAPORAN NILAI)*/
+.assignment-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.assignment-horizontal-card {
+    background: var(--white);
+    border-radius: 14px;
+    padding: 20px 25px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.01);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Garis aksen warna vertikal di paling kiri card persegi panjang */
+.assignment-horizontal-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 6px;
+}
+
+.card-purple::before { background-color: var(--primary-color); }
+.card-orange::before { background-color: #fb8c00; }
+.card-green::before { background-color: #10b981; }
+.card-red::before { background-color: #ef4444; }
+
+/* Pembagian Blok Informasi Dalam Card */
+.task-info-block {
+    flex: 2;
+}
+
+.task-info-block h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 4px;
+}
+
+.task-info-block p {
+    font-size: 13px;
+    color: var(--text-gray);
+}
+
+.task-status-block {
+    flex: 1.5;
+}
+
+.task-history-block {
+    flex: 1.2;
+}
+
+.task-history-block .grade-label {
+    font-size: 11px;
+    color: var(--text-gray);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+}
+
+.task-history-block .grade-value {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-dark);
+}
+
+.task-delay-block {
+    flex: 1.5;
+}
+
+.delay-text {
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.delay-text.on-time { color: #10b981; }
+.delay-text.late { color: #ef4444; }
+
+.task-action-block {
+    flex: 0.3;
+    text-align: right;
+    color: #b0b0b0;
+    cursor: pointer;
+}
+
+/* Badges Status Warna */
+.badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.badge-active {
+    background-color: #ecfdf5;
+    color: #10b981;
+}
+
+.badge-late {
+    background-color: #fee2e2;
+    color: #ef4444;
+}
+
+.badge-submitted {
+    background-color: #eff6ff;
+    color: #3b82f6;
+}
+
+/* Responsive Grid Breakpoint */
+@media screen and (max-width: 992px) {
+    .assignment-horizontal-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    .task-action-block {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+    }
+}
+
+/* Styling Submenu Tautan Baru pakai <a>*/
+.submenu-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding-left: 45px; /* Menjorok ke dalam agar sejajar teks menu utama */
+    margin-top: 4px;
+    margin-bottom: 8px;
+}
+
+.sub-menu-item {
+    font-size: 14px;
+    color: var(--text-gray);
+    text-decoration: none;
+    padding: 8px 0;
+    font-weight: 500;
+    display: block;
+    transition: color 0.2s ease;
+}
+
+.sub-menu-item:hover {
+    color: var(--primary-color);
+}
+

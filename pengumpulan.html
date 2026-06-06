@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Home</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="container">
+        <!-- Sidebar Navigation - Halaman Home -->
+        <aside class="sidebar">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i> <span>EduFree</span>
+            </div>
+            
+            <nav class="menu">
+                <!-- Hanya Home yang ACTIVE -->
+                <a href="index.html" class="menu-item"><i class="fas fa-home"></i> Home</a>
+                
+                <!-- Dropdown Peserta Perbaikan (Tanpa Select Tag) -->
+                <details class="menu-group">
+                    <summary class="menu-item">
+                        <i class="fas fa-users"></i> Peserta <i class="fas fa-chevron-down arrow"></i>
+                    </summary>
+                    <div class="submenu-content">
+                        <a href="peserta.html" class="sub-menu-item">Mahasiswa</a>
+                        <a href="dosen.html" class="sub-menu-item">Dosen</a>
+                    </div>
+                </details>
+
+                <!-- Dropdown Mata Kuliah Perbaikan (Tanpa Select Tag) -->
+                <details class="menu-group">
+                    <summary class="menu-item">
+                        <i class="fas fa-book"></i> Mata Kuliah <i class="fas fa-chevron-down arrow"></i>
+                    </summary>
+                    <div class="submenu-content">
+                        <a href="matakuliah.html" class="sub-menu-item">Semester 1</a>
+                        <a href="matakuliah2.html" class="sub-menu-item">Semester 2</a>
+                        <a href="matakuliah3.html" class="sub-menu-item">Semester 3</a>
+                    </div>
+                </details>
+
+                <a href="pengumpulan.html" class="menu-item active"><i class="fas fa-file-invoice"></i> Pengumpulan Tugas</a>
+                <a href="laporan_nilai.html" class="menu-item"><i class="fas fa-chart-bar"></i> Laporan Nilai</a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-header">
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search here...">
+                </div>
+                <div class="user-profile">
+                    <i class="far fa-bell"></i>
+                    <i class="far fa-comment-dots"></i>
+                    <div class="profile-info">
+                        <span class="name">Priscilla Lily</span>
+                        <span class="role">Admin</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Judul Kiri Atas -->
+            <section class="page-control-panel">
+                <div class="panel-left">
+                    <h2>Pengumpulan Tugas</h2>
+                </div>
+                <div class="panel-right">
+                    <button class="btn-add-student"><i class="fas fa-download"></i> Export Data</button>
+                </div>
+            </section>
+
+            <!-- List Card Persegi Panjang (Horizontal) -->
+            <section class="assignment-list-container">
+                
+                <!-- Card 1 -->
+                <div class="assignment-horizontal-card card-purple">
+                    <div class="task-info-block">
+                        <h3>Tugas 1: Flowchart & Logika</h3>
+                        <p>Mata Kuliah: <strong>Algoritma Pemrograman</strong></p>
+                    </div>
+                    <div class="task-status-block">
+                        <p style="font-size: 11px; color: #888; text-transform: uppercase; margin-bottom: 4px;">Status Tugas</p>
+                        <span class="badge badge-active">Selesai Diperiksa</span>
+                    </div>
+                    <div class="task-history-block">
+                        <p class="grade-label">Riwayat Nilai</p>
+                        <p class="grade-value">92<span style="font-size:12px; font-weight:normal; color:#888;">/100</span></p>
+                    </div>
+                    <div class="task-delay-block">
+                        <p style="font-size: 11px; color: #888; text-transform: uppercase; margin-bottom: 4px;">Keterlambatan</p>
+                        <p class="delay-text on-time"><i class="fas fa-check-circle"></i> Tepat Waktu</p>
+                    </div>
+                    <div class="task-action-block">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="assignment-horizontal-card card-red">
+                    <div class="task-info-block">
+                        <h3>Tugas 2: Implementasi Array 1D</h3>
+                        <p>Mata Kuliah: <strong>Algoritma Pemrograman</strong></p>
+                    </div>
+                    <div class="task-status-block">
+                        <p style="font-size: 11px; color: #888; text-transform: uppercase; margin-bottom: 4px;">Status Tugas</p>
+                        <span class="badge badge-late">Terlambat</span>
+                    </div>
+                    <div class="task-history-block">
+                        <p class="grade-label">Riwayat Nilai</p>
+                        <p class="grade-value">75<span style="font-size:12px; font-weight:normal; color:#888;">/100</span></p>
+                    </div>
+                    <div class="task-delay-block">
+                        <p style="font-size: 11px; color: #888; text-transform: uppercase; margin-bottom: 4px;">Keterlambatan</p>
+                        <p class="delay-text late"><i class="fas fa-clock"></i> Terlambat 2 Hari</p>
+                    </div>
+                    <div class="task-action-block">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="assignment-horizontal-card card-orange">
+                    <div class="task-info-block">
+                        <h3>Kuis 1: Pengenalan Sintaksis</h3>
+                        <p>Mata Kuliah: <strong>Pengantar Teknologi Informasi</strong></p>
+                    </div>
+                    <div class="task-status-block">
+                        <p style="font-size: 11px; color: #888; text-transform: uppercase; margin-bottom: 4px;">Status Tugas</p>
+                        <span class="badge badge-submitted">Belum Diperiksa</span>
+                    </div>
+                    <div class="task-history-block">
+                        <p class="grade-label">Riwayat Nilai</p>
+                        <p class="grade-value" style="color: #999; font-size:14px; font-weight:500;">--</p>
+                    </div>
+                    <div class="task-delay-block">
+                        <p style="font-size: 11px; color: #888; text-transform: uppercase; margin-bottom: 4px;">Keterlambatan</p>
+                        <p class="delay-text on-time"><i class="fas fa-check-circle"></i> Tepat Waktu</p>
+                    </div>
+                    <div class="task-action-block">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </div>
+                </div>
+
+            </section>
+
+        </main>
+    </div>
+
+</body>
+</html>
