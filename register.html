@@ -3,194 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daftar | Edu-Free LMS</title>
+    <title>Masuk | Edu-Free</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
         body { background-color: #0d1321; color: #ffffff; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-        .auth-card { background-color: #151e32; padding: 40px; border-radius: 16px; width: 100%; max-width: 500px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .auth-container { width: 100%; padding: 20px; display: flex; justify-content: center; }
+        .auth-card { background-color: #151e32; padding: 40px; border-radius: 16px; width: 100%; max-width: 450px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 255, 255, 0.05); }
+        
         .logo { font-size: 28px; font-weight: 700; text-align: center; margin-bottom: 20px; }
         .logo .edu { color: #38bdf8; } .logo .free { color: #c084fc; }
-        .auth-title { font-size: 22px; font-weight: 600; text-align: center; margin-bottom: 30px; }
+        .auth-title { font-size: 22px; font-weight: 600; text-align: center; margin-bottom: 5px; }
+        .auth-subtitle { font-size: 13px; color: #9ca3af; text-align: center; margin-bottom: 30px; }
         
-        .input-group { margin-bottom: 20px; }
+        .input-group { margin-bottom: 20px; transition: all 0.3s ease; }
         .input-group label { display: block; font-size: 13px; color: #cbd5e1; margin-bottom: 8px; }
-        .input-group input[type="text"], .input-group input[type="number"], .input-group input[type="password"], .input-group select { width: 100%; padding: 12px 15px; background-color: #1e293b; border: 1px solid #334155; border-radius: 8px; color: #ffffff; outline: none; }
+        .input-group input, .input-group select { width: 100%; padding: 12px 15px; background-color: #1e293b; border: 1px solid #334155; border-radius: 8px; color: #ffffff; font-size: 14px; outline: none; transition: all 0.3s ease; }
+        .input-group input:focus, .input-group select:focus { border-color: #38bdf8; box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2); }
+        .input-group select option { background-color: #1e293b; color: #ffffff; }
         
-        .btn-primary { width: 100%; padding: 14px; background: linear-gradient(135deg, #38bdf8, #0ea5e9); color: white; border: none; border-radius: 30px; font-weight: 600; cursor: pointer; transition: 0.3s; margin-top: 10px; }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(14, 165, 233, 0.4); }
-        .btn-secondary { background: #334155; margin-top: 10px; }
+        .btn-primary { width: 100%; padding: 14px; background: linear-gradient(135deg, #38bdf8, #0ea5e9); color: white; border: none; border-radius: 30px; font-size: 15px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 15px rgba(14, 165, 233, 0.4); transition: all 0.3s ease; margin-top: 10px; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(14, 165, 233, 0.6); }
         
-        /* Checkbox & Radio Styles */
-        .course-list { display: grid; gap: 10px; margin-top: 10px; }
-        .course-item { display: flex; align-items: center; gap: 10px; background: #1e293b; padding: 12px; border-radius: 8px; border: 1px solid #334155; cursor: pointer; transition: 0.3s; }
-        .course-item:hover { border-color: #38bdf8; }
-        .course-item input { width: 18px; height: 18px; cursor: pointer; }
-        
-        .step-2 { display: none; } /* Disembunyikan awalnya */
+        .auth-switch { text-align: center; margin-top: 25px; font-size: 13px; color: #9ca3af; }
+        .auth-switch a { color: #38bdf8; text-decoration: none; font-weight: 600; }
+        .auth-switch a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
-    <div class="auth-card">
-        <div class="logo"><span class="edu">Edu</span><span class="free">-Free.</span></div>
-        <h2 class="auth-title" id="form-title">Buat Akun Baru</h2>
-        
-        <form id="registerForm">
-            <div id="step-1">
+
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="logo"><span class="edu">Edu</span><span class="free">-Free.</span></div>
+            <h2 class="auth-title">Selamat Datang Kembali!</h2>
+            <p class="auth-subtitle">Silakan masuk ke akun Anda.</p>
+
+            <form id="loginForm">
                 <div class="input-group">
-                    <label>Daftar Sebagai</label>
-                    <select id="role" required>
+                    <label for="login-role">Masuk Sebagai</label>
+                    <select id="login-role" required>
                         <option value="mahasiswa" selected>Mahasiswa</option>
                         <option value="dosen">Dosen</option>
-                        <option value="asprak">Asisten Praktikum (Asprak)</option>
+                        <option value="asprak">Asisten Praktikum</option>
+                        <option value="admin">Administrator</option>
                     </select>
                 </div>
-                <div class="input-group">
-                    <label>Nama Lengkap</label>
-                    <input type="text" id="nama" required>
-                </div>
-                <div class="input-group">
-                    <label id="label-id">NIM</label>
-                    <input type="number" id="userId" required>
-                </div>
-                <div class="input-group">
-                    <label>Password</label>
-                    <input type="password" id="password" required>
-                </div>
-                <div class="input-group" id="semester-container">
-                    <label>Semester</label>
-                    <select id="semester" required>
-                        <option value="" disabled selected>-- Pilih --</option>
-                        <option value="1">Semester 1</option>
-                        <option value="2">Semester 2</option>
-                    </select>
-                </div>
-                <button type="button" class="btn-primary" id="btn-next">Berikutnya ➔</button>
-            </div>
 
-            <div id="step-2" class="step-2">
-                <p style="font-size: 14px; color: #9ca3af; margin-bottom: 15px;" id="course-instruction">Pilih Mata Kuliah Anda:</p>
-                
-                <div class="course-list" id="course-container">
-                    </div>
-
-                <div style="display: flex; gap: 10px;">
-                    <button type="button" class="btn-primary btn-secondary" id="btn-back">⬅ Kembali</button>
-                    <button type="submit" class="btn-primary">Daftar Sekarang</button>
+                <div class="input-group">
+                    <label for="login-id" id="login-label-id">NIM</label>
+                    <input type="text" id="login-id" placeholder="Masukkan NIM Anda" required autocomplete="off">
                 </div>
-            </div>
-        </form>
+
+                <div class="input-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" placeholder="Masukkan Password" required>
+                </div>
+
+                <button type="submit" class="btn-primary">Masuk</button>
+            </form>
+
+            <p class="auth-switch">Belum punya akun? <a href="register.html">Daftar di sini</a></p>
+        </div>
     </div>
 
     <script>
-        const matkulSem1 = ["PTI", "Alpro", "Matematika Teknik", "Matematika Diskret"];
-        const matkulSem2 = ["Struktur Data", "DPW", "Orkom", "Metode Statistika", "Komputasi Aljabar Linier"];
-        const semuaMatkul = [...matkulSem1, ...matkulSem2];
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginRole = document.getElementById('login-role');
+            const loginLabelId = document.getElementById('login-label-id');
+            const loginInputId = document.getElementById('login-id');
 
-        const roleSelect = document.getElementById('role');
-        const semesterContainer = document.getElementById('semester-container');
-        const semesterSelect = document.getElementById('semester');
-        const labelId = document.getElementById('label-id');
-        
-        const step1 = document.getElementById('step-1');
-        const step2 = document.getElementById('step-2');
-        const courseContainer = document.getElementById('course-container');
-        const courseInstruction = document.getElementById('course-instruction');
-
-        // Ganti label tergantung peran
-        roleSelect.addEventListener('change', () => {
-            if (roleSelect.value === 'mahasiswa') {
-                labelId.textContent = 'NIM';
-                semesterContainer.style.display = 'block';
-                semesterSelect.setAttribute('required', 'true');
-            } else {
-                labelId.textContent = roleSelect.value === 'dosen' ? 'NIP' : 'NIM/ID Asprak';
-                semesterContainer.style.display = 'none';
-                semesterSelect.removeAttribute('required');
-            }
-        });
-
-        // Tombol Berikutnya ditekan
-        document.getElementById('btn-next').addEventListener('click', () => {
-            // Validasi Step 1
-            if(!document.getElementById('nama').value || !document.getElementById('userId').value || !document.getElementById('password').value) {
-                return alert("Harap isi semua data diri!");
-            }
-            if(roleSelect.value === 'mahasiswa' && !semesterSelect.value) {
-                return alert("Harap pilih semester!");
-            }
-
-            // Generate Pilihan Matkul
-            courseContainer.innerHTML = "";
-            let listToRender = [];
-            let inputType = "checkbox";
-
-            if (roleSelect.value === 'mahasiswa') {
-                listToRender = semesterSelect.value === "1" ? matkulSem1 : matkulSem2;
-                inputType = "checkbox";
-                courseInstruction.textContent = `Pilih mata kuliah untuk Semester ${semesterSelect.value} (Bisa pilih lebih dari satu):`;
-            } else {
-                listToRender = semuaMatkul;
-                inputType = "radio"; // Dosen/Asprak hanya bisa pilih 1
-                courseInstruction.textContent = `Pilih 1 Mata Kuliah yang Anda ampu:`;
-            }
-
-            listToRender.forEach(mk => {
-                courseContainer.innerHTML += `
-                    <label class="course-item">
-                        <input type="${inputType}" name="pilihanMatkul" value="${mk}">
-                        <span>${mk}</span>
-                    </label>
-                `;
+            // Ganti Label dan Tipe Input Berdasarkan Peran
+            loginRole.addEventListener('change', function() {
+                if (this.value === 'dosen') {
+                    loginLabelId.textContent = 'NIP';
+                    loginInputId.placeholder = 'Masukkan NIP Anda';
+                    loginInputId.type = 'number';
+                } else if (this.value === 'asprak') {
+                    loginLabelId.textContent = 'NIM / ID Asprak';
+                    loginInputId.placeholder = 'Masukkan ID Anda';
+                    loginInputId.type = 'number';
+                } else if (this.value === 'admin') {
+                    loginLabelId.textContent = 'Username Admin';
+                    loginInputId.placeholder = 'Ketik Username Rahasia';
+                    loginInputId.type = 'text'; 
+                } else {
+                    loginLabelId.textContent = 'NIM';
+                    loginInputId.placeholder = 'Masukkan NIM Anda';
+                    loginInputId.type = 'number';
+                }
+                loginInputId.value = ''; 
             });
 
-            // Pindah halaman form
-            step1.style.display = "none";
-            step2.style.display = "block";
-            document.getElementById('form-title').textContent = "Pilih Mata Kuliah";
-        });
+            // Logika Verifikasi
+            const loginForm = document.getElementById('loginForm');
+            if (loginForm) {
+                loginForm.addEventListener('submit', function(e) {
+                    e.preventDefault(); 
+                    
+                    const inputRole = loginRole.value;
+                    const inputId = loginInputId.value;
+                    const inputPassword = document.getElementById('login-password').value;
 
-        // Tombol Kembali
-        document.getElementById('btn-back').addEventListener('click', () => {
-            step1.style.display = "block";
-            step2.style.display = "none";
-            document.getElementById('form-title').textContent = "Buat Akun Baru";
-        });
+                    // 1. JALUR KHUSUS ADMIN
+                    if (inputRole === 'admin') {
+                        const rahasiaUsername = "admin";
+                        const rahasiaPassword = "admin123";
 
-        // Proses Register (Kirim ke Node.js)
-        document.getElementById('registerForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+                        if (inputId === rahasiaUsername && inputPassword === rahasiaPassword) {
+                            alert("Akses Diberikan. Selamat Datang, Admin Tertinggi!");
+                            localStorage.setItem('loggedInUser', JSON.stringify({
+                                userId: inputId, nama: "Super Admin", role: "admin", semester: "-", matkul: []
+                            }));
+                            window.location.href = "index.html"; 
+                        } else {
+                            alert("Akses Ditolak! Username atau Password Admin salah.");
+                        }
+                        return; 
+                    }
 
-            // Kumpulkan matkul yang dipilih
-            const selectedMatkulElements = document.querySelectorAll('input[name="pilihanMatkul"]:checked');
-            let selectedMatkul = Array.from(selectedMatkulElements).map(el => el.value);
+                    // 2. JALUR MAHASISWA, DOSEN & ASPRAK (Murni Menggunakan localStorage)
+                    const userDataString = localStorage.getItem(inputId);
 
-            if (selectedMatkul.length === 0) {
-                return alert("Anda wajib memilih minimal 1 Mata Kuliah!");
+                    if (userDataString) {
+                        const userData = JSON.parse(userDataString);
+
+                        if (userData.password === inputPassword && userData.role === inputRole) {
+                            alert(`Selamat datang kembali, ${userData.nama}!`);
+                            
+                            // Set sesi aktif agar dashboard bisa membacanya
+                            localStorage.setItem('loggedInUser', userDataString);
+
+                            // Arahkan ke Dashboard
+                            if (inputRole === 'dosen' || inputRole === 'asprak') {
+                                window.location.href = "indexlogindosen.html";
+                            } else {
+                                if (userData.semester === "1") window.location.href = "indexsetelahlogin.html"; 
+                                else window.location.href = "indexsetelahlogin2.html"; 
+                            }
+                        } else {
+                            alert("Oops! Password salah atau Anda memilih peran yang tidak sesuai.");
+                        }
+                    } else {
+                        alert("Akun tidak ditemukan! Silakan daftar terlebih dahulu.");
+                    }
+                });
             }
-
-            const userData = {
-                role: roleSelect.value,
-                nama: document.getElementById('nama').value,
-                userId: document.getElementById('userId').value,
-                password: document.getElementById('password').value,
-                semester: roleSelect.value === 'mahasiswa' ? semesterSelect.value : "-",
-                matkul: selectedMatkul // Ini akan dikirim sebagai Array
-            };
-
-            fetch('http://localhost:3000/api/register', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(userData)
-            })
-            .then(res => res.json())
-            .then(data => {
-                if(data.error) alert(data.error);
-                else {
-                    alert("Registrasi Berhasil! Silakan Login.");
-                    window.location.href = "login.html";
-                }
-            }).catch(err => alert("Gagal koneksi ke server."));
         });
     </script>
 </body>
