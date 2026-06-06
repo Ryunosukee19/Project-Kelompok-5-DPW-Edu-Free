@@ -3,289 +3,517 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ruang Kelas | Edu-Free</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Beranda & Ruang Kelas | Edu Free</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { background-color: #f4f7fe; color: #2b3674; display: flex; height: 100vh; overflow: hidden; }
-        
-        /* SIDEBAR */
-        .sidebar { width: 260px; background: #ffffff; padding: 20px; border-right: 1px solid #e0e5f2; display: flex; flex-direction: column; }
-        .logo { font-size: 24px; font-weight: 700; color: #2b3674; margin-bottom: 30px; text-align: center; }
-        .logo span { color: #4318ff; }
-        .menu-label { font-size: 12px; color: #a3aed1; font-weight: 600; text-transform: uppercase; margin-bottom: 10px; margin-top: 20px; }
-        .menu-item { display: flex; align-items: center; gap: 10px; padding: 12px 15px; color: #a3aed1; text-decoration: none; border-radius: 10px; font-weight: 500; transition: 0.3s; margin-bottom: 5px; cursor: pointer; }
-        .menu-item:hover, .menu-item.active { background: #4318ff; color: #ffffff; }
-        #sidebar-matkul-list { overflow-y: auto; flex: 1; }
+        /* =========================================
+           TEMA & RESET DASAR (Modern UI/UX)
+        ========================================= */
+        :root {
+            /* TEMA GELAP (Default) - Elegan & Deep */
+            --bg-body: #0b1120; 
+            --bg-sidebar: #111827; 
+            --bg-card: #1f2937;
+            --bg-card-hover: #374151;
+            --primary: #6366f1; /* Indigo modern */
+            --primary-hover: #4f46e5;
+            --secondary: #ec4899; /* Pink accent */
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8; 
+            --border-color: rgba(255, 255, 255, 0.08); 
+            --sidebar-width: 280px;
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 10px 25px -3px rgba(0, 0, 0, 0.5);
+            --banner-gradient: linear-gradient(135deg, #312e81 0%, #1e1b4b 100%);
+        }
 
-        /* MAIN CONTENT */
-        .main-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
-        .header { background: #ffffff; padding: 20px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e0e5f2; }
-        .header h1 { font-size: 20px; font-weight: 700; color: #2b3674; }
-        .user-profile { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 14px; }
+        body:has(#theme-toggle:checked) {
+            /* TEMA TERANG - Bersih, Airy & Pastel */
+            --bg-body: #f8fafc; 
+            --bg-sidebar: #ffffff; 
+            --bg-card: #ffffff;
+            --bg-card-hover: #f1f5f9;
+            --primary: #4f46e5; 
+            --primary-hover: #4338ca;
+            --secondary: #db2777; 
+            --text-main: #0f172a;
+            --text-muted: #64748b; 
+            --border-color: rgba(0, 0, 0, 0.06); 
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
+            --banner-gradient: linear-gradient(135deg, #e0e7ff 0%, #f3e8ff 100%);
+        }
         
-        /* TABS NAVIGATION */
-        .tabs { display: flex; background: #ffffff; padding: 0 30px; border-bottom: 1px solid #e0e5f2; gap: 20px; }
-        .tab-btn { background: none; border: none; padding: 15px 0; font-size: 14px; font-weight: 600; color: #a3aed1; cursor: pointer; border-bottom: 3px solid transparent; transition: 0.3s; }
-        .tab-btn:hover { color: #4318ff; }
-        .tab-btn.active { color: #4318ff; border-bottom: 3px solid #4318ff; }
+        .icon-sun { display: none; } 
+        body:has(#theme-toggle:checked) .icon-moon { display: none; } 
+        body:has(#theme-toggle:checked) .icon-sun { display: inline; color: #f59e0b; }
 
-        /* TAB CONTENT AREA */
-        .content-area { padding: 30px; overflow-y: auto; flex: 1; }
-        .tab-content { display: none; background: #ffffff; padding: 30px; border-radius: 16px; box-shadow: 0 5px 14px rgba(0,0,0,0.02); }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background-color: var(--bg-body); color: var(--text-main); display: flex; transition: background-color 0.4s ease, color 0.4s ease; overflow-x: hidden;}
+        a { text-decoration: none; color: inherit; } 
+        ul { list-style: none; }
+
+        /* =========================================
+           SIDEBAR MODERN
+        ========================================= */
+        .sidebar { position: fixed; top: 0; left: 0; width: var(--sidebar-width); height: 100vh; background-color: var(--bg-sidebar); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; z-index: 1000; transition: all 0.4s ease; }
+        .sidebar-header { display: flex; justify-content: center; align-items: center; padding: 30px 20px; border-bottom: 1px solid var(--border-color); }
+        .logo { font-size: 2rem; font-weight: 800; background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; background-clip: text; color: transparent; letter-spacing: -0.5px; }
+        
+        .theme-switch-wrapper { padding: 20px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: center; } 
+        .theme-toggle-label { cursor: pointer; color: var(--text-muted); display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 0.9rem; font-weight: 600; background: var(--bg-body); padding: 10px 20px; border-radius: 30px; border: 1px solid var(--border-color); transition: all 0.3s ease; width: 100%;} 
+        .theme-toggle-label:hover { transform: translateY(-2px); box-shadow: var(--shadow-sm); color: var(--text-main); } 
+        .theme-checkbox { display: none; } 
+        
+        .nav-links { padding: 20px 15px; flex-grow: 1; overflow-y: auto; } 
+        .nav-links::-webkit-scrollbar { width: 4px; } .nav-links::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
+        
+        .nav-links li a { display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; color: var(--text-muted); font-weight: 600; font-size: 0.95rem; border-radius: 12px; transition: all 0.3s ease; cursor: pointer; margin-bottom: 5px; }
+        .nav-links li a:hover { background-color: var(--bg-card); color: var(--text-main); transform: translateX(5px); }
+        .nav-links li a.active { background-color: var(--primary); color: #ffffff; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4); }
+        
+        .nav-links i { width: 20px; text-align: center; margin-right: 12px; font-size: 1.1rem; }
+        
+        .dropdown-btn { cursor: pointer; } 
+        .arrow { font-size: 0.7rem; transition: transform 0.3s ease; } 
+        .dropdown-btn.open .arrow { transform: rotate(180deg); }
+        .dropdown-container { display: none; background-color: transparent; flex-direction: column; padding-left: 10px; margin-top: 5px; border-left: 2px solid var(--border-color); margin-left: 20px; } 
+        .dropdown-container.show { display: flex; animation: slideDown 0.3s ease; } 
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .dropdown-container li a { padding: 10px 15px; font-size: 0.85rem; border-radius: 8px; margin-bottom: 2px; } 
+        .dropdown-container li a:hover { padding-left: 20px; background: rgba(99, 102, 241, 0.1); color: var(--primary); }
+        .dropdown-container li a.active { background: rgba(99, 102, 241, 0.15); color: var(--primary); box-shadow: none; font-weight: 700; }
+        
+        .btn-logout { margin-top: auto; color: #ef4444 !important; background: rgba(239, 68, 68, 0.05); }
+        .btn-logout:hover { background: #ef4444 !important; color: white !important; transform: translateY(-2px) !important; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3); }
+
+        /* =========================================
+           KONTEN UTAMA & HEADER
+        ========================================= */
+        .main-content { margin-left: var(--sidebar-width); width: calc(100% - var(--sidebar-width)); min-height: 100vh; padding: 40px 50px; }
+
+        /* Header Kanan Atas */
+        .header-top-right { position: fixed; top: 30px; right: 50px; display: flex; gap: 15px; z-index: 100; }
+        .header-profile { display: flex; align-items: center; cursor: pointer; padding: 6px 15px 6px 6px; border-radius: 50px; transition: all 0.3s ease; background: var(--bg-card); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); backdrop-filter: blur(10px); }
+        .header-profile:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: var(--primary); }
+        .header-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid transparent; background-color: #fff; }
+
+        /* =========================================
+           1. SECTION BERANDA (HERO DASHBOARD)
+        ========================================= */
+        #section-beranda { display: flex; align-items: center; justify-content: space-between; gap: 50px; background: linear-gradient(135deg, rgba(99, 102, 241, 0.08) 0%, rgba(236, 72, 153, 0.05) 100%); padding: 60px 50px; border-radius: 30px; border: 1px solid var(--border-color); width: 100%; min-height: 450px; position: relative; overflow: hidden; box-shadow: var(--shadow-sm); margin-top: 50px;}
+        
+        /* Ornamen Dekorasi Background */
+        #section-beranda::before { content: ''; position: absolute; top: -50px; right: -50px; width: 300px; height: 300px; background: var(--primary); filter: blur(100px); opacity: 0.15; border-radius: 50%; z-index: 0; pointer-events: none;}
+        #section-beranda::after { content: ''; position: absolute; bottom: -50px; left: -50px; width: 250px; height: 250px; background: var(--secondary); filter: blur(100px); opacity: 0.1; border-radius: 50%; z-index: 0; pointer-events: none;}
+
+        .hero-content { flex: 1.2; z-index: 2; animation: fadeRight 0.6s ease; }
+        @keyframes fadeRight { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
+
+        .badge-hero { display: inline-flex; align-items: center; gap: 8px; background: rgba(99, 102, 241, 0.15); color: var(--primary); padding: 8px 20px; border-radius: 30px; font-size: 0.85rem; font-weight: 700; margin-bottom: 25px; border: 1px solid rgba(99, 102, 241, 0.2); text-transform: uppercase; letter-spacing: 1px;}
+        
+        .hero-content h1 { font-size: 3.2rem; font-weight: 800; line-height: 1.15; margin-bottom: 20px; letter-spacing: -1px; }
+        .hero-content h1 span { background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        
+        .hero-content p { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 35px; line-height: 1.7; max-width: 90%; }
+        
+        .hero-image { flex: 1; z-index: 1; display: flex; justify-content: center; animation: floatImg 6s ease-in-out infinite; } 
+        .hero-image img { width: 100%; max-width: 450px; border-radius: 24px; box-shadow: var(--shadow-lg); transform: perspective(1000px) rotateY(-5deg); border: 1px solid var(--border-color);}
+        @keyframes floatImg { 0% { transform: translateY(0px); } 50% { transform: translateY(-15px); } 100% { transform: translateY(0px); } }
+
+        /* =========================================
+           2. SECTION RUANG KELAS (MATKUL)
+        ========================================= */
+        #section-matkul { display: none; width: 100%; animation: fadeIn 0.4s ease; margin-top: 40px;}
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Banner Header Matkul */
+        .matkul-header { display: flex; flex-direction: column; justify-content: center; margin-bottom: 30px; padding: 40px 50px; border-radius: 24px; background: var(--banner-gradient); box-shadow: var(--shadow-sm); position: relative; overflow: hidden; border: 1px solid var(--border-color);}
+        
+        /* Efek Pola Geometris di Banner */
+        .matkul-header::after { content: ''; position: absolute; right: 0; top: 0; width: 50%; height: 100%; background-image: radial-gradient(rgba(255,255,255,0.1) 2px, transparent 2px); background-size: 20px 20px; opacity: 0.5; pointer-events: none;}
+
+        .matkul-title-box { z-index: 2; position: relative; }
+        .matkul-title-box h1 { font-size: 2.5rem; color: #ffffff; margin-bottom: 8px; font-weight: 800; letter-spacing: -0.5px; text-shadow: 0 2px 10px rgba(0,0,0,0.2);}
+        .matkul-title-box p { color: rgba(255,255,255,0.8); font-size: 1.05rem; font-weight: 500; display: flex; align-items: center; gap: 8px;}
+        
+        /* TABS (Gaya Segemented Control Ala Apple) */
+        .tabs { display: inline-flex; gap: 5px; background: var(--bg-card); padding: 6px; border-radius: 16px; border: 1px solid var(--border-color); margin-bottom: 30px; box-shadow: var(--shadow-sm); }
+        .tab-btn { background: transparent; border: none; padding: 12px 24px; border-radius: 12px; color: var(--text-muted); font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); white-space: nowrap; display: flex; align-items: center; gap: 8px;}
+        .tab-btn:hover { color: var(--text-main); }
+        .tab-btn.active { background: var(--primary); color: #fff; box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3); }
+
+        /* KONTEN TAB */
+        .tab-content { display: none; background: transparent; min-height: 400px; animation: fadeIn 0.3s ease;}
         .tab-content.active { display: block; }
+        .section-title-tab { margin-bottom: 25px; font-size: 1.5rem; color: var(--text-main); font-weight: 700; display: flex; align-items: center; gap: 10px;}
 
-        /* FORUM DISKUSI KHUSUS */
-        .chat-box { border: 1px solid #e0e5f2; border-radius: 12px; height: 400px; display: flex; flex-direction: column; background: #f8fafc; }
-        .chat-messages { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
-        .message { max-width: 70%; padding: 12px 16px; border-radius: 12px; font-size: 14px; line-height: 1.5; position: relative; }
-        .message .sender { font-size: 11px; font-weight: 700; margin-bottom: 4px; display: block; }
+        /* KARTU ITEM (Tugas/Absensi/Materi) */
+        .item-card { background: var(--bg-card); border: 1px solid var(--border-color); padding: 24px 30px; border-radius: 20px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; transition: all 0.3s ease; box-shadow: var(--shadow-sm); position: relative; overflow: hidden;}
+        .item-card::before { content: ''; position: absolute; left: 0; top: 0; width: 4px; height: 100%; background: var(--primary); opacity: 0; transition: 0.3s ease;}
+        .item-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: rgba(99, 102, 241, 0.3); }
+        .item-card:hover::before { opacity: 1; }
         
-        .msg-other { background: #ffffff; align-self: flex-start; border: 1px solid #e0e5f2; border-bottom-left-radius: 0; }
-        .msg-other .sender { color: #f59e0b; } /* Warna Dosen/Lainnya */
+        .item-info { flex: 1; }
+        .item-info h3 { font-size: 1.15rem; margin-bottom: 6px; color: var(--text-main); font-weight: 700;}
+        .item-info p { font-size: 0.9rem; color: var(--text-muted); font-weight: 500; display: flex; align-items: center; gap: 6px;}
         
-        .msg-me { background: #4318ff; color: #ffffff; align-self: flex-end; border-bottom-right-radius: 0; }
-        .msg-me .sender { color: #e0e5f2; }
+        .btn-action { background: rgba(99, 102, 241, 0.1); color: var(--primary); border: 1px solid rgba(99, 102, 241, 0.2); padding: 10px 24px; border-radius: 12px; font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: all 0.3s ease; }
+        .btn-action:hover { background: var(--primary); color: #fff; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4); transform: translateY(-2px);}
 
-        .chat-input-area { padding: 15px; background: #ffffff; border-top: 1px solid #e0e5f2; display: flex; gap: 10px; border-bottom-left-radius: 12px; border-bottom-right-radius: 12px; }
-        .chat-input-area input { flex: 1; padding: 12px 15px; border: 1px solid #e0e5f2; border-radius: 8px; outline: none; }
-        .chat-input-area button { background: #4318ff; color: white; border: none; padding: 0 20px; border-radius: 8px; cursor: pointer; font-weight: 600; }
-
-        /* KARTU TUGAS & KUIS */
-        .task-card { border: 1px solid #e0e5f2; padding: 20px; border-radius: 12px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
-        .task-info h3 { font-size: 16px; margin-bottom: 5px; }
-        .task-info p { font-size: 12px; color: #a3aed1; }
-        .btn-action { background: #f4f7fe; color: #4318ff; border: none; padding: 8px 15px; border-radius: 8px; font-weight: 600; cursor: pointer; }
+        /* FORUM DISKUSI (Modern Chat Box) */
+        .chat-box { border: 1px solid var(--border-color); border-radius: 24px; height: 500px; display: flex; flex-direction: column; background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden;}
         
-        .role-badge { background: #e0e5f2; padding: 3px 8px; border-radius: 4px; font-size: 10px; text-transform: uppercase; margin-left: 10px; color: #2b3674; }
+        .chat-header-info { padding: 15px 25px; border-bottom: 1px solid var(--border-color); background: rgba(0,0,0,0.02); display: flex; align-items: center; gap: 10px;}
+        .chat-header-info i { color: var(--primary); font-size: 1.2rem;}
+        .chat-header-info span { font-weight: 600; font-size: 0.9rem;}
+
+        .chat-messages { flex: 1; padding: 25px; overflow-y: auto; display: flex; flex-direction: column; gap: 18px; scroll-behavior: smooth; }
+        .chat-messages::-webkit-scrollbar { width: 6px; } .chat-messages::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
+        
+        .message { max-width: 75%; padding: 14px 18px; font-size: 0.95rem; line-height: 1.5; position: relative; box-shadow: var(--shadow-sm); animation: popIn 0.3s ease;}
+        @keyframes popIn { from { opacity: 0; transform: scale(0.95) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+        
+        .message .sender { font-size: 0.75rem; font-weight: 700; margin-bottom: 6px; display: block; letter-spacing: 0.5px;}
+        
+        .msg-other { background: var(--bg-body); align-self: flex-start; border: 1px solid var(--border-color); border-radius: 20px 20px 20px 4px; }
+        .msg-other .sender { color: var(--secondary); }
+        
+        .msg-me { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%); color: #fff; align-self: flex-end; border-radius: 20px 20px 4px 20px; border: none; }
+        .msg-me .sender { color: rgba(255,255,255,0.8); }
+        
+        .chat-input-area { padding: 20px; background: var(--bg-body); border-top: 1px solid var(--border-color); display: flex; gap: 15px; align-items: center; }
+        .chat-input-area input { flex: 1; padding: 16px 20px; border: 1px solid var(--border-color); border-radius: 16px; background: var(--bg-card); color: var(--text-main); outline: none; font-size: 0.95rem; font-weight: 500; transition: border 0.3s;}
+        .chat-input-area input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1); }
+        .chat-input-area button { background: var(--primary); color: white; border: none; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; display: flex; justify-content: center; align-items: center; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);}
+        .chat-input-area button:hover { transform: scale(1.05) rotate(5deg); }
+
     </style>
 </head>
 <body>
 
-    <aside class="sidebar">
-        <div class="logo">Edu<span>-Free.</span></div>
-        <a href="#" id="btn-back-home" class="menu-item"><i class="fas fa-home"></i> Kembali ke Dashboard</a>
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">Edu-Free.</div>
+        </div>
         
-        <p class="menu-label">Mata Kuliah Anda</p>
-        <div id="sidebar-matkul-list">
-            </div>
-    </aside>
+        <div class="theme-switch-wrapper">
+            <input type="checkbox" id="theme-toggle" class="theme-checkbox">
+            <label for="theme-toggle" class="theme-toggle-label">
+                <i class="fas fa-moon icon-moon"></i> Mode Gelap
+                <i class="fas fa-sun icon-sun"></i> Mode Terang
+            </label>
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="#" id="menu-beranda" class="active"><i class="fas fa-home"></i> Beranda Utama</a></li>
+            
+            <li><a href="#"><i class="fas fa-user-circle"></i> Profil Saya</a></li>
+
+            <li>
+                <a class="dropdown-btn open">
+                    <span><i class="fas fa-layer-group"></i> Ruang Kelas</span>
+                    <span class="arrow"><i class="fas fa-chevron-down"></i></span>
+                </a>
+                <ul class="dropdown-container show" id="menu-matkul-saya">
+                    </ul>
+            </li>
+            
+            <li><a href="#" class="btn-logout" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Keluar</a></li>
+        </ul>
+    </nav>
 
     <main class="main-content">
-        <header class="header">
-            <div>
-                <h1 id="header-matkul-title">Memuat Mata Kuliah...</h1>
-                <p style="font-size: 12px; color: #a3aed1;" id="header-matkul-subtitle">Semester X</p>
+        
+        <div class="header-top-right">
+            <div class="header-profile" title="Profil Anda">
+                <div style="text-align: right; margin-right: 12px; margin-left: 8px;">
+                    <div id="top-name" style="font-size: 0.9rem; font-weight: 700; letter-spacing: 0.2px;">Nama</div>
+                    <div id="top-role" style="font-size: 0.75rem; color: var(--primary); font-weight: 600;">Mahasiswa</div>
+                </div>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png" id="header-avatar" class="header-avatar">
             </div>
-            <div class="user-profile">
-                <i class="fas fa-user-circle" style="font-size: 24px; color: #4318ff;"></i>
-                <span id="display-nama-user">User</span>
-                <span id="display-role-user" class="role-badge">Role</span>
+        </div>
+
+        <section id="section-beranda">
+            <div class="hero-content">
+                <div class="badge-hero"><i class="fas fa-rocket"></i> Platform LMS Modern</div>
+                <h1>Tingkatkan <span>Skill Coding</span> Bersama Kami.</h1>
+                <p id="welcome-message">Selamat Datang di ruang belajar interaktif. Silakan pilih kelas di menu samping untuk memulai perjalanan Anda hari ini.</p>
+                <button class="btn-action" style="padding: 14px 30px; font-size: 1rem;" onclick="document.querySelector('.dropdown-btn').click();">Mulai Belajar Sekarang <i class="fas fa-arrow-right" style="margin-left: 8px;"></i></button>
             </div>
-        </header>
+            <div class="hero-image">
+                <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Dashboard Belajar" style="object-fit: cover;">
+            </div>
+        </section>
 
-        <nav class="tabs">
-            <button class="tab-btn active" onclick="openTab('tab-absensi', this)">Absensi</button>
-            <button class="tab-btn" onclick="openTab('tab-tugas', this)">Tugas</button>
-            <button class="tab-btn" onclick="openTab('tab-kuis', this)">Kuis</button>
-            <button class="tab-btn" onclick="openTab('tab-ujian', this)">UTS/UAS</button>
-            <button class="tab-btn" onclick="openTab('tab-nilai', this)">Nilai</button>
-            <button class="tab-btn" onclick="openTab('tab-forum', this)"><i class="fas fa-comments"></i> Forum Diskusi</button>
-        </nav>
-
-        <div class="content-area">
+        <section id="section-matkul">
             
+            <div class="matkul-header">
+                <div class="matkul-title-box">
+                    <h1 id="matkul-title-text">Nama Mata Kuliah</h1>
+                    <p><i class="fas fa-graduation-cap"></i> Program Studi Teknik Informatika — Semester <span id="matkul-semester-text" style="margin-left: 5px;">X</span></p>
+                </div>
+            </div>
+
+            <nav class="tabs">
+                <button class="tab-btn active" onclick="bukaTabKelas('tab-absensi', this)"><i class="fas fa-user-check"></i> Kehadiran</button>
+                <button class="tab-btn" onclick="bukaTabKelas('tab-materi', this)"><i class="fas fa-book-open"></i> Materi</button>
+                <button class="tab-btn" onclick="bukaTabKelas('tab-tugas', this)"><i class="fas fa-laptop-code"></i> Tugas</button>
+                <button class="tab-btn" onclick="bukaTabKelas('tab-nilai', this)"><i class="fas fa-star"></i> Penilaian</button>
+                <button class="tab-btn" onclick="bukaTabKelas('tab-forum', this)"><i class="fas fa-comments"></i> Diskusi Kelas</button>
+            </nav>
+
             <div id="tab-absensi" class="tab-content active">
-                <h2 style="margin-bottom: 20px;">Daftar Hadir Mahasiswa</h2>
-                <div class="task-card">
-                    <div class="task-info">
-                        <h3>Pertemuan 1: Pengantar Mata Kuliah</h3>
-                        <p>Batas waktu: Hari ini, 23:59 WIB</p>
-                    </div>
-                    <button class="btn-action" id="btn-absen">Isi Kehadiran</button>
+                <h2 class="section-title-tab"><i class="fas fa-calendar-check" style="color: var(--primary);"></i> Daftar Hadir Perkuliahan</h2>
+                <div id="konten-absensi">
+                    <p style="color: var(--text-muted); font-size: 0.95rem; background: var(--bg-card); padding: 20px; border-radius: 15px; border: 1px dashed var(--border-color); text-align: center;">Belum ada sesi kehadiran yang dibuka oleh dosen pengampu.</p>
+                </div>
+            </div>
+
+            <div id="tab-materi" class="tab-content">
+                <h2 class="section-title-tab"><i class="fas fa-folder-open" style="color: var(--primary);"></i> Modul & Referensi</h2>
+                <div id="konten-materi">
+                    <p style="color: var(--text-muted); font-size: 0.95rem; background: var(--bg-card); padding: 20px; border-radius: 15px; border: 1px dashed var(--border-color); text-align: center;">Belum ada materi pembelajaran yang diunggah.</p>
                 </div>
             </div>
 
             <div id="tab-tugas" class="tab-content">
-                <h2 style="margin-bottom: 20px;">Daftar Tugas</h2>
-                <div class="task-card">
-                    <div class="task-info">
-                        <h3>Tugas 1: Resume Materi</h3>
-                        <p>Status: <span style="color: #ef4444;">Belum Dikerjakan</span> | Tenggat: Besok</p>
+                <h2 class="section-title-tab"><i class="fas fa-clipboard-list" style="color: var(--primary);"></i> Daftar Tugas & Praktikum</h2>
+                <div id="konten-tugas">
                     </div>
-                    <button class="btn-action">Kumpulkan</button>
-                </div>
-            </div>
-
-            <div id="tab-kuis" class="tab-content">
-                <h2 style="margin-bottom: 20px;">Kuis Aktif</h2>
-                <p style="color: #a3aed1; font-size: 14px;">Belum ada kuis yang tersedia untuk mata kuliah ini.</p>
-            </div>
-
-            <div id="tab-ujian" class="tab-content">
-                <h2 style="margin-bottom: 20px;">Jadwal UTS & UAS</h2>
-                <p style="color: #a3aed1; font-size: 14px;">Jadwal ujian belum dirilis oleh program studi.</p>
             </div>
 
             <div id="tab-nilai" class="tab-content">
-                <h2 style="margin-bottom: 20px;">Rekap Nilai Sementara</h2>
-                <p style="color: #a3aed1; font-size: 14px;">Nilai akan muncul setelah dosen melakukan penilaian pada Tugas/Kuis.</p>
+                <h2 class="section-title-tab"><i class="fas fa-chart-line" style="color: var(--primary);"></i> Transkrip & Evaluasi</h2>
+                <div id="konten-nilai">
+                    <p style="color: var(--text-muted); font-size: 0.95rem; background: var(--bg-card); padding: 20px; border-radius: 15px; border: 1px dashed var(--border-color); text-align: center;">Evaluasi dan nilai belum dipublikasikan oleh dosen.</p>
+                </div>
             </div>
 
             <div id="tab-forum" class="tab-content">
-                <h2 style="margin-bottom: 10px;">Ruang Diskusi <span id="forum-matkul-name" style="color:#4318ff;">Matkul</span></h2>
-                <p style="font-size: 12px; color: #a3aed1; margin-bottom: 20px;">Semua percakapan di sini dienkripsi dan diisolasi khusus untuk mata kuliah ini.</p>
+                <h2 class="section-title-tab" style="margin-bottom: 10px;"><i class="fas fa-comments" style="color: var(--primary);"></i> Forum <span id="forum-matkul-name" style="color:var(--secondary); margin-left: 5px;"></span></h2>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 25px; font-weight: 500;">Sistem obrolan terenkripsi & diisolasi hanya untuk anggota kelas ini.</p>
                 
                 <div class="chat-box">
+                    <div class="chat-header-info">
+                        <i class="fas fa-shield-alt"></i> <span>End-to-end isolated classroom chat</span>
+                    </div>
                     <div class="chat-messages" id="chat-messages">
                         </div>
                     <form class="chat-input-area" id="form-chat">
-                        <input type="text" id="chat-input" placeholder="Ketik pertanyaan atau diskusi di sini..." required autocomplete="off">
-                        <button type="submit"><i class="fas fa-paper-plane"></i> Kirim</button>
+                        <input type="text" id="chat-input" placeholder="Ketik pertanyaan atau diskusi Anda di sini..." autocomplete="off">
+                        <button type="submit"><i class="fas fa-paper-plane"></i></button>
                     </form>
                 </div>
             </div>
 
-        </div>
+        </section>
+
     </main>
 
     <script>
-        // INISIALISASI DATA AWAL
-        const userString = localStorage.getItem('loggedInUser');
-        if (!userString) {
-            alert("Sesi habis. Silakan login kembali.");
-            window.location.href = "login.html";
-        }
-        const currentUser = JSON.parse(userString);
+        // 1. INISIALISASI & KEAMANAN
+        const activeUserString = localStorage.getItem('loggedInUser');
+        if (!activeUserString) { window.location.href = "login.html"; }
+        const user = JSON.parse(activeUserString);
 
-        // AMBIL NAMA MATKUL DARI URL (Membaca ?mk=DPW)
-        const urlParams = new URLSearchParams(window.location.search);
-        const activeMatkul = urlParams.get('mk');
+        // Menampilkan Info User
+        document.getElementById('top-name').textContent = user.nama;
+        document.getElementById('matkul-semester-text').textContent = user.semester;
 
-        if (!activeMatkul) {
-            alert("Mata kuliah tidak ditemukan!");
-            window.location.href = "login.html"; // Kembalikan jika URL tidak sah
-        }
+        // Ambil Foto Profil
+        const savedPhoto = localStorage.getItem('profilePic_' + user.userId);
+        if (savedPhoto) document.getElementById('header-avatar').src = savedPhoto;
 
-        document.addEventListener('DOMContentLoaded', () => {
-            // 1. TAMPILKAN PROFIL USER
-            document.getElementById('display-nama-user').textContent = currentUser.nama;
-            document.getElementById('display-role-user').textContent = currentUser.role;
-            
-            // Atur tombol kembali ke dashboard utama sesuai peran
-            document.getElementById('btn-back-home').href = (currentUser.role === 'dosen' || currentUser.role === 'asprak') 
-                ? 'indexlogindosen.html' 
-                : (currentUser.semester === "1" ? 'indexsetelahlogin.html' : 'indexsetelahlogin2.html');
+        // 2. LOGIKA MENU SIDEBAR & SPA
+        const menuContainer = document.getElementById('menu-matkul-saya');
+        const sectionBeranda = document.getElementById('section-beranda');
+        const sectionMatkul = document.getElementById('section-matkul');
+        const btnMenuBeranda = document.getElementById('menu-beranda');
+        
+        let activeMatkulGlobal = ""; 
 
-            // 2. SET JUDUL MATA KULIAH DI HALAMAN
-            document.getElementById('header-matkul-title').textContent = activeMatkul;
-            document.getElementById('header-matkul-subtitle').textContent = `Program Studi Teknik Informatika`;
-            document.getElementById('forum-matkul-name').textContent = `[ ${activeMatkul} ]`;
-
-            // 3. RENDER SIDEBAR MATA KULIAH
-            const sidebarList = document.getElementById('sidebar-matkul-list');
-            if (currentUser.matkul && currentUser.matkul.length > 0) {
-                currentUser.matkul.forEach(mk => {
-                    const link = document.createElement('a');
-                    link.href = `matkul_dashboard.html?mk=${encodeURIComponent(mk)}`;
-                    link.className = `menu-item ${mk === activeMatkul ? 'active' : ''}`;
-                    link.innerHTML = `<i class="fas fa-book-open"></i> ${mk}`;
-                    sidebarList.appendChild(link);
-                });
-            }
-
-            // 4. UBAH TOMBOL BERDASARKAN ROLE (Contoh Absensi)
-            if (currentUser.role === 'dosen' || currentUser.role === 'asprak') {
-                document.getElementById('btn-absen').textContent = "Buka Absensi";
-                document.getElementById('btn-absen').style.background = "#10b981"; // Hijau untuk Dosen
-                document.getElementById('btn-absen').style.color = "white";
-            }
-
-            // 5. JALANKAN SISTEM FORUM DISKUSI TERISOLASI
-            loadForumMessages();
+        // Klik Beranda
+        btnMenuBeranda.addEventListener('click', (e) => {
+            e.preventDefault();
+            sectionBeranda.style.display = 'flex';
+            sectionMatkul.style.display = 'none';
+            document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+            btnMenuBeranda.classList.add('active');
         });
 
-        // FUNGSI GANTI TAB
-        function openTab(tabId, btnElement) {
-            // Sembunyikan semua tab content
+        // Cetak Tombol Mata Kuliah
+        if (user.matkul && user.matkul.length > 0) {
+            menuContainer.innerHTML = ''; 
+            user.matkul.forEach(mk => {
+                const li = document.createElement('li');
+                const linkMatkul = document.createElement('a');
+                linkMatkul.href = "#";
+                linkMatkul.innerHTML = `<i class="fas fa-book" style="margin-right: 8px; font-size:0.8rem;"></i> ${mk}`;
+                
+                linkMatkul.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    sectionBeranda.style.display = 'none';
+                    sectionMatkul.style.display = 'block';
+                    
+                    document.querySelectorAll('.nav-links li a').forEach(a => a.classList.remove('active'));
+                    linkMatkul.classList.add('active');
+
+                    bukaHalamanMatkul(mk);
+                });
+
+                li.appendChild(linkMatkul);
+                menuContainer.appendChild(li);
+            });
+        }
+
+        // 3. FUNGSI MERENDER DATA KELAS SPESIFIK
+        function bukaHalamanMatkul(namaMatkul) {
+            activeMatkulGlobal = namaMatkul; 
+            
+            document.getElementById('matkul-title-text').textContent = namaMatkul;
+            document.getElementById('forum-matkul-name').textContent = `[ ${namaMatkul} ]`;
+
+            const tabAbsensiBtn = document.querySelector('.tabs button');
+            bukaTabKelas('tab-absensi', tabAbsensiBtn);
+
+            renderTugas(namaMatkul);
+            renderMateri(namaMatkul);
+            loadForumMessages(namaMatkul);
+        }
+
+        function renderTugas(matkul) {
+            const wadahTugas = document.getElementById('konten-tugas');
+            const dbTugas = JSON.parse(localStorage.getItem('global_database_tugas')) || [];
+            const tugasMatkulIni = dbTugas.filter(t => t.matkul === matkul);
+
+            if (tugasMatkulIni.length > 0) {
+                wadahTugas.innerHTML = '';
+                tugasMatkulIni.forEach(tugas => {
+                    wadahTugas.innerHTML += `
+                        <div class="item-card">
+                            <div class="item-info">
+                                <h3>${tugas.judul}</h3>
+                                <p><i class="far fa-clock"></i> Tenggat Waktu: <strong style="margin-left:5px; color:var(--text-main);">${tugas.deadline}</strong></p>
+                            </div>
+                            <button class="btn-action"><i class="fas fa-cloud-upload-alt" style="margin-right:6px;"></i> Kumpulkan</button>
+                        </div>
+                    `;
+                });
+            } else {
+                wadahTugas.innerHTML = '<p style="color: var(--text-muted); font-size: 0.95rem; background: var(--bg-card); padding: 20px; border-radius: 15px; border: 1px dashed var(--border-color); text-align: center;">Belum ada tugas aktif untuk mata kuliah ini.</p>';
+            }
+        }
+
+        function renderMateri(matkul) {
+            const wadahMateri = document.getElementById('konten-materi');
+            const dbMateri = JSON.parse(localStorage.getItem('global_database_materi')) || [];
+            const materiMatkulIni = dbMateri.filter(m => m.matkul === matkul);
+
+            if (materiMatkulIni.length > 0) {
+                wadahMateri.innerHTML = '';
+                materiMatkulIni.forEach(m => {
+                    wadahMateri.innerHTML += `
+                        <div class="item-card">
+                            <div class="item-info">
+                                <h3><i class="fas fa-file-pdf" style="color: #ef4444; margin-right:8px;"></i> ${m.judul}</h3>
+                                <p><i class="fas fa-user-tie"></i> Diunggah oleh Dosen</p>
+                            </div>
+                            <button class="btn-action"><i class="fas fa-download" style="margin-right:6px;"></i> Unduh</button>
+                        </div>
+                    `;
+                });
+            } else {
+                wadahMateri.innerHTML = '<p style="color: var(--text-muted); font-size: 0.95rem; background: var(--bg-card); padding: 20px; border-radius: 15px; border: 1px dashed var(--border-color); text-align: center;">Belum ada materi pembelajaran yang diunggah.</p>';
+            }
+        }
+
+        // 4. LOGIKA TAB DALAM KELAS
+        function bukaTabKelas(tabId, btnElement) {
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-            // Hilangkan garis biru di semua tombol tab
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             
-            // Tampilkan tab yang diklik
             document.getElementById(tabId).classList.add('active');
             btnElement.classList.add('active');
 
-            // Jika buka forum, otomatis scroll ke pesan terbawah
             if(tabId === 'tab-forum') {
                 const chatBox = document.getElementById('chat-messages');
                 chatBox.scrollTop = chatBox.scrollHeight;
             }
         }
 
-        // ==========================================
-        // SISTEM FORUM DISKUSI (ISOLASI PER MATA KULIAH)
-        // ==========================================
-        
-        // Kunci Rahasia untuk LocalStorage: Gabungan kata "forum_" dan "Nama Matkul"
-        // Contoh: forum_DPW, forum_Orkom. Ini menjamin data tidak akan bocor/tercampur!
-        const DB_FORUM_KEY = `forum_${activeMatkul}`; 
-
+        // 5. SISTEM FORUM DISKUSI TERISOLASI
         const chatMessages = document.getElementById('chat-messages');
         const formChat = document.getElementById('form-chat');
         const chatInput = document.getElementById('chat-input');
 
-        function loadForumMessages() {
-            chatMessages.innerHTML = ''; // Bersihkan layar chat
-            
-            // Ambil brankas chat khusus matkul ini
-            const historyChat = JSON.parse(localStorage.getItem(DB_FORUM_KEY)) || [];
+        function loadForumMessages(matkul) {
+            chatMessages.innerHTML = ''; 
+            const dbForumKey = `forum_${matkul}`; 
+            const historyChat = JSON.parse(localStorage.getItem(dbForumKey)) || [];
             
             if (historyChat.length === 0) {
-                chatMessages.innerHTML = `<p style="text-align:center; color:#a3aed1; font-size:12px; margin-top:20px;">Belum ada diskusi. Jadilah yang pertama memulai percakapan!</p>`;
+                chatMessages.innerHTML = `<div style="text-align:center; padding: 40px 20px;"><i class="fas fa-comments" style="font-size:3rem; color:var(--border-color); margin-bottom:15px;"></i><p style="color:var(--text-muted); font-size:0.9rem;">Belum ada diskusi. Jadilah yang pertama memulai percakapan!</p></div>`;
                 return;
             }
 
             historyChat.forEach(msg => {
-                const isMe = msg.userId === currentUser.userId;
-                const roleTag = msg.role === 'dosen' ? ' [Dosen]' : (msg.role === 'asprak' ? ' [Asprak]' : '');
+                const isMe = msg.userId === user.userId;
+                const roleTag = msg.role === 'dosen' ? ' <i class="fas fa-check-circle" style="color:#10b981;" title="Dosen"></i>' : (msg.role === 'asprak' ? ' <i class="fas fa-check-circle" style="color:#f59e0b;" title="Asprak"></i>' : '');
                 
                 const div = document.createElement('div');
                 div.className = `message ${isMe ? 'msg-me' : 'msg-other'}`;
-                div.innerHTML = `
-                    <span class="sender">${msg.nama} ${roleTag} - ${msg.waktu}</span>
-                    ${msg.text}
-                `;
+                div.innerHTML = `<span class="sender">${msg.nama} ${roleTag} • ${msg.waktu}</span>${msg.text}`;
                 chatMessages.appendChild(div);
             });
-
-            // Scroll ke pesan paling bawah otomatis
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
 
         formChat.addEventListener('submit', function(e) {
             e.preventDefault();
             const text = chatInput.value.trim();
-            if(!text) return;
+            if(!text || !activeMatkulGlobal) return;
 
-            // Buat objek pesan baru
             const newMessage = {
-                userId: currentUser.userId,
-                nama: currentUser.nama,
-                role: currentUser.role,
-                text: text,
+                userId: user.userId, nama: user.nama, role: user.role, text: text,
                 waktu: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
             };
 
-            // Buka brankas khusus matkul ini, masukkan pesan baru, tutup brankas lagi
-            const historyChat = JSON.parse(localStorage.getItem(DB_FORUM_KEY)) || [];
+            const dbForumKey = `forum_${activeMatkulGlobal}`;
+            const historyChat = JSON.parse(localStorage.getItem(dbForumKey)) || [];
             historyChat.push(newMessage);
-            localStorage.setItem(DB_FORUM_KEY, JSON.stringify(historyChat));
+            localStorage.setItem(dbForumKey, JSON.stringify(historyChat));
 
-            // Kosongkan kolom ketik dan muat ulang chat
             chatInput.value = '';
-            loadForumMessages();
+            loadForumMessages(activeMatkulGlobal); 
+        });
+
+        // Interaksi Dropdown Sidebar
+        var dropdowns = document.getElementsByClassName("dropdown-btn");
+        for (var i = 0; i < dropdowns.length; i++) {
+            dropdowns[i].addEventListener("click", function(e) {
+                this.classList.toggle("open");
+                var content = this.nextElementSibling;
+                content.classList.toggle("show");
+            });
+        }
+        
+        // Logout
+        document.getElementById('logout-btn').addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.removeItem('loggedInUser');
+            window.location.href = "login.html";
+        });
+
+        // Tema (Dark/Light Mode)
+        const themeToggle = document.getElementById("theme-toggle");
+        if (localStorage.getItem("theme") === "light") themeToggle.checked = true;
+        themeToggle.addEventListener("change", function() {
+            localStorage.setItem("theme", this.checked ? "light" : "dark");
         });
     </script>
 </body>
