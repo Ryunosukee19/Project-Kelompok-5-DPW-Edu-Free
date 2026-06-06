@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Admin | Edu Free</title>
+    <link rel="stylesheet" href="styleindex.css">
+    <style>
+        body {
+            background-color: var(--bg-main, #0f172a);
+            color: var(--text-main, #fff);
+            font-family: Arial, sans-serif;
+            margin: 0; padding: 0;
+        }
+
+        .admin-header {
+            background: rgba(0,0,0,0.2);
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .admin-container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .admin-card {
+            background: var(--bg-card, #1e293b);
+            border: 1px solid var(--border-color, rgba(255,255,255,0.1));
+            border-radius: 15px;
+            padding: 30px;
+        }
+
+        .admin-card h2 { margin-top: 0; color: var(--primary, #38bdf8); }
+
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: bold; }
+        .form-group input, .form-group textarea {
+            width: 100%; padding: 12px 15px; border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.2);
+            color: #fff; font-family: inherit; box-sizing: border-box;
+        }
+        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: #38bdf8; }
+        .form-group input[type="file"] { padding: 9px; cursor: pointer; }
+
+        .btn-submit {
+            background: var(--primary, #38bdf8); color: #fff; border: none;
+            padding: 15px; border-radius: 8px; width: 100%; font-size: 1.1rem;
+            cursor: pointer; font-weight: bold; transition: 0.3s;
+        }
+        .btn-submit:hover { background: #0284c7; }
+
+        .btn-logout {
+            background: #ef4444; color: #fff; border: none; padding: 10px 20px;
+            border-radius: 30px; cursor: pointer; text-decoration: none; font-weight: bold;
+        }
+
+        /* Tabel Daftar Berita */
+        .news-list-item {
+            background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1);
+            padding: 15px; border-radius: 8px; margin-bottom: 15px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .news-list-info h4 { margin: 0 0 5px 0; }
+        .news-list-info p { margin: 0; font-size: 0.85rem; color: #aaa; }
+        .btn-delete { background: #ef4444; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <div class="admin-header">
+        <div class="logo">Admin Edu-Free.</div>
+        <a href="index.html" class="btn-logout">Keluar ke Beranda</a>
+    </div>
+
+    <div class="admin-container">
+        <div class="admin-card">
+            <h2>Buat Berita Baru</h2>
+            <form id="news-form">
+                <div class="form-group">
+                    <label>Judul Berita</label>
+                    <input type="text" id="news-title" required>
+                </div>
+                <div class="form-group">
+                    <label>Tanggal Publikasi</label>
+                    <input type="date" id="news-date" required>
+                </div>
+                <div class="form-group">
+                    <label>Gambar Berita (Max 500KB disarankan)</label>
+                    <input type="file" id="news-image" accept="image/png, image/jpeg, image/webp">
+                </div>
+                <div class="form-group">
+                    <label>Isi Berita</label>
+                    <textarea id="news-desc" rows="5" required></textarea>
+                </div>
+                <button type="submit" class="btn-submit">Publikasikan</button>
+            </form>
+        </div>
+
+        <div class="admin-card">
+            <h2>Berita Terpublikasi</h2>
+            <div id="admin-news-list">
+                </div>
+        </div>
+    </div>
+
+    <script>
+        // Gunakan key yang sama dengan index.html
+        let newsDatabase = JSON.parse(localStorage.getItem('eduFreeNewsWithImage')) || [];
+
+        function renderAdminNews() {
+            const listContainer = document.getElementById('admin-news-list');
+            listContainer.innerHTML = '';
+
+            if (newsDatabase.length === 0) {
+                listContainer.innerHTML = '<p style="color:#aaa;">Belum ada berita.</p>';
+                return;
+            }
+
+            // Tampilkan dari yang terbaru
+            [...newsDatabase].reverse().forEach((news, index) => {
+                // Kalkulasi index asli (karena array di-reverse untuk tampilan)
+                const originalIndex = newsDatabase.length - 1 - index;
+                
+                listContainer.innerHTML += `
+                    <div class="news-list-item">
+                        <div class="news-list-info">
+                            <h4>${news.title}</h4>
+                            <p>📅 ${news.date}</p>
+                        </div>
+                        <button onclick="deleteNews(${originalIndex})" class="btn-delete">Hapus</button>
+                    </div>
+                `;
+            });
+        }
+
+        function deleteNews(index) {
+            if(confirm('Yakin ingin menghapus berita ini?')) {
+                newsDatabase.splice(index, 1);
+                localStorage.setItem('eduFreeNewsWithImage', JSON.stringify(newsDatabase));
+                renderAdminNews();
+            }
+        }
+
+        document.getElementById('news-form').addEventListener('submit', function(e) {
+            e.preventDefault(); 
+            const title = document.getElementById('news-title').value;
+            const date = document.getElementById('news-date').value;
+            const desc = document.getElementById('news-desc').value;
+            const imageInput = document.getElementById('news-image');
+
+            const saveAndRender = (base64String) => {
+                newsDatabase.push({ title, date, desc, imageBase64: base64String });
+                try {
+                    localStorage.setItem('eduFreeNewsWithImage', JSON.stringify(newsDatabase));
+                    alert("Berita berhasil dipublikasikan!");
+                    document.getElementById('news-form').reset();
+                    renderAdminNews();
+                } catch (error) {
+                    newsDatabase.pop(); 
+                    alert("Gagal mempublikasikan! Gambar terlalu besar. Coba gunakan gambar lain.");
+                }
+            };
+
+            if (imageInput.files && imageInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(event) { saveAndRender(event.target.result); };
+                reader.readAsDataURL(imageInput.files[0]);
+            } else {
+                saveAndRender(null);
+            }
+        });
+
+        // Load list pertama kali halaman dibuka
+        renderAdminNews();
+    </script>
+</body>
+</html>
