@@ -115,7 +115,7 @@
                             localStorage.setItem('loggedInUser', JSON.stringify({
                                 userId: inputId, nama: "Super Admin", role: "admin", semester: "-", matkul: []
                             }));
-                            window.location.href = "beritaadmin.html"; 
+                            window.location.href = "indexadmin.html"; 
                         } else {
                             alert("Akses Ditolak! Username atau Password Admin salah.");
                         }
@@ -138,7 +138,7 @@
                             if (inputRole === 'dosen' || inputRole === 'asprak') {
                                 window.location.href = "indexlogindosen.html";
                             } else {
-                                if (userData.semester === "1") window.location.href = "indexsetelahlogin.html"; 
+                                if (userData.semester === "1") window.location.href = "indexsetelahlogin2.html"; 
                                 else window.location.href = "indexsetelahlogin2.html"; 
                             }
                         } else {
