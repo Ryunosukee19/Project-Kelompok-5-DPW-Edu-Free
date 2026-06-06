@@ -3,198 +3,194 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beranda | Edu Free - Platform Kursus Online</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>Beranda & Ruang Kelas | Edu Free</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
         /* =========================================
-           TEMA & RESET DASAR
+           TEMA & RESET DASAR (Modern UI/UX)
         ========================================= */
         :root {
-            --bg-dark: #0f172a; --bg-sidebar: #1e293b; --bg-card: rgba(30, 41, 59, 0.85);
-            --primary: #38bdf8; --secondary: #c084fc; --text-main: #f8fafc;
-            --text-muted: #94a3b8; --border-color: rgba(255, 255, 255, 0.1); --sidebar-width: 260px;
-            --danger-red: #ef4444;
+            /* TEMA GELAP (Default) - Elegan & Deep */
+            --bg-body: #0b1120; 
+            --bg-sidebar: #111827; 
+            --bg-card: #1f2937;
+            --bg-card-hover: #374151;
+            --primary: #6366f1; /* Indigo modern */
+            --primary-hover: #4f46e5;
+            --secondary: #ec4899; /* Pink accent */
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8; 
+            --border-color: rgba(255, 255, 255, 0.08); 
+            --sidebar-width: 280px;
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 10px 25px -3px rgba(0, 0, 0, 0.5);
+            --banner-gradient: linear-gradient(135deg, #312e81 0%, #1e1b4b 100%);
         }
 
         body:has(#theme-toggle:checked) {
-            --bg-dark: #f1f5f9; --bg-sidebar: #ffffff; --bg-card: rgba(255, 255, 255, 0.9);
-            --primary: #0284c7; --secondary: #9333ea; --text-main: #0f172a;
-            --text-muted: #475569; --border-color: rgba(0, 0, 0, 0.1); 
+            /* TEMA TERANG - Bersih, Airy & Pastel */
+            --bg-body: #f8fafc; 
+            --bg-sidebar: #ffffff; 
+            --bg-card: #ffffff;
+            --bg-card-hover: #f1f5f9;
+            --primary: #4f46e5; 
+            --primary-hover: #4338ca;
+            --secondary: #db2777; 
+            --text-main: #0f172a;
+            --text-muted: #64748b; 
+            --border-color: rgba(0, 0, 0, 0.06); 
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
+            --banner-gradient: linear-gradient(135deg, #e0e7ff 0%, #f3e8ff 100%);
         }
         
-        .icon-sun { display: none; } body:has(#theme-toggle:checked) .icon-moon { display: none; } body:has(#theme-toggle:checked) .icon-sun { display: inline; }
+        .icon-sun { display: none; } 
+        body:has(#theme-toggle:checked) .icon-moon { display: none; } 
+        body:has(#theme-toggle:checked) .icon-sun { display: inline; color: #f59e0b; }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { background-color: var(--bg-dark); color: var(--text-main); display: flex; transition: all 0.3s ease; overflow-x: hidden;}
-        a { text-decoration: none; color: inherit; } ul { list-style: none; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background-color: var(--bg-body); color: var(--text-main); display: flex; transition: background-color 0.4s ease, color 0.4s ease; overflow-x: hidden;}
+        a { text-decoration: none; color: inherit; } 
+        ul { list-style: none; }
 
         /* =========================================
-           SIDEBAR NAVIGATION (KIRI)
+           SIDEBAR MODERN
         ========================================= */
-        .sidebar { position: fixed; top: 0; left: 0; width: var(--sidebar-width); height: 100vh; background-color: var(--bg-sidebar); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; z-index: 1000; transition: all 0.3s ease; overflow-y: auto; }
-        .sidebar::-webkit-scrollbar { width: 5px; } .sidebar::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
+        .sidebar { position: fixed; top: 0; left: 0; width: var(--sidebar-width); height: 100vh; background-color: var(--bg-sidebar); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; z-index: 1000; transition: all 0.4s ease; }
+        .sidebar-header { display: flex; justify-content: center; align-items: center; padding: 30px 20px; border-bottom: 1px solid var(--border-color); }
+        .logo { font-size: 2rem; font-weight: 800; background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; background-clip: text; color: transparent; letter-spacing: -0.5px; }
         
-        /* BUNGKUSAN LOGO & LONCENG */
-        .sidebar-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .logo { font-size: 1.8rem; font-weight: 800; background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .theme-switch-wrapper { padding: 20px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: center; } 
+        .theme-toggle-label { cursor: pointer; color: var(--text-muted); display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 0.9rem; font-weight: 600; background: var(--bg-body); padding: 10px 20px; border-radius: 30px; border: 1px solid var(--border-color); transition: all 0.3s ease; width: 100%;} 
+        .theme-toggle-label:hover { transform: translateY(-2px); box-shadow: var(--shadow-sm); color: var(--text-main); } 
+        .theme-checkbox { display: none; } 
         
-        /* LONCENG NOTIFIKASI DI SIDEBAR */
-        .header-notif {
-            position: relative;
-            display: flex; align-items: center; justify-content: center; cursor: pointer;
-            width: 40px; height: 40px; border-radius: 50%; transition: all 0.3s ease;
-            background: rgba(0,0,0,0.2); border: 1px solid var(--border-color);
-        }
-        body:has(#theme-toggle:checked) .header-notif { background: rgba(0,0,0,0.05); }
-        .header-notif:hover { background: rgba(56, 189, 248, 0.1); transform: scale(1.05); }
-        .icon-bell { font-size: 1.1rem; }
+        .nav-links { padding: 20px 15px; flex-grow: 1; overflow-y: auto; } 
+        .nav-links::-webkit-scrollbar { width: 4px; } .nav-links::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
         
-        .notif-count {
-            position: absolute; top: -4px; right: -4px; background: var(--danger-red); color: white;
-            width: 18px; height: 18px; border-radius: 50%; font-size: 0.7rem; display: none; 
-            justify-content: center; align-items: center; font-weight: bold;
-            box-shadow: 0 0 8px var(--danger-red); animation: pulse 1.5s infinite;
-        }
-
-        /* DROPDOWN NOTIFIKASI MUNCUL DI SAMPING SIDEBAR */
-        .notif-dropdown {
-            position: fixed; top: 25px; left: 275px; width: 320px; background: var(--bg-card);
-            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--border-color); border-radius: 20px; padding: 20px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.4); display: flex; flex-direction: column;
-            opacity: 0; visibility: hidden; transform: translateX(-15px);
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); z-index: 2000;
-        }
-        .notif-dropdown.show { opacity: 1; visibility: visible; transform: translateX(0); }
-        .notif-header { border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-bottom: 15px; }
-        .notif-header h3 { font-size: 1.1rem; font-weight: 600; color: var(--text-main); }
+        .nav-links li a { display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; color: var(--text-muted); font-weight: 600; font-size: 0.95rem; border-radius: 12px; transition: all 0.3s ease; cursor: pointer; margin-bottom: 5px; }
+        .nav-links li a:hover { background-color: var(--bg-card); color: var(--text-main); transform: translateX(5px); }
+        .nav-links li a.active { background-color: var(--primary); color: #ffffff; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4); }
         
-        .notif-item { background: rgba(0,0,0,0.2); padding: 12px; border-radius: 12px; margin-bottom: 10px; border: 1px solid var(--border-color); }
-        body:has(#theme-toggle:checked) .notif-item { background: rgba(0,0,0,0.05); }
-        .notif-item span { color: var(--text-main); display: block; font-size: 0.9rem; font-weight: 500;}
-        .notif-item small { color: var(--text-muted); font-size: 0.75rem;}
+        .nav-links i { width: 20px; text-align: center; margin-right: 12px; font-size: 1.1rem; }
         
-        .notif-footer { text-align: center; margin-top: 10px;}
-        .btn-mark-read { background: rgba(56, 189, 248, 0.15); color: var(--primary); border: none; padding: 8px 16px; border-radius: 10px; font-weight: 600; width: 100%; cursor: pointer; transition: 0.3s;}
-        .btn-mark-read:hover { background: var(--primary); color: #fff;}
-
-        @keyframes pulse { 
-            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); } 
-            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); } 
-            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } 
-        }
-
-        .theme-switch-wrapper { padding: 15px 20px; border-bottom: 1px solid var(--border-color); } .theme-toggle-label { cursor: pointer; color: var(--text-muted); display: flex; gap: 10px; font-size: 0.95rem; font-weight: 500;} .theme-toggle-label:hover { color: var(--text-main); } .theme-checkbox { display: none; } 
+        .dropdown-btn { cursor: pointer; } 
+        .arrow { font-size: 0.7rem; transition: transform 0.3s ease; } 
+        .dropdown-btn.open .arrow { transform: rotate(180deg); }
+        .dropdown-container { display: none; background-color: transparent; flex-direction: column; padding-left: 10px; margin-top: 5px; border-left: 2px solid var(--border-color); margin-left: 20px; } 
+        .dropdown-container.show { display: flex; animation: slideDown 0.3s ease; } 
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
         
-        .nav-links { padding-top: 15px; flex-grow: 1; } 
-        .nav-links li a { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; color: var(--text-muted); font-weight: 500; transition: all 0.3s ease; cursor: pointer; }
-        .nav-links li a:hover { background-color: rgba(148, 163, 184, 0.1); color: var(--text-main); padding-left: 25px; }
-        .nav-links li a.active { background-color: rgba(56, 189, 248, 0.15); color: var(--primary); border-left: 4px solid var(--primary); font-weight: 600; }
+        .dropdown-container li a { padding: 10px 15px; font-size: 0.85rem; border-radius: 8px; margin-bottom: 2px; } 
+        .dropdown-container li a:hover { padding-left: 20px; background: rgba(99, 102, 241, 0.1); color: var(--primary); }
+        .dropdown-container li a.active { background: rgba(99, 102, 241, 0.15); color: var(--primary); box-shadow: none; font-weight: 700; }
         
-        .dropdown-btn { cursor: pointer; } .arrow { font-size: 0.7rem; transition: transform 0.3s ease; } .dropdown-btn.open .arrow { transform: rotate(180deg); }
-        .dropdown-container { display: none; background-color: rgba(0, 0, 0, 0.05); flex-direction: column; } .dropdown-container.show { display: flex; } .dropdown-container li a { padding: 12px 20px 12px 40px; font-size: 0.95rem; border-left: none !important; } .dropdown-container li a:hover { padding-left: 45px; }
-        
-        #logout-sidebar { color: #f87171; }
-        #logout-sidebar:hover { background-color: rgba(239, 68, 68, 0.1); color: #ef4444; }
+        .btn-logout { margin-top: auto; color: #ef4444 !important; background: rgba(239, 68, 68, 0.05); }
+        .btn-logout:hover { background: #ef4444 !important; color: white !important; transform: translateY(-2px) !important; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3); }
 
         /* =========================================
-           KONTEN UTAMA
+           KONTEN UTAMA & HEADER
         ========================================= */
-        .main-content { 
-            margin-left: var(--sidebar-width); 
-            width: calc(100% - var(--sidebar-width)); 
-            min-height: 100vh; 
-            padding: 40px; 
-            display: flex;
-            align-items: center;
-        }
+        .main-content { margin-left: var(--sidebar-width); width: calc(100% - var(--sidebar-width)); min-height: 100vh; padding: 40px 50px; }
+
+        /* Header Kanan Atas */
+        .header-top-right { position: fixed; top: 30px; right: 50px; display: flex; gap: 15px; z-index: 100; }
+        .header-profile { display: flex; align-items: center; cursor: pointer; padding: 6px 15px 6px 6px; border-radius: 50px; transition: all 0.3s ease; background: var(--bg-card); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); backdrop-filter: blur(10px); }
+        .header-profile:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: var(--primary); }
+        .header-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid transparent; background-color: #fff; }
 
         /* =========================================
-           DASHBOARD HERO BODY (Kontainer Utama)
+           1. SECTION BERANDA (HERO DASHBOARD)
         ========================================= */
-        .hero { 
-            display: flex; align-items: center; justify-content: space-between; gap: 40px; 
-            background: radial-gradient(circle at top right, rgba(56, 189, 248, 0.05), transparent 50%); 
-            padding: 50px 40px; border-radius: 20px; border: 1px solid var(--border-color); 
-            width: 100%; position: relative; min-height: 500px;
-        }
-
-        .hero-content { flex: 1; max-width: 600px; z-index: 2;}
-        .badge-hero { display: inline-block; background: rgba(192, 132, 252, 0.1); color: var(--secondary); padding: 8px 16px; border-radius: 20px; font-size: 0.9rem; font-weight: 600; margin-bottom: 20px; }
-        .hero-content h1 { font-size: 3rem; line-height: 1.2; margin-bottom: 25px; }
-        .hero-content p { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 35px; line-height: 1.6; }
-        .hero-image { flex: 1; display: flex; justify-content: flex-end; z-index: 1;} 
-        .hero-image img { width: 100%; max-width: 500px; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
-
-        /* =========================================
-           IKON PROFIL DI DALAM HERO (POJOK KANAN ATAS)
-        ========================================= */
-        .header-profile {
-            position: absolute; top: 30px; right: 30px;
-            display: flex; align-items: center; cursor: pointer;
-            padding: 4px; border-radius: 50px; transition: all 0.3s ease;
-            background: rgba(255,255,255,0.02); z-index: 10;
-        }
-        .header-profile:hover { background: rgba(56, 189, 248, 0.1); transform: scale(1.05); }
-        .header-avatar { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); background-color: #fff;}
-
-        /* =========================================
-           POP-UP PROFIL MELAYANG
-        ========================================= */
-        .profile-popover {
-            position: absolute; top: 90px; right: 30px;
-            width: 320px; background: var(--bg-card);
-            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--border-color); border-radius: 24px;
-            padding: 30px 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.4);
-            display: flex; flex-direction: column; align-items: center; text-align: center;
-            opacity: 0; visibility: hidden; transform: translateY(-15px) scale(0.95);
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); z-index: 2000;
-        }
-        .profile-popover.show { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
-
-        .popover-avatar-wrapper { position: relative; width: 100px; height: 100px; margin-bottom: 10px; cursor: pointer; }
-        .popover-avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid var(--border-color); transition: all 0.3s ease; background-color: #fff;}
-        .popover-avatar-wrapper:hover .popover-avatar { border-color: var(--primary); opacity: 0.8; }
+        #section-beranda { display: flex; align-items: center; justify-content: space-between; gap: 50px; background: linear-gradient(135deg, rgba(99, 102, 241, 0.08) 0%, rgba(236, 72, 153, 0.05) 100%); padding: 60px 50px; border-radius: 30px; border: 1px solid var(--border-color); width: 100%; min-height: 400px; position: relative; overflow: hidden; box-shadow: var(--shadow-sm); margin-top: 50px;}
         
-        .camera-badge {
-            position: absolute; bottom: 0; right: 0;
-            background: var(--bg-sidebar); border: 1px solid var(--border-color);
-            width: 32px; height: 32px; border-radius: 50%;
-            display: flex; justify-content: center; align-items: center;
-            font-size: 0.9rem; box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            transition: transform 0.3s ease;
-        }
-        .popover-avatar-wrapper:hover .camera-badge { transform: scale(1.1); background: var(--primary); color: #fff;}
+        /* Ornamen Dekorasi Background */
+        #section-beranda::before { content: ''; position: absolute; top: -50px; right: -50px; width: 300px; height: 300px; background: var(--primary); filter: blur(100px); opacity: 0.15; border-radius: 50%; z-index: 0; pointer-events: none;}
+        #section-beranda::after { content: ''; position: absolute; bottom: -50px; left: -50px; width: 250px; height: 250px; background: var(--secondary); filter: blur(100px); opacity: 0.1; border-radius: 50%; z-index: 0; pointer-events: none;}
+
+        .hero-content { flex: 1.2; z-index: 2; animation: fadeRight 0.6s ease; }
+        @keyframes fadeRight { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
+
+        .badge-hero { display: inline-flex; align-items: center; gap: 8px; background: rgba(99, 102, 241, 0.15); color: var(--primary); padding: 8px 20px; border-radius: 30px; font-size: 0.85rem; font-weight: 700; margin-bottom: 25px; border: 1px solid rgba(99, 102, 241, 0.2); text-transform: uppercase; letter-spacing: 1px;}
         
-        #file-input { display: none; }
+        .hero-content h1 { font-size: 3.2rem; font-weight: 800; line-height: 1.15; margin-bottom: 20px; letter-spacing: -1px; }
+        .hero-content h1 span { background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        
+        .hero-content p { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 35px; line-height: 1.7; max-width: 90%; }
+        
+        .hero-image { flex: 1; z-index: 1; display: flex; justify-content: center; animation: floatImg 6s ease-in-out infinite; } 
+        .hero-image img { width: 100%; max-width: 450px; border-radius: 24px; box-shadow: var(--shadow-lg); transform: perspective(1000px) rotateY(-5deg); border: 1px solid var(--border-color);}
+        @keyframes floatImg { 0% { transform: translateY(0px); } 50% { transform: translateY(-15px); } 100% { transform: translateY(0px); } }
 
-        .btn-hapus-foto {
-            background: transparent; border: none; color: #ef4444;
-            font-size: 0.8rem; font-weight: 500; cursor: pointer;
-            margin-bottom: 15px; padding: 5px 10px; border-radius: 10px;
-            transition: all 0.3s ease; display: none; 
-        }
-        .btn-hapus-foto:hover { background-color: rgba(239, 68, 68, 0.1); }
+        /* =========================================
+           2. SECTION RUANG KELAS (MATKUL)
+        ========================================= */
+        #section-matkul { display: none; width: 100%; animation: fadeIn 0.4s ease; margin-top: 60px; padding-top: 20px; border-top: 1px dashed var(--border-color);}
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Banner Header Matkul */
+        .matkul-header { display: flex; flex-direction: column; justify-content: center; margin-bottom: 30px; padding: 40px 50px; border-radius: 24px; background: var(--banner-gradient); box-shadow: var(--shadow-sm); position: relative; overflow: hidden; border: 1px solid var(--border-color);}
+        
+        /* Efek Pola Geometris di Banner */
+        .matkul-header::after { content: ''; position: absolute; right: 0; top: 0; width: 50%; height: 100%; background-image: radial-gradient(rgba(255,255,255,0.1) 2px, transparent 2px); background-size: 20px 20px; opacity: 0.5; pointer-events: none;}
 
-        .popover-greeting { font-size: 1.25rem; font-weight: 600; color: var(--text-main); margin-bottom: 2px; line-height: 1.3;}
-        .popover-email { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 12px; font-weight: 500;}
-        .popover-role { display: inline-block; padding: 4px 12px; border-radius: 20px; background: rgba(56, 189, 248, 0.15); color: var(--primary); font-size: 0.75rem; font-weight: 600; margin-bottom: 25px;}
+        .matkul-title-box { z-index: 2; position: relative; }
+        .matkul-title-box h1 { font-size: 2.5rem; color: #ffffff; margin-bottom: 8px; font-weight: 800; letter-spacing: -0.5px; text-shadow: 0 2px 10px rgba(0,0,0,0.2);}
+        .matkul-title-box p { color: rgba(255,255,255,0.8); font-size: 1.05rem; font-weight: 500; display: flex; align-items: center; gap: 8px;}
+        
+        /* TABS (Gaya Segemented Control Ala Apple) */
+        .tabs { display: inline-flex; gap: 5px; background: var(--bg-card); padding: 6px; border-radius: 16px; border: 1px solid var(--border-color); margin-bottom: 30px; box-shadow: var(--shadow-sm); }
+        .tab-btn { background: transparent; border: none; padding: 12px 24px; border-radius: 12px; color: var(--text-muted); font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); white-space: nowrap; display: flex; align-items: center; gap: 8px;}
+        .tab-btn:hover { color: var(--text-main); }
+        .tab-btn.active { background: var(--primary); color: #fff; box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3); }
 
-        .btn-popover-action { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--border-color); background: transparent; color: var(--text-main); font-weight: 500; font-size: 0.95rem; cursor: pointer; transition: all 0.3s ease; margin-bottom: 10px; }
-        .btn-popover-action:hover { background: rgba(255,255,255,0.05); border-color: var(--primary); }
-        .btn-logout { color: #ef4444; border-color: rgba(239, 68, 68, 0.3); }
-        .btn-logout:hover { background: rgba(239, 68, 68, 0.1); border-color: #ef4444; }
+        /* KONTEN TAB */
+        .tab-content { display: none; background: transparent; min-height: 400px; animation: fadeIn 0.3s ease;}
+        .tab-content.active { display: block; }
+        .section-title-tab { margin-bottom: 25px; font-size: 1.5rem; color: var(--text-main); font-weight: 700; display: flex; align-items: center; gap: 10px;}
 
-        .floating-wa { position: fixed; bottom: 30px; right: 30px; z-index: 1000; background-color: #25D366; border-radius: 50px; padding: 10px; display: flex; justify-content: center; align-items: center; transition: transform 0.3s ease; } .floating-wa:hover { transform: scale(1.1); }
+        /* KARTU ITEM (Tugas/Absensi/Materi) */
+        .item-card { background: var(--bg-card); border: 1px solid var(--border-color); padding: 24px 30px; border-radius: 20px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; transition: all 0.3s ease; box-shadow: var(--shadow-sm); position: relative; overflow: hidden;}
+        .item-card::before { content: ''; position: absolute; left: 0; top: 0; width: 4px; height: 100%; background: var(--primary); opacity: 0; transition: 0.3s ease;}
+        .item-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: rgba(99, 102, 241, 0.3); }
+        .item-card:hover::before { opacity: 1; }
+        
+        .item-info { flex: 1; }
+        .item-info h3 { font-size: 1.15rem; margin-bottom: 6px; color: var(--text-main); font-weight: 700;}
+        .item-info p { font-size: 0.9rem; color: var(--text-muted); font-weight: 500; display: flex; align-items: center; gap: 6px;}
+        
+        .btn-action { background: rgba(99, 102, 241, 0.1); color: var(--primary); border: 1px solid rgba(99, 102, 241, 0.2); padding: 10px 24px; border-radius: 12px; font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: all 0.3s ease; }
+        .btn-action:hover { background: var(--primary); color: #fff; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4); transform: translateY(-2px);}
+
+        /* FORUM DISKUSI (Modern Chat Box) */
+        .chat-box { border: 1px solid var(--border-color); border-radius: 24px; height: 500px; display: flex; flex-direction: column; background: var(--bg-card); box-shadow: var(--shadow-sm); overflow: hidden;}
+        
+        .chat-header-info { padding: 15px 25px; border-bottom: 1px solid var(--border-color); background: rgba(0,0,0,0.02); display: flex; align-items: center; gap: 10px;}
+        .chat-header-info i { color: var(--primary); font-size: 1.2rem;}
+        .chat-header-info span { font-weight: 600; font-size: 0.9rem;}
+
+        .chat-messages { flex: 1; padding: 25px; overflow-y: auto; display: flex; flex-direction: column; gap: 18px; scroll-behavior: smooth; }
+        .chat-messages::-webkit-scrollbar { width: 6px; } .chat-messages::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
+        
+        .message { max-width: 75%; padding: 14px 18px; font-size: 0.95rem; line-height: 1.5; position: relative; box-shadow: var(--shadow-sm); animation: popIn 0.3s ease;}
+        @keyframes popIn { from { opacity: 0; transform: scale(0.95) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+        
+        .message .sender { font-size: 0.75rem; font-weight: 700; margin-bottom: 6px; display: block; letter-spacing: 0.5px;}
+        
+        .msg-other { background: var(--bg-body); align-self: flex-start; border: 1px solid var(--border-color); border-radius: 20px 20px 20px 4px; }
+        .msg-other .sender { color: var(--secondary); }
+        
+        .msg-me { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%); color: #fff; align-self: flex-end; border-radius: 20px 20px 4px 20px; border: none; }
+        .msg-me .sender { color: rgba(255,255,255,0.8); }
+        
+        .chat-input-area { padding: 20px; background: var(--bg-body); border-top: 1px solid var(--border-color); display: flex; gap: 15px; align-items: center; }
+        .chat-input-area input { flex: 1; padding: 16px 20px; border: 1px solid var(--border-color); border-radius: 16px; background: var(--bg-card); color: var(--text-main); outline: none; font-size: 0.95rem; font-weight: 500; transition: border 0.3s;}
+        .chat-input-area input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1); }
+        .chat-input-area button { background: var(--primary); color: white; border: none; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; display: flex; justify-content: center; align-items: center; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);}
+        .chat-input-area button:hover { transform: scale(1.05) rotate(5deg); }
+
     </style>
 </head>
 <body>
@@ -202,295 +198,326 @@
     <nav class="sidebar">
         <div class="sidebar-header">
             <div class="logo">Edu-Free.</div>
-            <div class="header-notif" id="notif-trigger" title="Notifikasi Baru">
-                <span class="icon-bell">🔔</span>
-                <span class="notif-count" id="notifCount">0</span>
-            </div>
         </div>
         
         <div class="theme-switch-wrapper">
             <input type="checkbox" id="theme-toggle" class="theme-checkbox">
             <label for="theme-toggle" class="theme-toggle-label">
-                <span class="icon-moon">🌙 Mode Gelap</span>
-                <span class="icon-sun">☀️ Mode Terang</span>
+                <i class="fas fa-moon icon-moon"></i> Mode Gelap
+                <i class="fas fa-sun icon-sun"></i> Mode Terang
             </label>
         </div>
 
         <ul class="nav-links">
-            <li><a href="#" class="active">Beranda</a></li>
-            <li><a href="#" id="menu-profil-sidebar">Profil Saya</a></li>
+            <li><a href="#" id="menu-beranda" class="active"><i class="fas fa-home"></i> Beranda Utama</a></li>
+            <li><a href="#"><i class="fas fa-user-circle"></i> Profil Saya</a></li>
+
             <li>
-                <a class="dropdown-btn">
-                    Mata Kuliah Saya 
-                    <span class="arrow">▼</span>
+                <a class="dropdown-btn open">
+                    <span><i class="fas fa-layer-group"></i> Ruang Kelas</span>
+                    <span class="arrow"><i class="fas fa-chevron-down"></i></span>
                 </a>
-                <ul class="dropdown-container" id="menu-matkul-saya">
+                <ul class="dropdown-container show" id="menu-matkul-saya">
                     </ul>
             </li>
+            
+            <li><a href="#" class="btn-logout" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Keluar</a></li>
         </ul>
     </nav>
 
-    <div class="notif-dropdown" id="notifDropdown">
-        <div class="notif-header">
-            <h3>🔔 Notifikasi</h3>
-        </div>
-        <div id="notif-list">
-            </div>
-        <div class="notif-footer">
-            <button class="btn-mark-read" id="mark-read-btn">Tandai Dibaca</button>
-        </div>
-    </div>
-
     <main class="main-content">
-        <section class="hero">
-            
-            <div class="header-profile" id="profile-trigger" title="Akun Edu-Free Anda">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png" id="header-avatar" class="header-avatar" alt="Profil">
-            </div>
-
-            <div class="profile-popover" id="profile-popover">
-                <div class="popover-avatar-wrapper" onclick="triggerUpload()" title="Ubah foto profil">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png" id="popover-avatar" class="popover-avatar" alt="Foto Profil Besar">
-                    <div class="camera-badge">📷</div>
+        
+        <div class="header-top-right">
+            <div class="header-profile" title="Profil Anda">
+                <div style="text-align: right; margin-right: 12px; margin-left: 8px;">
+                    <div id="top-name" style="font-size: 0.9rem; font-weight: 700; letter-spacing: 0.2px;">Nama</div>
+                    <div id="top-role" style="font-size: 0.75rem; color: var(--primary); font-weight: 600;">Mahasiswa</div>
                 </div>
-                <input type="file" id="file-input" accept="image/*">
-                
-                <button id="btn-hapus-foto" class="btn-hapus-foto">Hapus Foto</button>
-
-                <h3 class="popover-greeting" id="popover-greeting">Halo, Pengguna.</h3>
-                <p class="popover-email" id="popover-id">NIM: 0000000000</p>
-                <span class="popover-role" id="popover-role">Mahasiswa</span>
-                
-                <button class="btn-popover-action btn-logout" id="logout-btn">Log out</button>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png" id="header-avatar" class="header-avatar">
             </div>
+        </div>
 
+        <section id="section-beranda">
             <div class="hero-content">
-                <span class="badge-hero">Platform Kursus Online</span>
-                <h1>Tingkatkan Skill Coding Kamu Bersama Kelompok Kami.</h1>
-                <p id="welcome-message">Selamat Datang di halaman kelas.</p>
+                <div class="badge-hero"><i class="fas fa-rocket"></i> Platform LMS Modern</div>
+                <h1>Tingkatkan <span>Skill Coding</span> Bersama Kami.</h1>
+                <p id="welcome-message">Selamat Datang di ruang belajar interaktif. Silakan pilih kelas di menu samping untuk memulai perjalanan Anda hari ini.</p>
+                <button class="btn-action" style="padding: 14px 30px; font-size: 1rem;" onclick="document.querySelector('.dropdown-btn').click();">Mulai Belajar Sekarang <i class="fas fa-arrow-right" style="margin-left: 8px;"></i></button>
             </div>
             <div class="hero-image">
-                <img src="program.jpg" alt="Dashboard Belajar">
+                <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Dashboard Belajar" style="object-fit: cover;">
             </div>
-            
         </section>
+
+        <section id="section-matkul">
+            
+            <div class="matkul-header">
+                <div class="matkul-title-box">
+                    <h1 id="matkul-title-text">Nama Mata Kuliah</h1>
+                    <p><i class="fas fa-graduation-cap"></i> Program Studi Teknik Informatika — Semester <span id="matkul-semester-text" style="margin-left: 5px;">X</span></p>
+                </div>
+            </div>
+
+            <nav class="tabs">
+                <button class="tab-btn active" onclick="bukaTabKelas('tab-absensi', this)"><i class="fas fa-user-check"></i> Kehadiran</button>
+                <button class="tab-btn" onclick="bukaTabKelas('tab-materi', this)"><i class="fas fa-book-open"></i> Materi</button>
+                <button class="tab-btn" onclick="bukaTabKelas('tab-tugas', this)"><i class="fas fa-laptop-code"></i> Tugas</button>
+                <button class="tab-btn" onclick="bukaTabKelas('tab-nilai', this)"><i class="fas fa-star"></i> Penilaian</button>
+                <button class="tab-btn" onclick="bukaTabKelas('tab-forum', this)"><i class="fas fa-comments"></i> Diskusi Kelas</button>
+            </nav>
+
+            <div id="tab-absensi" class="tab-content active">
+                <h2 class="section-title-tab"><i class="fas fa-calendar-check" style="color: var(--primary);"></i> Daftar Hadir Perkuliahan</h2>
+                <div id="konten-absensi">
+                    <p style="color: var(--text-muted); font-size: 0.95rem; background: var(--bg-card); padding: 20px; border-radius: 15px; border: 1px dashed var(--border-color); text-align: center;">Belum ada sesi kehadiran yang dibuka oleh dosen pengampu.</p>
+                </div>
+            </div>
+
+            <div id="tab-materi" class="tab-content">
+                <h2 class="section-title-tab"><i class="fas fa-folder-open" style="color: var(--primary);"></i> Modul & Referensi</h2>
+                <div id="konten-materi">
+                    <p style="color: var(--text-muted); font-size: 0.95rem; background: var(--bg-card); padding: 20px; border-radius: 15px; border: 1px dashed var(--border-color); text-align: center;">Belum ada materi pembelajaran yang diunggah.</p>
+                </div>
+            </div>
+
+            <div id="tab-tugas" class="tab-content">
+                <h2 class="section-title-tab"><i class="fas fa-clipboard-list" style="color: var(--primary);"></i> Daftar Tugas & Praktikum</h2>
+                <div id="konten-tugas"></div>
+            </div>
+
+            <div id="tab-nilai" class="tab-content">
+                <h2 class="section-title-tab"><i class="fas fa-chart-line" style="color: var(--primary);"></i> Transkrip & Evaluasi</h2>
+                <div id="konten-nilai">
+                    <p style="color: var(--text-muted); font-size: 0.95rem; background: var(--bg-card); padding: 20px; border-radius: 15px; border: 1px dashed var(--border-color); text-align: center;">Evaluasi dan nilai belum dipublikasikan oleh dosen.</p>
+                </div>
+            </div>
+
+            <div id="tab-forum" class="tab-content">
+                <h2 class="section-title-tab" style="margin-bottom: 10px;"><i class="fas fa-comments" style="color: var(--primary);"></i> Forum <span id="forum-matkul-name" style="color:var(--secondary); margin-left: 5px;"></span></h2>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 25px; font-weight: 500;">Sistem obrolan terenkripsi & diisolasi hanya untuk anggota kelas ini.</p>
+                
+                <div class="chat-box">
+                    <div class="chat-header-info">
+                        <i class="fas fa-shield-alt"></i> <span>End-to-end isolated classroom chat</span>
+                    </div>
+                    <div class="chat-messages" id="chat-messages"></div>
+                    <form class="chat-input-area" id="form-chat">
+                        <input type="text" id="chat-input" placeholder="Ketik pertanyaan atau diskusi Anda di sini..." autocomplete="off">
+                        <button type="submit"><i class="fas fa-paper-plane"></i></button>
+                    </form>
+                </div>
+            </div>
+
+        </section>
+
     </main>
 
-    <a href="https://wa.me/082143511969" class="floating-wa" target="_blank" title="Hubungi Kami di WhatsApp">
-        <img src="./logowa.png" alt="WA" width="40" height="35">
-    </a>
-
     <script>
-        function triggerUpload() { document.getElementById('file-input').click(); }
+        // 1. INISIALISASI & KEAMANAN
+        const activeUserString = localStorage.getItem('loggedInUser');
+        if (!activeUserString) { window.location.href = "login.html"; }
+        const user = JSON.parse(activeUserString);
 
-        document.addEventListener("DOMContentLoaded", function() {
-            
-            const defaultAvatarUrl = "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png";
+        document.getElementById('top-name').textContent = user.nama;
+        document.getElementById('matkul-semester-text').textContent = user.semester;
 
-            // 1. CEK LOGIN
-            const activeUserString = localStorage.getItem('loggedInUser');
-            if (!activeUserString) {
-                window.location.href = "login.html"; 
-                return;
-            }
-            
-            const user = JSON.parse(activeUserString);
+        const savedPhoto = localStorage.getItem('profilePic_' + user.userId);
+        if (savedPhoto) document.getElementById('header-avatar').src = savedPhoto;
 
-            // Teks Sapaan
-            const welcomeMessage = document.getElementById('welcome-message');
-            if (welcomeMessage) {
-                welcomeMessage.innerHTML = `Selamat Datang <b>${user.nama}</b> di halaman kelas semester <b>${user.semester}</b>. Silakan pilih Mata Kuliah di menu samping untuk mulai belajar.`;
-            }
-            document.getElementById('popover-greeting').textContent = `Halo, ${user.nama}.`;
-            document.getElementById('popover-id').textContent = `NIM: ${user.userId}`;
+        // 2. LOGIKA MENU SIDEBAR & TAMPILAN MATKUL DI BAWAH HERO
+        const menuContainer = document.getElementById('menu-matkul-saya');
+        const sectionBeranda = document.getElementById('section-beranda');
+        const sectionMatkul = document.getElementById('section-matkul');
+        const btnMenuBeranda = document.getElementById('menu-beranda');
+        
+        let activeMatkulGlobal = ""; 
 
-            // --- Logika Sinkronisasi Gambar Avatar ---
-            const photoStorageKey = 'profilePic_' + user.userId;
-            const savedPhoto = localStorage.getItem(photoStorageKey);
-            const headerAvatar = document.getElementById('header-avatar');
-            const popoverAvatar = document.getElementById('popover-avatar');
-            const btnHapusFoto = document.getElementById('btn-hapus-foto');
-            const fileInput = document.getElementById('file-input');
+        // Fungsi saat klik "Beranda Utama"
+        btnMenuBeranda.addEventListener('click', (e) => {
+            e.preventDefault();
+            sectionBeranda.style.display = 'flex'; // Pastikan Hero tampil
+            sectionMatkul.style.display = 'none'; // Sembunyikan bagian kelas
+            document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+            btnMenuBeranda.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll kembali ke atas
+        });
 
-            if (savedPhoto) {
-                headerAvatar.src = savedPhoto; popoverAvatar.src = savedPhoto;
-                btnHapusFoto.style.display = 'block';
-            }
-
-            fileInput.addEventListener('change', function() {
-                const file = this.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        const base64Image = e.target.result;
-                        headerAvatar.src = base64Image; popoverAvatar.src = base64Image;
-                        localStorage.setItem(photoStorageKey, base64Image);
-                        btnHapusFoto.style.display = 'block';
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
-
-            btnHapusFoto.addEventListener('click', function() {
-                if(confirm("Apakah Anda yakin ingin menghapus foto profil?")) {
-                    localStorage.removeItem(photoStorageKey);
-                    headerAvatar.src = defaultAvatarUrl; popoverAvatar.src = defaultAvatarUrl;
-                    btnHapusFoto.style.display = 'none';
-                    fileInput.value = "";
-                }
-            });
-
-            // ==========================================
-            // 2. KONTROL INTERAKSI POP-UP & NOTIFIKASI
-            // ==========================================
-            const profileTrigger = document.getElementById('profile-trigger');
-            const profilePopover = document.getElementById('profile-popover');
-            const notifTrigger = document.getElementById('notif-trigger');
-            const notifDropdown = document.getElementById('notifDropdown');
-            const menuProfilSidebar = document.getElementById('menu-profil-sidebar'); // Tombol profil di sidebar
-
-            // Buka profil popover lewat sidebar
-            menuProfilSidebar.addEventListener('click', function(e) {
-                e.preventDefault();
-                profilePopover.classList.toggle('show');
-                notifDropdown.classList.remove('show');
-            });
-
-            profileTrigger.addEventListener('click', function(e) {
-                e.stopPropagation(); 
-                profilePopover.classList.toggle('show');
-                notifDropdown.classList.remove('show'); 
-            });
-
-            notifTrigger.addEventListener('click', function(e) {
-                e.stopPropagation();
-                notifDropdown.classList.toggle('show');
-                profilePopover.classList.remove('show'); 
-            });
-
-            document.addEventListener('click', function(e) {
-                if (!profilePopover.contains(e.target) && !profileTrigger.contains(e.target) && e.target !== menuProfilSidebar) {
-                    profilePopover.classList.remove('show');
-                }
-                if (!notifDropdown.contains(e.target) && !notifTrigger.contains(e.target)) {
-                    notifDropdown.classList.remove('show');
-                }
-            });
-
-            // ==========================================
-            // 3. CETAK DAFTAR MATA KULIAH OTOMATIS
-            // ==========================================
-            const menuContainer = document.getElementById('menu-matkul-saya');
-            
-            if (user.matkul && user.matkul.length > 0) {
-                menuContainer.innerHTML = ''; 
+        // Cetak Tombol Mata Kuliah
+        if (user.matkul && user.matkul.length > 0) {
+            menuContainer.innerHTML = ''; 
+            user.matkul.forEach(mk => {
+                const li = document.createElement('li');
+                const linkMatkul = document.createElement('a');
+                linkMatkul.href = "#";
+                linkMatkul.innerHTML = `<i class="fas fa-book" style="margin-right: 8px; font-size:0.8rem;"></i> ${mk}`;
                 
-                user.matkul.forEach(mk => {
-                    const li = document.createElement('li');
-                    const linkMatkul = document.createElement('a');
-                    linkMatkul.href = `matkul_dashboard.html?mk=${encodeURIComponent(mk)}`;
-                    linkMatkul.textContent = mk;
+                // KETIKA MATA KULIAH DIKLIK
+                linkMatkul.addEventListener('click', (e) => {
+                    e.preventDefault();
                     
-                    li.appendChild(linkMatkul);
-                    menuContainer.appendChild(li);
+                    // PERUBAHAN PENTING:
+                    sectionBeranda.style.display = 'flex'; // TETAP TAMPILKAN BERANDA
+                    sectionMatkul.style.display = 'block'; // MUNCULKAN RUANG KELAS DI BAWAHNYA
+                    
+                    document.querySelectorAll('.nav-links li a').forEach(a => a.classList.remove('active'));
+                    linkMatkul.classList.add('active');
+
+                    bukaHalamanMatkul(mk);
+
+                    // EFEK SCROLL OTOMATIS KE BAGIAN KELAS
+                    setTimeout(() => {
+                        sectionMatkul.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 100);
                 });
-            } else {
-                menuContainer.innerHTML = '<li><a href="#" style="color:#888; font-size:12px;">Belum ada matkul</a></li>';
-            }
 
-            // ==========================================
-            // 4. LOGIKA NOTIFIKASI (SUPER AMAN & DINAMIS)
-            // ==========================================
-            const dbMateriNotif = JSON.parse(localStorage.getItem('global_database_materi')) || [];
-            const dbTugasNotif = JSON.parse(localStorage.getItem('global_database_tugas')) || [];
-            const dbNilaiNotif = JSON.parse(localStorage.getItem('global_database_nilai')) || [];
-            const dbUjianNotif = JSON.parse(localStorage.getItem('global_database_uts_uas')) || [];
-            const dbForumNotif = JSON.parse(localStorage.getItem('global_database_forum')) || [];
+                li.appendChild(linkMatkul);
+                menuContainer.appendChild(li);
+            });
+        }
+
+        // 3. FUNGSI MERENDER DATA KELAS SPESIFIK
+        function bukaHalamanMatkul(namaMatkul) {
+            activeMatkulGlobal = namaMatkul; 
             
-            const tugasUser = dbTugasNotif.filter(t => String(t.target) === 'Semua' || String(t.target) === String(user.userId));
-            const nilaiUser = dbNilaiNotif.filter(n => String(n.nim) === String(user.userId));
-            const ujianUser = dbUjianNotif.filter(u => String(u.target) === 'Semua' || String(u.target) === String(user.userId));
-            const pesanBaru = dbForumNotif.filter(msg => String(msg.senderId) !== String(user.userId));
-            
-            const notifList = document.getElementById('notif-list');
-            const notifCountBadge = document.getElementById('notifCount');
-            
-            let notifikasiArray = [];
+            document.getElementById('matkul-title-text').textContent = namaMatkul;
+            document.getElementById('forum-matkul-name').textContent = `[ ${namaMatkul} ]`;
 
-            dbMateriNotif.forEach(m => { notifikasiArray.push({ icon: "📚", teks: `Materi Baru: ${m.judul}`, waktu: `Matkul: ${m.matkul}` }); });
-            tugasUser.forEach(t => { notifikasiArray.push({ icon: "📝", teks: `Tugas Baru: ${t.judul}`, waktu: `Deadline: ${t.deadline}` }); });
-            nilaiUser.forEach(n => { notifikasiArray.push({ icon: "📊", teks: `Nilai ${n.matkul} Keluar!`, waktu: `Mendapat Nilai: ${n.nilai}` }); });
-            ujianUser.forEach(u => { notifikasiArray.push({ icon: "🔥", teks: `Ujian ${u.jenis} Dirilis!`, waktu: `${u.judul}` }); });
-            pesanBaru.forEach(msg => { notifikasiArray.push({ icon: "💬", teks: `Pesan dari ${msg.senderName}`, waktu: `Forum Diskusi` }); });
+            const tabAbsensiBtn = document.querySelector('.tabs button');
+            bukaTabKelas('tab-absensi', tabAbsensiBtn);
 
-            const storageKeyReadCount = `notif_read_count_${user.userId}`;
-            let readCount = parseInt(localStorage.getItem(storageKeyReadCount)) || 0;
-            let totalNotif = notifikasiArray.length;
-            let unreadCount = totalNotif - readCount;
+            renderTugas(namaMatkul);
+            renderMateri(namaMatkul);
+            loadForumMessages(namaMatkul);
+        }
 
-            if (totalNotif > 0) {
-                notifList.innerHTML = "";
-                notifikasiArray.reverse().forEach(notif => {
-                    notifList.innerHTML += `
-                        <div class="notif-item">
-                            <span>${notif.icon} ${notif.teks}</span>
-                            <small>${notif.waktu}</small>
+        function renderTugas(matkul) {
+            const wadahTugas = document.getElementById('konten-tugas');
+            const dbTugas = JSON.parse(localStorage.getItem('global_database_tugas')) || [];
+            const tugasMatkulIni = dbTugas.filter(t => t.matkul === matkul);
+
+            if (tugasMatkulIni.length > 0) {
+                wadahTugas.innerHTML = '';
+                tugasMatkulIni.forEach(tugas => {
+                    wadahTugas.innerHTML += `
+                        <div class="item-card">
+                            <div class="item-info">
+                                <h3>${tugas.judul}</h3>
+                                <p><i class="far fa-clock"></i> Tenggat Waktu: <strong style="margin-left:5px; color:var(--text-main);">${tugas.deadline}</strong></p>
+                            </div>
+                            <button class="btn-action"><i class="fas fa-cloud-upload-alt" style="margin-right:6px;"></i> Kumpulkan</button>
                         </div>
                     `;
                 });
-
-                if (unreadCount > 0) {
-                    notifCountBadge.textContent = unreadCount;
-                    notifCountBadge.style.display = "flex";
-                }
             } else {
-                notifList.innerHTML = `<div class="notif-item"><span style="text-align:center; color: var(--text-muted);">Belum ada notifikasi.</span></div>`;
+                wadahTugas.innerHTML = '<p style="color: var(--text-muted); font-size: 0.95rem; background: var(--bg-card); padding: 20px; border-radius: 15px; border: 1px dashed var(--border-color); text-align: center;">Belum ada tugas aktif untuk mata kuliah ini.</p>';
             }
+        }
 
-            document.getElementById('mark-read-btn').addEventListener('click', function() {
-                localStorage.setItem(storageKeyReadCount, totalNotif); 
-                notifCountBadge.style.display = "none";
-                alert("Semua notifikasi telah ditandai dibaca.");
-            });
+        function renderMateri(matkul) {
+            const wadahMateri = document.getElementById('konten-materi');
+            const dbMateri = JSON.parse(localStorage.getItem('global_database_materi')) || [];
+            const materiMatkulIni = dbMateri.filter(m => m.matkul === matkul);
 
-            // ==========================================
-            // 5. KONTROL DROPDOWN SIDEBAR
-            // ==========================================
-            var dropdowns = document.getElementsByClassName("dropdown-btn");
-            for (var i = 0; i < dropdowns.length; i++) {
-                dropdowns[i].addEventListener("click", function(e) {
-                    e.preventDefault(); 
-                    this.classList.toggle("open");
-                    var dropdownContent = this.nextElementSibling;
-                    if (dropdownContent.classList.contains("show")) {
-                        dropdownContent.classList.remove("show");
-                    } else {
-                        dropdownContent.classList.add("show");
-                    }
+            if (materiMatkulIni.length > 0) {
+                wadahMateri.innerHTML = '';
+                materiMatkulIni.forEach(m => {
+                    wadahMateri.innerHTML += `
+                        <div class="item-card">
+                            <div class="item-info">
+                                <h3><i class="fas fa-file-pdf" style="color: #ef4444; margin-right:8px;"></i> ${m.judul}</h3>
+                                <p><i class="fas fa-user-tie"></i> Diunggah oleh Dosen</p>
+                            </div>
+                            <button class="btn-action"><i class="fas fa-download" style="margin-right:6px;"></i> Unduh</button>
+                        </div>
+                    `;
                 });
+            } else {
+                wadahMateri.innerHTML = '<p style="color: var(--text-muted); font-size: 0.95rem; background: var(--bg-card); padding: 20px; border-radius: 15px; border: 1px dashed var(--border-color); text-align: center;">Belum ada materi pembelajaran yang diunggah.</p>';
             }
+        }
 
-            // ==========================================
-            // 6. TEMA & LOGOUT
-            // ==========================================
-            const themeToggle = document.getElementById("theme-toggle");
-            if (localStorage.getItem("theme") === "light") themeToggle.checked = true;
-            themeToggle.addEventListener("change", function() {
-                if (this.checked) localStorage.setItem("theme", "light");
-                else localStorage.setItem("theme", "dark");
-            });
-
-            const logoutPopover = document.getElementById('logout-btn');
-
-            function prosesLogout(e) {
-                e.preventDefault();
-                localStorage.removeItem('loggedInUser'); 
-                alert("Berhasil Log Out!");
-                window.location.href = "index.html"; 
-            }
-
-            if (logoutPopover) logoutPopover.addEventListener('click', prosesLogout);
+        // 4. LOGIKA TAB DALAM KELAS
+        function bukaTabKelas(tabId, btnElement) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             
+            document.getElementById(tabId).classList.add('active');
+            btnElement.classList.add('active');
+
+            if(tabId === 'tab-forum') {
+                const chatBox = document.getElementById('chat-messages');
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }
+        }
+
+        // 5. SISTEM FORUM DISKUSI TERISOLASI
+        const chatMessages = document.getElementById('chat-messages');
+        const formChat = document.getElementById('form-chat');
+        const chatInput = document.getElementById('chat-input');
+
+        function loadForumMessages(matkul) {
+            chatMessages.innerHTML = ''; 
+            const dbForumKey = `forum_${matkul}`; 
+            const historyChat = JSON.parse(localStorage.getItem(dbForumKey)) || [];
+            
+            if (historyChat.length === 0) {
+                chatMessages.innerHTML = `<div style="text-align:center; padding: 40px 20px;"><i class="fas fa-comments" style="font-size:3rem; color:var(--border-color); margin-bottom:15px;"></i><p style="color:var(--text-muted); font-size:0.9rem;">Belum ada diskusi. Jadilah yang pertama memulai percakapan!</p></div>`;
+                return;
+            }
+
+            historyChat.forEach(msg => {
+                const isMe = msg.userId === user.userId;
+                const roleTag = msg.role === 'dosen' ? ' <i class="fas fa-check-circle" style="color:#10b981;" title="Dosen"></i>' : (msg.role === 'asprak' ? ' <i class="fas fa-check-circle" style="color:#f59e0b;" title="Asprak"></i>' : '');
+                
+                const div = document.createElement('div');
+                div.className = `message ${isMe ? 'msg-me' : 'msg-other'}`;
+                div.innerHTML = `<span class="sender">${msg.nama} ${roleTag} • ${msg.waktu}</span>${msg.text}`;
+                chatMessages.appendChild(div);
+            });
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        formChat.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const text = chatInput.value.trim();
+            if(!text || !activeMatkulGlobal) return;
+
+            const newMessage = {
+                userId: user.userId, nama: user.nama, role: user.role, text: text,
+                waktu: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
+            };
+
+            const dbForumKey = `forum_${activeMatkulGlobal}`;
+            const historyChat = JSON.parse(localStorage.getItem(dbForumKey)) || [];
+            historyChat.push(newMessage);
+            localStorage.setItem(dbForumKey, JSON.stringify(historyChat));
+
+            chatInput.value = '';
+            loadForumMessages(activeMatkulGlobal); 
+        });
+
+        // Interaksi Dropdown Sidebar
+        var dropdowns = document.getElementsByClassName("dropdown-btn");
+        for (var i = 0; i < dropdowns.length; i++) {
+            dropdowns[i].addEventListener("click", function(e) {
+                this.classList.toggle("open");
+                var content = this.nextElementSibling;
+                content.classList.toggle("show");
+            });
+        }
+        
+        // Logout
+        document.getElementById('logout-btn').addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.removeItem('loggedInUser');
+            window.location.href = "login.html";
+        });
+
+        // Tema (Dark/Light Mode)
+        const themeToggle = document.getElementById("theme-toggle");
+        if (localStorage.getItem("theme") === "light") themeToggle.checked = true;
+        themeToggle.addEventListener("change", function() {
+            localStorage.setItem("theme", this.checked ? "light" : "dark");
         });
     </script>
 </body>
