@@ -154,15 +154,15 @@
         .item-info h3 { font-size: 1.1rem; margin-bottom: 4px; color: var(--text-main); font-weight: 700;}
         .item-info p { font-size: 0.85rem; color: var(--text-muted); font-weight: 500;}
 
-        /* TABEL NILAI / PENGUMPULAN - DIPERBARUI */
-        .styled-table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 0.9em; border-radius: 12px; overflow: hidden; background-color: var(--bg-card); }
+        /* TABEL NILAI / PENGUMPULAN */
+        .styled-table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 0.9em; border-radius: 12px; overflow: hidden; background: var(--bg-card); }
         .styled-table thead tr { background-color: var(--primary); color: #ffffff; text-align: left; }
         .styled-table th, .styled-table td { padding: 15px 20px; border-bottom: 1px solid var(--border-color); }
         .styled-table tbody tr:hover { background-color: rgba(255, 255, 255, 0.05); }
         .input-nilai { width: 80px; padding: 8px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-body); color: var(--text-main); text-align: center; font-weight: bold;}
         .input-nilai:focus { border-color: var(--secondary); outline:none;}
 
-        /* DAFTAR HADIR MAHASISWA - DIPERBARUI */
+        /* DAFTAR HADIR MAHASISWA */
         .attendee-list { margin-top: 15px; padding: 15px; background: rgba(0,0,0,0.1); border-radius: 12px; border: 1px solid var(--border-color); width: 100%;}
         .attendee-list h4 { font-size: 0.95rem; margin-bottom: 10px; color: var(--primary);}
         .attendee-list ul { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px;}
@@ -197,8 +197,8 @@
         <div class="theme-switch-wrapper">
             <input type="checkbox" id="theme-toggle" class="theme-checkbox">
             <label for="theme-toggle" class="theme-toggle-label">
-                <i class="fas fa-moon icon-moon">Gelap</i>
-                <i class="fas fa-sun icon-sun">Terang</i>
+                <i class="fas fa-moon icon-moon"></i> Mode Gelap
+                <i class="fas fa-sun icon-sun"></i> Mode Terang
             </label>
         </div>
 
@@ -211,7 +211,8 @@
                     <span class="arrow"><i class="fas fa-chevron-down"></i></span>
                 </a>
                 <ul class="dropdown-container show" id="menu-matkul-saya">
-                    </ul>
+                    <!-- List Kelas dari JS -->
+                </ul>
             </li>
             
             <li><a href="index.html" ><i class="fas fa-sign-out-alt"></i> Keluar</a></li>
@@ -258,6 +259,7 @@
                 <button class="tab-btn" onclick="bukaTabKelas('tab-forum', this)"><i class="fas fa-comments"></i> Forum Diskusi</button>
             </nav>
 
+            <!-- TAB MATERI -->
             <div id="tab-materi" class="tab-content active">
                 <h2 class="section-title-tab"><i class="fas fa-folder-plus" style="color: var(--secondary);"></i> Unggah Materi Baru</h2>
                 <div class="upload-form-card">
@@ -266,8 +268,8 @@
                         <input type="text" id="input-judul-materi" placeholder="Cth: Pertemuan 1 - Pengenalan Algoritma">
                     </div>
                     <div class="input-group">
-                        <label>File Materi (PDF/PPTX - Max 2MB)</label>
-                        <input type="file" id="input-file-materi" style="padding: 10px;">
+                        <label>Link Materi (Google Drive / URL)</label>
+                        <input type="url" id="input-link-materi" placeholder="Cth: https://drive.google.com/...">
                     </div>
                     <button class="btn-action" id="btn-upload-materi"><i class="fas fa-upload"></i> Unggah Materi</button>
                 </div>
@@ -275,6 +277,7 @@
                 <div id="konten-materi-list"></div>
             </div>
 
+            <!-- TAB TUGAS -->
             <div id="tab-tugas" class="tab-content">
                 <h2 class="section-title-tab"><i class="fas fa-clipboard-list" style="color: var(--secondary);"></i> Buat Tugas Baru</h2>
                 <div class="upload-form-card">
@@ -292,6 +295,7 @@
                 <div id="konten-tugas-list"></div>
             </div>
 
+            <!-- TAB ABSENSI -->
             <div id="tab-absensi" class="tab-content">
                 <h2 class="section-title-tab"><i class="fas fa-user-check" style="color: var(--secondary);"></i> Manajemen Kehadiran</h2>
                 <div class="upload-form-card">
@@ -302,6 +306,7 @@
                 <div id="konten-absensi-list"></div>
             </div>
 
+            <!-- TAB NILAI -->
             <div id="tab-nilai" class="tab-content">
                 <h2 class="section-title-tab"><i class="fas fa-chart-bar" style="color: var(--secondary);"></i> Rekapitulasi & Cek Pengumpulan</h2>
                 <div class="upload-form-card">
@@ -329,12 +334,14 @@
                                 </tr>
                             </thead>
                             <tbody id="tbody-pengumpulan">
-                                </tbody>
+                                <!-- Data Pengumpulan from JS -->
+                            </tbody>
                         </table>
                     </div>
                 </div>
             </div>
 
+            <!-- TAB FORUM -->
             <div id="tab-forum" class="tab-content">
                 <h2 class="section-title-tab" style="margin-bottom: 10px;"><i class="fas fa-comments" style="color: var(--secondary);"></i> Moderasi Forum <span id="forum-matkul-name" style="color:var(--primary); margin-left: 5px;"></span></h2>
                 <div class="chat-box">
@@ -386,7 +393,6 @@
             btnMenuBeranda.classList.add('active');
         });
 
-        // Load Dosen's classes into sidebar
         if (user.matkul && user.matkul.length > 0) {
             menuContainer.innerHTML = ''; 
             user.matkul.forEach(mk => {
@@ -449,47 +455,33 @@
         }
 
         // ====================================================================
-        // MODUL 1: MATERI 
+        // MODUL 1: MATERI (Modifikasi Upload URL)
         // ====================================================================
         document.getElementById('btn-upload-materi').addEventListener('click', function() {
             const judul = document.getElementById('input-judul-materi').value;
-            const fileInput = document.getElementById('input-file-materi');
+            const linkMateri = document.getElementById('input-link-materi').value;
             
             if (!judul) { alert("Judul materi wajib diisi!"); return; }
+            if (!linkMateri) { alert("Link materi wajib diisi!"); return; }
 
             const materiBaru = {
                 id: generateId(),
                 judul: judul,
                 tanggal: new Date().toLocaleDateString('id-ID'),
-                fileName: "Materi Teks (Tanpa Lampiran)"
+                link: linkMateri
             };
 
-            const saveAndRender = (base64) => {
-                if(base64) {
-                    materiBaru.fileBase64 = base64;
-                    materiBaru.fileName = fileInput.files[0].name;
-                }
-                
-                let dbMateri = JSON.parse(localStorage.getItem(`materi_${activeMatkulGlobal}`)) || [];
-                dbMateri.push(materiBaru);
-                
-                try {
-                    localStorage.setItem(`materi_${activeMatkulGlobal}`, JSON.stringify(dbMateri));
-                    alert("Materi berhasil diunggah!");
-                    document.getElementById('input-judul-materi').value = '';
-                    fileInput.value = '';
-                    renderMateri();
-                } catch (e) {
-                    alert("Gagal mengunggah! Ukuran file terlalu besar.");
-                }
-            };
-
-            if (fileInput.files && fileInput.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) { saveAndRender(e.target.result); };
-                reader.readAsDataURL(fileInput.files[0]);
-            } else {
-                saveAndRender(null);
+            let dbMateri = JSON.parse(localStorage.getItem(`materi_${activeMatkulGlobal}`)) || [];
+            dbMateri.push(materiBaru);
+            
+            try {
+                localStorage.setItem(`materi_${activeMatkulGlobal}`, JSON.stringify(dbMateri));
+                alert("Materi berhasil diunggah!");
+                document.getElementById('input-judul-materi').value = '';
+                document.getElementById('input-link-materi').value = '';
+                renderMateri();
+            } catch (e) {
+                alert("Gagal mengunggah materi.");
             }
         });
 
@@ -505,16 +497,16 @@
             list.innerHTML = '';
             [...dbMateri].reverse().forEach((item, index) => {
                 const origIndex = dbMateri.length - 1 - index; 
-                let downloadBtn = item.fileBase64 ? `<a href="${item.fileBase64}" download="${item.fileName}" class="btn-action" style="padding:6px 12px; font-size:0.8rem; margin-right:5px; background:var(--primary);"><i class="fas fa-download"></i> File</a>` : '';
+                let linkBtn = item.link ? `<a href="${item.link}" target="_blank" class="btn-action" style="padding:6px 12px; font-size:0.8rem; margin-right:5px; background:var(--primary);"><i class="fas fa-external-link-alt"></i> Buka Link</a>` : '';
                 
                 list.innerHTML += `
                     <div class="item-card">
                         <div class="item-info">
                             <h3>${item.judul}</h3>
-                            <p><i class="fas fa-clock"></i> Diunggah: ${item.tanggal} | 📎 ${item.fileName}</p>
+                            <p><i class="fas fa-clock"></i> Diunggah: ${item.tanggal}</p>
                         </div>
                         <div>
-                            ${downloadBtn}
+                            ${linkBtn}
                             <button onclick="hapusData('materi', ${origIndex})" class="btn-action" style="padding:6px 12px; font-size:0.8rem; background:transparent; color:var(--danger-red); border:1px solid var(--danger-red);"><i class="fas fa-trash"></i> Hapus</button>
                         </div>
                     </div>`;
@@ -599,11 +591,9 @@
 
             list.innerHTML = '';
             [...dbAbsensi].reverse().forEach(item => {
-                // Tarik data mahasiswa yang sudah klik hadir pada tanggal ini
                 const keyHadir = `hadir_mhs_${activeMatkulGlobal}_${item.tanggal}`;
                 let dbHadir = JSON.parse(localStorage.getItem(keyHadir)) || [];
 
-                // Format list NIM Mahasiswa
                 let htmlDaftarHadir = '';
                 if(dbHadir.length > 0) {
                     htmlDaftarHadir = `<div class="attendee-list"><h4><i class="fas fa-list-ul"></i> Daftar Hadir (${dbHadir.length} Mahasiswa)</h4><ul>`;
@@ -629,7 +619,7 @@
         }
 
         // ====================================================================
-        // MODUL 4: PENILAIAN (Cek NIM, Nama, File Jawaban)
+        // MODUL 4: PENILAIAN 
         // ====================================================================
         function populateDropdownTugas() {
             const select = document.getElementById('select-tugas-nilai');
@@ -661,7 +651,6 @@
                 let currentNilai = p.nilai ? p.nilai : '';
                 let fileBtn = p.fileBase64 ? `<a href="${p.fileBase64}" download="${p.fileName}" style="color:var(--primary); font-weight:bold;"><i class="fas fa-download"></i> File</a>` : 'Tidak ada file';
                 
-                // Menampilkan ID/NIM dari data mahasiswa
                 let nimMhs = p.userId || "Tidak Diketahui";
 
                 tbody.innerHTML += `
@@ -697,7 +686,6 @@
             inputElement.style.borderColor = "var(--secondary)";
         }
 
-        // FUNGSI HAPUS GLOBAL
         function hapusData(tipe, index) {
             if(confirm(`Yakin ingin menghapus ${tipe} ini?`)) {
                 let db = JSON.parse(localStorage.getItem(`${tipe}_${activeMatkulGlobal}`));
