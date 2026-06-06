@@ -13,13 +13,12 @@
         body {
             margin: 0;
             padding: 0;
-            height: 100vh; /* Kunci tinggi layar */
-            overflow: hidden; /* Matikan scroll global */
+            height: 100vh;
+            overflow: hidden;
             display: flex;
             flex-direction: column;
         }
 
-        /* Modifikasi Header agar punya space untuk menu Berita */
         header {
             display: flex;
             justify-content: space-between;
@@ -31,10 +30,9 @@
             display: flex;
             gap: 25px;
             margin-right: auto;
-            margin-left: 50px; /* Jarak dari logo */
+            margin-left: 50px;
         }
 
-        /* Mengelompokkan tombol & tema agar rapi di sisi paling kanan */
         .header-right {
             display: flex;
             align-items: center;
@@ -46,26 +44,22 @@
             gap: 15px;
         }
 
-        /* Kontainer Utama */
         main {
             flex: 1;
             overflow: hidden;
         }
 
-        /* Sembunyikan konten yang tidak aktif */
         .content-section { 
             display: none; 
             animation: fadeIn 0.5s ease; 
             height: 100%;
-            overflow-y: auto; /* Biarkan menu lain bisa di-scroll jika panjang */
+            overflow-y: auto; 
         }
 
-        /* TAMBAHAN PERBAIKAN: Memunculkan konten yang aktif */
         .content-section.active { 
             display: block; 
         }
         
-        /* Khusus Landing Page: Dibuat Flex agar posisinya pas di tengah dan TIDAK BISA SCROLL */
         #home-content.active { 
             display: flex; 
             align-items: center; 
@@ -78,7 +72,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Tombol Kembali */
         .btn-back {
             display: inline-block; margin-top: 20px; margin-bottom: 30px;
             padding: 10px 20px; background: rgba(255,255,255,0.05);
@@ -206,7 +199,6 @@
 
         <div id="news-content" class="content-section">
             <div class="news-wrapper">
-                <a onclick="switchContent('home-content', event)" class="btn-back">← Kembali ke Beranda</a>
                 <div class="news-header">
                     <h2>Berita & Artikel IT Terbaru</h2>
                     <button onclick="switchContent('admin-content', event)" class="btn btn-login" style="margin-top: 15px;">+ Tambah Berita (Mode Admin)</button>
@@ -219,7 +211,7 @@
 
         <div id="admin-content" class="content-section">
             <div class="news-wrapper">
-                <a href="#" onclick="switchContent('news-content', event)" class="btn-back">← Batal & Kembali</a>
+                <a href="#" onclick="switchContent('news-content', event)" class="btn-back">← Batal & Kembali ke Berita</a>
                 <div class="news-header">
                     <h2>Dashboard Admin</h2>
                     <p>Formulir untuk mempublikasikan berita baru</p>
@@ -314,22 +306,18 @@
             }
         });
 
-        // 2. Fungsi Pindah Konten (Sudah Diperbaiki)
+        // 2. Fungsi Pindah Konten
         function switchContent(targetId, event) {
             event.preventDefault(); 
             
-            // Sembunyikan semua section
             const sections = document.querySelectorAll('.content-section');
             sections.forEach(sec => sec.classList.remove('active'));
             
-            // Tampilkan section yang dituju
             document.getElementById(targetId).classList.add('active');
 
-            // Hapus status 'active' dari semua menu navigasi
             const links = document.querySelectorAll('.nav-link');
             links.forEach(link => link.classList.remove('active'));
             
-            // Tambahkan status 'active' HANYA jika yang diklik adalah menu di navbar
             if (event.target.classList.contains('nav-link')) {
                 event.target.classList.add('active');
             }
@@ -350,24 +338,13 @@
         // 4. LOGIKA CRUD BERITA (MENGGUNAKAN LOCAL STORAGE)
         // =========================================================
         
-        // Cek apakah sudah ada data di localStorage browser. Jika belum, gunakan data default.
-        let newsDatabase = JSON.parse(localStorage.getItem('eduFreeNews'));
+        // Kunci diganti menjadi eduFreeNewsData agar data lama ter-reset otomatis
+        let newsDatabase = JSON.parse(localStorage.getItem('eduFreeNewsData'));
         
+        // Jika belum ada data, siapkan array kosong sesuai instruksi
         if (!newsDatabase) {
-            newsDatabase = [
-                {
-                    title: "Pendaftaran Batch 2 Telah Dibuka",
-                    date: "2026-06-06",
-                    desc: "Kabar gembira! Bagi kalian yang belum sempat mendaftar di Batch 1, kini Edu-Free resmi membuka pendaftaran baru dengan tambahan materi struktur data."
-                },
-                {
-                    title: "Update Materi Web Development",
-                    date: "2026-06-05",
-                    desc: "Kami baru saja memperbarui silabus kelas Web Dev. Ada tambahan modul cara melakukan hosting website gratis menggunakan layanan Cloud."
-                }
-            ];
-            // Simpan data default ke localStorage untuk pertama kali
-            localStorage.setItem('eduFreeNews', JSON.stringify(newsDatabase));
+            newsDatabase = []; 
+            localStorage.setItem('eduFreeNewsData', JSON.stringify(newsDatabase));
         }
 
         // Fungsi untuk me-render berita ke HTML
@@ -375,7 +352,13 @@
             const container = document.getElementById('news-container');
             container.innerHTML = ''; // Kosongkan kontainer
 
-            // Kita render dari array yang di-reverse agar berita terbaru (terakhir ditambah) muncul paling atas
+            // Jika array kosong, tampilkan pesan agar tidak blank
+            if (newsDatabase.length === 0) {
+                container.innerHTML = '<p style="text-align:center; grid-column: 1 / -1; color: var(--text-muted, #aaa); margin-top: 20px;">Belum ada berita yang dipublikasikan saat ini.</p>';
+                return; // Hentikan eksekusi kode di bawahnya
+            }
+
+            // Render berita jika ada
             [...newsDatabase].reverse().forEach(news => {
                 const newsHTML = `
                     <div class="news-card">
@@ -390,30 +373,25 @@
 
         // Tangkap event saat Form Admin di-submit
         document.getElementById('news-form').addEventListener('submit', function(e) {
-            e.preventDefault(); // Mencegah halaman reload saat form dikirim
+            e.preventDefault(); 
 
-            // 1. Ambil nilai (value) dari inputan form
             const title = document.getElementById('news-title').value;
             const date = document.getElementById('news-date').value;
             const desc = document.getElementById('news-desc').value;
 
-            // 2. Buat objek berita baru
             const newArticle = {
                 title: title,
                 date: date,
                 desc: desc
             };
 
-            // 3. Masukkan ke array dan simpan ulang ke localStorage
             newsDatabase.push(newArticle);
-            localStorage.setItem('eduFreeNews', JSON.stringify(newsDatabase));
+            localStorage.setItem('eduFreeNewsData', JSON.stringify(newsDatabase));
 
-            // 4. Bersihkan form, update tampilan, dan kembali ke halaman berita
             alert("Berita berhasil dipublikasikan!");
             this.reset();
             loadNews();
             
-            // Pindah kembali ke halaman berita secara otomatis
             switchContent('news-content', new Event('click'));
         });
 
