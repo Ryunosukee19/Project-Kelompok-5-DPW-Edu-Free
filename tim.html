@@ -4,157 +4,157 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tim Kami | Edu-Free.</title>
+    <link rel="stylesheet" href="styleindex.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
         /* =========================================
-           TEMA & RESET DASAR (Disesuaikan dengan Index)
+           KONTEN TIM KAMI (Hanya mengatur area bawah, Header diambil dari styleindex.css)
         ========================================= */
-        :root {
-            --bg-body: #0f172a; 
-            --bg-header: #0f172a;
-            --bg-card: rgba(255, 255, 255, 0.02);
-            --bg-card-hover: rgba(56, 189, 248, 0.05);
-            --primary: #38bdf8; 
-            --primary-hover: #0ea5e9;
-            --secondary: #c084fc; 
-            --text-main: #ffffff;
-            --text-muted: #aaa; 
-            --border-color: rgba(255, 255, 255, 0.1); 
-            --shadow-sm: 0 4px 10px rgba(0, 0, 0, 0.3);
+        .team-section { 
+            padding: 120px 5% 60px 5%; /* Jarak atas agar tidak tertutup header sticky */
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            flex: 1; 
+            min-height: 80vh;
         }
-
-        body:has(#theme-toggle:checked) {
-            --bg-body: #ffffff; 
-            --bg-header: #ffffff;
-            --bg-card: #f8fafc;
-            --bg-card-hover: #f1f5f9;
-            --primary: #0284c7; 
-            --secondary: #9333ea; 
-            --text-main: #0f172a;
-            --text-muted: #64748b; 
-            --border-color: rgba(0, 0, 0, 0.08); 
-            --shadow-sm: 0 10px 25px -3px rgba(0, 0, 0, 0.05);
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
-        body { background-color: var(--bg-body); color: var(--text-main); transition: all 0.4s ease; overflow-x: hidden; min-height: 100vh; display: flex; flex-direction: column; }
-        a { text-decoration: none; color: inherit; } 
-        ul { list-style: none; }
-
-        /* =========================================
-           HEADER (DISAMAKAN PERSIS DENGAN INDEX.HTML)
-        ========================================= */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 5%;
-            position: sticky; 
-            top: 0;
-            z-index: 1000;
-            background-color: var(--bg-header);
-            border-bottom: 1px solid var(--border-color); /* Garis batas agar membaur rapi */
-        }
-
-        .logo { font-size: 1.8rem; font-weight: 800; color: var(--text-main); letter-spacing: -0.5px;}
         
-        .nav-menu {
-            display: flex;
-            gap: 25px;
-            margin-right: auto;
-            margin-left: 50px; 
+        .section-header { 
+            text-align: center; 
+            margin-bottom: 50px; 
+            animation: fadeInDown 0.6s ease;
         }
-
-        .nav-link { font-size: 1rem; color: var(--text-main); transition: 0.3s; }
-        .nav-link:hover { color: var(--primary); }
-        .nav-link.active { color: var(--primary); font-weight: bold; }
-
-        /* Area Kanan Header */
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 25px; 
-        }
-
-        .auth-buttons {
-            display: flex;
-            gap: 15px;
-        }
-
-        .btn { padding: 10px 20px; border-radius: 30px; font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: all 0.3s; border: none; }
-        .btn-login { background: transparent; color: var(--text-main); border: 1px solid var(--border-color); }
-        .btn-login:hover { border-color: var(--primary); color: var(--primary); }
-        .btn-register { background: var(--primary); color: #fff; }
-        .btn-register:hover { background: var(--primary-hover); transform: translateY(-2px); }
-
-        /* Tema Toggle Sesuai Landing Page */
-        .theme-toggle-label { cursor: pointer; display: flex; align-items: center; font-size: 1rem; color: var(--text-main); font-weight: 600;}
-        .icon-sun { display: none; } 
-        body:has(#theme-toggle:checked) .icon-moon { display: none; } 
-        body:has(#theme-toggle:checked) .icon-sun { display: inline; color: #f59e0b; }
-
-        /* =========================================
-           KONTEN TIM KAMI
-        ========================================= */
-        /* Padding top dikurangi karena header sekarang sticky (bukan absolute) */
-        .team-section { padding: 40px 5% 60px 5%; display: flex; flex-direction: column; align-items: center; flex: 1; }
         
-        .section-header { text-align: center; margin-bottom: 50px; animation: fadeInDown 0.6s ease;}
-        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInDown { 
+            from { opacity: 0; transform: translateY(-20px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
         
-        .section-header h2 { font-size: 2.8rem; font-weight: 800; color: var(--text-main); margin-bottom: 10px; letter-spacing: -1px;}
-        .section-header p { font-size: 1.1rem; color: var(--primary); font-weight: 600; text-transform: uppercase; letter-spacing: 2px;}
+        .section-header h2 { 
+            font-size: 2.8rem; 
+            font-weight: 800; 
+            color: var(--text-main, #fff); 
+            margin-bottom: 10px; 
+            letter-spacing: -1px;
+        }
+        
+        .section-header p { 
+            font-size: 1.1rem; 
+            color: var(--primary, #38bdf8); 
+            font-weight: 600; 
+            text-transform: uppercase; 
+            letter-spacing: 2px;
+        }
 
         /* GRID KARTU TIM */
-        .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; width: 100%; max-width: 1100px; }
-        
-        .team-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 24px; padding: 40px 20px; display: flex; flex-direction: column; align-items: center; text-align: center; transition: all 0.4s ease; cursor: pointer; box-shadow: var(--shadow-sm); animation: zoomIn 0.5s ease backwards;}
-        .team-card:hover { transform: translateY(-10px); background: var(--bg-card-hover); border-color: var(--primary); box-shadow: 0 15px 35px rgba(56, 189, 248, 0.15); }
-
-        .team-img { width: 110px; height: 110px; border-radius: 50%; object-fit: cover; margin-bottom: 20px; border: 3px solid var(--border-color); transition: 0.3s; background-color: #fff;}
-        .team-card:hover .team-img { border-color: var(--primary); transform: scale(1.05); }
-
-        .team-name { font-size: 1.3rem; font-weight: 800; color: var(--text-main); margin-bottom: 5px; }
-        .team-nim { font-size: 0.9rem; color: var(--text-muted); font-weight: 500; margin-bottom: 20px; }
-        
-        .team-role { font-size: 0.8rem; font-weight: 700; color: var(--secondary); background: rgba(192, 132, 252, 0.1); padding: 6px 15px; border-radius: 20px; line-height: 1.4;}
-        
-        @keyframes zoomIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
-
-        /* RESPONSIVE */
-        @media (max-width: 900px) {
-            header { flex-direction: column; gap: 15px; padding: 20px; position: static; }
-            .nav-menu { flex-wrap: wrap; justify-content: center; margin-left: 0; }
-            .header-right { justify-content: center; }
+        .team-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 30px; 
+            width: 100%; 
+            max-width: 1100px; 
         }
+        
+        .team-card { 
+            background: var(--bg-card, #1e293b); 
+            border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1)); 
+            border-radius: 24px; 
+            padding: 40px 20px; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            text-align: center; 
+            transition: all 0.4s ease; 
+            cursor: pointer; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2); 
+            animation: zoomIn 0.5s ease backwards;
+        }
+        
+        .team-card:hover { 
+            transform: translateY(-10px); 
+            border-color: var(--primary, #38bdf8); 
+            box-shadow: 0 15px 35px rgba(56, 189, 248, 0.15); 
+        }
+
+        .team-img { 
+            width: 110px; 
+            height: 110px; 
+            border-radius: 50%; 
+            object-fit: cover; 
+            margin-bottom: 20px; 
+            border: 3px solid var(--border-color, rgba(255, 255, 255, 0.1)); 
+            transition: 0.3s; 
+            background-color: #fff;
+        }
+        
+        .team-card:hover .team-img { 
+            border-color: var(--primary, #38bdf8); 
+            transform: scale(1.05); 
+        }
+
+        .team-name { 
+            font-size: 1.3rem; 
+            font-weight: 800; 
+            color: var(--text-main, #fff); 
+            margin-bottom: 5px; 
+        }
+        
+        .team-nim { 
+            font-size: 0.9rem; 
+            color: var(--text-muted, #aaa); 
+            font-weight: 500; 
+            margin-bottom: 20px; 
+        }
+        
+        .team-role { 
+            font-size: 0.8rem; 
+            font-weight: 700; 
+            color: var(--secondary, #c084fc); 
+            background: rgba(192, 132, 252, 0.1); 
+            padding: 6px 15px; 
+            border-radius: 20px; 
+            line-height: 1.4;
+        }
+        
+        @keyframes zoomIn { 
+            from { opacity: 0; transform: scale(0.95); } 
+            to { opacity: 1; transform: scale(1); } 
+        }
+
+        /* TEMA TERANG KHUSUS UNTUK KARTU TIM */
+        body:has(#theme-toggle:checked) .section-header h2 { color: #0f172a; }
+        body:has(#theme-toggle:checked) .team-card { 
+            background: #ffffff; 
+            border-color: rgba(0, 0, 0, 0.08); 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+        }
+        body:has(#theme-toggle:checked) .team-card:hover { background: #f1f5f9; }
+        body:has(#theme-toggle:checked) .team-name { color: #0f172a; }
+        body:has(#theme-toggle:checked) .team-nim { color: #64748b; }
+        body:has(#theme-toggle:checked) .team-img { border-color: rgba(0, 0, 0, 0.08); }
     </style>
 </head>
 <body>
 
     <header>
         <div class="logo">Edu-Free.</div>
-        
         <ul class="nav-menu">
-            <li><a href="index.html" class="nav-link">Beranda</a></li>
-            <li><a href="tim.html" class="active nav-link">Tim Kami</a></li>
-            <li><a href="tentang.html" class="nav-link">Tentang</a></li>
-            <li><a href="index.html" class="nav-link">Berita</a></li> 
+            <li><a href="index.html">Beranda</a></li>
+            <li><a href="tim.html" class="active">Tim Kami</a></li>
+            <li><a href="tentang.html">Tentang</a></li>
+            <li><a href="index.html">Berita</a></li>
         </ul>
-
-        <div class="header-right">
-            <div class="auth-buttons">
-                <a href="login.html"><button class="btn btn-login">Masuk</button></a>
-                <a href="register.html"><button class="btn btn-register">Daftar Gratis</button></a>
-            </div>
-            
-            <input type="checkbox" id="theme-toggle" class="theme-checkbox" hidden>
-            <label for="theme-toggle" class="theme-toggle-label">
-                <span class="icon-moon">🌙Gelap</span>
-                <span class="icon-sun">☀️Terang</span>
-            </label>
+        <div class="auth-buttons">
+            <a href="login.html"><button class="btn btn-login">Masuk</button></a>
+            <a href="register.html"><button class="btn btn-register">Daftar Gratis</button></a>
         </div>
+        <input type="checkbox" id="theme-toggle" class="theme-checkbox" hidden>
+        <label for="theme-toggle" class="theme-toggle-label">
+            <span class="icon-moon">🌙Gelap</span>
+            <span class="icon-sun">☀️Terang</span>
+        </label>
     </header>
 
     <section class="team-section">
@@ -212,10 +212,12 @@
         document.addEventListener("DOMContentLoaded", function() {
             const themeToggle = document.getElementById("theme-toggle");
 
+            // Cek memori saat halaman pertama kali dibuka
             if (localStorage.getItem("theme") === "light") {
                 themeToggle.checked = true;
             }
 
+            // Simpan ke LocalStorage agar saat pindah ke Login/Dashboard temanya tidak berubah
             themeToggle.addEventListener("change", function() {
                 if (this.checked) {
                     localStorage.setItem("theme", "light");
