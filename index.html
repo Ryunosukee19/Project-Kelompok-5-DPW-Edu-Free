@@ -59,6 +59,11 @@
             height: 100%;
             overflow-y: auto; /* Biarkan menu lain bisa di-scroll jika panjang */
         }
+
+        /* TAMBAHAN PERBAIKAN: Memunculkan konten yang aktif */
+        .content-section.active { 
+            display: block; 
+        }
         
         /* Khusus Landing Page: Dibuat Flex agar posisinya pas di tengah dan TIDAK BISA SCROLL */
         #home-content.active { 
@@ -111,11 +116,32 @@
         .news-desc { font-size: 0.95rem; line-height: 1.6; opacity: 0.8; }
 
         /* =========================================
-           CSS UNTUK FLIP CARD (EXPLORE)
+           3. CSS UNTUK FORM ADMIN
         ========================================= */
-        .explore-wrapper {
-            padding: 40px 8%; max-width: 1200px; margin: 0 auto; min-height: 80vh;
+        .admin-form-container {
+            background: var(--bg-card, #1e293b);
+            border: 1px solid var(--border-color, rgba(255,255,255,0.1));
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 600px;
+            margin: 0 auto;
         }
+        .form-group { margin-bottom: 20px; text-align: left; }
+        .form-group label { display: block; margin-bottom: 8px; color: var(--text-main, #fff); font-weight: bold; }
+        .form-group input, .form-group textarea {
+            width: 100%; padding: 12px 15px; border-radius: 8px;
+            border: 1px solid var(--border-color, rgba(255,255,255,0.2));
+            background: rgba(0,0,0,0.2); color: var(--text-main, #fff);
+            font-family: inherit; box-sizing: border-box;
+        }
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none; border-color: var(--primary, #38bdf8);
+        }
+
+        /* =========================================
+           4. CSS UNTUK FLIP CARD (EXPLORE)
+        ========================================= */
+        .explore-wrapper { padding: 40px 8%; max-width: 1200px; margin: 0 auto; min-height: 80vh; }
         .explore-header { text-align: center; margin-bottom: 50px; }
         .explore-header h2 { font-size: 2.5rem; margin-bottom: 15px; color: var(--text-main, #fff); }
         .explore-header p { color: var(--text-muted, #aaa); font-size: 1.1rem; }
@@ -183,10 +209,39 @@
                 <a onclick="switchContent('home-content', event)" class="btn-back">← Kembali ke Beranda</a>
                 <div class="news-header">
                     <h2>Berita & Artikel IT Terbaru</h2>
+                    <button onclick="switchContent('admin-content', event)" class="btn btn-login" style="margin-top: 15px;">+ Tambah Berita (Mode Admin)</button>
                 </div>
                 
                 <div class="news-grid" id="news-container">
                     </div>
+            </div>
+        </div>
+
+        <div id="admin-content" class="content-section">
+            <div class="news-wrapper">
+                <a href="#" onclick="switchContent('news-content', event)" class="btn-back">← Batal & Kembali</a>
+                <div class="news-header">
+                    <h2>Dashboard Admin</h2>
+                    <p>Formulir untuk mempublikasikan berita baru</p>
+                </div>
+                
+                <div class="admin-form-container">
+                    <form id="news-form">
+                        <div class="form-group">
+                            <label>Judul Berita</label>
+                            <input type="text" id="news-title" placeholder="Masukkan judul..." required>
+                        </div>
+                        <div class="form-group">
+                            <label>Tanggal Publikasi</label>
+                            <input type="date" id="news-date" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Isi Berita</label>
+                            <textarea id="news-desc" placeholder="Tulis deskripsi berita di sini..." rows="6" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-register" style="width: 100%; padding: 15px; font-size: 1.1rem; margin-top: 10px;">Publikasikan Berita</button>
+                    </form>
+                </div>
             </div>
         </div>
 
@@ -259,7 +314,7 @@
             }
         });
 
-        // 2. Fungsi Pindah Konten
+        // 2. Fungsi Pindah Konten (Sudah Diperbaiki)
         function switchContent(targetId, event) {
             event.preventDefault(); 
             
@@ -270,10 +325,14 @@
             // Tampilkan section yang dituju
             document.getElementById(targetId).classList.add('active');
 
-            // Ubah state active pada navigasi
+            // Hapus status 'active' dari semua menu navigasi
             const links = document.querySelectorAll('.nav-link');
             links.forEach(link => link.classList.remove('active'));
-            event.target.classList.add('active');
+            
+            // Tambahkan status 'active' HANYA jika yang diklik adalah menu di navbar
+            if (event.target.classList.contains('nav-link')) {
+                event.target.classList.add('active');
+            }
         }
 
         // 3. Logika Memutar Flashcard
@@ -288,37 +347,39 @@
         });
 
         // =========================================================
-        // 4. SIMULASI DATABASE UNTUK UPDATE BERITA OLEH ADMIN
+        // 4. LOGIKA CRUD BERITA (MENGGUNAKAN LOCAL STORAGE)
         // =========================================================
-        // Ini adalah array yang mensimulasikan data dari Database.
-        // Jika nanti ada sistem Admin sungguhan, data ini akan diambil menggunakan API (Fetch/AJAX) dari backend (misal: PHP/MySQL).
-        const newsDatabase = [
-            {
-                title: "Pendaftaran Batch 2 Telah Dibuka",
-                date: "06 Juni 2026",
-                desc: "Kabar gembira! Bagi kalian yang belum sempat mendaftar di Batch 1, kini Edu-Free resmi membuka pendaftaran baru dengan tambahan materi struktur data."
-            },
-            {
-                title: "Update Materi Web Development",
-                date: "05 Juni 2026",
-                desc: "Kami baru saja memperbarui silabus kelas Web Dev. Ada tambahan modul cara melakukan hosting website gratis menggunakan layanan Cloud."
-            },
-            {
-                title: "Maintenance Server Rutin",
-                date: "03 Juni 2026",
-                desc: "Harap perhatikan bahwa platform akan mengalami downtime selama 2 jam pada tengah malam untuk proses pemeliharaan dan peningkatan server database."
-            }
-        ];
+        
+        // Cek apakah sudah ada data di localStorage browser. Jika belum, gunakan data default.
+        let newsDatabase = JSON.parse(localStorage.getItem('eduFreeNews'));
+        
+        if (!newsDatabase) {
+            newsDatabase = [
+                {
+                    title: "Pendaftaran Batch 2 Telah Dibuka",
+                    date: "2026-06-06",
+                    desc: "Kabar gembira! Bagi kalian yang belum sempat mendaftar di Batch 1, kini Edu-Free resmi membuka pendaftaran baru dengan tambahan materi struktur data."
+                },
+                {
+                    title: "Update Materi Web Development",
+                    date: "2026-06-05",
+                    desc: "Kami baru saja memperbarui silabus kelas Web Dev. Ada tambahan modul cara melakukan hosting website gratis menggunakan layanan Cloud."
+                }
+            ];
+            // Simpan data default ke localStorage untuk pertama kali
+            localStorage.setItem('eduFreeNews', JSON.stringify(newsDatabase));
+        }
 
         // Fungsi untuk me-render berita ke HTML
         function loadNews() {
             const container = document.getElementById('news-container');
             container.innerHTML = ''; // Kosongkan kontainer
 
-            newsDatabase.forEach(news => {
+            // Kita render dari array yang di-reverse agar berita terbaru (terakhir ditambah) muncul paling atas
+            [...newsDatabase].reverse().forEach(news => {
                 const newsHTML = `
                     <div class="news-card">
-                        <span class="news-date">${news.date}</span>
+                        <span class="news-date">📅 ${news.date}</span>
                         <h3 class="news-title">${news.title}</h3>
                         <p class="news-desc">${news.desc}</p>
                     </div>
@@ -327,7 +388,36 @@
             });
         }
 
-        // Panggil fungsi saat halaman dimuat
+        // Tangkap event saat Form Admin di-submit
+        document.getElementById('news-form').addEventListener('submit', function(e) {
+            e.preventDefault(); // Mencegah halaman reload saat form dikirim
+
+            // 1. Ambil nilai (value) dari inputan form
+            const title = document.getElementById('news-title').value;
+            const date = document.getElementById('news-date').value;
+            const desc = document.getElementById('news-desc').value;
+
+            // 2. Buat objek berita baru
+            const newArticle = {
+                title: title,
+                date: date,
+                desc: desc
+            };
+
+            // 3. Masukkan ke array dan simpan ulang ke localStorage
+            newsDatabase.push(newArticle);
+            localStorage.setItem('eduFreeNews', JSON.stringify(newsDatabase));
+
+            // 4. Bersihkan form, update tampilan, dan kembali ke halaman berita
+            alert("Berita berhasil dipublikasikan!");
+            this.reset();
+            loadNews();
+            
+            // Pindah kembali ke halaman berita secara otomatis
+            switchContent('news-content', new Event('click'));
+        });
+
+        // Panggil fungsi saat halaman pertama kali dimuat
         loadNews();
     </script>
 </body>
