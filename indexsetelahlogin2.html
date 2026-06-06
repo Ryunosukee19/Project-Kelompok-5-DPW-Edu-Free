@@ -21,6 +21,7 @@
             --secondary: #818cf8; 
             --success: #10b981;
             --warning: #f59e0b;
+            --danger-red: #ef4444;
             --text-main: #f8fafc;
             --text-muted: #94a3b8; 
             --border-color: rgba(255, 255, 255, 0.05); 
@@ -95,8 +96,21 @@
         ========================================= */
         .main-content { margin-left: var(--sidebar-width); width: calc(100% - var(--sidebar-width)); min-height: 100vh; padding: 40px 50px; }
 
-        .header-top-right { position: fixed; top: 30px; right: 50px; display: flex; gap: 15px; z-index: 100; }
+        .header-top-right { position: fixed; top: 30px; right: 50px; display: flex; gap: 15px; z-index: 100; align-items: center;}
+        
+        /* CSS NOTIFIKASI */
+        .header-notif { position: relative; display: flex; align-items: center; justify-content: center; cursor: pointer; width: 45px; height: 45px; border-radius: 50%; transition: all 0.3s ease; background: var(--bg-card); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); backdrop-filter: blur(10px);}
+        .header-notif:hover { transform: translateY(-3px); border-color: var(--primary); }
+        .notif-count { position: absolute; top: -2px; right: -2px; background: var(--danger-red); color: white; width: 18px; height: 18px; border-radius: 50%; font-size: 0.7rem; display: none; justify-content: center; align-items: center; font-weight: bold; box-shadow: 0 0 8px var(--danger-red); animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); } 70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); } 100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } }
+
+        .notif-dropdown { position: absolute; top: 60px; right: 60px; width: 340px; background: var(--bg-card); backdrop-filter: blur(16px); border: 1px solid var(--border-color); border-radius: 20px; padding: 20px; box-shadow: var(--shadow-lg); display: flex; flex-direction: column; opacity: 0; visibility: hidden; transform: translateY(-15px); transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); z-index: 2000; }
+        .notif-dropdown.show { opacity: 1; visibility: visible; transform: translateY(0); }
+        .notif-item { background: var(--bg-body); padding: 12px; border-radius: 12px; margin-bottom: 10px; border: 1px solid var(--border-color); transition: 0.3s;}
+        .notif-item:hover { border-color: var(--primary); }
+
         .header-profile { display: flex; align-items: center; cursor: pointer; padding: 6px 15px 6px 6px; border-radius: 50px; transition: all 0.3s ease; background: var(--bg-card); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); backdrop-filter: blur(10px); }
+        .header-profile:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: var(--primary); }
         .header-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid transparent; background-color: #fff; }
 
         /* =========================================
@@ -132,7 +146,7 @@
         body:has(#theme-toggle:checked) .matkul-title-box p { color: var(--text-muted); }
         
         /* TABS */
-        .tabs { display: inline-flex; gap: 5px; background: rgba(255,255,255,0.02); padding: 8px; border-radius: 16px; border: 1px solid var(--border-color); margin-bottom: 35px; box-shadow: var(--shadow-sm); }
+        .tabs { display: inline-flex; flex-wrap: wrap; gap: 5px; background: rgba(255,255,255,0.02); padding: 8px; border-radius: 16px; border: 1px solid var(--border-color); margin-bottom: 35px; box-shadow: var(--shadow-sm); }
         body:has(#theme-toggle:checked) .tabs { background: #ffffff; }
         
         .tab-btn { background: transparent; border: none; padding: 12px 24px; border-radius: 12px; color: var(--text-muted); font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); white-space: nowrap; display: flex; align-items: center; gap: 8px;}
@@ -143,6 +157,16 @@
         .tab-content { display: none; background: transparent; min-height: 400px; animation: fadeIn 0.3s ease;}
         .tab-content.active { display: block; }
         .section-title-tab { margin-bottom: 25px; font-size: 1.6rem; color: var(--text-main); font-weight: 800; display: flex; align-items: center; gap: 12px;}
+
+        /* CSS UNTUK GRID MATERI */
+        .materi-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 25px; }
+        .materi-card { background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-color); border-radius: 20px; padding: 45px 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: all 0.3s ease; cursor: pointer; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-decoration: none;}
+        body:has(#theme-toggle:checked) .materi-card { background: var(--bg-card); box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
+        .materi-card:hover { transform: translateY(-6px); border-color: var(--primary); background: rgba(56, 189, 248, 0.05); }
+        .materi-icon { font-size: 3.8rem; color: #cbd5e1; margin-bottom: 20px; transition: 0.3s; }
+        body:has(#theme-toggle:checked) .materi-icon { color: #94a3b8; }
+        .materi-card:hover .materi-icon { color: var(--primary); transform: scale(1.1); }
+        .materi-title { font-size: 1.3rem; font-weight: 800; margin-bottom: 10px; color: var(--text-main); }
 
         /* ITEM CARD LIST */
         .item-card { background: var(--bg-card); border: 1px solid var(--border-color); padding: 24px 30px; border-radius: 20px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; transition: all 0.3s ease; }
@@ -210,13 +234,27 @@
                 <ul class="dropdown-container show" id="menu-matkul-saya">
                     </ul>
             </li>
-            <li style="margin-top: 15px;"><a href="index.html"><i class="fas fa-sign-out-alt" style="margin-right:10px;"></i> Keluar</a></li>
+            <li style="margin-top: 15px;"><a href="#" id="logout-btn" class="btn-logout"><i class="fas fa-sign-out-alt" style="margin-right:10px;"></i> Keluar</a></li>
         </ul>
     </nav>
 
     <main class="main-content">
         
         <div class="header-top-right">
+            <div class="header-notif" id="notif-trigger" title="Notifikasi Baru">
+                <i class="fas fa-bell"></i>
+                <span class="notif-count" id="notifCount">0</span>
+            </div>
+            
+            <div class="notif-dropdown" id="notifDropdown">
+                <div class="notif-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; border-bottom:1px solid var(--border-color); padding-bottom:10px;">
+                    <h3 style="color:var(--text-main); font-size:1.1rem;"><i class="fas fa-bell" style="color:var(--primary); margin-right:5px;"></i> Notifikasi</h3>
+                    <button id="clear-all-notif" style="background:transparent; border:none; color:var(--text-muted); cursor:pointer; font-size:0.8rem; font-weight:bold; transition:0.3s;">Bersihkan</button>
+                </div>
+                <div id="notif-list" style="max-height: 300px; overflow-y: auto;">
+                    </div>
+            </div>
+
             <div class="header-profile" title="Profil Anda">
                 <div style="text-align: right; margin-right: 12px; margin-left: 8px;">
                     <div id="top-name" style="font-size: 0.9rem; font-weight: 700; letter-spacing: 0.2px;">Nama</div>
@@ -316,7 +354,118 @@
         if (savedPhoto) document.getElementById('header-avatar').src = savedPhoto;
 
         // ====================================================================
-        // 2. LOGIKA MENU SIDEBAR & TAMPILAN MATKUL (SPA)
+        // 2. SISTEM NOTIFIKASI MAHASISWA
+        // ====================================================================
+        const notifTrigger = document.getElementById('notif-trigger');
+        const notifDropdown = document.getElementById('notifDropdown');
+        
+        notifTrigger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            notifDropdown.classList.toggle('show');
+            loadNotifikasi(); // Refresh data notifikasi saat dibuka
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!notifDropdown.contains(e.target) && !notifTrigger.contains(e.target)) {
+                notifDropdown.classList.remove('show');
+            }
+        });
+
+        function loadNotifikasi() {
+            // Ambil ID notifikasi yang sudah dihapus oleh user ini agar tidak muncul lagi
+            let dismissedNotifs = JSON.parse(localStorage.getItem('dismissed_notifs_' + user.userId)) || [];
+            let activeNotifs = [];
+
+            // Memindai semua kelas yang diikuti untuk mencari materi/tugas baru
+            if (user.matkul && user.matkul.length > 0) {
+                user.matkul.forEach(mk => {
+                    // Cek Tugas Baru
+                    let dbTugas = JSON.parse(localStorage.getItem(`tugas_${mk}`)) || [];
+                    dbTugas.forEach(t => {
+                        if (!dismissedNotifs.includes(t.id)) {
+                            activeNotifs.push({ id: t.id, title: `Tugas Baru: ${t.judul}`, desc: `Mata Kuliah: ${mk} - Tenggat: ${t.deadline}`, type: 'tugas' });
+                        }
+                    });
+
+                    // Cek Materi Baru
+                    let dbMateri = JSON.parse(localStorage.getItem(`materi_${mk}`)) || [];
+                    dbMateri.forEach(m => {
+                        if (!dismissedNotifs.includes(m.id)) {
+                            activeNotifs.push({ id: m.id, title: `Materi Baru: ${m.judul}`, desc: `Mata Kuliah: ${mk}`, type: 'materi' });
+                        }
+                    });
+                });
+            }
+
+            // Memperbarui UI Notifikasi
+            const notifCount = document.getElementById('notifCount');
+            const notifList = document.getElementById('notif-list');
+            
+            if (activeNotifs.length > 0) {
+                notifCount.textContent = activeNotifs.length;
+                notifCount.style.display = 'flex';
+                
+                notifList.innerHTML = '';
+                // Menampilkan notifikasi dari yang paling baru
+                activeNotifs.reverse().forEach(n => {
+                    let icon = n.type === 'tugas' ? '<i class="fas fa-clipboard-list" style="color:var(--warning); font-size:1.2rem;"></i>' : '<i class="fas fa-book-open" style="color:var(--primary); font-size:1.2rem;"></i>';
+                    
+                    notifList.innerHTML += `
+                        <div class="notif-item" style="display:flex; justify-content:space-between; align-items:flex-start;">
+                            <div style="display:flex; gap:12px;">
+                                <div style="margin-top:2px;">${icon}</div>
+                                <div>
+                                    <span style="font-weight:700; color:var(--text-main); font-size:0.95rem;">${n.title}</span>
+                                    <small style="color:var(--text-muted); display:block; margin-top:4px;">${n.desc}</small>
+                                </div>
+                            </div>
+                            <button onclick="dismissNotif('${n.id}', event)" title="Hapus Notifikasi" style="background:none; border:none; color:var(--danger-red); cursor:pointer; padding:5px;"><i class="fas fa-times"></i></button>
+                        </div>
+                    `;
+                });
+            } else {
+                notifCount.style.display = 'none';
+                notifList.innerHTML = `<div style="text-align:center; padding:20px; color:var(--text-muted); font-size:0.85rem;">Tidak ada notifikasi baru untuk saat ini.</div>`;
+            }
+        }
+
+        // Fungsi Menghapus Satu Notifikasi
+        window.dismissNotif = function(id, event) {
+            event.stopPropagation();
+            let dismissedNotifs = JSON.parse(localStorage.getItem('dismissed_notifs_' + user.userId)) || [];
+            dismissedNotifs.push(id);
+            localStorage.setItem('dismissed_notifs_' + user.userId, JSON.stringify(dismissedNotifs));
+            loadNotifikasi(); 
+        };
+
+        // Fungsi Hapus Semua Notifikasi
+        document.getElementById('clear-all-notif').addEventListener('click', (e) => {
+            e.stopPropagation();
+            let dismissedNotifs = JSON.parse(localStorage.getItem('dismissed_notifs_' + user.userId)) || [];
+            let activeIds = [];
+            
+            if (user.matkul && user.matkul.length > 0) {
+                user.matkul.forEach(mk => {
+                    let dbTugas = JSON.parse(localStorage.getItem(`tugas_${mk}`)) || [];
+                    dbTugas.forEach(t => activeIds.push(t.id));
+                    let dbMateri = JSON.parse(localStorage.getItem(`materi_${mk}`)) || [];
+                    dbMateri.forEach(m => activeIds.push(m.id));
+                });
+            }
+            
+            activeIds.forEach(id => {
+                if(!dismissedNotifs.includes(id)) dismissedNotifs.push(id);
+            });
+            
+            localStorage.setItem('dismissed_notifs_' + user.userId, JSON.stringify(dismissedNotifs));
+            loadNotifikasi();
+        });
+
+        // Panggil Notifikasi saat pertama kali login
+        loadNotifikasi();
+
+        // ====================================================================
+        // 3. LOGIKA MENU SIDEBAR & TAMPILAN MATKUL (SPA)
         // ====================================================================
         const menuContainer = document.getElementById('menu-matkul-saya');
         const sectionBeranda = document.getElementById('section-beranda');
@@ -334,7 +483,6 @@
             window.scrollTo({ top: 0, behavior: 'smooth' }); 
         });
 
-        // Cetak Tombol Mata Kuliah Milik Mahasiswa Ini
         if (user.matkul && user.matkul.length > 0) {
             menuContainer.innerHTML = ''; 
             user.matkul.forEach(mk => {
@@ -361,7 +509,7 @@
         }
 
         // ====================================================================
-        // 3. FUNGSI UTAMA: MENERIMA DATA DARI DOSEN
+        // 4. FUNGSI UTAMA: MENERIMA DATA DARI DOSEN
         // ====================================================================
         function bukaHalamanMatkul(namaMatkul) {
             activeMatkulGlobal = namaMatkul; 
@@ -369,11 +517,9 @@
             document.getElementById('matkul-title-text').textContent = namaMatkul;
             document.getElementById('forum-matkul-name').textContent = `[ ${namaMatkul} ]`;
 
-            // Default buka Tab Materi
             const tabMateriBtn = document.querySelectorAll('.tabs button')[1]; 
             bukaTabKelas('tab-materi', tabMateriBtn);
 
-            // Eksekusi fungsi pengambilan data Local Storage
             renderAbsensi(namaMatkul);
             renderMateri(namaMatkul); 
             renderTugas(namaMatkul);
@@ -381,10 +527,9 @@
             loadForumMessages(namaMatkul);
         }
 
-        // --- A. FUNGSI MATERI ---
+        // --- A. FUNGSI MATERI (MODIFIKASI TAMPILAN GRID URL) ---
         function renderMateri(matkul) {
             const wadah = document.getElementById('konten-materi');
-            // MENGAMBIL KEY YANG SAMA DENGAN DOSEN: materi_NAMAMATKUL
             const dbMateri = JSON.parse(localStorage.getItem(`materi_${matkul}`)) || [];
 
             if (dbMateri.length === 0) {
@@ -392,20 +537,19 @@
                 return;
             }
 
-            wadah.innerHTML = '';
+            wadah.innerHTML = '<div class="materi-grid"></div>';
+            const gridWadah = wadah.querySelector('.materi-grid');
+            
             [...dbMateri].reverse().forEach(m => {
-                let downloadBtn = m.fileBase64 
-                    ? `<a href="${m.fileBase64}" download="${m.fileName}" class="btn-action"><i class="fas fa-download" style="margin-right:6px;"></i> Unduh Materi</a>` 
-                    : `<span style="font-size:0.8rem; color:var(--text-muted);">Tidak ada lampiran file</span>`;
-
-                wadah.innerHTML += `
-                    <div class="item-card">
-                        <div class="item-info">
-                            <h3>${m.judul}</h3>
-                            <p><i class="far fa-clock"></i> Diunggah: ${m.tanggal}</p>
-                        </div>
-                        <div>${downloadBtn}</div>
-                    </div>
+                // Gunakan URL Dosen, jika tidak ada (null), arahkan ke #
+                let linkHref = m.link ? m.link : '#';
+                
+                gridWadah.innerHTML += `
+                    <a href="${linkHref}" target="_blank" class="materi-card">
+                        <i class="fas fa-file-alt materi-icon"></i>
+                        <div class="materi-title">${m.judul}</div>
+                        <span style="font-size:0.9rem; margin-top:10px; color: var(--primary); font-weight: bold;"><i class="fas fa-external-link-alt"></i> Buka Materi</span>
+                    </a>
                 `;
             });
         }
@@ -413,7 +557,6 @@
         // --- B. FUNGSI TUGAS & PENGUMPULAN ---
         function renderTugas(matkul) {
             const wadah = document.getElementById('konten-tugas');
-            // MENGAMBIL KEY: tugas_NAMAMATKUL
             const dbTugas = JSON.parse(localStorage.getItem(`tugas_${matkul}`)) || [];
 
             if (dbTugas.length === 0) {
@@ -423,7 +566,6 @@
 
             wadah.innerHTML = '';
             [...dbTugas].reverse().forEach(tugas => {
-                // Cek apakah mahasiswa ini sudah mengumpulkan tugas ini
                 const dbPengumpulan = JSON.parse(localStorage.getItem(`pengumpulan_${tugas.id}`)) || [];
                 const sudahKumpul = dbPengumpulan.find(p => p.userId === user.userId);
 
@@ -453,8 +595,7 @@
             });
         }
 
-        // Fungsi Dipanggil Saat Tombol Kirim Tugas Diklik
-        function kumpulkanTugas(tugasId) {
+        window.kumpulkanTugas = function(tugasId) {
             const fileInput = document.getElementById(`file_tugas_${tugasId}`);
             if(!fileInput.files || fileInput.files.length === 0) {
                 alert("Harap pilih file jawaban (PDF/Word/Zip) terlebih dahulu!");
@@ -472,17 +613,16 @@
                     waktu: new Date().toLocaleString('id-ID'),
                     fileName: file.name,
                     fileBase64: hasilBase64,
-                    nilai: "" // Akan diisi oleh dosen nanti
+                    nilai: "" 
                 };
 
-                // Ambil atau buat array pengumpulan untuk ID Tugas ini
                 let dbPengumpulan = JSON.parse(localStorage.getItem(`pengumpulan_${tugasId}`)) || [];
                 dbPengumpulan.push(dataPengumpulan);
                 
                 try {
                     localStorage.setItem(`pengumpulan_${tugasId}`, JSON.stringify(dbPengumpulan));
                     alert("Tugas berhasil dikumpulkan!");
-                    renderTugas(activeMatkulGlobal); // Refresh UI
+                    renderTugas(activeMatkulGlobal); 
                 } catch(error) {
                     alert("Gagal mengumpulkan! File terlalu besar.");
                 }
@@ -502,7 +642,6 @@
 
             wadah.innerHTML = '';
             [...dbAbsensi].reverse().forEach(sesi => {
-                // Cek apakah mahasiswa ini sudah klik hadir di sesi (tanggal) ini
                 const dbHadir = JSON.parse(localStorage.getItem(`hadir_mhs_${matkul}_${sesi.tanggal}`)) || [];
                 const sudahHadir = dbHadir.includes(user.userId);
 
@@ -525,7 +664,7 @@
             });
         }
 
-        function klikHadir(tanggalSesi) {
+        window.klikHadir = function(tanggalSesi) {
             const keyHadir = `hadir_mhs_${activeMatkulGlobal}_${tanggalSesi}`;
             let dbHadir = JSON.parse(localStorage.getItem(keyHadir)) || [];
             
@@ -533,13 +672,12 @@
             localStorage.setItem(keyHadir, JSON.stringify(dbHadir));
             
             alert("Presensi berhasil dicatat!");
-            renderAbsensi(activeMatkulGlobal); // Refresh UI
+            renderAbsensi(activeMatkulGlobal);
         }
 
         // --- D. FUNGSI MELIHAT NILAI ---
         function renderNilai(matkul) {
             const wadah = document.getElementById('konten-nilai');
-            // Untuk mendapatkan nilai, kita harus mengecek satu-satu tugas di matkul ini
             const dbTugas = JSON.parse(localStorage.getItem(`tugas_${matkul}`)) || [];
             
             if(dbTugas.length === 0) {
@@ -588,7 +726,7 @@
             }
         }
 
-        // 4. LOGIKA TAB DALAM KELAS
+        // LOGIKA TAB DALAM KELAS
         function bukaTabKelas(tabId, btnElement) {
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
@@ -602,7 +740,7 @@
             }
         }
 
-        // 5. SISTEM FORUM DISKUSI
+        // SISTEM FORUM DISKUSI
         const chatMessages = document.getElementById('chat-messages');
         const formChat = document.getElementById('form-chat');
         const chatInput = document.getElementById('chat-input');
