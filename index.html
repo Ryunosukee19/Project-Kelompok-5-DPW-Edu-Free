@@ -8,22 +8,25 @@
     
     <style>
         /* =========================================
-           1. FIX SCROLLING & LAYOUT LANDING PAGE
+           1. PERBAIKAN LAYOUT (ANTI GLITCH & FIT SCREEN)
         ========================================= */
+        /* Body dikembalikan ke normal agar tidak bentrok dengan styleindex.css */
         body {
             margin: 0;
             padding: 0;
-            height: 100vh;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
+            background-color: var(--bg-main, #0f172a); /* Warna dasar dari tema gelap */
         }
 
+        /* Modifikasi Header agar punya space untuk menu Berita */
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 20px 5%;
+            position: sticky; /* Memastikan header selalu di atas jika ada halaman panjang */
+            top: 0;
+            z-index: 100;
+            background-color: inherit;
         }
 
         .nav-menu {
@@ -44,27 +47,35 @@
             gap: 15px;
         }
 
+        /* Pengaturan Area Konten */
         main {
-            flex: 1;
-            overflow: hidden;
+            width: 100%;
         }
 
         .content-section { 
             display: none; 
             animation: fadeIn 0.5s ease; 
-            height: 100%;
-            overflow-y: auto; 
         }
 
         .content-section.active { 
             display: block; 
         }
         
+        /* KHUSUS BERANDA: Fit to laptop screen tanpa scroll */
         #home-content.active { 
             display: flex; 
             align-items: center; 
             justify-content: center;
-            overflow-y: hidden; 
+            /* Mengunci tinggi beranda agar pas layar dikurangi tinggi header (asumsi ~90px) */
+            height: calc(100vh - 90px); 
+            overflow: hidden; 
+        }
+
+        /* Pencegahan gambar hero agar tidak meluber */
+        .hero-image img {
+            max-height: 55vh; 
+            width: auto;
+            object-fit: contain;
         }
         
         @keyframes fadeIn {
@@ -72,6 +83,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* Tombol Kembali */
         .btn-back {
             display: inline-block; margin-top: 20px; margin-bottom: 30px;
             padding: 10px 20px; background: rgba(255,255,255,0.05);
@@ -84,11 +96,9 @@
         /* =========================================
            2. CSS UNTUK MENU BERITA
         ========================================= */
-        .news-wrapper {
-            padding: 40px 8%; max-width: 1200px; margin: 0 auto;
-        }
+        .news-wrapper { padding: 40px 8%; max-width: 1200px; margin: 0 auto; min-height: 80vh; }
         .news-header { text-align: center; margin-bottom: 40px; }
-        .news-header h2 { font-size: 2.5rem; color: var(--text-main, #fff); }
+        .news-header h2 { font-size: 2.5rem; color: var(--text-main, #fff); margin-bottom: 10px; }
         
         .news-grid {
             display: grid;
@@ -102,37 +112,22 @@
             padding: 25px;
             transition: transform 0.3s ease;
             color: var(--text-main, #fff);
+            display: flex;
+            flex-direction: column;
         }
         .news-card:hover { transform: translateY(-5px); border-color: var(--primary, #38bdf8); }
+        
+        .news-img-container {
+            width: 100%; height: 180px; overflow: hidden;
+            border-radius: 10px; margin-bottom: 15px; background: rgba(0,0,0,0.2);
+        }
+        .news-img-container img { width: 100%; height: 100%; object-fit: cover; }
         .news-date { font-size: 0.85rem; color: var(--primary, #38bdf8); margin-bottom: 10px; display: block; }
         .news-title { font-size: 1.3rem; margin-bottom: 15px; }
         .news-desc { font-size: 0.95rem; line-height: 1.6; opacity: 0.8; }
 
         /* =========================================
-           3. CSS UNTUK FORM ADMIN
-        ========================================= */
-        .admin-form-container {
-            background: var(--bg-card, #1e293b);
-            border: 1px solid var(--border-color, rgba(255,255,255,0.1));
-            border-radius: 15px;
-            padding: 30px;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        .form-group { margin-bottom: 20px; text-align: left; }
-        .form-group label { display: block; margin-bottom: 8px; color: var(--text-main, #fff); font-weight: bold; }
-        .form-group input, .form-group textarea {
-            width: 100%; padding: 12px 15px; border-radius: 8px;
-            border: 1px solid var(--border-color, rgba(255,255,255,0.2));
-            background: rgba(0,0,0,0.2); color: var(--text-main, #fff);
-            font-family: inherit; box-sizing: border-box;
-        }
-        .form-group input:focus, .form-group textarea:focus {
-            outline: none; border-color: var(--primary, #38bdf8);
-        }
-
-        /* =========================================
-           4. CSS UNTUK FLIP CARD (EXPLORE)
+           3. CSS UNTUK FLIP CARD (EXPLORE)
         ========================================= */
         .explore-wrapper { padding: 40px 8%; max-width: 1200px; margin: 0 auto; min-height: 80vh; }
         .explore-header { text-align: center; margin-bottom: 50px; }
@@ -192,116 +187,7 @@
                     <a href="#" onclick="switchContent('explore-content', event)" class="btn btn-register" style="padding: 15px 35px; font-size: 1.1rem;">Coba Jelajahi</a>
                 </div>
                 <div class="hero-image">
-                    <img src="program.jpg" alt="Dashboard Belajar" style="max-height: 70vh; object-fit: contain;">
-                </div>
-            </section>
-        </div>
-
-        <div id="news-content" class="content-section">
-            <div class="news-wrapper">
-                <div class="news-header">
-                    <h2>Berita & Artikel Terbaru</h2>
-                </div>
-                
-                <div class="news-grid" id="news-container">
-                    </div>
-            </div>
-        </div>
-
-        <div id="admin-content" class="content-section">
-            <div class="news-wrapper">
-                <a href="#" onclick="switchContent('news-content', event)" class="btn-back">← Batal & Kembali ke Berita</a>
-                <div class="news-header">
-                    <h2>Dashboard Admin</h2>
-                    <p>Formulir untuk mempublikasikan berita baru</p>
-                </div>
-                
-                <div class="admin-form-container">
-                    <form id="news-form">
-                        <div class="form-group">
-                            <label>Judul Berita</label>
-                            <input type="text" id="news-title" placeholder="Masukkan judul..." required>
-                        </div>
-                        <div class="form-group">
-                            <label>Tanggal Publikasi</label>
-                            <input type="date" id="news-date" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Isi Berita</label>
-                            <textarea id="news-desc" placeholder="Tulis deskripsi berita di sini..." rows="6" required></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-register" style="width: 100%; padding: 15px; font-size: 1.1rem; margin-top: 10px;">Publikasikan Berita</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <div id="explore-content" class="content-section">
-            <div class="explore-wrapper">
-                <a onclick="switchContent('home-content', event)" class="btn-back">← Kembali ke Beranda</a>
-                <div class="explore-header">
-                    <h2>Mengenal Tentang Dunia IT </h2>
-                    <p>Klik pada kartu untuk membalik dan melihat jawabannya!</p>
-                </div>
-
-                <div class="flashcard-grid">
-                    <div class="flip-card">
-                        <div class="flip-card-inner">
-                            <div class="flip-card-front">
-                                <div class="card-icon">💻</div>
-                                <h3>Apa itu Teknik Informatika?</h3>
-                                <div class="hint-text">Klik untuk Jawaban ⤵</div>
-                            </div>
-                            <div class="flip-card-back">
-                                <h3>Teknik Informatika</h3>
-                                <p>Ilmu yang mempelajari penerapan logika matematika dalam pengelolaan informasi menggunakan teknologi komputer, fokus pada pembuatan aplikasi, struktur data, dan algoritma.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="flip-card">
-                        <div class="flip-card-inner">
-                            <div class="flip-card-front">
-                                <div class="card-icon">📐</div>
-                                <h3>Haruskah pintar matematika?</h3>
-                                <div class="hint-text">Klik untuk Jawaban ⤵</div>
-                            </div>
-                            <div class="flip-card-back">
-                                <h3>Logika > Menghitung Rumit</h3>
-                                <p>Tidak harus jenius matematika, tapi logika sangat diperlukan. Matematika dasar membantu melatih algoritma dan logika berurutan saat kamu menulis baris kode pemrograman.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="flip-card">
-                        <div class="flip-card-inner">
-                            <div class="flip-card-front">
-                                <div class="card-icon">⌨️</div>
-                                <h3>Apa itu bahasa pemrograman?</h3>
-                                <div class="hint-text">Klik untuk Jawaban ⤵</div>
-                            </div>
-                            <div class="flip-card-back">
-                                <h3>Bahasa Pemrograman</h3>
-                                <p>Kumpulan instruksi yang digunakan untuk memberi perintah kepada komputer. Contohnya HTML/CSS untuk tampilan web, JavaScript untuk interaktivitas, atau Python & C++.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <main>
-        <div id="home-content" class="content-section active">
-            <section class="hero">
-                <div class="hero-content">
-                    <span class="badge-hero">Platform Kursus Online</span>
-                    <h1>Tingkatkan Skill Coding Kamu Bersama Kelompok Kami.</h1>
-                    <p><b>Materi Pembelajaran, Kuis singkat, dan juga tugas</b> tergantung semester yang kamu pilih! | klik di bawah ini jika ingin mengetahui seputar Dunia IT.</p>
-                    <a href="#" onclick="switchContent('explore-content', event)" class="btn btn-register" style="padding: 15px 35px; font-size: 1.1rem;">Coba Jelajahi</a>
-                </div>
-                <div class="hero-image">
-                    <img src="program.jpg" alt="Dashboard Belajar" style="max-height: 70vh; object-fit: contain;">
+                    <img src="program.jpg" alt="Dashboard Belajar">
                 </div>
             </section>
         </div>
@@ -340,6 +226,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="flip-card">
                         <div class="flip-card-inner">
                             <div class="flip-card-front">
@@ -353,6 +240,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="flip-card">
                         <div class="flip-card-inner">
                             <div class="flip-card-front">
@@ -402,10 +290,9 @@
         });
 
         // =========================================================
-        // 4. LOGIKA LOAD BERITA (HANYA MEMBACA DATA DARI ADMIN)
+        // 4. LOGIKA LOAD BERITA (MEMBACA DARI FILE ADMIN)
         // =========================================================
         function loadNews() {
-            // Ambil data menggunakan kunci yang sama dengan file admin.html
             const newsDatabase = JSON.parse(localStorage.getItem('eduFreeNewsWithImage')) || [];
             const container = document.getElementById('news-container');
             container.innerHTML = ''; 
