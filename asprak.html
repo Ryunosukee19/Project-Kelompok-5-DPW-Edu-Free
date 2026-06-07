@@ -23,6 +23,7 @@
             --border-color: rgba(255, 255, 255, 0.05); 
             --sidebar-width: 260px;
             --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 25px -3px rgba(0, 0, 0, 0.2);
             --banner-gradient: linear-gradient(135deg, #78350f 0%, #0f172a 100%);
             --danger-red: #ef4444;
         }
@@ -37,6 +38,8 @@
             --text-main: #0f172a;
             --text-muted: #64748b; 
             --border-color: rgba(0, 0, 0, 0.08); 
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
             --banner-gradient: linear-gradient(135deg, #fef3c7 0%, #fff7ed 100%);
         }
         
@@ -70,19 +73,48 @@
         .dropdown-container li a { padding: 10px 15px; font-size: 0.85rem; border-radius: 8px; margin-bottom: 2px; } 
         .dropdown-container li a.sub-active { color: var(--primary); background: rgba(245, 158, 11, 0.1); font-weight: 700; border-left: none; }
         
+        .btn-logout { margin-top: auto; color: #ef4444 !important; background: rgba(239, 68, 68, 0.05); }
+        .btn-logout:hover { background: #ef4444 !important; color: white !important; transform: translateY(-2px) !important; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3); }
+
         .main-content { margin-left: var(--sidebar-width); width: calc(100% - var(--sidebar-width)); min-height: 100vh; padding: 40px 50px; }
+        
         .header-top-right { position: fixed; top: 30px; right: 50px; display: flex; gap: 15px; z-index: 100; align-items: center;}
-        .header-profile { display: flex; align-items: center; padding: 6px 15px 6px 6px; border-radius: 50px; background: var(--bg-card); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); backdrop-filter: blur(10px); }
+        .header-profile { display: flex; align-items: center; padding: 6px 15px 6px 6px; border-radius: 50px; background: var(--bg-card); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); backdrop-filter: blur(10px); cursor: pointer; transition: 0.3s;}
+        .header-profile:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: var(--primary); }
         .header-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; background-color: #fff; }
 
-        /* BERANDA & MATKUL HEADER */
-        #section-beranda { display: flex; align-items: center; justify-content: space-between; gap: 50px; background: var(--bg-card); padding: 60px 50px; border-radius: 30px; border: 1px solid var(--border-color); min-height: 450px; margin-top: 50px;}
+        /* BERANDA PERBAIKAN */
+        #section-beranda { display: flex; align-items: center; justify-content: space-between; gap: 50px; background: var(--bg-card); padding: 60px 50px; border-radius: 30px; border: 1px solid var(--border-color); min-height: 450px; margin-top: 50px; box-shadow: var(--shadow-sm);}
+        .hero-content { flex: 1.2; z-index: 2; animation: fadeRight 0.6s ease; }
+        @keyframes fadeRight { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
         .badge-hero { display: inline-flex; align-items: center; gap: 8px; background: rgba(245, 158, 11, 0.15); color: var(--primary); padding: 8px 20px; border-radius: 30px; font-size: 0.85rem; font-weight: 700; margin-bottom: 25px; border: 1px solid rgba(245, 158, 11, 0.2); text-transform: uppercase; }
         .hero-content h1 { font-size: 3.2rem; font-weight: 800; line-height: 1.15; margin-bottom: 20px; }
         .hero-content h1 span { color: var(--primary); }
+        .hero-content p { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 35px; line-height: 1.7; max-width: 90%; }
+        
+        .hero-image { flex: 1; z-index: 1; display: flex; justify-content: center; animation: floatImg 6s ease-in-out infinite; } 
+        .hero-image img { width: 100%; max-width: 450px; border-radius: 24px; box-shadow: var(--shadow-lg); border: 1px solid var(--border-color);}
+        @keyframes floatImg { 0% { transform: translateY(0px); } 50% { transform: translateY(-15px); } 100% { transform: translateY(0px); } }
+        
         .btn-action { background: var(--primary); color: white; border: none; padding: 12px 24px; border-radius: 12px; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 8px;}
         .btn-action:hover { background: var(--primary-hover); transform: translateY(-2px);}
 
+        /* SECTION PROFIL (BARU UNTUK ASPRAK) */
+        #section-profil { display: none; width: 100%; animation: fadeIn 0.4s ease; margin-top: 50px; }
+        .profil-container { background: var(--bg-card); border-radius: 30px; border: 1px solid var(--border-color); padding: 50px; box-shadow: var(--shadow-lg); display: flex; gap: 50px; align-items: flex-start;}
+        .profil-foto-area { display: flex; flex-direction: column; align-items: center; gap: 20px; width: 250px; text-align: center;}
+        .profil-img-large { width: 180px; height: 180px; border-radius: 50%; object-fit: cover; border: 4px solid var(--primary); box-shadow: 0 10px 25px rgba(245, 158, 11, 0.2); background-color: #fff;}
+        .btn-upload-foto { background: var(--bg-body); border: 1px solid var(--border-color); color: var(--text-main); padding: 10px 20px; border-radius: 20px; cursor: pointer; transition: 0.3s; font-size: 0.85rem; font-weight: 600; width: 100%;}
+        .btn-upload-foto:hover { border-color: var(--primary); color: var(--primary); }
+        .profil-form-area { flex: 1; }
+        .profil-form-area h2 { font-size: 2rem; color: var(--text-main); margin-bottom: 30px; }
+        .input-group { margin-bottom: 20px; }
+        .input-group label { display: block; margin-bottom: 8px; font-size: 0.9rem; color: var(--text-muted); font-weight: 600;}
+        .input-group input, .input-group textarea { width: 100%; padding: 14px; background: var(--bg-body); border: 1px solid var(--border-color); border-radius: 12px; color: var(--text-main); outline: none; font-family: inherit;}
+        .input-group input:focus, .input-group textarea:focus { border-color: var(--primary); }
+        .input-group input:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        /* MATKUL HEADER */
         #section-matkul { display: none; width: 100%; margin-top: 60px;}
         .matkul-header { display: flex; flex-direction: column; justify-content: center; margin-bottom: 30px; padding: 40px 50px; border-radius: 24px; background: var(--banner-gradient); border: 1px solid var(--border-color);}
         .matkul-title-box h1 { font-size: 2.8rem; color: var(--primary); margin-bottom: 8px; font-weight: 800; }
@@ -101,11 +133,6 @@
 
         /* FORM & CARDS */
         .form-card { background: var(--bg-card); padding: 30px; border-radius: 20px; border: 1px solid var(--border-color); margin-bottom: 25px; }
-        .input-group { margin-bottom: 15px; }
-        .input-group label { display: block; margin-bottom: 8px; font-size: 0.9rem; color: var(--text-muted); font-weight: 600;}
-        .input-group input, .input-group textarea { width: 100%; padding: 14px; background: var(--bg-body); border: 1px solid var(--border-color); border-radius: 12px; color: var(--text-main); outline: none; font-family: inherit;}
-        .input-group input:focus, .input-group textarea:focus { border-color: var(--primary); }
-        
         .item-card { background: var(--bg-card); border: 1px solid var(--border-color); padding: 20px 25px; border-radius: 16px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
         .item-info h3 { font-size: 1.1rem; margin-bottom: 4px; color: var(--text-main);}
         .item-info p { font-size: 0.85rem; color: var(--text-muted);}
@@ -144,22 +171,22 @@
 
         <ul class="nav-links">
             <li><a href="#" id="menu-beranda" class="active"><i class="fas fa-home"></i> Beranda Utama</a></li>
+            <li><a href="#" id="menu-profil"><i class="fas fa-user-circle"></i> Profil Asprak</a></li>
             <li>
                 <a class="dropdown-btn open">
                     <span><i class="fas fa-flask"></i> Ruang Praktikum</span>
                     <span class="arrow"><i class="fas fa-chevron-down"></i></span>
                 </a>
                 <ul class="dropdown-container show" id="menu-matkul-saya">
-                    <!-- List Praktikum dari JS -->
-                </ul>
+                    </ul>
             </li>
-            <li style="margin-top: 15px;"><a href="index.html"><i class="fas fa-sign-out-alt"></i> Keluar</a></li>
+            <li style="margin-top: 15px;"><a href="index.html"><i class="fas fa-sign-out-alt"></i>Log Out</a></li>
         </ul>
     </nav>
 
     <main class="main-content">
         <div class="header-top-right">
-            <div class="header-profile" title="Profil Asprak">
+            <div class="header-profile" title="Profil Asprak" onclick="document.getElementById('menu-profil').click();">
                 <div style="text-align: right; margin-right: 12px; margin-left: 8px;">
                     <div id="top-name" style="font-size: 0.9rem; font-weight: 700;">Nama Asprak</div>
                     <div id="top-role" style="font-size: 0.75rem; color: var(--primary); font-weight: 600;">Asisten Praktikum</div>
@@ -173,9 +200,72 @@
                 <div class="badge-hero"><i class="fas fa-laptop-code"></i> Portal Manajemen Praktikum</div>
                 <h1>Kelola Modul & Asistensi <span>Lebih Tertata.</span></h1>
                 <p id="welcome-message">Selamat Datang di Pusat Kendali Asisten Praktikum. Akses ke menu ini terbatas hanya pada mata kuliah praktikum spesifik.</p>
+                <button class="btn-action" style="padding: 14px 30px; font-size: 1rem;" onclick="document.querySelector('.dropdown-btn').click();"><i class="fas fa-flask"></i> Buka Laboratorium</button>
             </div>
             <div class="hero-image">
                 <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Dashboard Asprak" style="object-fit: cover;">
+            </div>
+        </section>
+
+        <section id="section-profil">
+            <div class="profil-container">
+                <div class="profil-foto-area">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png" id="profil-img-preview" class="profil-img-large" alt="Foto Profil">
+                    <div style="width: 100%;">
+                        <input type="file" id="profil-upload-input" accept="image/png, image/jpeg, image/jpg" style="display:none;" onchange="previewProfilePic(event)">
+                        <button class="btn-action" style="width:100%; margin-bottom:10px; justify-content:center;" onclick="document.getElementById('profil-upload-input').click();"><i class="fas fa-camera"></i> Ubah Foto</button>
+                        <button class="btn-upload-foto" style="color:var(--danger-red); border-color:var(--danger-red);" onclick="hapusProfilePic()"><i class="fas fa-trash"></i> Hapus Foto</button>
+                    </div>
+                </div>
+                
+                <div class="profil-form-area">
+                    <h2><i class="fas fa-user-edit" style="color:var(--primary); margin-right:10px;"></i> Profil Asisten Praktikum</h2>
+                    
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
+                        <div class="input-group">
+                            <label>Nama Lengkap</label>
+                            <input type="text" id="prof-nama" disabled>
+                        </div>
+                        <div class="input-group">
+                            <label>ID Asprak / NIM</label>
+                            <input type="text" id="prof-nim" disabled>
+                        </div>
+                    </div>
+                    
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
+                        <div class="input-group">
+                            <label>Tanggal Lahir</label>
+                            <input type="date" id="prof-tgl">
+                        </div>
+                        <div class="input-group">
+                            <label>Universitas / Institusi</label>
+                            <input type="text" id="prof-univ" placeholder="Contoh: Universitas Trunojoyo Madura">
+                        </div>
+                    </div>
+
+                    <div style="display:grid; grid-template-columns: 1fr 2fr; gap:20px;">
+                        <div class="input-group">
+                            <label>Jml. Praktikum Diampu</label>
+                            <input type="number" id="prof-jml-prak" placeholder="Contoh: 2">
+                        </div>
+                        <div class="input-group">
+                            <label>Nama Praktikum (Pisahkan Koma)</label>
+                            <input type="text" id="prof-nama-prak" placeholder="Contoh: Alpro, PTI">
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Dosen Pengampu Teori Terkait</label>
+                        <input type="text" id="prof-dosen" placeholder="Contoh: Bapak Ahmad, S.Kom., M.T.">
+                    </div>
+
+                    <div class="input-group">
+                        <label>Alamat Domisili</label>
+                        <textarea id="prof-alamat" rows="2" placeholder="Masukkan alamat domisili..."></textarea>
+                    </div>
+                    
+                    <button class="btn-action" style="padding: 15px 30px; font-size: 1.05rem;" onclick="simpanProfil()"><i class="fas fa-save"></i> Simpan Perubahan Profil</button>
+                </div>
             </div>
         </section>
 
@@ -196,7 +286,6 @@
                 <button class="tab-btn" onclick="bukaTabPrak('tab-p-forum', this)"><i class="fas fa-comments"></i> Diskusi</button>
             </nav>
 
-            <!-- 1. PENGUMUMAN -->
             <div id="tab-p-pengumuman" class="tab-content active">
                 <h2 class="section-title-tab"><i class="fas fa-bullhorn" style="color: var(--primary);"></i> Pengumuman Praktikum</h2>
                 <div class="form-card">
@@ -213,7 +302,6 @@
                 <div id="p-list-pengumuman"></div>
             </div>
 
-            <!-- 2. MATERI PRAKTIKUM -->
             <div id="tab-p-materi" class="tab-content">
                 <h2 class="section-title-tab"><i class="fas fa-file-alt" style="color: var(--primary);"></i> Modul Materi Praktikum</h2>
                 <div class="form-card">
@@ -230,7 +318,6 @@
                 <div id="p-list-materi"></div>
             </div>
 
-            <!-- 3. TUGAS PRAKTIKUM -->
             <div id="tab-p-tugas" class="tab-content">
                 <h2 class="section-title-tab"><i class="fas fa-laptop-code" style="color: var(--primary);"></i> Tugas & Laporan Praktikum</h2>
                 <div class="form-card">
@@ -251,7 +338,6 @@
                 <div id="p-list-tugas"></div>
             </div>
 
-            <!-- 4. JADWAL ASISTENSI -->
             <div id="tab-p-asistensi" class="tab-content">
                 <h2 class="section-title-tab"><i class="fas fa-calendar-check" style="color: var(--primary);"></i> Jadwal Asistensi</h2>
                 <div class="form-card">
@@ -268,7 +354,6 @@
                 <div id="p-list-asistensi"></div>
             </div>
 
-            <!-- 5. PENILAIAN -->
             <div id="tab-p-nilai" class="tab-content">
                 <h2 class="section-title-tab"><i class="fas fa-star" style="color: var(--primary);"></i> Cek Pengumpulan & Nilai Laporan</h2>
                 <div class="form-card">
@@ -297,7 +382,6 @@
                 </div>
             </div>
 
-            <!-- 6. FORUM DISKUSI -->
             <div id="tab-p-forum" class="tab-content">
                 <h2 class="section-title-tab" style="margin-bottom: 10px;"><i class="fas fa-comments" style="color: var(--primary);"></i> Diskusi Praktikum</h2>
                 <div class="chat-box">
@@ -320,10 +404,73 @@
         if(user.role !== 'asprak') { window.location.href = "login.html"; }
 
         document.getElementById('top-name').textContent = user.nama;
-        const savedPhoto = localStorage.getItem('profilePic_' + user.userId);
-        if (savedPhoto) document.getElementById('header-avatar').src = savedPhoto;
+        
+        // ====================================================================
+        // SISTEM PROFIL ASPRAK
+        // ====================================================================
+        function muatDataProfil() {
+            document.getElementById('prof-nama').value = user.nama;
+            document.getElementById('prof-nim').value = user.userId;
 
-        // FILTER HANYA MATKUL PRAKTIKUM YANG DIIZINKAN
+            const savedProfileData = JSON.parse(localStorage.getItem('profileDataAsprak_' + user.userId)) || {};
+            if(savedProfileData.tglLahir) document.getElementById('prof-tgl').value = savedProfileData.tglLahir;
+            if(savedProfileData.univ) document.getElementById('prof-univ').value = savedProfileData.univ;
+            if(savedProfileData.alamat) document.getElementById('prof-alamat').value = savedProfileData.alamat;
+            if(savedProfileData.jmlPrak) document.getElementById('prof-jml-prak').value = savedProfileData.jmlPrak;
+            if(savedProfileData.namaPrak) document.getElementById('prof-nama-prak').value = savedProfileData.namaPrak;
+            if(savedProfileData.dosen) document.getElementById('prof-dosen').value = savedProfileData.dosen;
+
+            const savedPhoto = localStorage.getItem('profilePicAsprak_' + user.userId);
+            if (savedPhoto) {
+                document.getElementById('header-avatar').src = savedPhoto;
+                document.getElementById('profil-img-preview').src = savedPhoto;
+            } else {
+                document.getElementById('header-avatar').src = "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png";
+                document.getElementById('profil-img-preview').src = "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png";
+            }
+        }
+        muatDataProfil();
+
+        window.simpanProfil = function() {
+            const dataToSave = {
+                tglLahir: document.getElementById('prof-tgl').value,
+                univ: document.getElementById('prof-univ').value,
+                alamat: document.getElementById('prof-alamat').value,
+                jmlPrak: document.getElementById('prof-jml-prak').value,
+                namaPrak: document.getElementById('prof-nama-prak').value,
+                dosen: document.getElementById('prof-dosen').value
+            };
+            localStorage.setItem('profileDataAsprak_' + user.userId, JSON.stringify(dataToSave));
+            alert("Data profil asisten praktikum berhasil diperbarui!");
+        }
+
+        window.previewProfilePic = function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        localStorage.setItem('profilePicAsprak_' + user.userId, e.target.result);
+                        document.getElementById('profil-img-preview').src = e.target.result;
+                        document.getElementById('header-avatar').src = e.target.result;
+                    } catch(err) {
+                        alert("Gagal mengunggah foto! Ukuran file terlalu besar.");
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        window.hapusProfilePic = function() {
+            if(confirm("Apakah Anda yakin ingin menghapus foto profil?")) {
+                localStorage.removeItem('profilePicAsprak_' + user.userId);
+                muatDataProfil();
+            }
+        }
+
+        // ====================================================================
+        // FILTER & NAVIGASI
+        // ====================================================================
         const allowedMatkul = ["alpro", "pti", "struktur data", "dpw"];
         let matkulAsprak = [];
         if(user.matkul) {
@@ -335,14 +482,31 @@
         const menuContainer = document.getElementById('menu-matkul-saya');
         const sectionBeranda = document.getElementById('section-beranda');
         const sectionMatkul = document.getElementById('section-matkul');
+        const sectionProfil = document.getElementById('section-profil');
+        
         const btnMenuBeranda = document.getElementById('menu-beranda');
+        const btnMenuProfil = document.getElementById('menu-profil');
+
+        function clearNavActive() {
+            document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active', 'sub-active'));
+        }
 
         btnMenuBeranda.addEventListener('click', (e) => {
             e.preventDefault();
             sectionBeranda.style.display = 'flex';
             sectionMatkul.style.display = 'none';
-            document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active', 'sub-active'));
+            sectionProfil.style.display = 'none';
+            clearNavActive();
             btnMenuBeranda.classList.add('active');
+        });
+
+        btnMenuProfil.addEventListener('click', (e) => {
+            e.preventDefault();
+            sectionBeranda.style.display = 'none';
+            sectionMatkul.style.display = 'none';
+            sectionProfil.style.display = 'block';
+            clearNavActive();
+            btnMenuProfil.classList.add('active');
         });
 
         if (matkulAsprak.length > 0) {
@@ -356,9 +520,10 @@
                 linkMatkul.addEventListener('click', (e) => {
                     e.preventDefault();
                     sectionBeranda.style.display = 'none';
+                    sectionProfil.style.display = 'none';
                     sectionMatkul.style.display = 'block';
                     
-                    document.querySelectorAll('.nav-links li a').forEach(a => a.classList.remove('active', 'sub-active'));
+                    clearNavActive();
                     linkMatkul.classList.add('sub-active');
 
                     bukaHalamanPrak(mk);
