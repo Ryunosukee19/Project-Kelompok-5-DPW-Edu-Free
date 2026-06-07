@@ -21,9 +21,9 @@
             --text-main: #f8fafc;
             --text-muted: #94a3b8; 
             --border-color: rgba(255, 255, 255, 0.05); 
-            --sidebar-width: 280px;
-            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
-            --shadow-lg: 0 10px 25px -3px rgba(0, 0, 0, 0.5);
+            --sidebar-width: 260px;
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 25px -3px rgba(0, 0, 0, 0.2);
             --banner-gradient: linear-gradient(135deg, #78350f 0%, #0f172a 100%);
             --danger-red: #ef4444;
         }
@@ -53,26 +53,27 @@
         ul { list-style: none; }
 
         /* HEADER & SIDEBAR */
-        .sidebar { position: fixed; top: 0; left: 0; width: var(--sidebar-width); height: 100vh; background-color: var(--bg-sidebar); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; z-index: 1000; }
+        .sidebar { position: fixed; top: 0; left: 0; width: var(--sidebar-width); height: 100vh; background-color: var(--bg-sidebar); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; z-index: 1000; transition: all 0.4s ease;}
         .sidebar-header { display: flex; justify-content: center; align-items: center; padding: 30px 20px; border-bottom: 1px solid var(--border-color); }
         .logo { font-size: 1.8rem; font-weight: 800; color: var(--primary); letter-spacing: -0.5px; }
         
         .theme-switch-wrapper { padding: 20px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: center; } 
-        .theme-toggle-label { cursor: pointer; color: var(--text-muted); display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 0.9rem; font-weight: 600; width: 100%;} 
+        .theme-toggle-label { cursor: pointer; color: var(--text-muted); display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 0.9rem; font-weight: 600; width: 100%; transition: all 0.3s ease;} 
+        .theme-toggle-label:hover { color: var(--text-main); }
         .theme-checkbox { display: none; } 
         
         .nav-links { padding: 20px 15px; flex-grow: 1; overflow-y: auto; } 
+        .nav-links::-webkit-scrollbar { width: 4px; } .nav-links::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
         .nav-links li a { display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; color: var(--text-muted); font-weight: 600; font-size: 0.95rem; border-radius: 12px; transition: all 0.3s ease; cursor: pointer; margin-bottom: 5px; }
         .nav-links li a:hover { background-color: rgba(245, 158, 11, 0.05); color: var(--text-main); }
         .nav-links li a.active { background-color: rgba(245, 158, 11, 0.1); color: var(--primary); border-left: 4px solid var(--primary); border-radius: 0 12px 12px 0; }
         
         .nav-links i { width: 20px; text-align: center; margin-right: 12px; font-size: 1.1rem; }
-        
         .dropdown-btn { cursor: pointer; } 
         .arrow { font-size: 0.7rem; transition: transform 0.3s ease; } 
         .dropdown-btn.open .arrow { transform: rotate(180deg); }
         .dropdown-container { display: none; flex-direction: column; padding-left: 10px; margin-top: 5px; border-left: 2px solid var(--border-color); margin-left: 20px; } 
-        .dropdown-container.show { display: flex; animation: slideDown 0.3s ease; } 
+        .dropdown-container.show { display: flex; animation: slideDown 0.3s ease;} 
         @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
         
         .dropdown-container li a { padding: 10px 15px; font-size: 0.85rem; border-radius: 8px; margin-bottom: 2px; } 
@@ -82,7 +83,7 @@
         .btn-logout { margin-top: auto; color: #ef4444 !important; background: rgba(239, 68, 68, 0.05); }
         .btn-logout:hover { background: #ef4444 !important; color: white !important; transform: translateY(-2px) !important; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3); }
 
-        .main-content { margin-left: var(--sidebar-width); width: calc(100% - var(--sidebar-width)); min-height: 100vh; padding: 40px 50px; }
+        .main-content { margin-left: var(--sidebar-width); width: calc(100% - var(--sidebar-width)); min-height: 100vh; padding: 40px 50px; overflow-x: hidden;}
         .header-top-right { position: fixed; top: 30px; right: 50px; display: flex; gap: 15px; z-index: 100; align-items: center;}
         .header-profile { display: flex; align-items: center; padding: 6px 15px 6px 6px; border-radius: 50px; background: var(--bg-card); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); backdrop-filter: blur(10px); cursor: pointer; transition: 0.3s;}
         .header-profile:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: var(--primary); }
@@ -98,7 +99,7 @@
         .hero-content p { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 35px; line-height: 1.7; max-width: 90%; }
         
         .hero-image { flex: 1; z-index: 1; display: flex; justify-content: center; animation: floatImg 6s ease-in-out infinite; } 
-        .hero-image img { width: 100%; max-width: 450px; max-height: 350px; border-radius: 24px; box-shadow: var(--shadow-lg); border: 1px solid var(--border-color); object-fit: cover;} /* Penambahan max-height & cover agar proporsional */
+        .hero-image img { width: 100%; max-width: 450px; max-height: 350px; border-radius: 24px; box-shadow: var(--shadow-lg); border: 1px solid var(--border-color); object-fit: cover;} 
         @keyframes floatImg { 0% { transform: translateY(0px); } 50% { transform: translateY(-15px); } 100% { transform: translateY(0px); } }
         
         .btn-action { background: var(--primary); color: white; border: none; padding: 12px 24px; border-radius: 12px; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 8px;}
@@ -125,16 +126,52 @@
         .matkul-title-box h1 { font-size: 2.8rem; color: var(--primary); margin-bottom: 8px; font-weight: 800; }
         .matkul-title-box p { color: var(--text-muted); font-size: 1.05rem; font-weight: 500;}
         
-        /* TABS */
-        .tabs { display: inline-flex; flex-wrap: wrap; gap: 5px; background: rgba(255,255,255,0.02); padding: 8px; border-radius: 16px; border: 1px solid var(--border-color); margin-bottom: 30px; }
+        /* =========================================
+           TABS - MODIFIKASI AGAR BISA DIGESER (SCROLL)
+        ========================================= */
+        .tabs { 
+            display: flex; /* Ubah dari inline-flex jadi flex */
+            flex-wrap: nowrap; /* Paksa agar tidak turun ke bawah */
+            overflow-x: auto; /* Munculkan scroll horizontal jika mentok */
+            gap: 5px; 
+            background: rgba(255,255,255,0.02); 
+            padding: 8px; 
+            border-radius: 16px; 
+            border: 1px solid var(--border-color); 
+            margin-bottom: 30px; 
+            /* Sembunyikan scrollbar UI agar bersih (Opsional) */
+            -ms-overflow-style: none;  
+            scrollbar-width: none;  
+        }
+        .tabs::-webkit-scrollbar { 
+            display: none; 
+        }
         body:has(#theme-toggle:checked) .tabs { background: #ffffff; }
-        .tab-btn { background: transparent; border: none; padding: 12px 20px; border-radius: 12px; color: var(--text-muted); font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 8px;}
+
+        .tab-btn { 
+            background: transparent; 
+            border: none; 
+            padding: 12px 20px; 
+            border-radius: 12px; 
+            color: var(--text-muted); 
+            font-weight: 600; 
+            font-size: 0.9rem; 
+            cursor: pointer; 
+            transition: 0.3s; 
+            display: flex; 
+            align-items: center; 
+            gap: 8px;
+            white-space: nowrap; /* Kunci agar teks dalam tombol tidak terpotong */
+            flex-shrink: 0; /* Cegah tombol mengecil tertekan */
+        }
         .tab-btn:hover { color: var(--text-main); background: rgba(245, 158, 11, 0.05);}
         .tab-btn.active { background: var(--primary); color: #fff; }
 
+        /* KONTEN TAB DLL TETAP SAMA */
         .tab-content { display: none; animation: fadeIn 0.3s ease;}
         .tab-content.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .section-title-tab { margin-bottom: 25px; font-size: 1.5rem; color: var(--text-main); font-weight: 700; display: flex; align-items: center; gap: 10px;}
 
         /* FORM & CARDS */
         .form-card { background: var(--bg-card); padding: 30px; border-radius: 20px; border: 1px solid var(--border-color); margin-bottom: 25px; }
@@ -149,12 +186,17 @@
 
         /* CHAT BOX */
         .chat-box { border: 1px solid var(--border-color); border-radius: 24px; height: 500px; display: flex; flex-direction: column; background: var(--bg-card); overflow: hidden;}
-        .chat-messages { flex: 1; padding: 25px; overflow-y: auto; display: flex; flex-direction: column; gap: 18px; }
-        .message { max-width: 75%; padding: 14px 18px; font-size: 0.95rem; line-height: 1.5; border-radius: 16px;}
+        .chat-header-info { padding: 15px 25px; border-bottom: 1px solid var(--border-color); background: rgba(0,0,0,0.02); display: flex; align-items: center; gap: 10px;}
+        .chat-header-info i { color: var(--secondary); font-size: 1.2rem;}
+        .chat-header-info span { font-weight: 600; font-size: 0.9rem;}
+        .chat-messages { flex: 1; padding: 25px; overflow-y: auto; display: flex; flex-direction: column; gap: 18px; scroll-behavior: smooth; }
+        .chat-messages::-webkit-scrollbar { width: 6px; } .chat-messages::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
+        .message { max-width: 75%; padding: 14px 18px; font-size: 0.95rem; line-height: 1.5; position: relative; border-radius: 16px;}
+        .message .sender { font-size: 0.75rem; font-weight: 700; margin-bottom: 6px; display: block; letter-spacing: 0.5px;}
         .msg-other { background: rgba(255,255,255,0.05); align-self: flex-start; border: 1px solid var(--border-color); border-bottom-left-radius: 4px; }
-        .msg-other .sender { color: var(--secondary); font-size: 0.75rem; font-weight: bold; display: block; margin-bottom: 5px;}
-        .msg-me { background: var(--primary); color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; }
-        .msg-me .sender { color: rgba(255,255,255,0.8); font-size: 0.75rem; font-weight: bold; display: block; margin-bottom: 5px;}
+        .msg-other .sender { color: var(--primary); }
+        .msg-me { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%); color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; border: none; }
+        .msg-me .sender { color: rgba(255,255,255,0.8); }
         .chat-input-area { padding: 20px; background: rgba(0,0,0,0.2); border-top: 1px solid var(--border-color); display: flex; gap: 15px; }
         .chat-input-area input { flex: 1; padding: 16px 20px; border: 1px solid var(--border-color); border-radius: 16px; background: var(--bg-body); color: var(--text-main); outline: none;}
         .chat-input-area button { background: var(--primary); color: white; border: none; width: 50px; height: 50px; border-radius: 50%; cursor: pointer;}
@@ -408,10 +450,13 @@
             <div id="tab-p-forum" class="tab-content">
                 <h2 class="section-title-tab" style="margin-bottom: 10px;"><i class="fas fa-comments" style="color: var(--primary);"></i> Diskusi Praktikum</h2>
                 <div class="chat-box">
+                    <div class="chat-header-info" style="background: rgba(245, 158, 11, 0.05);">
+                        <i class="fas fa-flask" style="color: var(--primary);"></i> <span>Ruang diskusi khusus dengan Asisten Praktikum.</span>
+                    </div>
                     <div class="chat-messages" id="p-chat-messages"></div>
                     <form class="chat-input-area" id="p-form-chat" onsubmit="kirimChatPrak(event)">
                         <input type="text" id="p-chat-input" placeholder="Ketik pesan..." autocomplete="off">
-                        <button type="submit"><i class="fas fa-paper-plane"></i></button>
+                        <button type="submit" style="background:var(--primary);"><i class="fas fa-paper-plane"></i></button>
                     </form>
                 </div>
             </div>
