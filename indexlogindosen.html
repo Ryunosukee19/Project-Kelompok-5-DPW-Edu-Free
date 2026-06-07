@@ -69,7 +69,6 @@
         .nav-links li a { display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; color: var(--text-muted); font-weight: 600; font-size: 0.95rem; border-radius: 12px; transition: all 0.3s ease; cursor: pointer; margin-bottom: 5px; }
         .nav-links li a:hover { background-color: var(--bg-card); color: var(--text-main); transform: translateX(5px); }
         .nav-links li a.active { background-color: var(--primary); color: #ffffff; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4); }
-        
         .nav-links i { width: 20px; text-align: center; margin-right: 12px; font-size: 1.1rem; }
         
         .dropdown-btn { cursor: pointer; } 
@@ -99,18 +98,19 @@
         
         .notif-dropdown { position: absolute; top: 60px; right: 60px; width: 320px; background: var(--bg-card); backdrop-filter: blur(16px); border: 1px solid var(--border-color); border-radius: 20px; padding: 20px; box-shadow: var(--shadow-lg); display: flex; flex-direction: column; opacity: 0; visibility: hidden; transform: translateY(-15px); transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); z-index: 2000; }
         .notif-dropdown.show { opacity: 1; visibility: visible; transform: translateY(0); }
-        
+        .notif-item { background: var(--bg-body); padding: 12px; border-radius: 12px; margin-bottom: 10px; border: 1px solid var(--border-color); transition: 0.3s;}
+        .notif-item:hover { border-color: var(--primary); }
+
         .header-profile { display: flex; align-items: center; cursor: pointer; padding: 6px 15px 6px 6px; border-radius: 50px; transition: all 0.3s ease; background: var(--bg-card); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); backdrop-filter: blur(10px); }
         .header-profile:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: var(--primary); }
         .header-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid transparent; background-color: #fff; }
 
         /* =========================================
-           1. SECTION BERANDA 
+           1. SECTION BERANDA
         ========================================= */
         #section-beranda { display: flex; align-items: center; justify-content: space-between; gap: 50px; background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(99, 102, 241, 0.05) 100%); padding: 60px 50px; border-radius: 30px; border: 1px solid var(--border-color); width: 100%; min-height: 450px; position: relative; overflow: hidden; box-shadow: var(--shadow-sm); margin-top: 50px;}
         .hero-content { flex: 1.2; z-index: 2; animation: fadeRight 0.6s ease; }
         @keyframes fadeRight { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
-
         .badge-hero { display: inline-flex; align-items: center; gap: 8px; background: rgba(16, 185, 129, 0.15); color: var(--secondary); padding: 8px 20px; border-radius: 30px; font-size: 0.85rem; font-weight: 700; margin-bottom: 25px; border: 1px solid rgba(16, 185, 129, 0.2); text-transform: uppercase; letter-spacing: 1px;}
         .hero-content h1 { font-size: 3.2rem; font-weight: 800; line-height: 1.15; margin-bottom: 20px; letter-spacing: -1px; }
         .hero-content h1 span { background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; background-clip: text; color: transparent; }
@@ -120,7 +120,7 @@
         @keyframes floatImg { 0% { transform: translateY(0px); } 50% { transform: translateY(-15px); } 100% { transform: translateY(0px); } }
 
         /* =========================================
-           2. SECTION RUANG KELAS 
+           2. SECTION RUANG KELAS (MATKUL)
         ========================================= */
         #section-matkul { display: none; width: 100%; animation: fadeIn 0.4s ease; margin-top: 40px;}
         @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
@@ -211,8 +211,7 @@
                     <span class="arrow"><i class="fas fa-chevron-down"></i></span>
                 </a>
                 <ul class="dropdown-container show" id="menu-matkul-saya">
-                    <!-- List Kelas dari JS -->
-                </ul>
+                    </ul>
             </li>
             
             <li><a href="index.html" ><i class="fas fa-sign-out-alt"></i> Keluar</a></li>
@@ -259,7 +258,6 @@
                 <button class="tab-btn" onclick="bukaTabKelas('tab-forum', this)"><i class="fas fa-comments"></i> Forum Diskusi</button>
             </nav>
 
-            <!-- TAB MATERI -->
             <div id="tab-materi" class="tab-content active">
                 <h2 class="section-title-tab"><i class="fas fa-folder-plus" style="color: var(--secondary);"></i> Unggah Materi Baru</h2>
                 <div class="upload-form-card">
@@ -277,13 +275,16 @@
                 <div id="konten-materi-list"></div>
             </div>
 
-            <!-- TAB TUGAS -->
             <div id="tab-tugas" class="tab-content">
                 <h2 class="section-title-tab"><i class="fas fa-clipboard-list" style="color: var(--secondary);"></i> Buat Tugas Baru</h2>
                 <div class="upload-form-card">
                     <div class="input-group">
                         <label>Judul Tugas</label>
                         <input type="text" id="input-judul-tugas" placeholder="Cth: Tugas Praktikum 1">
+                    </div>
+                    <div class="input-group">
+                        <label>Link Soal Tugas (Google Drive / Notion / URL) - Opsional</label>
+                        <input type="url" id="input-link-tugas" placeholder="Cth: https://docs.google.com/...">
                     </div>
                     <div class="input-group">
                         <label>Batas Waktu (Deadline)</label>
@@ -295,7 +296,6 @@
                 <div id="konten-tugas-list"></div>
             </div>
 
-            <!-- TAB ABSENSI -->
             <div id="tab-absensi" class="tab-content">
                 <h2 class="section-title-tab"><i class="fas fa-user-check" style="color: var(--secondary);"></i> Manajemen Kehadiran</h2>
                 <div class="upload-form-card">
@@ -306,7 +306,6 @@
                 <div id="konten-absensi-list"></div>
             </div>
 
-            <!-- TAB NILAI -->
             <div id="tab-nilai" class="tab-content">
                 <h2 class="section-title-tab"><i class="fas fa-chart-bar" style="color: var(--secondary);"></i> Rekapitulasi & Cek Pengumpulan</h2>
                 <div class="upload-form-card">
@@ -327,21 +326,19 @@
                                 <tr>
                                     <th>NIM</th>
                                     <th>Nama Mahasiswa</th>
-                                    <th>File Jawaban</th>
+                                    <th>Link Jawaban</th>
                                     <th>Waktu Submit</th>
                                     <th>Nilai</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody id="tbody-pengumpulan">
-                                <!-- Data Pengumpulan from JS -->
-                            </tbody>
+                                </tbody>
                         </table>
                     </div>
                 </div>
             </div>
 
-            <!-- TAB FORUM -->
             <div id="tab-forum" class="tab-content">
                 <h2 class="section-title-tab" style="margin-bottom: 10px;"><i class="fas fa-comments" style="color: var(--secondary);"></i> Moderasi Forum <span id="forum-matkul-name" style="color:var(--primary); margin-left: 5px;"></span></h2>
                 <div class="chat-box">
@@ -360,9 +357,6 @@
     </main>
 
     <script>
-        // ====================================================================
-        // 1. INISIALISASI & KEAMANAN DOSEN
-        // ====================================================================
         const activeUserString = localStorage.getItem('loggedInUser');
         if (!activeUserString) { window.location.href = "login.html"; }
         const user = JSON.parse(activeUserString);
@@ -377,9 +371,6 @@
 
         let activeMatkulGlobal = ""; 
 
-        // ====================================================================
-        // 2. SPA & SIDEBAR NAVIGATION
-        // ====================================================================
         const menuContainer = document.getElementById('menu-matkul-saya');
         const sectionBeranda = document.getElementById('section-beranda');
         const sectionMatkul = document.getElementById('section-matkul');
@@ -417,9 +408,6 @@
             });
         }
 
-        // ====================================================================
-        // 3. FUNGSI UTAMA: BUKA KELAS DAN RENDER DATA DARI LOCAL STORAGE
-        // ====================================================================
         function bukaHalamanMatkul(namaMatkul) {
             activeMatkulGlobal = namaMatkul; 
             document.getElementById('matkul-title-text').textContent = namaMatkul;
@@ -455,7 +443,7 @@
         }
 
         // ====================================================================
-        // MODUL 1: MATERI (Modifikasi Upload URL)
+        // MODUL 1: MATERI 
         // ====================================================================
         document.getElementById('btn-upload-materi').addEventListener('click', function() {
             const judul = document.getElementById('input-judul-materi').value;
@@ -474,15 +462,11 @@
             let dbMateri = JSON.parse(localStorage.getItem(`materi_${activeMatkulGlobal}`)) || [];
             dbMateri.push(materiBaru);
             
-            try {
-                localStorage.setItem(`materi_${activeMatkulGlobal}`, JSON.stringify(dbMateri));
-                alert("Materi berhasil diunggah!");
-                document.getElementById('input-judul-materi').value = '';
-                document.getElementById('input-link-materi').value = '';
-                renderMateri();
-            } catch (e) {
-                alert("Gagal mengunggah materi.");
-            }
+            localStorage.setItem(`materi_${activeMatkulGlobal}`, JSON.stringify(dbMateri));
+            alert("Materi berhasil diunggah!");
+            document.getElementById('input-judul-materi').value = '';
+            document.getElementById('input-link-materi').value = '';
+            renderMateri();
         });
 
         function renderMateri() {
@@ -495,8 +479,8 @@
             }
 
             list.innerHTML = '';
-            [...dbMateri].reverse().forEach((item, index) => {
-                const origIndex = dbMateri.length - 1 - index; 
+            // HAPUS REVERSE() UNTUK URUTAN KRONOLOGIS (Lama di atas, baru di bawah)
+            dbMateri.forEach((item, index) => {
                 let linkBtn = item.link ? `<a href="${item.link}" target="_blank" class="btn-action" style="padding:6px 12px; font-size:0.8rem; margin-right:5px; background:var(--primary);"><i class="fas fa-external-link-alt"></i> Buka Link</a>` : '';
                 
                 list.innerHTML += `
@@ -507,7 +491,7 @@
                         </div>
                         <div>
                             ${linkBtn}
-                            <button onclick="hapusData('materi', ${origIndex})" class="btn-action" style="padding:6px 12px; font-size:0.8rem; background:transparent; color:var(--danger-red); border:1px solid var(--danger-red);"><i class="fas fa-trash"></i> Hapus</button>
+                            <button onclick="hapusData('materi', ${index})" class="btn-action" style="padding:6px 12px; font-size:0.8rem; background:transparent; color:var(--danger-red); border:1px solid var(--danger-red);"><i class="fas fa-trash"></i> Hapus</button>
                         </div>
                     </div>`;
             });
@@ -518,6 +502,7 @@
         // ====================================================================
         document.getElementById('btn-upload-tugas').addEventListener('click', function() {
             const judul = document.getElementById('input-judul-tugas').value;
+            const linkTugas = document.getElementById('input-link-tugas').value;
             const deadline = document.getElementById('input-deadline-tugas').value;
             
             if (!judul || !deadline) { alert("Judul dan Deadline wajib diisi!"); return; }
@@ -525,6 +510,7 @@
             const tugasBaru = {
                 id: generateId(),
                 judul: judul,
+                linkTugas: linkTugas,
                 deadline: deadline,
                 tanggalDibuat: new Date().toLocaleDateString('id-ID')
             };
@@ -535,6 +521,7 @@
             
             alert("Tugas berhasil dipublikasikan!");
             document.getElementById('input-judul-tugas').value = '';
+            document.getElementById('input-link-tugas').value = '';
             document.getElementById('input-deadline-tugas').value = '';
             renderTugas();
         });
@@ -549,21 +536,23 @@
             }
 
             list.innerHTML = '';
-            [...dbTugas].reverse().forEach((item, index) => {
-                const origIndex = dbTugas.length - 1 - index; 
+            // HAPUS REVERSE() AGAR URUTAN KRONOLOGIS
+            dbTugas.forEach((item, index) => {
+                let btnBukaSoal = item.linkTugas ? `<a href="${item.linkTugas}" target="_blank" style="margin-right:10px; color:var(--primary); font-size:0.85rem;"><i class="fas fa-external-link-alt"></i> Buka Soal Tugas</a>` : '';
                 list.innerHTML += `
                     <div class="item-card">
                         <div class="item-info">
                             <h3>${item.judul}</h3>
                             <p style="color:var(--danger-red); font-weight:700;"><i class="fas fa-exclamation-circle"></i> Deadline: ${item.deadline}</p>
+                            ${btnBukaSoal}
                         </div>
-                        <button onclick="hapusData('tugas', ${origIndex})" class="btn-action" style="padding:6px 12px; font-size:0.8rem; background:transparent; color:var(--danger-red); border:1px solid var(--danger-red);"><i class="fas fa-trash"></i> Hapus</button>
+                        <button onclick="hapusData('tugas', ${index})" class="btn-action" style="padding:6px 12px; font-size:0.8rem; background:transparent; color:var(--danger-red); border:1px solid var(--danger-red);"><i class="fas fa-trash"></i> Hapus</button>
                     </div>`;
             });
         }
 
         // ====================================================================
-        // MODUL 3: ABSENSI (Lihat Daftar Mahasiswa yang Hadir)
+        // MODUL 3: ABSENSI
         // ====================================================================
         document.getElementById('btn-buka-absensi').addEventListener('click', function() {
             let dbAbsensi = JSON.parse(localStorage.getItem(`absensi_${activeMatkulGlobal}`)) || [];
@@ -649,7 +638,8 @@
             tbody.innerHTML = '';
             pengumpulanTugas.forEach((p, index) => {
                 let currentNilai = p.nilai ? p.nilai : '';
-                let fileBtn = p.fileBase64 ? `<a href="${p.fileBase64}" download="${p.fileName}" style="color:var(--primary); font-weight:bold;"><i class="fas fa-download"></i> File</a>` : 'Tidak ada file';
+                // Menampilkan Buka Link Jawaban
+                let linkBtn = p.linkJawaban ? `<a href="${p.linkJawaban}" target="_blank" style="color:var(--primary); font-weight:bold;"><i class="fas fa-external-link-alt"></i> Buka Link</a>` : 'Tidak ada link';
                 
                 let nimMhs = p.userId || "Tidak Diketahui";
 
@@ -657,7 +647,7 @@
                     <tr>
                         <td style="color:var(--secondary); font-weight:bold;">${nimMhs}</td>
                         <td style="font-weight:bold;">${p.namaMahasiswa}</td>
-                        <td>${fileBtn}</td>
+                        <td>${linkBtn}</td>
                         <td style="font-size:0.85rem;">${p.waktu}</td>
                         <td>
                             <input type="number" class="input-nilai" id="nilai_${tugasId}_${index}" value="${currentNilai}" placeholder="0-100">
