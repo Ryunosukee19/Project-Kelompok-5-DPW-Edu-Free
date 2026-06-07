@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { background-color: #0d1321; color: #ffffff; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        body { background-color: #0d1321; color: #ffffff; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px;}
         .auth-card { background-color: #151e32; padding: 40px; border-radius: 16px; width: 100%; max-width: 500px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 255, 255, 0.05); }
         .logo { font-size: 28px; font-weight: 700; text-align: center; margin-bottom: 20px; }
         .logo .edu { color: #38bdf8; } .logo .free { color: #c084fc; }
@@ -82,6 +82,9 @@
         const matkulSem1 = ["PTI", "Alpro", "Matematika Teknik", "Matematika Diskret"];
         const matkulSem2 = ["Struktur Data", "DPW", "Orkom", "Metode Statistika", "Komputasi Aljabar Linier"];
         const semuaMatkul = [...matkulSem1, ...matkulSem2];
+        
+        // Daftar khusus untuk Asprak
+        const matkulAsprak = ["PTI", "Alpro", "Struktur Data", "DPW"];
 
         const roleSelect = document.getElementById('role');
         const semesterContainer = document.getElementById('semester-container');
@@ -116,25 +119,45 @@
             courseContainer.innerHTML = "";
             let listToRender = [];
             let inputType = "checkbox";
+            let isAsprak = false;
 
             if (roleSelect.value === 'mahasiswa') {
                 listToRender = semesterSelect.value === "1" ? matkulSem1 : matkulSem2;
                 inputType = "checkbox";
                 courseInstruction.textContent = `Pilih mata kuliah untuk Semester ${semesterSelect.value} (Bisa pilih lebih dari satu):`;
-            } else {
+            } else if (roleSelect.value === 'dosen') {
                 listToRender = semuaMatkul;
-                inputType = "radio"; 
+                inputType = "radio"; // Dosen hanya bisa 1 matkul (radio button membatasi otomatis)
                 courseInstruction.textContent = `Pilih 1 Mata Kuliah yang Anda ampu:`;
+            } else if (roleSelect.value === 'asprak') {
+                listToRender = matkulAsprak;
+                inputType = "checkbox"; // Asprak bisa lebih dari 1, jadi pakai checkbox
+                isAsprak = true;
+                courseInstruction.textContent = `Pilih maksimal 2 Mata Kuliah Praktikum yang diampu:`;
             }
 
             listToRender.forEach(mk => {
                 courseContainer.innerHTML += `
                     <label class="course-item">
-                        <input type="${inputType}" name="pilihanMatkul" value="${mk}">
+                        <input type="${inputType}" name="pilihanMatkul" value="${mk}" ${isAsprak ? 'class="checkbox-asprak"' : ''}>
                         <span>${mk}</span>
                     </label>
                 `;
             });
+
+            // Logika Pembatasan Maksimal 2 Checkbox khusus Asprak
+            if (isAsprak) {
+                const asprakCheckboxes = document.querySelectorAll('.checkbox-asprak');
+                asprakCheckboxes.forEach(cb => {
+                    cb.addEventListener('change', function() {
+                        const checkedCount = document.querySelectorAll('.checkbox-asprak:checked').length;
+                        if (checkedCount > 2) {
+                            this.checked = false; // Batalkan centangan jika lebih dari 2
+                            alert("Anda maksimal hanya boleh memilih 2 Mata Kuliah Praktikum!");
+                        }
+                    });
+                });
+            }
 
             step1.style.display = "none";
             step2.style.display = "block";
