@@ -21,8 +21,9 @@
             --text-main: #f8fafc;
             --text-muted: #94a3b8; 
             --border-color: rgba(255, 255, 255, 0.05); 
-            --sidebar-width: 260px;
-            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --sidebar-width: 280px;
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 10px 25px -3px rgba(0, 0, 0, 0.5);
             --banner-gradient: linear-gradient(135deg, #78350f 0%, #0f172a 100%);
             --danger-red: #ef4444;
         }
@@ -37,6 +38,8 @@
             --text-main: #0f172a;
             --text-muted: #64748b; 
             --border-color: rgba(0, 0, 0, 0.08); 
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
             --banner-gradient: linear-gradient(135deg, #fef3c7 0%, #fff7ed 100%);
         }
         
@@ -64,10 +67,16 @@
         .nav-links li a.active { background-color: rgba(245, 158, 11, 0.1); color: var(--primary); border-left: 4px solid var(--primary); border-radius: 0 12px 12px 0; }
         
         .nav-links i { width: 20px; text-align: center; margin-right: 12px; font-size: 1.1rem; }
+        
         .dropdown-btn { cursor: pointer; } 
+        .arrow { font-size: 0.7rem; transition: transform 0.3s ease; } 
+        .dropdown-btn.open .arrow { transform: rotate(180deg); }
         .dropdown-container { display: none; flex-direction: column; padding-left: 10px; margin-top: 5px; border-left: 2px solid var(--border-color); margin-left: 20px; } 
-        .dropdown-container.show { display: flex; } 
+        .dropdown-container.show { display: flex; animation: slideDown 0.3s ease; } 
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        
         .dropdown-container li a { padding: 10px 15px; font-size: 0.85rem; border-radius: 8px; margin-bottom: 2px; } 
+        .dropdown-container li a:hover { padding-left: 20px; color: var(--primary); background: rgba(245, 158, 11, 0.05); }
         .dropdown-container li a.sub-active { color: var(--primary); background: rgba(245, 158, 11, 0.1); font-weight: 700; border-left: none; }
         
         .btn-logout { margin-top: auto; color: #ef4444 !important; background: rgba(239, 68, 68, 0.05); }
@@ -86,10 +95,16 @@
         .badge-hero { display: inline-flex; align-items: center; gap: 8px; background: rgba(245, 158, 11, 0.15); color: var(--primary); padding: 8px 20px; border-radius: 30px; font-size: 0.85rem; font-weight: 700; margin-bottom: 25px; border: 1px solid rgba(245, 158, 11, 0.2); text-transform: uppercase; }
         .hero-content h1 { font-size: 3.2rem; font-weight: 800; line-height: 1.15; margin-bottom: 20px; }
         .hero-content h1 span { color: var(--primary); }
+        .hero-content p { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 35px; line-height: 1.7; max-width: 90%; }
+        
+        .hero-image { flex: 1; z-index: 1; display: flex; justify-content: center; animation: floatImg 6s ease-in-out infinite; } 
+        .hero-image img { width: 100%; max-width: 450px; max-height: 350px; border-radius: 24px; box-shadow: var(--shadow-lg); border: 1px solid var(--border-color); object-fit: cover;} /* Penambahan max-height & cover agar proporsional */
+        @keyframes floatImg { 0% { transform: translateY(0px); } 50% { transform: translateY(-15px); } 100% { transform: translateY(0px); } }
+        
         .btn-action { background: var(--primary); color: white; border: none; padding: 12px 24px; border-radius: 12px; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 8px;}
         .btn-action:hover { background: var(--primary-hover); transform: translateY(-2px);}
 
-        /* SECTION PROFIL (BARU UNTUK ASPRAK) */
+        /* SECTION PROFIL */
         #section-profil { display: none; width: 100%; animation: fadeIn 0.4s ease; margin-top: 50px; }
         .profil-container { background: var(--bg-card); border-radius: 30px; border: 1px solid var(--border-color); padding: 50px; box-shadow: var(--shadow-lg); display: flex; gap: 50px; align-items: flex-start;}
         .profil-foto-area { display: flex; flex-direction: column; align-items: center; gap: 20px; width: 250px; text-align: center;}
@@ -193,7 +208,7 @@
                 <button class="btn-action" style="padding: 14px 30px; font-size: 1rem;" onclick="document.querySelector('.dropdown-btn').click();"><i class="fas fa-flask"></i> Buka Laboratorium</button>
             </div>
             <div class="hero-image">
-                <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Dashboard Asprak" style="object-fit: cover;">
+                <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Dashboard Asprak">
             </div>
         </section>
 
@@ -525,6 +540,7 @@
                     
                     clearNavActive();
                     linkMatkul.classList.add('sub-active');
+
                     bukaHalamanPrak(mk);
                 });
 
@@ -543,7 +559,7 @@
             bukaTabPrak('tab-p-pengumuman', document.querySelectorAll('.tab-btn')[0]);
             
             renderPengumuman();
-            renderKontrakPrak(); // Fungsi Baru
+            renderKontrakPrak(); 
             renderMateriPrak();
             renderTugasPrak();
             renderAsistensi();
@@ -591,7 +607,7 @@
             document.getElementById('p-list-pengumuman').innerHTML = html || "<p class='text-muted'>Kosong.</p>";
         }
 
-        // 2. KONTRAK PRAKTIKUM (BARU)
+        // 2. KONTRAK PRAKTIKUM
         function simpanKontrakPrak() {
             const judul = document.getElementById('p-input-judul-kontrak').value;
             const link = document.getElementById('p-input-link-kontrak').value;
