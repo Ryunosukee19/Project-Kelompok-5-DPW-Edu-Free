@@ -146,7 +146,7 @@
         body:has(#theme-toggle:checked) .matkul-title-box p { color: var(--text-muted); }
         
         /* TABS */
-        .tabs { display: inline-flex; flex-wrap: wrap; gap: 5px; background: rgba(255,255,255,0.02); padding: 8px; border-radius: 16px; border: 1px solid var(--border-color); margin-bottom: 35px; box-shadow: var(--shadow-sm); }
+        .tabs { display: inline-flex; gap: 5px; background: rgba(255,255,255,0.02); padding: 8px; border-radius: 16px; border: 1px solid var(--border-color); margin-bottom: 35px; box-shadow: var(--shadow-sm); }
         body:has(#theme-toggle:checked) .tabs { background: #ffffff; }
         
         .tab-btn { background: transparent; border: none; padding: 12px 24px; border-radius: 12px; color: var(--text-muted); font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); white-space: nowrap; display: flex; align-items: center; gap: 8px;}
@@ -158,14 +158,26 @@
         .tab-content.active { display: block; }
         .section-title-tab { margin-bottom: 25px; font-size: 1.6rem; color: var(--text-main); font-weight: 800; display: flex; align-items: center; gap: 12px;}
 
-        /* CSS UNTUK GRID MATERI */
+        /* CSS UNTUK GRID MATERI & KETERANGAN BACA */
+        .materi-header-wrapper { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; flex-wrap: wrap; gap: 15px;}
+        .materi-legend { display: flex; gap: 15px; font-size: 0.9rem; font-weight: 600; color: var(--text-muted); background: var(--bg-card); padding: 8px 15px; border-radius: 20px; border: 1px solid var(--border-color); box-shadow: var(--shadow-sm);}
+        .legend-item { display: flex; align-items: center; gap: 8px; }
+        .legend-item .dot { width: 12px; height: 12px; border-radius: 50%; }
+        .legend-item .dot.unread { background: var(--danger-red); box-shadow: 0 0 5px rgba(239, 68, 68, 0.5);}
+        .legend-item .dot.read { background: var(--success); box-shadow: 0 0 5px rgba(16, 185, 129, 0.5);}
+
         .materi-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 25px; }
-        .materi-card { background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-color); border-radius: 20px; padding: 45px 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: all 0.3s ease; cursor: pointer; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-decoration: none;}
+        
+        .materi-card { position: relative; background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-color); border-radius: 20px; padding: 45px 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: all 0.3s ease; cursor: pointer; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-decoration: none;}
         body:has(#theme-toggle:checked) .materi-card { background: var(--bg-card); box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
         .materi-card:hover { transform: translateY(-6px); border-color: var(--primary); background: rgba(56, 189, 248, 0.05); }
-        .materi-icon { font-size: 3.8rem; color: #cbd5e1; margin-bottom: 20px; transition: 0.3s; }
-        body:has(#theme-toggle:checked) .materi-icon { color: #94a3b8; }
-        .materi-card:hover .materi-icon { color: var(--primary); transform: scale(1.1); }
+        
+        .materi-badge { position: absolute; top: 15px; right: 15px; font-size: 0.75rem; font-weight: 700; padding: 5px 12px; border-radius: 20px; transition: 0.3s;}
+        .materi-badge.unread { background: rgba(239, 68, 68, 0.1); color: var(--danger-red); border: 1px solid rgba(239, 68, 68, 0.2); }
+        .materi-badge.read { background: rgba(16, 185, 129, 0.1); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.2); }
+
+        .materi-icon { font-size: 3.8rem; margin-bottom: 20px; transition: 0.3s; opacity: 0.8;}
+        .materi-card:hover .materi-icon { transform: scale(1.1); opacity: 1;}
         .materi-title { font-size: 1.3rem; font-weight: 800; margin-bottom: 10px; color: var(--text-main); }
 
         /* ITEM CARD LIST */
@@ -178,7 +190,8 @@
         .btn-action:hover { background: var(--primary); color: #fff; }
 
         .upload-tugas-area { margin-top: 15px; display: flex; gap: 10px; align-items: center; }
-        .upload-tugas-area input[type="file"] { padding: 8px; background: var(--bg-body); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-size: 0.8rem; flex: 1; }
+        .upload-tugas-area input[type="url"] { padding: 10px 15px; background: var(--bg-body); border: 1px solid var(--border-color); border-radius: 12px; color: var(--text-main); font-size: 0.9rem; flex: 1; outline:none;}
+        .upload-tugas-area input[type="url"]:focus { border-color: var(--primary); }
 
         .empty-box { text-align: center; color: var(--text-muted); font-size: 1.1rem; padding: 40px; background: rgba(255,255,255,0.02); border-radius: 16px; border: 1px solid var(--border-color); }
         body:has(#theme-toggle:checked) .empty-box { background: #f8fafc; }
@@ -206,7 +219,6 @@
         .chat-input-area input { flex: 1; padding: 16px 20px; border: 1px solid var(--border-color); border-radius: 16px; background: var(--bg-body); color: var(--text-main); outline: none; font-size: 0.95rem; font-weight: 500; transition: border 0.3s;}
         .chat-input-area input:focus { border-color: var(--primary); }
         .chat-input-area button { background: var(--primary); color: white; border: none; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; display: flex; justify-content: center; align-items: center;}
-
     </style>
 </head>
 <body>
@@ -232,9 +244,10 @@
                     <span class="arrow"><i class="fas fa-chevron-down"></i></span>
                 </a>
                 <ul class="dropdown-container show" id="menu-matkul-saya">
-                    </ul>
+                    <!-- Kelas Mahasiswa Dibuat Lewat JS -->
+                </ul>
             </li>
-            <li style="margin-top: 15px;"><a href="index.html"><i class="fas fa-sign-out-alt" style="margin-right:10px;"></i> Keluar</a></li>
+            <li style="margin-top: 15px;"><a href="#" id="logout-btn" class="btn-logout"><i class="fas fa-sign-out-alt" style="margin-right:10px;"></i> Keluar</a></li>
         </ul>
     </nav>
 
@@ -252,7 +265,8 @@
                     <button id="clear-all-notif" style="background:transparent; border:none; color:var(--text-muted); cursor:pointer; font-size:0.8rem; font-weight:bold; transition:0.3s;">Bersihkan</button>
                 </div>
                 <div id="notif-list" style="max-height: 300px; overflow-y: auto;">
-                    </div>
+                    <!-- List Notif dari JS -->
+                </div>
             </div>
 
             <div class="header-profile" title="Profil Anda">
@@ -296,25 +310,35 @@
             <div id="tab-absensi" class="tab-content">
                 <h2 class="section-title-tab"><i class="fas fa-calendar-check" style="color: var(--secondary);"></i> Daftar Hadir Perkuliahan</h2>
                 <div id="konten-absensi">
-                    </div>
+                    <!-- Data Absensi dari JS -->
+                </div>
             </div>
 
             <div id="tab-materi" class="tab-content active">
-                <h2 class="section-title-tab"><i class="fas fa-folder-open" style="color: var(--primary);"></i> Modul & Referensi Belajar</h2>
-                <div id="konten-materi">
+                <div class="materi-header-wrapper">
+                    <h2 class="section-title-tab" style="margin-bottom: 0;"><i class="fas fa-folder-open" style="color: var(--primary);"></i> Modul & Referensi Belajar</h2>
+                    <div class="materi-legend">
+                        <span class="legend-item"><span class="dot unread"></span> Belum Dibaca</span>
+                        <span class="legend-item"><span class="dot read"></span> Sudah Dibaca</span>
                     </div>
+                </div>
+                <div id="konten-materi">
+                    <!-- Data Materi Grid dari JS -->
+                </div>
             </div>
 
             <div id="tab-tugas" class="tab-content">
                 <h2 class="section-title-tab"><i class="fas fa-clipboard-list" style="color: var(--primary);"></i> Daftar Tugas & Praktikum</h2>
                 <div id="konten-tugas">
-                    </div>
+                    <!-- Data Tugas dari JS -->
+                </div>
             </div>
 
             <div id="tab-nilai" class="tab-content">
                 <h2 class="section-title-tab"><i class="fas fa-chart-line" style="color: var(--primary);"></i> Transkrip & Evaluasi Nilai</h2>
                 <div id="konten-nilai">
-                    </div>
+                    <!-- Data Nilai dari JS -->
+                </div>
             </div>
 
             <div id="tab-forum" class="tab-content">
@@ -362,7 +386,7 @@
         notifTrigger.addEventListener('click', (e) => {
             e.stopPropagation();
             notifDropdown.classList.toggle('show');
-            loadNotifikasi(); // Refresh data notifikasi saat dibuka
+            loadNotifikasi(); 
         });
 
         document.addEventListener('click', (e) => {
@@ -372,14 +396,11 @@
         });
 
         function loadNotifikasi() {
-            // Ambil ID notifikasi yang sudah dihapus oleh user ini agar tidak muncul lagi
             let dismissedNotifs = JSON.parse(localStorage.getItem('dismissed_notifs_' + user.userId)) || [];
             let activeNotifs = [];
 
-            // Memindai semua kelas yang diikuti untuk mencari materi/tugas baru
             if (user.matkul && user.matkul.length > 0) {
                 user.matkul.forEach(mk => {
-                    // Cek Tugas Baru
                     let dbTugas = JSON.parse(localStorage.getItem(`tugas_${mk}`)) || [];
                     dbTugas.forEach(t => {
                         if (!dismissedNotifs.includes(t.id)) {
@@ -387,7 +408,6 @@
                         }
                     });
 
-                    // Cek Materi Baru
                     let dbMateri = JSON.parse(localStorage.getItem(`materi_${mk}`)) || [];
                     dbMateri.forEach(m => {
                         if (!dismissedNotifs.includes(m.id)) {
@@ -397,7 +417,6 @@
                 });
             }
 
-            // Memperbarui UI Notifikasi
             const notifCount = document.getElementById('notifCount');
             const notifList = document.getElementById('notif-list');
             
@@ -406,7 +425,6 @@
                 notifCount.style.display = 'flex';
                 
                 notifList.innerHTML = '';
-                // Menampilkan notifikasi dari yang paling baru
                 activeNotifs.reverse().forEach(n => {
                     let icon = n.type === 'tugas' ? '<i class="fas fa-clipboard-list" style="color:var(--warning); font-size:1.2rem;"></i>' : '<i class="fas fa-book-open" style="color:var(--primary); font-size:1.2rem;"></i>';
                     
@@ -429,7 +447,6 @@
             }
         }
 
-        // Fungsi Menghapus Satu Notifikasi
         window.dismissNotif = function(id, event) {
             event.stopPropagation();
             let dismissedNotifs = JSON.parse(localStorage.getItem('dismissed_notifs_' + user.userId)) || [];
@@ -438,7 +455,6 @@
             loadNotifikasi(); 
         };
 
-        // Fungsi Hapus Semua Notifikasi
         document.getElementById('clear-all-notif').addEventListener('click', (e) => {
             e.stopPropagation();
             let dismissedNotifs = JSON.parse(localStorage.getItem('dismissed_notifs_' + user.userId)) || [];
@@ -461,7 +477,6 @@
             loadNotifikasi();
         });
 
-        // Panggil Notifikasi saat pertama kali login
         loadNotifikasi();
 
         // ====================================================================
@@ -527,10 +542,14 @@
             loadForumMessages(namaMatkul);
         }
 
-        // --- A. FUNGSI MATERI (MODIFIKASI TAMPILAN GRID URL) ---
+        // --- A. FUNGSI MATERI (DENGAN INDIKATOR DIBACA/BELUM) ---
         function renderMateri(matkul) {
             const wadah = document.getElementById('konten-materi');
             const dbMateri = JSON.parse(localStorage.getItem(`materi_${matkul}`)) || [];
+            
+            // Ambil daftar materi yang sudah diklik/dibaca oleh user ini
+            const keyReadMateri = `read_materi_${user.userId}_${matkul}`;
+            const readMateri = JSON.parse(localStorage.getItem(keyReadMateri)) || [];
 
             if (dbMateri.length === 0) {
                 wadah.innerHTML = `<div class="empty-box">Belum ada materi ${matkul} yang diunggah oleh Dosen.</div>`;
@@ -540,13 +559,22 @@
             wadah.innerHTML = '<div class="materi-grid"></div>';
             const gridWadah = wadah.querySelector('.materi-grid');
             
-            [...dbMateri].reverse().forEach(m => {
-                // Gunakan URL Dosen, jika tidak ada (null), arahkan ke #
+            dbMateri.forEach(m => {
                 let linkHref = m.link ? m.link : '#';
                 
+                // Cek apakah materi ini ada di dalam array yang sudah dibaca
+                let isRead = readMateri.includes(m.id);
+                
+                // Atur tampilan berdasarkan status
+                let badgeClass = isRead ? 'read' : 'unread';
+                let badgeText = isRead ? '<i class="fas fa-check-circle"></i> Sudah Dibaca' : '<i class="fas fa-circle"></i> Belum Dibaca';
+                let borderColor = isRead ? 'var(--success)' : 'var(--danger-red)';
+                let iconColor = isRead ? 'var(--success)' : 'var(--danger-red)';
+                
                 gridWadah.innerHTML += `
-                    <a href="${linkHref}" target="_blank" class="materi-card">
-                        <i class="fas fa-file-alt materi-icon"></i>
+                    <a href="${linkHref}" target="_blank" class="materi-card" style="border-top: 4px solid ${borderColor};" onclick="markMateriRead('${m.id}')">
+                        <div class="materi-badge ${badgeClass}">${badgeText}</div>
+                        <i class="fas fa-file-alt materi-icon" style="color: ${iconColor};"></i>
                         <div class="materi-title">${m.judul}</div>
                         <span style="font-size:0.9rem; margin-top:10px; color: var(--primary); font-weight: bold;"><i class="fas fa-external-link-alt"></i> Buka Materi</span>
                     </a>
@@ -554,7 +582,24 @@
             });
         }
 
-        // --- B. FUNGSI TUGAS & PENGUMPULAN ---
+        // Fungsi menyimpan status materi saat diklik
+        window.markMateriRead = function(materiId) {
+            const key = `read_materi_${user.userId}_${activeMatkulGlobal}`;
+            let readMateri = JSON.parse(localStorage.getItem(key)) || [];
+            
+            // Jika belum ada di list, tambahkan ke list dan simpan
+            if (!readMateri.includes(materiId)) {
+                readMateri.push(materiId);
+                localStorage.setItem(key, JSON.stringify(readMateri));
+                
+                // Render ulang secara halus agar warna berubah menjadi hijau (delay sedikit agar tidak bentrok dengan buka link)
+                setTimeout(() => {
+                    renderMateri(activeMatkulGlobal);
+                }, 100);
+            }
+        }
+
+        // --- B. FUNGSI TUGAS & PENGUMPULAN URL ---
         function renderTugas(matkul) {
             const wadah = document.getElementById('konten-tugas');
             const dbTugas = JSON.parse(localStorage.getItem(`tugas_${matkul}`)) || [];
@@ -565,9 +610,11 @@
             }
 
             wadah.innerHTML = '';
-            [...dbTugas].reverse().forEach(tugas => {
+            dbTugas.forEach(tugas => {
                 const dbPengumpulan = JSON.parse(localStorage.getItem(`pengumpulan_${tugas.id}`)) || [];
                 const sudahKumpul = dbPengumpulan.find(p => p.userId === user.userId);
+
+                let btnBukaSoal = tugas.linkTugas ? `<a href="${tugas.linkTugas}" target="_blank" style="margin-right:10px; color:var(--primary); font-size:0.85rem;"><i class="fas fa-external-link-alt"></i> Buka Soal Tugas</a>` : '';
 
                 let aksiHtml = '';
                 if(sudahKumpul) {
@@ -575,8 +622,8 @@
                 } else {
                     aksiHtml = `
                         <div class="upload-tugas-area">
-                            <input type="file" id="file_tugas_${tugas.id}" title="Pilih File Jawaban">
-                            <button onclick="kumpulkanTugas('${tugas.id}')" class="btn-action" style="background:var(--primary); color:#fff; border:none;"><i class="fas fa-cloud-upload-alt"></i> Kirim</button>
+                            <input type="url" id="link_tugas_${tugas.id}" placeholder="Masukkan link jawaban (Google Drive/Github/Notion)" title="Link Jawaban Anda">
+                            <button onclick="kumpulkanTugas('${tugas.id}')" class="btn-action" style="background:var(--primary); color:#fff; border:none;"><i class="fas fa-cloud-upload-alt"></i> Kirim Jawaban</button>
                         </div>
                     `;
                 }
@@ -587,6 +634,7 @@
                             <div class="item-info">
                                 <h3>${tugas.judul}</h3>
                                 <p><i class="far fa-calendar-times"></i> Tenggat Waktu: <strong style="margin-left:5px; color:var(--warning);">${tugas.deadline}</strong></p>
+                                ${btnBukaSoal}
                             </div>
                         </div>
                         ${aksiHtml}
@@ -596,38 +644,28 @@
         }
 
         window.kumpulkanTugas = function(tugasId) {
-            const fileInput = document.getElementById(`file_tugas_${tugasId}`);
-            if(!fileInput.files || fileInput.files.length === 0) {
-                alert("Harap pilih file jawaban (PDF/Word/Zip) terlebih dahulu!");
+            const linkInput = document.getElementById(`link_tugas_${tugasId}`);
+            const linkJawaban = linkInput.value.trim();
+            
+            if(!linkJawaban) {
+                alert("Harap masukkan link jawaban (Google Drive/Lainnya) terlebih dahulu!");
                 return;
             }
 
-            const file = fileInput.files[0];
-            const reader = new FileReader();
-
-            reader.onload = function(e) {
-                const hasilBase64 = e.target.result;
-                const dataPengumpulan = {
-                    userId: user.userId,
-                    namaMahasiswa: user.nama,
-                    waktu: new Date().toLocaleString('id-ID'),
-                    fileName: file.name,
-                    fileBase64: hasilBase64,
-                    nilai: "" 
-                };
-
-                let dbPengumpulan = JSON.parse(localStorage.getItem(`pengumpulan_${tugasId}`)) || [];
-                dbPengumpulan.push(dataPengumpulan);
-                
-                try {
-                    localStorage.setItem(`pengumpulan_${tugasId}`, JSON.stringify(dbPengumpulan));
-                    alert("Tugas berhasil dikumpulkan!");
-                    renderTugas(activeMatkulGlobal); 
-                } catch(error) {
-                    alert("Gagal mengumpulkan! File terlalu besar.");
-                }
+            const dataPengumpulan = {
+                userId: user.userId,
+                namaMahasiswa: user.nama,
+                waktu: new Date().toLocaleString('id-ID'),
+                linkJawaban: linkJawaban,
+                nilai: "" 
             };
-            reader.readAsDataURL(file);
+
+            let dbPengumpulan = JSON.parse(localStorage.getItem(`pengumpulan_${tugasId}`)) || [];
+            dbPengumpulan.push(dataPengumpulan);
+            
+            localStorage.setItem(`pengumpulan_${tugasId}`, JSON.stringify(dbPengumpulan));
+            alert("Tugas berhasil dikumpulkan!");
+            renderTugas(activeMatkulGlobal); 
         }
 
         // --- C. FUNGSI ABSENSI ---
