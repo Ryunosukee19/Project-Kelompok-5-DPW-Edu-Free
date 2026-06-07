@@ -71,29 +71,32 @@
         
         .nav-links { padding: 20px 15px; flex-grow: 1; overflow-y: auto; } 
         .nav-links::-webkit-scrollbar { width: 4px; } .nav-links::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
-        .nav-links li > a { display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; color: var(--text-muted); font-weight: 600; font-size: 0.95rem; border-radius: 12px; transition: all 0.3s ease; cursor: pointer; margin-bottom: 5px; }
-        .nav-links li > a:hover { background-color: rgba(255,255,255,0.03); color: var(--text-main); }
-        .nav-links li > a.active { background-color: rgba(56, 189, 248, 0.1); color: var(--primary); border-left: 4px solid var(--primary); border-radius: 0 12px 12px 0; }
-        .nav-links li > a.active-prak { background-color: rgba(245, 158, 11, 0.1); color: var(--prak-color); border-left: 4px solid var(--prak-color); border-radius: 0 12px 12px 0; }
+        
+        /* Modifikasi Target Kelas Nav-Link untuk mencegah error kotak hitam */
+        .nav-item-link { display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; color: var(--text-muted); font-weight: 600; font-size: 0.95rem; border-radius: 12px; transition: all 0.3s ease; cursor: pointer; margin-bottom: 5px; }
+        .nav-item-link:hover { background-color: rgba(255,255,255,0.03); color: var(--text-main); }
+        .nav-item-link.active { background-color: rgba(56, 189, 248, 0.1); color: var(--primary); border-left: 4px solid var(--primary); border-radius: 0 12px 12px 0; }
+        
+        .nav-item-sub { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; font-size: 0.85rem; border-radius: 8px; margin-bottom: 2px; color: var(--text-muted); cursor: pointer; transition: 0.3s;}
+        .nav-item-sub:hover { padding-left: 20px; color: var(--text-main); background: rgba(255,255,255,0.05); }
+        .nav-item-sub.sub-active { color: var(--primary); background: rgba(56, 189, 248, 0.1); font-weight: 700; border-left: none; }
+        .nav-item-sub.sub-active-prak { color: var(--prak-color); background: rgba(245, 158, 11, 0.1); font-weight: 700; border-left: none; }
+
+        .dropdown-btn { display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; color: var(--text-muted); font-weight: 600; font-size: 0.95rem; border-radius: 12px; transition: all 0.3s ease; cursor: pointer; margin-bottom: 5px; }
+        .dropdown-btn:hover { background-color: rgba(255,255,255,0.03); color: var(--text-main); }
         
         .nav-links i { width: 20px; text-align: center; margin-right: 12px; font-size: 1.1rem; }
         
-        .dropdown-btn { cursor: pointer; } 
         .arrow { font-size: 0.7rem; transition: transform 0.3s ease; } 
         .dropdown-btn.open .arrow { transform: rotate(180deg); }
         .dropdown-container { display: none; background-color: transparent; flex-direction: column; padding-left: 10px; margin-top: 5px; border-left: 2px solid var(--border-color); margin-left: 20px; } 
         .dropdown-container.show { display: flex; animation: slideDown 0.3s ease; } 
         @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
         
-        .dropdown-container li a { padding: 10px 15px; font-size: 0.85rem; border-radius: 8px; margin-bottom: 2px; } 
-        .dropdown-container li a:hover { padding-left: 20px; color: var(--text-main); background: rgba(255,255,255,0.05); }
-        .dropdown-container li a.sub-active { color: var(--primary); background: rgba(56, 189, 248, 0.1); font-weight: 700; border-left: none; }
-        .dropdown-container li a.sub-active-prak { color: var(--prak-color); background: rgba(245, 158, 11, 0.1); font-weight: 700; border-left: none; }
-        
         .btn-logout { margin-top: auto; color: #ef4444 !important; }
 
         /* KONTEN UTAMA & HEADER ATAS */
-        .main-content { margin-left: var(--sidebar-width); width: calc(100% - var(--sidebar-width)); min-height: 100vh; padding: 40px 50px; }
+        .main-content { margin-left: var(--sidebar-width); width: calc(100% - var(--sidebar-width)); min-height: 100vh; padding: 40px 50px; overflow-x: hidden;}
 
         .header-top-right { position: fixed; top: 30px; right: 50px; display: flex; gap: 15px; z-index: 100; align-items: center;}
         .header-notif { position: relative; display: flex; align-items: center; justify-content: center; cursor: pointer; width: 45px; height: 45px; border-radius: 50%; transition: all 0.3s ease; background: var(--bg-card); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); backdrop-filter: blur(10px);}
@@ -118,8 +121,9 @@
         .hero-content h1 { font-size: 3.2rem; font-weight: 800; line-height: 1.15; margin-bottom: 20px; letter-spacing: -1px; }
         .hero-content h1 span { color: var(--primary); }
         .hero-content p { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 35px; line-height: 1.7; max-width: 90%; }
+        
         .hero-image { flex: 1; z-index: 1; display: flex; justify-content: center; animation: floatImg 6s ease-in-out infinite; } 
-        .hero-image img { width: 100%; max-width: 450px; border-radius: 24px; box-shadow: var(--shadow-lg); border: 1px solid var(--border-color);}
+        .hero-image img { width: 100%; max-width: 450px; max-height: 350px; border-radius: 24px; box-shadow: var(--shadow-lg); border: 1px solid var(--border-color); object-fit: cover;}
         @keyframes floatImg { 0% { transform: translateY(0px); } 50% { transform: translateY(-15px); } 100% { transform: translateY(0px); } }
 
         /* SECTION PROFIL */
@@ -137,7 +141,7 @@
         .input-group input:focus, .input-group textarea:focus, .input-group select:focus { border-color: var(--primary); }
         .input-group input:disabled { opacity: 0.6; cursor: not-allowed; }
 
-        /* SECTION RUANG KELAS (DOSEN) */
+        /* SECTION RUANG KELAS (TEORI) */
         #section-matkul { display: none; width: 100%; animation: fadeIn 0.4s ease; margin-top: 60px; padding-top: 20px;}
         @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
         
@@ -149,21 +153,53 @@
         .matkul-title-box p { color: rgba(255,255,255,0.7); font-size: 1.05rem; font-weight: 500; display: flex; align-items: center; gap: 8px;}
         body:has(#theme-toggle:checked) .matkul-title-box p { color: var(--text-muted); }
         
-        /* TABS UTAMA (DAPAT DIGESER) */
-        .tabs { display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 5px; background: rgba(255,255,255,0.02); padding: 8px; border-radius: 16px; border: 1px solid var(--border-color); margin-bottom: 35px; box-shadow: var(--shadow-sm); max-width: 100%; -ms-overflow-style: none; scrollbar-width: none; }
-        .tabs::-webkit-scrollbar { display: none; }
-        body:has(#theme-toggle:checked) .tabs { background: #ffffff; }
+        /* TABS (BISA DISUAP / SCROLL HORIZONTAL) */
+        .tabs, .tabs-prak { 
+            display: flex; 
+            flex-wrap: nowrap; 
+            overflow-x: auto; 
+            gap: 5px; 
+            background: rgba(255,255,255,0.02); 
+            padding: 8px; 
+            border-radius: 16px; 
+            border: 1px solid var(--border-color); 
+            margin-bottom: 35px; 
+            box-shadow: var(--shadow-sm); 
+            max-width: 100%; 
+            -ms-overflow-style: none;  
+            scrollbar-width: none;  
+        }
+        .tabs::-webkit-scrollbar, .tabs-prak::-webkit-scrollbar { display: none; }
+        body:has(#theme-toggle:checked) .tabs, body:has(#theme-toggle:checked) .tabs-prak { background: #ffffff; }
         
-        .tab-btn { background: transparent; border: none; padding: 12px 24px; border-radius: 12px; color: var(--text-muted); font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); white-space: nowrap; display: flex; align-items: center; gap: 8px; flex-shrink: 0;}
+        .tab-btn, .tab-btn-prak { 
+            flex: 0 0 auto; 
+            background: transparent; 
+            border: none; 
+            padding: 12px 24px; 
+            border-radius: 12px; 
+            color: var(--text-muted); 
+            font-weight: 600; 
+            font-size: 0.95rem; 
+            cursor: pointer; 
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+            white-space: nowrap; 
+            display: flex; 
+            align-items: center; 
+            gap: 8px;
+        }
         .tab-btn:hover { color: var(--text-main); background: rgba(255,255,255,0.05); }
         body:has(#theme-toggle:checked) .tab-btn:hover { background: rgba(0,0,0,0.03); }
         .tab-btn.active { background: var(--primary); color: #fff; box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3); }
 
-        .tab-content { display: none; background: transparent; min-height: 400px; animation: fadeIn 0.3s ease;}
-        .tab-content.active { display: block; }
+        .tab-btn-prak:hover { background: rgba(245, 158, 11, 0.1); color: var(--prak-color); }
+        .tab-btn-prak.active { background: var(--prak-color); color: #fff; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4); }
+
+        .tab-content, .tab-content-prak { display: none; background: transparent; min-height: 400px; animation: fadeIn 0.3s ease;}
+        .tab-content.active, .tab-content-prak.active { display: block; }
         .section-title-tab { margin-bottom: 25px; font-size: 1.6rem; color: var(--text-main); font-weight: 800; display: flex; align-items: center; gap: 12px;}
 
-        /* CSS GRID MATERI (DENGAN KUNCI/LOCK) */
+        /* CSS MATERI LOCK (SEQUENTIAL) */
         .materi-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 25px; }
         .materi-card { position: relative; background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-color); border-radius: 20px; padding: 45px 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: all 0.3s ease; cursor: pointer; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-decoration: none;}
         body:has(#theme-toggle:checked) .materi-card { background: var(--bg-card); box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
@@ -172,15 +208,14 @@
         .materi-badge { position: absolute; top: 15px; right: 15px; font-size: 0.75rem; font-weight: 700; padding: 5px 12px; border-radius: 20px; transition: 0.3s;}
         .materi-badge.unread { background: rgba(239, 68, 68, 0.1); color: var(--danger-red); border: 1px solid rgba(239, 68, 68, 0.2); }
         .materi-badge.read { background: rgba(16, 185, 129, 0.1); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.2); }
+        .materi-badge.locked-badge { background: rgba(148, 163, 184, 0.1); color: var(--text-muted); border: 1px solid rgba(148, 163, 184, 0.2); }
 
         .materi-icon { font-size: 3.8rem; margin-bottom: 20px; transition: 0.3s; opacity: 0.8;}
         .materi-card:hover .materi-icon { transform: scale(1.1); opacity: 1;}
         .materi-title { font-size: 1.3rem; font-weight: 800; margin-bottom: 10px; color: var(--text-main); }
         
-        /* CARD LOCKED STATE */
-        .materi-card.locked { opacity: 0.6; cursor: not-allowed; border-color: var(--text-muted) !important; background: rgba(0,0,0,0.2) !important; pointer-events: none;}
+        .materi-card.locked { opacity: 0.6; cursor: not-allowed; border-color: var(--border-color) !important; background: rgba(0,0,0,0.2) !important; pointer-events: none;}
         .materi-card.locked:hover { transform: none; background: rgba(0,0,0,0.2) !important;}
-        .materi-badge.locked-badge { background: rgba(148, 163, 184, 0.1); color: var(--text-muted); border: 1px solid rgba(148, 163, 184, 0.2); }
 
         /* ITEM CARD LIST UMUM */
         .item-card { background: var(--bg-card); border: 1px solid var(--border-color); padding: 24px 30px; border-radius: 20px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; transition: all 0.3s ease; }
@@ -190,6 +225,9 @@
         
         .btn-action { background: rgba(56, 189, 248, 0.1); color: var(--primary); border: 1px solid rgba(56, 189, 248, 0.2); padding: 10px 24px; border-radius: 12px; font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: all 0.3s ease; display: inline-block;}
         .btn-action:hover { background: var(--primary); color: #fff; }
+        
+        .btn-action-prak { background: rgba(245, 158, 11, 0.1); color: var(--prak-color); border: 1px solid rgba(245, 158, 11, 0.2); padding: 10px 24px; border-radius: 12px; font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: all 0.3s ease; display: inline-block;}
+        .btn-action-prak:hover { background: var(--prak-color); color: #fff; }
 
         .upload-tugas-area { margin-top: 15px; display: flex; gap: 10px; align-items: center; }
         .upload-tugas-area input[type="url"], .upload-tugas-area input[type="file"] { padding: 10px 15px; background: var(--bg-body); border: 1px solid var(--border-color); border-radius: 12px; color: var(--text-main); font-size: 0.9rem; flex: 1; outline:none;}
@@ -197,6 +235,8 @@
 
         .empty-box { text-align: center; color: var(--text-muted); font-size: 1.1rem; padding: 40px; background: rgba(255,255,255,0.02); border-radius: 16px; border: 1px solid var(--border-color); }
         body:has(#theme-toggle:checked) .empty-box { background: #f8fafc; }
+
+        .form-card { background: var(--bg-card); padding: 30px; border-radius: 20px; border: 1px solid var(--border-color); margin-bottom: 25px; }
 
         .styled-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.95em; border-radius: 12px; overflow: hidden; background-color: var(--bg-card); border: 1px solid var(--border-color); }
         .styled-table thead tr { background-color: var(--primary); color: #ffffff; text-align: left; }
@@ -222,7 +262,6 @@
         .chat-input-area button { background: var(--primary); color: white; border: none; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; display: flex; justify-content: center; align-items: center;}
 
         /* SECTION PRAKTIKUM */
-        #section-praktikum { display: none; width: 100%; animation: fadeIn 0.4s ease; margin-top: 60px; padding-top: 20px;}
         .prak-header { display: flex; flex-direction: column; justify-content: center; margin-bottom: 25px; padding: 45px 50px; border-radius: 24px; background: linear-gradient(135deg, #78350f 0%, #0f172a 100%); box-shadow: var(--shadow-sm); position: relative; overflow: hidden; border: 1px solid var(--border-color);}
         body:has(#theme-toggle:checked) .prak-header { background: linear-gradient(135deg, #fef3c7 0%, #fff7ed 100%); }
         .prak-header::after { content: ''; position: absolute; right: 0; top: 0; width: 40%; height: 100%; background-image: radial-gradient(rgba(255,255,255,0.08) 2px, transparent 2px); background-size: 20px 20px; pointer-events: none;}
@@ -231,25 +270,6 @@
         body:has(#theme-toggle:checked) .prak-title-box h1 { color: var(--text-main); }
         .prak-title-box p { color: rgba(255,255,255,0.7); font-size: 1.05rem; font-weight: 500; display: flex; align-items: center; gap: 8px;}
         body:has(#theme-toggle:checked) .prak-title-box p { color: var(--text-muted); }
-
-        /* TABS PRAKTIKUM (DIGESER) */
-        .tabs-prak { display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 5px; background: rgba(255,255,255,0.02); padding: 8px; border-radius: 16px; border: 1px solid var(--border-color); margin-bottom: 35px; box-shadow: var(--shadow-sm); max-width: 100%; -ms-overflow-style: none; scrollbar-width: none;}
-        .tabs-prak::-webkit-scrollbar { display: none; }
-        body:has(#theme-toggle:checked) .tabs-prak { background: #ffffff; }
-        .tab-btn-prak { background: transparent; border: none; padding: 12px 24px; border-radius: 12px; color: var(--text-muted); font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); white-space: nowrap; display: flex; align-items: center; gap: 8px; flex-shrink: 0;}
-        .tab-btn-prak:hover { color: var(--text-main); background: rgba(255,255,255,0.05); }
-        body:has(#theme-toggle:checked) .tab-btn-prak:hover { background: rgba(0,0,0,0.03); }
-        .tab-btn-prak.active { background: var(--prak-color); color: #fff; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3); }
-        
-        .tab-content-prak { display: none; background: transparent; min-height: 400px; animation: fadeIn 0.3s ease;}
-        .tab-content-prak.active { display: block; }
-        .btn-action-prak { background: rgba(245, 158, 11, 0.1); color: var(--prak-color); border: 1px solid rgba(245, 158, 11, 0.2); padding: 10px 24px; border-radius: 12px; font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: all 0.3s ease; display: inline-block;}
-        .btn-action-prak:hover { background: var(--prak-color); color: #fff; }
-        .item-card-prak { background: var(--bg-card); border: 1px solid var(--border-color); padding: 24px 30px; border-radius: 20px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; transition: all 0.3s ease; }
-        .item-card-prak:hover { transform: translateY(-2px); border-color: rgba(245, 158, 11, 0.3); }
-        
-        /* FORM ZOOM & CUTI */
-        .form-card { background: var(--bg-card); padding: 30px; border-radius: 20px; border: 1px solid var(--border-color); margin-bottom: 25px; }
     </style>
 </head>
 <body>
@@ -267,8 +287,8 @@
         </div>
 
         <ul class="nav-links">
-            <li><a href="#" id="menu-beranda" class="active"><i class="fas fa-home" style="margin-right:10px;"></i> Beranda</a></li>
-            <li><a href="#" id="menu-profil"><i class="fas fa-user-circle" style="margin-right:10px;"></i> Profil Saya</a></li>
+            <li><a href="#" id="menu-beranda" class="nav-item-link active"><i class="fas fa-home" style="margin-right:10px;"></i> Beranda Utama</a></li>
+            <li><a href="#" id="menu-profil" class="nav-item-link"><i class="fas fa-user-circle" style="margin-right:10px;"></i> Profil Saya</a></li>
 
             <li>
                 <a class="dropdown-btn open">
@@ -286,7 +306,7 @@
                 <ul class="dropdown-container show" id="menu-prak-saya"></ul>
             </li>
 
-            <li style="margin-top: 15px;"><a href="index.html" id="logout-btn"><i class="fas fa-sign-out-alt" style="margin-right:10px; color:var(--danger-red);"></i> Keluar</a></li>
+            <li style="margin-top: 15px;"><a href="index.html" id="logout-btn" class="nav-item-link"><i class="fas fa-sign-out-alt" style="margin-right:10px; color:var(--danger-red);"></i> Keluar</a></li>
         </ul>
     </nav>
 
@@ -321,7 +341,7 @@
                 <p id="welcome-message">Selamat Datang di ruang belajar interaktif. Silakan pilih kelas atau praktikum di menu samping untuk memulai perjalanan Kamu hari ini.</p>
             </div>
             <div class="hero-image">
-                <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Dashboard Belajar" style="object-fit: cover;">
+                <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Dashboard Belajar">
             </div>
         </section>
 
@@ -329,7 +349,7 @@
             <div class="profil-container">
                 <div class="profil-foto-area">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png" id="profil-img-preview" class="profil-img-large" alt="Foto Profil">
-                    <div>
+                    <div style="width: 100%;">
                         <input type="file" id="profil-upload-input" accept="image/png, image/jpeg, image/jpg" style="display:none;" onchange="previewProfilePic(event)">
                         <button class="btn-action" style="width:100%; margin-bottom:10px; justify-content:center;" onclick="document.getElementById('profil-upload-input').click();"><i class="fas fa-camera"></i> Ubah Foto</button>
                         <button class="btn-action" style="color:var(--danger-red); border-color:var(--danger-red); background:transparent; width:100%; justify-content:center;" onclick="hapusProfilePic()"><i class="fas fa-trash"></i> Hapus Foto</button>
@@ -596,7 +616,14 @@
         const validPrak = ["alpro", "pti", "struktur data", "dpw"];
         let activeMatkulGlobal = ""; 
 
-        function clearNavActive() { document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active', 'sub-active', 'active-prak', 'sub-active-prak')); }
+        function clearNavActive() { 
+            document.querySelectorAll('.nav-links a').forEach(a => {
+                if(!a.classList.contains('dropdown-btn')) {
+                    a.classList.remove('active', 'sub-active', 'active-prak', 'sub-active-prak');
+                }
+            }); 
+        }
+        
         btnMenuBeranda.addEventListener('click', (e) => { e.preventDefault(); sectionBeranda.style.display = 'flex'; sectionProfil.style.display = 'none'; sectionMatkul.style.display = 'none'; sectionPraktikum.style.display = 'none'; clearNavActive(); btnMenuBeranda.classList.add('active'); window.scrollTo({ top: 0, behavior: 'smooth' }); });
         btnMenuProfil.addEventListener('click', (e) => { e.preventDefault(); sectionBeranda.style.display = 'none'; sectionMatkul.style.display = 'none'; sectionPraktikum.style.display = 'none'; sectionProfil.style.display = 'block'; clearNavActive(); btnMenuProfil.classList.add('active'); window.scrollTo({ top: 0, behavior: 'smooth' }); });
 
@@ -641,7 +668,7 @@
             wadah.innerHTML = '<div class="materi-grid"></div>';
             const gridWadah = wadah.querySelector('.materi-grid');
             
-            let previousRead = true; // By default materi pertama terbuka
+            let previousRead = true; 
             
             dbMateri.forEach((m) => {
                 let isRead = readMateri.includes(m.id);
@@ -663,7 +690,7 @@
                         <span style="font-size:0.9rem; margin-top:10px; color: ${isLocked ? 'var(--text-muted)' : 'var(--primary)'}; font-weight: bold;"><i class="fas ${isLocked ? 'fa-lock' : 'fa-external-link-alt'}"></i> ${isLocked ? 'Selesaikan Materi Sebelumnya' : 'Buka Materi'}</span>
                     </a>
                 `;
-                previousRead = isRead; // Update rules untuk index berikutnya
+                previousRead = isRead; 
             });
         }
 
@@ -763,11 +790,16 @@
             const wadah = document.getElementById('konten-nilai');
             const dbTugas = JSON.parse(localStorage.getItem(`tugas_${matkul}`)) || [];
             if(dbTugas.length === 0) return wadah.innerHTML = `<div class="empty-box">Belum ada evaluasi.</div>`;
+
             let html = `<table class="styled-table"><thead><tr><th>Tugas Teori</th><th>Status</th><th>Nilai</th></tr></thead><tbody>`;
             let adaData = false;
             dbTugas.forEach(t => {
                 const hasil = (JSON.parse(localStorage.getItem(`pengumpulan_${t.id}`)) || []).find(p => p.userId === user.userId);
-                if(hasil) { adaData = true; let n = hasil.nilai ? `<strong style="color:var(--success);">${hasil.nilai}</strong>` : `<span style="color:var(--warning);">Pending</span>`; html += `<tr><td>${t.judul}</td><td style="color:var(--success);">Terkumpul</td><td>${n}</td></tr>`; }
+                if(hasil) {
+                    adaData = true;
+                    let n = hasil.nilai ? `<strong style="color:var(--success);">${hasil.nilai}</strong>` : `<span style="color:var(--warning);">Pending</span>`;
+                    html += `<tr><td>${t.judul}</td><td style="color:var(--success);">Terkumpul</td><td>${n}</td></tr>`;
+                }
             });
             wadah.innerHTML = adaData ? html + `</tbody></table>` : `<div class="empty-box">Belum ada tugas dikumpulkan.</div>`;
         }
@@ -785,7 +817,9 @@
             cb.scrollTop = cb.scrollHeight;
         }
         document.getElementById('form-chat').addEventListener('submit', function(e) {
-            e.preventDefault(); const text = document.getElementById('chat-input').value.trim(); if(!text) return;
+            e.preventDefault();
+            const text = document.getElementById('chat-input').value.trim();
+            if(!text) return;
             let db = JSON.parse(localStorage.getItem(`forum_${activeMatkulGlobal}`)) || [];
             db.push({ userId: user.userId, nama: user.nama, role: 'Mahasiswa', text, waktu: new Date().toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'}) });
             localStorage.setItem(`forum_${activeMatkulGlobal}`, JSON.stringify(db));
@@ -793,7 +827,7 @@
         });
 
         // ====================================================================
-        // 7. RENDER RUANG PRAKTIKUM (ASPRAK)
+        // 6. RENDER RUANG PRAKTIKUM (ASPRAK)
         // ====================================================================
         function bukaHalamanPraktikum(namaMatkul) {
             activeMatkulGlobal = namaMatkul; 
@@ -802,6 +836,7 @@
 
             bukaTabPrak('prak-pengumuman', document.querySelectorAll('#section-praktikum .tab-btn-prak')[0]);
             
+            // LOAD FUNGSI ASPRAK MENGGUNAKAN KEY PRAKTIKUM
             renderPengumumanPrak(namaMatkul);
             renderKontrakPrak(namaMatkul);
             renderMateriPrakSequential(namaMatkul);
@@ -876,7 +911,7 @@
             let w = document.getElementById('prak-konten-kontrak');
             if(db.length === 0) return w.innerHTML = `<div class="empty-box">Belum ada kontrak praktikum yang diunggah.</div>`;
             w.innerHTML = '';
-            db.forEach(k => { w.innerHTML += `<div class="item-card"><div class="item-info"><h3>${k.judul}</h3><p><i class="far fa-clock"></i> Diunggah: ${k.tanggal}</p></div><a href="${k.link}" target="_blank" class="btn-action-prak"><i class="fas fa-external-link-alt"></i> Baca Kontrak</a></div>`; });
+            db.forEach(k => { w.innerHTML += `<div class="item-card"><div class="item-info"><h3 style="font-size:1rem;">${k.judul}</h3><p style="font-size:0.8rem;"><i class="far fa-clock"></i> Diunggah: ${k.tanggal}</p></div><a href="${k.link}" target="_blank" class="btn-action-prak"><i class="fas fa-external-link-alt"></i> Baca Kontrak</a></div>`; });
         }
 
         // --- MATERI PRAKTIKUM SEQUENTIAL LOCK ---
@@ -926,8 +961,9 @@
             w.innerHTML = '';
             db.forEach(t => {
                 let cekKumpul = (JSON.parse(localStorage.getItem(`prak_pengumpulan_${t.id}`))||[]).find(p => p.userId === user.userId);
-                let aksiHtml = cekKumpul ? `<span style="color:var(--success); font-weight:bold; font-size:0.9rem;"><i class="fas fa-check-circle"></i> Laporan Terkirim</span>`
-                    : `<div class="upload-tugas-area"><input type="url" id="link_prak_tugas_${t.id}" placeholder="Link Laporan"><button onclick="kumpulkanPrak('${t.id}')" class="btn-action-prak">Kirim</button></div>`;
+                let aksiHtml = cekKumpul 
+                    ? `<span style="color:var(--success); font-weight:bold; font-size:0.9rem;"><i class="fas fa-check-circle"></i> Laporan Terkirim</span>`
+                    : `<div class="upload-tugas-area"><input type="url" id="link_prak_tugas_${t.id}" placeholder="Link Laporan"><button onclick="kumpulkanPrak('${t.id}')" class="btn-action-prak" style="background:var(--prak-color); color:#fff; border:none;">Kirim</button></div>`;
                 let linkSoal = t.linkTugas ? `<a href="${t.linkTugas}" target="_blank" style="margin-right:10px; color:var(--prak-color); font-size:0.85rem;"><i class="fas fa-external-link-alt"></i> Ketentuan Tugas</a>` : '';
                 w.innerHTML += `<div class="item-card-prak" style="flex-direction:column; align-items:stretch;"><div style="display:flex; justify-content:space-between;"><div class="item-info"><h3>${t.judul}</h3><p style="color:var(--danger-red);">Deadline: ${t.deadline}</p>${linkSoal}</div></div>${aksiHtml}</div>`;
             });
@@ -938,7 +974,8 @@
             let db = JSON.parse(localStorage.getItem(`prak_pengumpulan_${id}`)) || [];
             db.push({ userId: user.userId, namaMahasiswa: user.nama, linkJawaban: val, nilai: "", waktu: new Date().toLocaleString('id-ID') });
             localStorage.setItem(`prak_pengumpulan_${id}`, JSON.stringify(db));
-            alert("Laporan berhasil dikirim ke Asprak!"); renderTugasPrak(activeMatkulGlobal);
+            alert("Laporan berhasil dikirim ke Asprak!");
+            renderTugasPrak(activeMatkulGlobal);
         }
 
         // --- NILAI PRAKTIKUM ---
@@ -949,8 +986,12 @@
             let html = `<table class="styled-table"><thead><tr><th style="background:var(--prak-color);">Tugas Laporan</th><th style="background:var(--prak-color);">Status</th><th style="background:var(--prak-color);">Nilai</th></tr></thead><tbody>`;
             let adaData = false;
             db.forEach(t => {
-                let cek = (JSON.parse(localStorage.getItem(`prak_pengumpulan_${t.id}`))||[]).find(p => p.userId === user.userId);
-                if(cek) { adaData = true; let n = cek.nilai ? `<strong style="color:var(--success);">${cek.nilai}</strong>` : `<span style="color:var(--warning);">Pending</span>`; html += `<tr><td>${t.judul}</td><td style="color:var(--success);">Terkumpul</td><td>${n}</td></tr>`; }
+                let cekKumpul = (JSON.parse(localStorage.getItem(`prak_pengumpulan_${t.id}`))||[]).find(p => p.userId === user.userId);
+                if(cekKumpul) {
+                    adaData = true;
+                    let n = cekKumpul.nilai ? `<strong style="color:var(--success);">${cekKumpul.nilai}</strong>` : `<span style="color:var(--warning);">Pending</span>`;
+                    html += `<tr><td>${t.judul}</td><td style="color:var(--success);">Terkumpul</td><td>${n}</td></tr>`;
+                }
             });
             w.innerHTML = adaData ? html + `</tbody></table>` : `<div class="empty-box">Anda belum mengumpulkan laporan apa pun.</div>`;
         }
@@ -961,7 +1002,9 @@
             let w = document.getElementById('prak-konten-asistensi');
             if(db.length === 0) return w.innerHTML = `<div class="empty-box">Belum ada jadwal asistensi.</div>`;
             w.innerHTML = '';
-            [...db].reverse().forEach(a => { w.innerHTML += `<div class="item-card-prak"><div class="item-info"><h3>Waktu: ${a.waktu}</h3><p><i class="fas fa-map-marker-alt" style="color:var(--prak-color);"></i> Lokasi/Link: <strong style="color:var(--text-main); margin-left:5px;">${a.lokasi}</strong></p></div></div>`; });
+            [...db].reverse().forEach(a => {
+                w.innerHTML += `<div class="item-card-prak"><div class="item-info"><h3>Waktu: ${a.waktu}</h3><p><i class="fas fa-map-marker-alt" style="color:var(--prak-color);"></i> Lokasi/Link: <strong style="color:var(--text-main); margin-left:5px;">${a.lokasi}</strong></p></div></div>`;
+            });
         }
 
         // --- FORUM PRAKTIKUM ---
@@ -972,10 +1015,13 @@
             cb.innerHTML = '';
             db.forEach(m => {
                 const isMe = m.userId === user.userId;
-                cb.innerHTML += `<div class="message" style="${isMe ? 'background:var(--prak-color); color:#fff; align-self:flex-end;' : 'background:rgba(255,255,255,0.05); align-self:flex-start;'}"><span class="sender" style="color:${isMe ? '#fff':'var(--prak-color)'}">${m.nama} (${m.role}) • ${m.waktu}</span>${m.text}</div>`;
+                let bgMe = "background:var(--prak-color); color:#fff; align-self:flex-end;";
+                let bgOther = "background:rgba(255,255,255,0.05); align-self:flex-start;";
+                cb.innerHTML += `<div class="message" style="${isMe ? bgMe : bgOther}"><span class="sender" style="color:${isMe ? '#fff':'var(--prak-color)'}">${m.nama} (${m.role}) • ${m.waktu}</span>${m.text}</div>`;
             });
             cb.scrollTop = cb.scrollHeight;
         }
+
         document.getElementById('prak-form-chat').addEventListener('submit', function(e) {
             e.preventDefault(); const text = document.getElementById('prak-chat-input').value.trim(); if(!text) return;
             let db = JSON.parse(localStorage.getItem(`prak_forum_${activeMatkulGlobal}`)) || [];
