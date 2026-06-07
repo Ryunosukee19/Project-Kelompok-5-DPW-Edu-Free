@@ -23,7 +23,6 @@
             --border-color: rgba(255, 255, 255, 0.05); 
             --sidebar-width: 260px;
             --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            --shadow-lg: 0 10px 25px -3px rgba(0, 0, 0, 0.2);
             --banner-gradient: linear-gradient(135deg, #78350f 0%, #0f172a 100%);
             --danger-red: #ef4444;
         }
@@ -38,8 +37,6 @@
             --text-main: #0f172a;
             --text-muted: #64748b; 
             --border-color: rgba(0, 0, 0, 0.08); 
-            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
             --banner-gradient: linear-gradient(135deg, #fef3c7 0%, #fff7ed 100%);
         }
         
@@ -77,7 +74,6 @@
         .btn-logout:hover { background: #ef4444 !important; color: white !important; transform: translateY(-2px) !important; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3); }
 
         .main-content { margin-left: var(--sidebar-width); width: calc(100% - var(--sidebar-width)); min-height: 100vh; padding: 40px 50px; }
-        
         .header-top-right { position: fixed; top: 30px; right: 50px; display: flex; gap: 15px; z-index: 100; align-items: center;}
         .header-profile { display: flex; align-items: center; padding: 6px 15px 6px 6px; border-radius: 50px; background: var(--bg-card); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); backdrop-filter: blur(10px); cursor: pointer; transition: 0.3s;}
         .header-profile:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: var(--primary); }
@@ -90,12 +86,6 @@
         .badge-hero { display: inline-flex; align-items: center; gap: 8px; background: rgba(245, 158, 11, 0.15); color: var(--primary); padding: 8px 20px; border-radius: 30px; font-size: 0.85rem; font-weight: 700; margin-bottom: 25px; border: 1px solid rgba(245, 158, 11, 0.2); text-transform: uppercase; }
         .hero-content h1 { font-size: 3.2rem; font-weight: 800; line-height: 1.15; margin-bottom: 20px; }
         .hero-content h1 span { color: var(--primary); }
-        .hero-content p { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 35px; line-height: 1.7; max-width: 90%; }
-        
-        .hero-image { flex: 1; z-index: 1; display: flex; justify-content: center; animation: floatImg 6s ease-in-out infinite; } 
-        .hero-image img { width: 100%; max-width: 450px; border-radius: 24px; box-shadow: var(--shadow-lg); border: 1px solid var(--border-color);}
-        @keyframes floatImg { 0% { transform: translateY(0px); } 50% { transform: translateY(-15px); } 100% { transform: translateY(0px); } }
-        
         .btn-action { background: var(--primary); color: white; border: none; padding: 12px 24px; border-radius: 12px; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 8px;}
         .btn-action:hover { background: var(--primary-hover); transform: translateY(-2px);}
 
@@ -108,7 +98,7 @@
         .btn-upload-foto:hover { border-color: var(--primary); color: var(--primary); }
         .profil-form-area { flex: 1; }
         .profil-form-area h2 { font-size: 2rem; color: var(--text-main); margin-bottom: 30px; }
-        .input-group { margin-bottom: 20px; }
+        .input-group { margin-bottom: 15px; }
         .input-group label { display: block; margin-bottom: 8px; font-size: 0.9rem; color: var(--text-muted); font-weight: 600;}
         .input-group input, .input-group textarea { width: 100%; padding: 14px; background: var(--bg-body); border: 1px solid var(--border-color); border-radius: 12px; color: var(--text-main); outline: none; font-family: inherit;}
         .input-group input:focus, .input-group textarea:focus { border-color: var(--primary); }
@@ -279,6 +269,7 @@
 
             <nav class="tabs">
                 <button class="tab-btn active" onclick="bukaTabPrak('tab-p-pengumuman', this)"><i class="fas fa-bullhorn"></i> Pengumuman</button>
+                <button class="tab-btn" onclick="bukaTabPrak('tab-p-kontrak', this)"><i class="fas fa-file-signature"></i> Kontrak Praktikum</button>
                 <button class="tab-btn" onclick="bukaTabPrak('tab-p-materi', this)"><i class="fas fa-file-alt"></i> Materi</button>
                 <button class="tab-btn" onclick="bukaTabPrak('tab-p-tugas', this)"><i class="fas fa-laptop-code"></i> Tugas</button>
                 <button class="tab-btn" onclick="bukaTabPrak('tab-p-asistensi', this)"><i class="fas fa-calendar-check"></i> Jadwal Asistensi</button>
@@ -302,6 +293,23 @@
                 <div id="p-list-pengumuman"></div>
             </div>
 
+            <div id="tab-p-kontrak" class="tab-content">
+                <h2 class="section-title-tab"><i class="fas fa-file-signature" style="color: var(--primary);"></i> Dokumen Kontrak Praktikum</h2>
+                <div class="form-card">
+                    <div class="input-group">
+                        <label>Judul Kontrak</label>
+                        <input type="text" id="p-input-judul-kontrak" placeholder="Cth: Kontrak Praktikum Alpro Genap 2026">
+                    </div>
+                    <div class="input-group">
+                        <label>Link Dokumen (Google Drive/PDF URL)</label>
+                        <input type="url" id="p-input-link-kontrak" placeholder="Cth: https://docs.google.com/...">
+                    </div>
+                    <button class="btn-action" onclick="simpanKontrakPrak()"><i class="fas fa-upload"></i> Unggah Kontrak</button>
+                </div>
+                <h3 style="margin-bottom: 15px; font-size:1.1rem; color:var(--text-main);">Kontrak Praktikum Aktif</h3>
+                <div id="p-list-kontrak"></div>
+            </div>
+
             <div id="tab-p-materi" class="tab-content">
                 <h2 class="section-title-tab"><i class="fas fa-file-alt" style="color: var(--primary);"></i> Modul Materi Praktikum</h2>
                 <div class="form-card">
@@ -310,7 +318,7 @@
                         <input type="text" id="p-input-judul-materi" placeholder="Cth: Modul 1 - Tipe Data">
                     </div>
                     <div class="input-group">
-                        <label>Link Modul (Google Drive/PDF)</label>
+                        <label>Link Modul (Google Drive/PDF URL)</label>
                         <input type="url" id="p-input-link-materi" placeholder="https://...">
                     </div>
                     <button class="btn-action" onclick="simpanMateriPrak()"><i class="fas fa-upload"></i> Unggah Modul</button>
@@ -405,9 +413,7 @@
 
         document.getElementById('top-name').textContent = user.nama;
         
-        // ====================================================================
         // SISTEM PROFIL ASPRAK
-        // ====================================================================
         function muatDataProfil() {
             document.getElementById('prof-nama').value = user.nama;
             document.getElementById('prof-nim').value = user.userId;
@@ -453,9 +459,7 @@
                         localStorage.setItem('profilePicAsprak_' + user.userId, e.target.result);
                         document.getElementById('profil-img-preview').src = e.target.result;
                         document.getElementById('header-avatar').src = e.target.result;
-                    } catch(err) {
-                        alert("Gagal mengunggah foto! Ukuran file terlalu besar.");
-                    }
+                    } catch(err) { alert("Gagal mengunggah foto! Ukuran file terlalu besar."); }
                 };
                 reader.readAsDataURL(file);
             }
@@ -468,14 +472,10 @@
             }
         }
 
-        // ====================================================================
         // FILTER & NAVIGASI
-        // ====================================================================
         const allowedMatkul = ["alpro", "pti", "struktur data", "dpw"];
         let matkulAsprak = [];
-        if(user.matkul) {
-            matkulAsprak = user.matkul.filter(m => allowedMatkul.includes(m.toLowerCase()));
-        }
+        if(user.matkul) { matkulAsprak = user.matkul.filter(m => allowedMatkul.includes(m.toLowerCase())); }
 
         let activePrakGlobal = ""; 
 
@@ -525,7 +525,6 @@
                     
                     clearNavActive();
                     linkMatkul.classList.add('sub-active');
-
                     bukaHalamanPrak(mk);
                 });
 
@@ -534,7 +533,7 @@
             });
         } else {
             menuContainer.innerHTML = '<li><a style="color:var(--danger-red); font-size:0.8rem;">Tidak ada akses praktikum</a></li>';
-            document.getElementById('welcome-message').innerHTML += "<br><br><b style='color:#ef4444;'>Perhatian: Anda belum di-assign ke mata kuliah praktikum yang valid (Alpro, PTI, Struktur Data, atau DPW).</b>";
+            document.getElementById('welcome-message').innerHTML += "<br><br><b style='color:#ef4444;'>Perhatian: Anda belum di-assign ke mata kuliah praktikum yang valid.</b>";
         }
 
         function bukaHalamanPrak(namaMatkul) {
@@ -544,6 +543,7 @@
             bukaTabPrak('tab-p-pengumuman', document.querySelectorAll('.tab-btn')[0]);
             
             renderPengumuman();
+            renderKontrakPrak(); // Fungsi Baru
             renderMateriPrak();
             renderTugasPrak();
             renderAsistensi();
@@ -574,14 +574,11 @@
             const judul = document.getElementById('p-input-judul-pengumuman').value;
             const isi = document.getElementById('p-input-isi-pengumuman').value;
             if(!judul || !isi) return alert("Lengkapi data!");
-            
             let db = JSON.parse(localStorage.getItem(`prak_pengumuman_${activePrakGlobal}`)) || [];
             db.push({ id: generateId(), judul, isi, tanggal: new Date().toLocaleString('id-ID') });
             localStorage.setItem(`prak_pengumuman_${activePrakGlobal}`, JSON.stringify(db));
-            
             alert("Pengumuman tersimpan!");
-            document.getElementById('p-input-judul-pengumuman').value = '';
-            document.getElementById('p-input-isi-pengumuman').value = '';
+            document.getElementById('p-input-judul-pengumuman').value = ''; document.getElementById('p-input-isi-pengumuman').value = '';
             renderPengumuman();
         }
         function renderPengumuman() {
@@ -594,7 +591,28 @@
             document.getElementById('p-list-pengumuman').innerHTML = html || "<p class='text-muted'>Kosong.</p>";
         }
 
-        // 2. MATERI
+        // 2. KONTRAK PRAKTIKUM (BARU)
+        function simpanKontrakPrak() {
+            const judul = document.getElementById('p-input-judul-kontrak').value;
+            const link = document.getElementById('p-input-link-kontrak').value;
+            if(!judul || !link) return alert("Lengkapi judul dan link kontrak!");
+            let db = JSON.parse(localStorage.getItem(`prak_kontrak_${activePrakGlobal}`)) || [];
+            db.push({ id: generateId(), judul, link, tanggal: new Date().toLocaleDateString('id-ID') });
+            localStorage.setItem(`prak_kontrak_${activePrakGlobal}`, JSON.stringify(db));
+            alert("Kontrak Praktikum berhasil diunggah!");
+            document.getElementById('p-input-judul-kontrak').value = ''; document.getElementById('p-input-link-kontrak').value = '';
+            renderKontrakPrak();
+        }
+        function renderKontrakPrak() {
+            let db = JSON.parse(localStorage.getItem(`prak_kontrak_${activePrakGlobal}`)) || [];
+            let html = '';
+            db.forEach((d, i) => {
+                html += `<div class="item-card"><div class="item-info"><h3>${d.judul}</h3><p><i class="far fa-clock"></i> ${d.tanggal}</p></div><div><a href="${d.link}" target="_blank" class="btn-action" style="margin-right:10px;"><i class="fas fa-external-link-alt"></i> Buka Dokumen</a><button onclick="hapusPrakData('kontrak', ${i})" class="btn-action" style="background:transparent; color:var(--danger-red); border:1px solid var(--danger-red);"><i class="fas fa-trash"></i></button></div></div>`;
+            });
+            document.getElementById('p-list-kontrak').innerHTML = html || "<p class='text-muted'>Belum ada kontrak praktikum yang diunggah.</p>";
+        }
+
+        // 3. MATERI
         function simpanMateriPrak() {
             const judul = document.getElementById('p-input-judul-materi').value;
             const link = document.getElementById('p-input-link-materi').value;
@@ -615,7 +633,7 @@
             document.getElementById('p-list-materi').innerHTML = html || "<p class='text-muted'>Kosong.</p>";
         }
 
-        // 3. TUGAS
+        // 4. TUGAS
         function simpanTugasPrak() {
             const judul = document.getElementById('p-input-judul-tugas').value;
             const linkTugas = document.getElementById('p-input-link-tugas').value;
@@ -638,7 +656,7 @@
             document.getElementById('p-list-tugas').innerHTML = html || "<p class='text-muted'>Kosong.</p>";
         }
 
-        // 4. ASISTENSI
+        // 5. ASISTENSI
         function simpanAsistensi() {
             const waktu = document.getElementById('p-input-waktu-asistensi').value;
             const lokasi = document.getElementById('p-input-lokasi-asistensi').value;
@@ -659,7 +677,7 @@
             document.getElementById('p-list-asistensi').innerHTML = html || "<p class='text-muted'>Kosong.</p>";
         }
 
-        // 5. NILAI
+        // 6. NILAI
         function isiDropdownTugasPrak() {
             const sel = document.getElementById('p-select-tugas');
             let db = JSON.parse(localStorage.getItem(`prak_tugas_${activePrakGlobal}`)) || [];
@@ -690,7 +708,7 @@
             alert("Nilai laporan tersimpan!");
         }
 
-        // 6. FORUM
+        // 7. FORUM
         function loadChatPrak() {
             const box = document.getElementById('p-chat-messages');
             let db = JSON.parse(localStorage.getItem(`prak_forum_${activePrakGlobal}`)) || [];
@@ -721,6 +739,7 @@
                 if(tipe==='materi') renderMateriPrak();
                 if(tipe==='tugas') renderTugasPrak();
                 if(tipe==='asistensi') renderAsistensi();
+                if(tipe==='kontrak') renderKontrakPrak();
             }
         }
 
