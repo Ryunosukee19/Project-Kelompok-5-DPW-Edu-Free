@@ -9,7 +9,7 @@
     
     <style>
         /* =========================================
-           TEMA & RESET DASAR (Modern UI/UX)
+           TEMA & RESET DASAR
         ========================================= */
         :root {
             --bg-body: #0f172a; 
@@ -54,11 +54,13 @@
         body:has(#theme-toggle:checked) .icon-sun { display: inline; color: #f59e0b; }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
-        body { background-color: var(--bg-body); color: var(--text-main); display: flex; transition: background-color 0.4s ease, color 0.4s ease; overflow-x: hidden;}
+        body { background-color: var(--bg-body); color: var(--text-main); display: flex; transition: all 0.4s ease; overflow-x: hidden;}
         a { text-decoration: none; color: inherit; } 
         ul { list-style: none; }
 
-        /* SIDEBAR MODERN */
+        /* =========================================
+           SIDEBAR
+        ========================================= */
         .sidebar { position: fixed; top: 0; left: 0; width: var(--sidebar-width); height: 100vh; background-color: var(--bg-sidebar); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; z-index: 1000; transition: all 0.4s ease; }
         .sidebar-header { display: flex; justify-content: center; align-items: center; padding: 30px 20px; border-bottom: 1px solid var(--border-color); }
         .logo { font-size: 2rem; font-weight: 800; color: var(--primary); letter-spacing: -0.5px; }
@@ -71,9 +73,12 @@
         
         .nav-links { padding: 20px 15px; flex-grow: 1; overflow-y: auto; } 
         .nav-links::-webkit-scrollbar { width: 4px; } .nav-links::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
-        .nav-links li a { display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; color: var(--text-muted); font-weight: 600; font-size: 0.95rem; border-radius: 12px; transition: all 0.3s ease; cursor: pointer; margin-bottom: 5px; }
-        .nav-links li a:hover { background-color: rgba(255,255,255,0.03); color: var(--text-main); }
-        .nav-links li a.active { background-color: rgba(56, 189, 248, 0.1); color: var(--primary); border-left: 4px solid var(--primary); border-radius: 0 12px 12px 0; }
+        
+        .nav-links li > a { display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; color: var(--text-muted); font-weight: 600; font-size: 0.95rem; border-radius: 12px; transition: all 0.3s ease; cursor: pointer; margin-bottom: 5px; }
+        .nav-links li > a:hover { background-color: rgba(255,255,255,0.03); color: var(--text-main); }
+        .nav-links li > a.active { background-color: rgba(56, 189, 248, 0.1); color: var(--primary); border-left: 4px solid var(--primary); border-radius: 0 12px 12px 0; }
+        .nav-links li > a.active-prak { background-color: rgba(245, 158, 11, 0.1); color: var(--prak-color); border-left: 4px solid var(--prak-color); border-radius: 0 12px 12px 0; }
+        
         .nav-links i { width: 20px; text-align: center; margin-right: 12px; font-size: 1.1rem; }
         
         .dropdown-btn { cursor: pointer; } 
@@ -84,14 +89,18 @@
         @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
         
         .dropdown-container li a { padding: 10px 15px; font-size: 0.85rem; border-radius: 8px; margin-bottom: 2px; } 
-        .dropdown-container li a:hover { padding-left: 20px; color: var(--primary); background: rgba(56, 189, 248, 0.05); }
+        .dropdown-container li a:hover { padding-left: 20px; color: var(--text-main); background: rgba(255,255,255,0.05); }
         .dropdown-container li a.sub-active { color: var(--primary); background: rgba(56, 189, 248, 0.1); font-weight: 700; border-left: none; }
+        .dropdown-container li a.sub-active-prak { color: var(--prak-color); background: rgba(245, 158, 11, 0.1); font-weight: 700; border-left: none; }
+        
         .btn-logout { margin-top: auto; color: #ef4444 !important; }
 
-        /* KONTEN UTAMA & HEADER */
+        /* =========================================
+           KONTEN UTAMA & HEADER ATAS
+        ========================================= */
         .main-content { margin-left: var(--sidebar-width); width: calc(100% - var(--sidebar-width)); min-height: 100vh; padding: 40px 50px; }
+
         .header-top-right { position: fixed; top: 30px; right: 50px; display: flex; gap: 15px; z-index: 100; align-items: center;}
-        
         .header-notif { position: relative; display: flex; align-items: center; justify-content: center; cursor: pointer; width: 45px; height: 45px; border-radius: 50%; transition: all 0.3s ease; background: var(--bg-card); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); backdrop-filter: blur(10px);}
         .header-notif:hover { transform: translateY(-3px); border-color: var(--primary); }
         .notif-count { position: absolute; top: -2px; right: -2px; background: var(--danger-red); color: white; width: 18px; height: 18px; border-radius: 50%; font-size: 0.7rem; display: none; justify-content: center; align-items: center; font-weight: bold; box-shadow: 0 0 8px var(--danger-red); animation: pulse 1.5s infinite; }
@@ -106,7 +115,9 @@
         .header-profile:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: var(--primary); }
         .header-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid transparent; background-color: #fff; }
 
-        /* SECTION BERANDA */
+        /* =========================================
+           SECTION BERANDA & PROFIL
+        ========================================= */
         #section-beranda { display: flex; align-items: center; justify-content: space-between; gap: 50px; background: var(--bg-card); padding: 60px 50px; border-radius: 30px; border: 1px solid var(--border-color); width: 100%; min-height: 450px; position: relative; overflow: hidden; box-shadow: var(--shadow-sm); margin-top: 50px;}
         .hero-content { flex: 1.2; z-index: 2; animation: fadeRight 0.6s ease; }
         @keyframes fadeRight { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
@@ -118,17 +129,12 @@
         .hero-image img { width: 100%; max-width: 450px; border-radius: 24px; box-shadow: var(--shadow-lg); border: 1px solid var(--border-color);}
         @keyframes floatImg { 0% { transform: translateY(0px); } 50% { transform: translateY(-15px); } 100% { transform: translateY(0px); } }
 
-        /* =========================================
-           SECTION PROFIL (BARU)
-        ========================================= */
         #section-profil { display: none; width: 100%; animation: fadeIn 0.4s ease; margin-top: 50px; }
         .profil-container { background: var(--bg-card); border-radius: 30px; border: 1px solid var(--border-color); padding: 50px; box-shadow: var(--shadow-lg); display: flex; gap: 50px; align-items: flex-start;}
-        
         .profil-foto-area { display: flex; flex-direction: column; align-items: center; gap: 20px; width: 250px; text-align: center;}
         .profil-img-large { width: 180px; height: 180px; border-radius: 50%; object-fit: cover; border: 4px solid var(--primary); box-shadow: 0 10px 25px rgba(56, 189, 248, 0.2); background-color: #fff;}
         .btn-upload-foto { background: var(--bg-body); border: 1px solid var(--border-color); color: var(--text-main); padding: 10px 20px; border-radius: 20px; cursor: pointer; transition: 0.3s; font-size: 0.85rem; font-weight: 600;}
         .btn-upload-foto:hover { border-color: var(--primary); color: var(--primary); }
-        
         .profil-form-area { flex: 1; }
         .profil-form-area h2 { font-size: 2rem; color: var(--text-main); margin-bottom: 30px; }
         .input-group { margin-bottom: 20px; }
@@ -137,7 +143,9 @@
         .input-group input:focus, .input-group textarea:focus { border-color: var(--primary); }
         .input-group input:disabled { opacity: 0.6; cursor: not-allowed; }
 
-        /* SECTION RUANG KELAS (MATKUL) */
+        /* =========================================
+           SECTION RUANG KELAS (DOSEN)
+        ========================================= */
         #section-matkul { display: none; width: 100%; animation: fadeIn 0.4s ease; margin-top: 60px; padding-top: 20px;}
         @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
         
@@ -149,7 +157,7 @@
         .matkul-title-box p { color: rgba(255,255,255,0.7); font-size: 1.05rem; font-weight: 500; display: flex; align-items: center; gap: 8px;}
         body:has(#theme-toggle:checked) .matkul-title-box p { color: var(--text-muted); }
         
-        /* TABS UTAMA */
+        /* TABS UTAMA (BIRU) */
         .tabs { display: inline-flex; gap: 5px; background: rgba(255,255,255,0.02); padding: 8px; border-radius: 16px; border: 1px solid var(--border-color); margin-bottom: 35px; box-shadow: var(--shadow-sm); overflow-x: auto; max-width: 100%;}
         body:has(#theme-toggle:checked) .tabs { background: #ffffff; }
         .tab-btn { background: transparent; border: none; padding: 12px 24px; border-radius: 12px; color: var(--text-muted); font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); white-space: nowrap; display: flex; align-items: center; gap: 8px;}
@@ -157,33 +165,15 @@
         body:has(#theme-toggle:checked) .tab-btn:hover { background: rgba(0,0,0,0.03); }
         .tab-btn.active { background: var(--primary); color: #fff; box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3); }
 
-        /* TABS KHUSUS PRAKTIKUM */
-        .tab-btn.btn-prak { display: none; color: var(--prak-color); }
-        .tab-btn.btn-prak:hover { background: rgba(245, 158, 11, 0.1); color: var(--prak-color); }
-        .tab-btn.btn-prak.active { background: var(--prak-color); color: #fff; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4); }
-
         .tab-content { display: none; background: transparent; min-height: 400px; animation: fadeIn 0.3s ease;}
         .tab-content.active { display: block; }
         .section-title-tab { margin-bottom: 25px; font-size: 1.6rem; color: var(--text-main); font-weight: 800; display: flex; align-items: center; gap: 12px;}
-
-        /* CSS UNTUK SUB-TABS (DI DALAM PRAKTIKUM) */
-        .sub-tabs-container { display: flex; gap: 10px; margin-bottom: 30px; overflow-x: auto; padding-bottom: 10px;}
-        .sub-tab-btn { background: transparent; color: var(--text-muted); border: 1px solid var(--border-color); padding: 8px 18px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: 0.3s; white-space: nowrap; }
-        .sub-tab-btn:hover { border-color: var(--prak-color); color: var(--text-main); }
-        .sub-tab-btn.active { background: rgba(245, 158, 11, 0.15); color: var(--prak-color); border-color: var(--prak-color); }
-        .sub-content { display: none; animation: fadeIn 0.3s ease; }
-        .sub-content.active { display: block; }
 
         /* CSS UNTUK GRID MATERI */
         .materi-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 25px; }
         .materi-card { position: relative; background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-color); border-radius: 20px; padding: 45px 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: all 0.3s ease; cursor: pointer; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-decoration: none;}
         body:has(#theme-toggle:checked) .materi-card { background: var(--bg-card); box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
         .materi-card:hover { transform: translateY(-6px); border-color: var(--primary); background: rgba(56, 189, 248, 0.05); }
-        
-        .materi-badge { position: absolute; top: 15px; right: 15px; font-size: 0.75rem; font-weight: 700; padding: 5px 12px; border-radius: 20px; transition: 0.3s;}
-        .materi-badge.unread { background: rgba(239, 68, 68, 0.1); color: var(--danger-red); border: 1px solid rgba(239, 68, 68, 0.2); }
-        .materi-badge.read { background: rgba(16, 185, 129, 0.1); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.2); }
-
         .materi-icon { font-size: 3.8rem; margin-bottom: 20px; transition: 0.3s; opacity: 0.8;}
         .materi-card:hover .materi-icon { transform: scale(1.1); opacity: 1;}
         .materi-title { font-size: 1.3rem; font-weight: 800; margin-bottom: 10px; color: var(--text-main); }
@@ -193,14 +183,11 @@
         .item-card:hover { transform: translateY(-2px); border-color: rgba(56, 189, 248, 0.3); }
         .item-info h3 { font-size: 1.15rem; margin-bottom: 6px; color: var(--text-main); font-weight: 700;}
         .item-info p { font-size: 0.9rem; color: var(--text-muted); font-weight: 500; display: flex; align-items: center; gap: 6px; margin-top:5px;}
-        
         .btn-action { background: rgba(56, 189, 248, 0.1); color: var(--primary); border: 1px solid rgba(56, 189, 248, 0.2); padding: 10px 24px; border-radius: 12px; font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: all 0.3s ease; display: inline-block;}
         .btn-action:hover { background: var(--primary); color: #fff; }
-
         .upload-tugas-area { margin-top: 15px; display: flex; gap: 10px; align-items: center; }
         .upload-tugas-area input[type="url"] { padding: 10px 15px; background: var(--bg-body); border: 1px solid var(--border-color); border-radius: 12px; color: var(--text-main); font-size: 0.9rem; flex: 1; outline:none;}
         .upload-tugas-area input[type="url"]:focus { border-color: var(--primary); }
-
         .empty-box { text-align: center; color: var(--text-muted); font-size: 1.1rem; padding: 40px; background: rgba(255,255,255,0.02); border-radius: 16px; border: 1px solid var(--border-color); }
         body:has(#theme-toggle:checked) .empty-box { background: #f8fafc; }
 
@@ -227,6 +214,38 @@
         .chat-input-area input { flex: 1; padding: 16px 20px; border: 1px solid var(--border-color); border-radius: 16px; background: var(--bg-body); color: var(--text-main); outline: none; font-size: 0.95rem; font-weight: 500; transition: border 0.3s;}
         .chat-input-area input:focus { border-color: var(--primary); }
         .chat-input-area button { background: var(--primary); color: white; border: none; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; display: flex; justify-content: center; align-items: center;}
+
+        /* =========================================
+           SECTION KHUSUS PRAKTIKUM (ORANGE)
+        ========================================= */
+        #section-praktikum { display: none; width: 100%; animation: fadeIn 0.4s ease; margin-top: 60px; padding-top: 20px;}
+        
+        .prak-header { display: flex; flex-direction: column; justify-content: center; margin-bottom: 25px; padding: 45px 50px; border-radius: 24px; background: linear-gradient(135deg, #78350f 0%, #0f172a 100%); box-shadow: var(--shadow-sm); position: relative; overflow: hidden; border: 1px solid var(--border-color);}
+        body:has(#theme-toggle:checked) .prak-header { background: linear-gradient(135deg, #fef3c7 0%, #fff7ed 100%); }
+        .prak-header::after { content: ''; position: absolute; right: 0; top: 0; width: 40%; height: 100%; background-image: radial-gradient(rgba(255,255,255,0.08) 2px, transparent 2px); background-size: 20px 20px; pointer-events: none;}
+        
+        .prak-title-box { z-index: 2; position: relative; }
+        .prak-title-box h1 { font-size: 2.8rem; color: #ffffff; margin-bottom: 12px; font-weight: 800; letter-spacing: -0.5px;}
+        body:has(#theme-toggle:checked) .prak-title-box h1 { color: var(--text-main); }
+        .prak-title-box p { color: rgba(255,255,255,0.7); font-size: 1.05rem; font-weight: 500; display: flex; align-items: center; gap: 8px;}
+        body:has(#theme-toggle:checked) .prak-title-box p { color: var(--text-muted); }
+
+        /* TABS PRAKTIKUM */
+        .tabs-prak { display: inline-flex; gap: 5px; background: rgba(255,255,255,0.02); padding: 8px; border-radius: 16px; border: 1px solid var(--border-color); margin-bottom: 35px; box-shadow: var(--shadow-sm); overflow-x: auto; max-width: 100%;}
+        body:has(#theme-toggle:checked) .tabs-prak { background: #ffffff; }
+        .tab-btn-prak { background: transparent; border: none; padding: 12px 24px; border-radius: 12px; color: var(--text-muted); font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); white-space: nowrap; display: flex; align-items: center; gap: 8px;}
+        .tab-btn-prak:hover { color: var(--text-main); background: rgba(255,255,255,0.05); }
+        body:has(#theme-toggle:checked) .tab-btn-prak:hover { background: rgba(0,0,0,0.03); }
+        .tab-btn-prak.active { background: var(--prak-color); color: #fff; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3); }
+
+        .tab-content-prak { display: none; background: transparent; min-height: 400px; animation: fadeIn 0.3s ease;}
+        .tab-content-prak.active { display: block; }
+        .btn-action-prak { background: rgba(245, 158, 11, 0.1); color: var(--prak-color); border: 1px solid rgba(245, 158, 11, 0.2); padding: 10px 24px; border-radius: 12px; font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: all 0.3s ease; display: inline-block;}
+        .btn-action-prak:hover { background: var(--prak-color); color: #fff; }
+
+        /* ITEM CARD PRAKTIKUM */
+        .item-card-prak { background: var(--bg-card); border: 1px solid var(--border-color); padding: 24px 30px; border-radius: 20px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; transition: all 0.3s ease; }
+        .item-card-prak:hover { transform: translateY(-2px); border-color: rgba(245, 158, 11, 0.3); }
     </style>
 </head>
 <body>
@@ -256,7 +275,17 @@
                 <ul class="dropdown-container show" id="menu-matkul-saya">
                     </ul>
             </li>
-            <li style="margin-top: 15px;"><a href="#" id="logout-btn" class="btn-logout"><i class="fas fa-sign-out-alt" style="margin-right:10px;"></i> Keluar</a></li>
+
+            <li id="menu-group-praktikum" style="display: none; margin-top:5px;">
+                <a class="dropdown-btn open">
+                    <span><i class="fas fa-flask" style="margin-right:10px;"></i> Ruang Praktikum</span>
+                    <span class="arrow"><i class="fas fa-chevron-down"></i></span>
+                </a>
+                <ul class="dropdown-container show" id="menu-prak-saya">
+                    </ul>
+            </li>
+
+            <li style="margin-top: 15px;"><a href="index.html"><i class="fas fa-sign-out-alt" style="margin-right:10px;"></i>Log Out</a></li>
         </ul>
     </nav>
 
@@ -273,8 +302,7 @@
                     <h3 style="color:var(--text-main); font-size:1.1rem;"><i class="fas fa-bell" style="color:var(--primary); margin-right:5px;"></i> Notifikasi</h3>
                     <button id="clear-all-notif" style="background:transparent; border:none; color:var(--text-muted); cursor:pointer; font-size:0.8rem; font-weight:bold; transition:0.3s;">Bersihkan</button>
                 </div>
-                <div id="notif-list" style="max-height: 300px; overflow-y: auto;">
-                    </div>
+                <div id="notif-list" style="max-height: 300px; overflow-y: auto;"></div>
             </div>
 
             <div class="header-profile" title="Profil Anda" onclick="document.getElementById('menu-profil').click();">
@@ -290,8 +318,7 @@
             <div class="hero-content">
                 <div class="badge-hero"><i class="fas fa-rocket"></i> Platform E-Learning</div>
                 <h1>Tingkatkan <span style="color: var(--primary);">Skill Coding</span> Bersama Kami.</h1>
-                <p id="welcome-message">Selamat Datang di ruang belajar interaktif. Silakan pilih kelas di menu samping untuk memulai perjalanan Kamu hari ini.</p>
-                <button class="btn-action" style="padding: 14px 30px; font-size: 1rem; border-radius: 30px;" onclick="document.querySelector('.dropdown-btn').click();">Mulai Belajar Sekarang <i class="fas fa-arrow-right" style="margin-left: 8px;"></i></button>
+                <p id="welcome-message">Selamat Datang di ruang belajar interaktif. Silakan pilih kelas atau praktikum di menu samping untuk memulai perjalanan Kamu hari ini.</p>
             </div>
             <div class="hero-image">
                 <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Dashboard Belajar" style="object-fit: cover;">
@@ -345,99 +372,106 @@
         </section>
 
         <section id="section-matkul">
-            
             <div class="matkul-header">
                 <div class="matkul-title-box">
                     <h1 id="matkul-title-text">Nama Mata Kuliah</h1>
-                    <p><i class="fas fa-graduation-cap"></i> Program Studi Teknik Informatika — Semester <span id="matkul-semester-text" style="margin-left: 5px;">X</span></p>
+                    <p><i class="fas fa-graduation-cap"></i> Kelas Teori (Dosen Pengampu) — Semester <span id="matkul-semester-text" style="margin-left: 5px;">X</span></p>
                 </div>
             </div>
 
             <nav class="tabs">
                 <button class="tab-btn" onclick="bukaTabKelas('tab-absensi', this)"><i class="fas fa-user-check"></i> Kehadiran</button>
-                <button class="tab-btn active" onclick="bukaTabKelas('tab-materi', this)"><i class="fas fa-book-open"></i> Materi</button>
-                <button class="tab-btn btn-prak" id="btn-tab-praktikum" onclick="bukaTabKelas('tab-praktikum', this)"><i class="fas fa-flask"></i> Praktikum</button>
-                
-                <button class="tab-btn" onclick="bukaTabKelas('tab-tugas', this)"><i class="fas fa-laptop-code"></i> Tugas</button>
-                <button class="tab-btn" onclick="bukaTabKelas('tab-nilai', this)"><i class="fas fa-star"></i> Penilaian</button>
-                <button class="tab-btn" onclick="bukaTabKelas('tab-forum', this)"><i class="fas fa-comments"></i> Diskusi Kelas</button>
+                <button class="tab-btn active" onclick="bukaTabKelas('tab-materi', this)"><i class="fas fa-book-open"></i> Materi Teori</button>
+                <button class="tab-btn" onclick="bukaTabKelas('tab-tugas', this)"><i class="fas fa-laptop-code"></i> Tugas Dosen</button>
+                <button class="tab-btn" onclick="bukaTabKelas('tab-nilai', this)"><i class="fas fa-star"></i> Penilaian Dosen</button>
+                <button class="tab-btn" onclick="bukaTabKelas('tab-forum', this)"><i class="fas fa-comments"></i> Forum Kelas</button>
             </nav>
 
             <div id="tab-absensi" class="tab-content">
-                <h2 class="section-title-tab"><i class="fas fa-calendar-check" style="color: var(--secondary);"></i> Daftar Hadir Perkuliahan</h2>
+                <h2 class="section-title-tab"><i class="fas fa-calendar-check" style="color: var(--secondary);"></i> Daftar Hadir Teori</h2>
                 <div id="konten-absensi"></div>
             </div>
 
             <div id="tab-materi" class="tab-content active">
-                <h2 class="section-title-tab"><i class="fas fa-folder-open" style="color: var(--primary);"></i> Modul & Referensi Belajar</h2>
+                <h2 class="section-title-tab"><i class="fas fa-folder-open" style="color: var(--primary);"></i> Materi Perkuliahan</h2>
                 <div id="konten-materi"></div>
             </div>
 
-            <div id="tab-praktikum" class="tab-content">
-                <h2 class="section-title-tab" style="color: var(--prak-color);"><i class="fas fa-flask"></i> Laboratorium Praktikum</h2>
-                
-                <div class="sub-tabs-container">
-                    <button class="sub-tab-btn active" onclick="bukaSubTabPrak('prak-pengumuman', this)"><i class="fas fa-bullhorn"></i> Pengumuman</button>
-                    <button class="sub-tab-btn" onclick="bukaSubTabPrak('prak-materi', this)"><i class="fas fa-file-alt"></i> Materi Praktikum</button>
-                    <button class="sub-tab-btn" onclick="bukaSubTabPrak('prak-tugas', this)"><i class="fas fa-laptop-code"></i> Laporan/Tugas</button>
-                    <button class="sub-tab-btn" onclick="bukaSubTabPrak('prak-nilai', this)"><i class="fas fa-star"></i> Nilai Laporan</button>
-                    <button class="sub-tab-btn" onclick="bukaSubTabPrak('prak-asistensi', this)"><i class="fas fa-calendar-check"></i> Jadwal Asistensi</button>
-                    <button class="sub-tab-btn" onclick="bukaSubTabPrak('prak-forum', this)"><i class="fas fa-comments"></i> Diskusi Asprak</button>
-                </div>
-
-                <div id="prak-pengumuman" class="sub-content active">
-                    <div id="prak-konten-pengumuman"></div>
-                </div>
-
-                <div id="prak-materi" class="sub-content">
-                    <div id="prak-konten-materi"></div>
-                </div>
-
-                <div id="prak-tugas" class="sub-content">
-                    <div id="prak-konten-tugas"></div>
-                </div>
-
-                <div id="prak-nilai" class="sub-content">
-                    <div id="prak-konten-nilai"></div>
-                </div>
-
-                <div id="prak-asistensi" class="sub-content">
-                    <div id="prak-konten-asistensi"></div>
-                </div>
-
-                <div id="prak-forum" class="sub-content">
-                    <div class="chat-box" style="border-color: var(--prak-color);">
-                        <div class="chat-header-info" style="background: rgba(245, 158, 11, 0.05);">
-                            <i class="fas fa-flask" style="color: var(--prak-color);"></i> <span>Ruang diskusi khusus dengan Asisten Praktikum.</span>
-                        </div>
-                        <div class="chat-messages" id="prak-chat-messages"></div>
-                        <form class="chat-input-area" id="prak-form-chat">
-                            <input type="text" id="prak-chat-input" placeholder="Tanya asprak di sini..." autocomplete="off">
-                            <button type="submit" style="background:var(--prak-color);"><i class="fas fa-paper-plane"></i></button>
-                        </form>
-                    </div>
-                </div>
-            </div>
             <div id="tab-tugas" class="tab-content">
                 <h2 class="section-title-tab"><i class="fas fa-clipboard-list" style="color: var(--primary);"></i> Daftar Tugas Dosen</h2>
                 <div id="konten-tugas"></div>
             </div>
 
             <div id="tab-nilai" class="tab-content">
-                <h2 class="section-title-tab"><i class="fas fa-chart-line" style="color: var(--primary);"></i> Evaluasi Dosen</h2>
+                <h2 class="section-title-tab"><i class="fas fa-chart-line" style="color: var(--primary);"></i> Transkrip Nilai Teori</h2>
                 <div id="konten-nilai"></div>
             </div>
 
             <div id="tab-forum" class="tab-content">
-                <h2 class="section-title-tab" style="margin-bottom: 10px;"><i class="fas fa-comments" style="color: var(--secondary);"></i> Forum Dosen</h2>
+                <h2 class="section-title-tab" style="margin-bottom: 10px;"><i class="fas fa-comments" style="color: var(--secondary);"></i> Forum Kelas Teori</h2>
                 <div class="chat-box">
-                    <div class="chat-header-info">
-                        <i class="fas fa-shield-alt"></i> <span>End-to-end isolated classroom chat</span>
-                    </div>
+                    <div class="chat-header-info"><i class="fas fa-shield-alt"></i> <span>Tanya jawab dengan dosen pengampu.</span></div>
                     <div class="chat-messages" id="chat-messages"></div>
                     <form class="chat-input-area" id="form-chat">
                         <input type="text" id="chat-input" placeholder="Ketik pertanyaan ke dosen di sini..." autocomplete="off">
                         <button type="submit"><i class="fas fa-paper-plane"></i></button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <section id="section-praktikum">
+            <div class="prak-header">
+                <div class="prak-title-box">
+                    <h1 id="prak-title-text">Nama Praktikum</h1>
+                    <p><i class="fas fa-flask"></i> Laboratorium Komputer (Asisten Praktikum)</p>
+                </div>
+            </div>
+
+            <nav class="tabs-prak">
+                <button class="tab-btn-prak active" onclick="bukaTabPrak('prak-pengumuman', this)"><i class="fas fa-bullhorn"></i> Pengumuman</button>
+                <button class="tab-btn-prak" onclick="bukaTabPrak('prak-materi', this)"><i class="fas fa-file-alt"></i> Modul Praktikum</button>
+                <button class="tab-btn-prak" onclick="bukaTabPrak('prak-tugas', this)"><i class="fas fa-laptop-code"></i> Tugas/Laporan</button>
+                <button class="tab-btn-prak" onclick="bukaTabPrak('prak-nilai', this)"><i class="fas fa-star"></i> Nilai Laporan</button>
+                <button class="tab-btn-prak" onclick="bukaTabPrak('prak-asistensi', this)"><i class="fas fa-calendar-check"></i> Jadwal Asistensi</button>
+                <button class="tab-btn-prak" onclick="bukaTabPrak('prak-forum', this)"><i class="fas fa-comments"></i> Diskusi Asprak</button>
+            </nav>
+
+            <div id="prak-pengumuman" class="tab-content-prak active">
+                <h2 class="section-title-tab" style="color:var(--prak-color);"><i class="fas fa-bullhorn"></i> Info Praktikum</h2>
+                <div id="prak-konten-pengumuman"></div>
+            </div>
+
+            <div id="prak-materi" class="tab-content-prak">
+                <h2 class="section-title-tab" style="color:var(--prak-color);"><i class="fas fa-file-alt"></i> Modul Referensi</h2>
+                <div id="prak-konten-materi"></div>
+            </div>
+
+            <div id="prak-tugas" class="tab-content-prak">
+                <h2 class="section-title-tab" style="color:var(--prak-color);"><i class="fas fa-laptop-code"></i> Pengumpulan Laporan</h2>
+                <div id="prak-konten-tugas"></div>
+            </div>
+
+            <div id="prak-nilai" class="tab-content-prak">
+                <h2 class="section-title-tab" style="color:var(--prak-color);"><i class="fas fa-star"></i> Evaluasi Asisten</h2>
+                <div id="prak-konten-nilai"></div>
+            </div>
+
+            <div id="prak-asistensi" class="tab-content-prak">
+                <h2 class="section-title-tab" style="color:var(--prak-color);"><i class="fas fa-calendar-check"></i> Jadwal Asistensi Praktikan</h2>
+                <div id="prak-konten-asistensi"></div>
+            </div>
+
+            <div id="prak-forum" class="tab-content-prak">
+                <h2 class="section-title-tab" style="color:var(--prak-color); margin-bottom: 10px;"><i class="fas fa-comments"></i> Forum Praktikum <span id="forum-prak-name"></span></h2>
+                <div class="chat-box" style="border-color: var(--prak-color);">
+                    <div class="chat-header-info" style="background: rgba(245, 158, 11, 0.05);">
+                        <i class="fas fa-flask" style="color: var(--prak-color);"></i> <span>Ruang diskusi khusus dengan Asisten Praktikum.</span>
+                    </div>
+                    <div class="chat-messages" id="prak-chat-messages"></div>
+                    <form class="chat-input-area" id="prak-form-chat">
+                        <input type="text" id="prak-chat-input" placeholder="Tanya asprak di sini..." autocomplete="off">
+                        <button type="submit" style="background:var(--prak-color);"><i class="fas fa-paper-plane"></i></button>
                     </form>
                 </div>
             </div>
@@ -463,17 +497,14 @@
         // 2. SISTEM PROFIL MAHASISWA
         // ====================================================================
         function muatDataProfil() {
-            // Set Auto Data (Tidak bisa diedit)
             document.getElementById('prof-nama').value = user.nama;
             document.getElementById('prof-nim').value = user.userId;
 
-            // Load Editable Data dari LocalStorage khusus user ini
             const savedProfileData = JSON.parse(localStorage.getItem('profileData_' + user.userId)) || {};
             if(savedProfileData.tglLahir) document.getElementById('prof-tgl').value = savedProfileData.tglLahir;
             if(savedProfileData.univ) document.getElementById('prof-univ').value = savedProfileData.univ;
             if(savedProfileData.alamat) document.getElementById('prof-alamat').value = savedProfileData.alamat;
 
-            // Load Foto Profil
             const savedPhoto = localStorage.getItem('profilePic_' + user.userId);
             if (savedPhoto) {
                 document.getElementById('header-avatar').src = savedPhoto;
@@ -483,11 +514,9 @@
                 document.getElementById('profil-img-preview').src = "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png";
             }
         }
-        
-        // Panggil saat halaman pertama dibuka
         muatDataProfil();
 
-        function simpanProfil() {
+        window.simpanProfil = function() {
             const dataToSave = {
                 tglLahir: document.getElementById('prof-tgl').value,
                 univ: document.getElementById('prof-univ').value,
@@ -497,33 +526,32 @@
             alert("Data profil berhasil diperbarui!");
         }
 
-        function previewProfilePic(event) {
+        window.previewProfilePic = function(event) {
             const file = event.target.files[0];
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    const base64Image = e.target.result;
                     try {
-                        localStorage.setItem('profilePic_' + user.userId, base64Image);
-                        document.getElementById('profil-img-preview').src = base64Image;
-                        document.getElementById('header-avatar').src = base64Image;
+                        localStorage.setItem('profilePic_' + user.userId, e.target.result);
+                        document.getElementById('profil-img-preview').src = e.target.result;
+                        document.getElementById('header-avatar').src = e.target.result;
                     } catch(err) {
-                        alert("Gagal mengunggah foto! Ukuran file terlalu besar (Maksimal ~2MB untuk simulasi LocalStorage).");
+                        alert("Gagal mengunggah foto! Ukuran file terlalu besar.");
                     }
                 };
                 reader.readAsDataURL(file);
             }
         }
 
-        function hapusProfilePic() {
+        window.hapusProfilePic = function() {
             if(confirm("Apakah Anda yakin ingin menghapus foto profil?")) {
                 localStorage.removeItem('profilePic_' + user.userId);
-                muatDataProfil(); // Refresh image to default
+                muatDataProfil();
             }
         }
 
         // ====================================================================
-        // 3. SISTEM NOTIFIKASI MAHASISWA
+        // 3. SISTEM NOTIFIKASI
         // ====================================================================
         const notifTrigger = document.getElementById('notif-trigger');
         const notifDropdown = document.getElementById('notifDropdown');
@@ -603,7 +631,6 @@
             e.stopPropagation();
             let dismissedNotifs = JSON.parse(localStorage.getItem('dismissed_notifs_' + user.userId)) || [];
             let activeIds = [];
-            
             if (user.matkul && user.matkul.length > 0) {
                 user.matkul.forEach(mk => {
                     let arrs = [ `tugas_${mk}`, `materi_${mk}`, `prak_tugas_${mk}`, `prak_pengumuman_${mk}` ];
@@ -621,23 +648,26 @@
         loadNotifikasi();
 
         // ====================================================================
-        // 4. LOGIKA MENU SIDEBAR & MATKUL
+        // 4. LOGIKA MENU SIDEBAR & PEMISAHAN KELAS VS PRAKTIKUM
         // ====================================================================
-        const menuContainer = document.getElementById('menu-matkul-saya');
+        const menuKelasContainer = document.getElementById('menu-matkul-saya');
+        const menuPrakContainer = document.getElementById('menu-prak-saya');
+        const menuPrakGroup = document.getElementById('menu-group-praktikum');
+
         const sectionBeranda = document.getElementById('section-beranda');
         const sectionMatkul = document.getElementById('section-matkul');
         const sectionProfil = document.getElementById('section-profil');
+        const sectionPraktikum = document.getElementById('section-praktikum');
         
         const btnMenuBeranda = document.getElementById('menu-beranda');
         const btnMenuProfil = document.getElementById('menu-profil');
         
-        // FILTER HURUF KECIL UNTUK VALIDASI PRAKTIKUM
-        const matkulPraktikum = ["alpro", "pti", "struktur data", "dpw"];
+        // PENTING: Gunakan lowercase untuk validasi pengecekan
+        const validPrak = ["alpro", "pti", "struktur data", "dpw"];
         let activeMatkulGlobal = ""; 
 
-        // Fungsi Reset Active Menu Navigasi
         function clearNavActive() {
-            document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active', 'sub-active'));
+            document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active', 'sub-active', 'active-prak', 'sub-active-prak'));
         }
 
         btnMenuBeranda.addEventListener('click', (e) => {
@@ -645,6 +675,7 @@
             sectionBeranda.style.display = 'flex'; 
             sectionProfil.style.display = 'none';
             sectionMatkul.style.display = 'none'; 
+            sectionPraktikum.style.display = 'none';
             clearNavActive();
             btnMenuBeranda.classList.add('active');
             window.scrollTo({ top: 0, behavior: 'smooth' }); 
@@ -654,6 +685,7 @@
             e.preventDefault();
             sectionBeranda.style.display = 'none'; 
             sectionMatkul.style.display = 'none'; 
+            sectionPraktikum.style.display = 'none';
             sectionProfil.style.display = 'block';
             clearNavActive();
             btnMenuProfil.classList.add('active');
@@ -661,173 +693,323 @@
         });
 
         if (user.matkul && user.matkul.length > 0) {
-            menuContainer.innerHTML = ''; 
+            menuKelasContainer.innerHTML = ''; 
+            menuPrakContainer.innerHTML = '';
+            let hasPraktikum = false;
+
             user.matkul.forEach(mk => {
-                const li = document.createElement('li');
-                const linkMatkul = document.createElement('a');
-                linkMatkul.href = "#";
-                linkMatkul.innerHTML = `${mk}`;
-                
-                linkMatkul.addEventListener('click', (e) => {
+                // 1. Buat Menu Untuk Ruang Kelas (Teori)
+                const liKelas = document.createElement('li');
+                const linkKelas = document.createElement('a');
+                linkKelas.href = "#";
+                linkKelas.innerHTML = `${mk}`;
+                linkKelas.addEventListener('click', (e) => {
                     e.preventDefault();
                     sectionBeranda.style.display = 'none';
                     sectionProfil.style.display = 'none';
+                    sectionPraktikum.style.display = 'none';
                     sectionMatkul.style.display = 'block';
                     
                     clearNavActive();
-                    linkMatkul.classList.add('sub-active');
-
-                    bukaHalamanMatkul(mk);
+                    linkKelas.classList.add('sub-active');
+                    bukaHalamanMatkulTeori(mk);
                     setTimeout(() => { sectionMatkul.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
                 });
+                liKelas.appendChild(linkKelas);
+                menuKelasContainer.appendChild(liKelas);
 
-                li.appendChild(linkMatkul);
-                menuContainer.appendChild(li);
+                // 2. Buat Menu Untuk Ruang Praktikum (Jika masuk kriteria)
+                if (validPrak.includes(mk.toLowerCase())) {
+                    hasPraktikum = true;
+                    const liPrak = document.createElement('li');
+                    const linkPrak = document.createElement('a');
+                    linkPrak.href = "#";
+                    linkPrak.innerHTML = `Prak. ${mk}`;
+                    linkPrak.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        sectionBeranda.style.display = 'none';
+                        sectionProfil.style.display = 'none';
+                        sectionMatkul.style.display = 'none';
+                        sectionPraktikum.style.display = 'block';
+                        
+                        clearNavActive();
+                        linkPrak.classList.add('sub-active-prak');
+                        bukaHalamanPraktikum(mk);
+                        setTimeout(() => { sectionPraktikum.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
+                    });
+                    liPrak.appendChild(linkPrak);
+                    menuPrakContainer.appendChild(liPrak);
+                }
             });
+
+            // Tampilkan Dropdown Ruang Praktikum jika ada isinya
+            if (hasPraktikum) {
+                menuPrakGroup.style.display = 'block';
+            }
         }
 
         // ====================================================================
-        // 5. LOAD SEMUA DATA KELAS (DOSEN & ASPRAK)
+        // 5. RENDER RUANG KELAS (DOSEN TEORI)
         // ====================================================================
-        function bukaHalamanMatkul(namaMatkul) {
+        function bukaHalamanMatkulTeori(namaMatkul) {
             activeMatkulGlobal = namaMatkul; 
             document.getElementById('matkul-title-text').textContent = namaMatkul;
-            document.getElementById('forum-matkul-name').textContent = `[ ${namaMatkul} ]`;
 
-            // Validasi Tab Praktikum (Convert ke huruf kecil semua saat dicocokkan)
-            const btnPrak = document.getElementById('btn-tab-praktikum');
-            if(matkulPraktikum.includes(namaMatkul.toLowerCase())) {
-                btnPrak.style.display = 'inline-flex';
-            } else {
-                btnPrak.style.display = 'none';
-            }
-
-            // Buka Tab Materi By Default
             const tabMateriBtn = document.querySelectorAll('.tabs button')[1]; 
             bukaTabKelas('tab-materi', tabMateriBtn);
 
-            // Load Data Dosen
             renderAbsensi(namaMatkul);
             renderMateri(namaMatkul); 
             renderTugas(namaMatkul);
             renderNilai(namaMatkul);
             loadForumMessages(namaMatkul);
+        }
 
-            // Load Data Asprak jika matkul valid
-            if(matkulPraktikum.includes(namaMatkul.toLowerCase())) {
-                bukaSubTabPrak('prak-pengumuman', document.querySelectorAll('.sub-tab-btn')[0]); // Default sub-tab
-                loadSemuaDataPraktikum(namaMatkul);
+        function bukaTabKelas(tabId, btnElement) {
+            document.querySelectorAll('#section-matkul .tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('#section-matkul .tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            btnElement.classList.add('active');
+            if(tabId === 'tab-forum') {
+                const chatBox = document.getElementById('chat-messages');
+                chatBox.scrollTop = chatBox.scrollHeight;
             }
         }
+
+        // --- MATERI DOSEN ---
+        function renderMateri(matkul) {
+            const wadah = document.getElementById('konten-materi');
+            const dbMateri = JSON.parse(localStorage.getItem(`materi_${matkul}`)) || [];
+            
+            if (dbMateri.length === 0) {
+                wadah.innerHTML = `<div class="empty-box">Belum ada materi teori yang diunggah oleh Dosen.</div>`;
+                return;
+            }
+            wadah.innerHTML = '<div class="materi-grid"></div>';
+            const gridWadah = wadah.querySelector('.materi-grid');
+            
+            dbMateri.forEach(m => {
+                let linkHref = m.link ? m.link : '#';
+                gridWadah.innerHTML += `
+                    <a href="${linkHref}" target="_blank" class="materi-card" style="border-top: 4px solid var(--success);">
+                        <i class="fas fa-file-alt materi-icon" style="color: var(--success);"></i>
+                        <div class="materi-title">${m.judul}</div>
+                        <span style="font-size:0.9rem; margin-top:10px; color: var(--primary); font-weight: bold;"><i class="fas fa-external-link-alt"></i> Buka Materi</span>
+                    </a>`;
+            });
+        }
+
+        // --- TUGAS DOSEN ---
+        function renderTugas(matkul) {
+            const wadah = document.getElementById('konten-tugas');
+            const dbTugas = JSON.parse(localStorage.getItem(`tugas_${matkul}`)) || [];
+
+            if (dbTugas.length === 0) {
+                wadah.innerHTML = `<div class="empty-box">Belum ada tugas teori aktif.</div>`;
+                return;
+            }
+
+            wadah.innerHTML = '';
+            dbTugas.forEach(tugas => {
+                const dbPengumpulan = JSON.parse(localStorage.getItem(`pengumpulan_${tugas.id}`)) || [];
+                const sudahKumpul = dbPengumpulan.find(p => p.userId === user.userId);
+                let btnBukaSoal = tugas.linkTugas ? `<a href="${tugas.linkTugas}" target="_blank" style="margin-right:10px; color:var(--primary); font-size:0.85rem;"><i class="fas fa-external-link-alt"></i> Buka Soal</a>` : '';
+                
+                let aksiHtml = sudahKumpul ? `<span style="color:var(--success); font-weight:bold; font-size:0.9rem;"><i class="fas fa-check-circle"></i> Sudah Dikumpulkan</span>`
+                    : `<div class="upload-tugas-area"><input type="url" id="link_tugas_${tugas.id}" placeholder="Link Jawaban Anda"><button onclick="kumpulkanTugas('${tugas.id}')" class="btn-action">Kirim</button></div>`;
+
+                wadah.innerHTML += `
+                    <div class="item-card" style="flex-direction: column; align-items: stretch;">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <div class="item-info">
+                                <h3>${tugas.judul}</h3>
+                                <p><i class="far fa-calendar-times"></i> Tenggat: <strong style="margin-left:5px; color:var(--warning);">${tugas.deadline}</strong></p>
+                                ${btnBukaSoal}
+                            </div>
+                        </div>
+                        ${aksiHtml}
+                    </div>`;
+            });
+        }
+
+        window.kumpulkanTugas = function(tugasId) {
+            const linkInput = document.getElementById(`link_tugas_${tugasId}`);
+            if(!linkInput.value.trim()) return alert("Harap masukkan link jawaban!");
+            let db = JSON.parse(localStorage.getItem(`pengumpulan_${tugasId}`)) || [];
+            db.push({ userId: user.userId, namaMahasiswa: user.nama, waktu: new Date().toLocaleString('id-ID'), linkJawaban: linkInput.value.trim(), nilai: "" });
+            localStorage.setItem(`pengumpulan_${tugasId}`, JSON.stringify(db));
+            alert("Tugas teori berhasil dikumpulkan!");
+            renderTugas(activeMatkulGlobal); 
+        }
+
+        // --- ABSEN DOSEN ---
+        function renderAbsensi(matkul) {
+            const wadah = document.getElementById('konten-absensi');
+            const dbAbsensi = JSON.parse(localStorage.getItem(`absensi_${matkul}`)) || [];
+            if (dbAbsensi.length === 0) return wadah.innerHTML = `<div class="empty-box">Belum ada sesi kehadiran.</div>`;
+
+            wadah.innerHTML = '';
+            [...dbAbsensi].reverse().forEach(sesi => {
+                const sudahHadir = (JSON.parse(localStorage.getItem(`hadir_mhs_${matkul}_${sesi.tanggal}`)) || []).includes(user.userId);
+                let btnHadir = sudahHadir ? `<span style="color:var(--success); font-weight:bold;"><i class="fas fa-check-double"></i> Hadir</span>` : `<button onclick="klikHadir('${sesi.tanggal}')" class="btn-action" style="background:var(--success); color:white; border:none;">Klik Hadir</button>`;
+                wadah.innerHTML += `<div class="item-card"><div class="item-info"><h3>Sesi Teori</h3><p><i class="far fa-calendar-alt"></i> ${sesi.tanggal}</p></div><div>${btnHadir}</div></div>`;
+            });
+        }
+        window.klikHadir = function(tgl) {
+            let db = JSON.parse(localStorage.getItem(`hadir_mhs_${activeMatkulGlobal}_${tgl}`)) || [];
+            db.push(user.userId);
+            localStorage.setItem(`hadir_mhs_${activeMatkulGlobal}_${tgl}`, JSON.stringify(db));
+            alert("Presensi teori dicatat!"); renderAbsensi(activeMatkulGlobal);
+        }
+
+        // --- NILAI DOSEN ---
+        function renderNilai(matkul) {
+            const wadah = document.getElementById('konten-nilai');
+            const dbTugas = JSON.parse(localStorage.getItem(`tugas_${matkul}`)) || [];
+            if(dbTugas.length === 0) return wadah.innerHTML = `<div class="empty-box">Belum ada evaluasi.</div>`;
+
+            let html = `<table class="styled-table"><thead><tr><th>Tugas Teori</th><th>Status</th><th>Nilai</th></tr></thead><tbody>`;
+            let adaData = false;
+            dbTugas.forEach(t => {
+                const hasil = (JSON.parse(localStorage.getItem(`pengumpulan_${t.id}`)) || []).find(p => p.userId === user.userId);
+                if(hasil) {
+                    adaData = true;
+                    let n = hasil.nilai ? `<strong style="color:var(--success);">${hasil.nilai}</strong>` : `<span style="color:var(--warning);">Pending</span>`;
+                    html += `<tr><td>${t.judul}</td><td style="color:var(--success);">Terkumpul</td><td>${n}</td></tr>`;
+                }
+            });
+            wadah.innerHTML = adaData ? html + `</tbody></table>` : `<div class="empty-box">Belum ada tugas dikumpulkan.</div>`;
+        }
+
+        // --- FORUM DOSEN ---
+        function loadForumMessages(matkul) {
+            const cb = document.getElementById('chat-messages');
+            let db = JSON.parse(localStorage.getItem(`forum_${matkul}`)) || [];
+            if(db.length === 0) return cb.innerHTML = `<div class="empty-box" style="border:none;">Belum ada diskusi teori.</div>`;
+            cb.innerHTML = '';
+            db.forEach(m => {
+                const isMe = m.userId === user.userId;
+                cb.innerHTML += `<div class="message ${isMe ? 'msg-me':'msg-other'}"><span class="sender">${m.nama} (${m.role}) • ${m.waktu}</span>${m.text}</div>`;
+            });
+            cb.scrollTop = cb.scrollHeight;
+        }
+        document.getElementById('form-chat').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const text = document.getElementById('chat-input').value.trim();
+            if(!text) return;
+            let db = JSON.parse(localStorage.getItem(`forum_${activeMatkulGlobal}`)) || [];
+            db.push({ userId: user.userId, nama: user.nama, role: 'Mahasiswa', text, waktu: new Date().toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'}) });
+            localStorage.setItem(`forum_${activeMatkulGlobal}`, JSON.stringify(db));
+            document.getElementById('chat-input').value = ''; loadForumMessages(activeMatkulGlobal); 
+        });
 
         // ====================================================================
-        // 6. FITUR KHUSUS PRAKTIKUM (SUB-TABS)
+        // 6. RENDER RUANG PRAKTIKUM (ASPRAK)
         // ====================================================================
-        function bukaSubTabPrak(subId, btn) {
-            document.querySelectorAll('.sub-content').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.sub-tab-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(subId).classList.add('active');
-            btn.classList.add('active');
-            if(subId === 'prak-forum') {
-                const cb = document.getElementById('prak-chat-messages');
-                cb.scrollTop = cb.scrollHeight;
+        function bukaHalamanPraktikum(namaMatkul) {
+            activeMatkulGlobal = namaMatkul; 
+            document.getElementById('prak-title-text').textContent = "Praktikum " + namaMatkul;
+            document.getElementById('forum-prak-name').textContent = `[ ${namaMatkul} ]`;
+
+            bukaTabPrak('prak-pengumuman', document.querySelectorAll('.tab-btn-prak')[0]);
+            
+            // LOAD FUNGSI ASPRAK MENGGUNAKAN KEY PRAKTIKUM
+            renderPengumumanPrak(namaMatkul);
+            renderMateriPrak(namaMatkul);
+            renderTugasPrak(namaMatkul);
+            renderNilaiPrak(namaMatkul);
+            renderAsistensiPrak(namaMatkul);
+            loadForumPrak(namaMatkul);
+        }
+
+        function bukaTabPrak(tabId, btnElement) {
+            document.querySelectorAll('.tab-content-prak').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-btn-prak').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            btnElement.classList.add('active');
+            if(tabId === 'prak-forum') {
+                const chatBox = document.getElementById('prak-chat-messages');
+                chatBox.scrollTop = chatBox.scrollHeight;
             }
         }
 
-        function loadSemuaDataPraktikum(matkul) {
-            // A. Pengumuman Prak
-            let dbPeng = JSON.parse(localStorage.getItem(`prak_pengumuman_${matkul}`)) || [];
-            let wPeng = document.getElementById('prak-konten-pengumuman');
-            if(dbPeng.length === 0) { wPeng.innerHTML = `<div class="empty-box">Belum ada pengumuman dari Asisten Praktikum.</div>`; }
-            else {
-                wPeng.innerHTML = '';
-                [...dbPeng].reverse().forEach(p => {
-                    wPeng.innerHTML += `<div class="item-card"><div class="item-info"><h3 style="color:#f59e0b;">${p.judul}</h3><p style="color:var(--text-main); font-size:1rem; margin-top:8px;">${p.isi}</p><p style="margin-top:10px; font-size:0.8rem;"><i class="far fa-clock"></i> ${p.tanggal}</p></div></div>`;
-                });
-            }
-
-            // B. Materi Prak
-            let dbMatPrak = JSON.parse(localStorage.getItem(`prak_materi_${matkul}`)) || [];
-            let wMatPrak = document.getElementById('prak-konten-materi');
-            if(dbMatPrak.length === 0) { wMatPrak.innerHTML = `<div class="empty-box">Belum ada modul praktikum.</div>`; }
-            else {
-                wMatPrak.innerHTML = '<div class="materi-grid"></div>';
-                let grid = wMatPrak.querySelector('.materi-grid');
-                dbMatPrak.forEach(m => {
-                    grid.innerHTML += `
-                        <a href="${m.link||'#'}" target="_blank" class="materi-card" style="border-top:4px solid var(--prak-color);">
-                            <i class="fas fa-file-alt materi-icon" style="color:var(--prak-color);"></i>
-                            <div class="materi-title">${m.judul}</div>
-                            <span style="font-size:0.9rem; margin-top:10px; color:var(--prak-color);"><i class="fas fa-download"></i> Buka Modul</span>
-                        </a>`;
-                });
-            }
-
-            // C. Tugas Prak
-            let dbTugPrak = JSON.parse(localStorage.getItem(`prak_tugas_${matkul}`)) || [];
-            let wTugPrak = document.getElementById('prak-konten-tugas');
-            if(dbTugPrak.length === 0) { wTugPrak.innerHTML = `<div class="empty-box">Belum ada tugas laporan praktikum.</div>`; }
-            else {
-                wTugPrak.innerHTML = '';
-                dbTugPrak.forEach(t => {
-                    let cekKumpul = (JSON.parse(localStorage.getItem(`prak_pengumpulan_${t.id}`))||[]).find(p => p.userId === user.userId);
-                    let aksi = cekKumpul 
-                        ? `<span style="color:var(--success); font-weight:bold; font-size:0.9rem;"><i class="fas fa-check-circle"></i> Selesai</span>`
-                        : `<div class="upload-tugas-area"><input type="url" id="link_prak_tugas_${t.id}" placeholder="Link Laporan" title="Link Jawaban Anda"><button onclick="kumpulkanTugasPrak('${t.id}')" class="btn-action" style="background:var(--prak-color); color:#fff; border:none;">Kirim</button></div>`;
-                    
-                    let linkSoal = t.linkTugas ? `<a href="${t.linkTugas}" target="_blank" style="margin-right:10px; color:var(--prak-color); font-size:0.85rem;"><i class="fas fa-external-link-alt"></i> Ketentuan Tugas</a>` : '';
-
-                    wTugPrak.innerHTML += `<div class="item-card" style="flex-direction:column; align-items:stretch;"><div style="display:flex; justify-content:space-between;"><div class="item-info"><h3>${t.judul}</h3><p style="color:var(--danger-red);">Deadline: ${t.deadline}</p>${linkSoal}</div></div>${aksi}</div>`;
-                });
-            }
-
-            // D. Nilai Prak
-            let wNilaiPrak = document.getElementById('prak-konten-nilai');
-            if(dbTugPrak.length === 0) { wNilaiPrak.innerHTML = `<div class="empty-box">Belum ada nilai praktikum.</div>`; }
-            else {
-                let tabelHtml = `<table class="styled-table"><thead><tr><th style="background:var(--prak-color);">Tugas Laporan</th><th style="background:var(--prak-color);">Status</th><th style="background:var(--prak-color);">Nilai</th></tr></thead><tbody>`;
-                let adaData = false;
-                dbTugPrak.forEach(t => {
-                    let cekKumpul = (JSON.parse(localStorage.getItem(`prak_pengumpulan_${t.id}`))||[]).find(p => p.userId === user.userId);
-                    if(cekKumpul) {
-                        adaData = true;
-                        let nilaiStr = cekKumpul.nilai ? `<strong style="color:var(--success);">${cekKumpul.nilai}</strong>` : `<span style="color:var(--warning);">Pending</span>`;
-                        tabelHtml += `<tr><td style="font-weight:bold;">${t.judul}</td><td style="color:var(--success);">Terkumpul</td><td>${nilaiStr}</td></tr>`;
-                    }
-                });
-                tabelHtml += `</tbody></table>`;
-                wNilaiPrak.innerHTML = adaData ? tabelHtml : `<div class="empty-box">Anda belum mengumpulkan laporan apa pun.</div>`;
-            }
-
-            // E. Asistensi
-            let dbAsis = JSON.parse(localStorage.getItem(`prak_asistensi_${matkul}`)) || [];
-            let wAsis = document.getElementById('prak-konten-asistensi');
-            if(dbAsis.length === 0) { wAsis.innerHTML = `<div class="empty-box">Belum ada jadwal asistensi.</div>`; }
-            else {
-                wAsis.innerHTML = '';
-                [...dbAsis].reverse().forEach(a => {
-                    wAsis.innerHTML += `<div class="item-card"><div class="item-info"><h3>Waktu: ${a.waktu}</h3><p><i class="fas fa-map-marker-alt" style="color:var(--prak-color);"></i> Lokasi/Link: <strong style="color:var(--text-main); margin-left:5px;">${a.lokasi}</strong></p></div></div>`;
-                });
-            }
-
-            // F. Forum Prak
-            loadForumPrak(matkul);
+        function renderPengumumanPrak(matkul) {
+            let db = JSON.parse(localStorage.getItem(`prak_pengumuman_${matkul}`)) || [];
+            let w = document.getElementById('prak-konten-pengumuman');
+            if(db.length === 0) return w.innerHTML = `<div class="empty-box">Belum ada pengumuman praktikum.</div>`;
+            w.innerHTML = '';
+            [...db].reverse().forEach(p => {
+                w.innerHTML += `<div class="item-card-prak"><div class="item-info"><h3 style="color:var(--prak-color);">${p.judul}</h3><p style="color:var(--text-main); font-size:1rem; margin-top:8px;">${p.isi}</p><p style="margin-top:10px; font-size:0.8rem;"><i class="far fa-clock"></i> ${p.tanggal}</p></div></div>`;
+            });
         }
 
-        window.kumpulkanTugasPrak = function(id) {
+        function renderMateriPrak(matkul) {
+            let db = JSON.parse(localStorage.getItem(`prak_materi_${matkul}`)) || [];
+            let w = document.getElementById('prak-konten-materi');
+            if(db.length === 0) return w.innerHTML = `<div class="empty-box">Belum ada modul praktikum.</div>`;
+            w.innerHTML = '<div class="materi-grid"></div>';
+            let grid = w.querySelector('.materi-grid');
+            db.forEach(m => {
+                grid.innerHTML += `<a href="${m.link||'#'}" target="_blank" class="materi-card" style="border-top:4px solid var(--prak-color);"><i class="fas fa-file-alt materi-icon" style="color:var(--prak-color);"></i><div class="materi-title">${m.judul}</div><span style="font-size:0.9rem; margin-top:10px; color:var(--prak-color);"><i class="fas fa-download"></i> Buka Modul</span></a>`;
+            });
+        }
+
+        function renderTugasPrak(matkul) {
+            let db = JSON.parse(localStorage.getItem(`prak_tugas_${matkul}`)) || [];
+            let w = document.getElementById('prak-konten-tugas');
+            if(db.length === 0) return w.innerHTML = `<div class="empty-box">Belum ada tugas laporan praktikum.</div>`;
+            w.innerHTML = '';
+            db.forEach(t => {
+                let cekKumpul = (JSON.parse(localStorage.getItem(`prak_pengumpulan_${t.id}`))||[]).find(p => p.userId === user.userId);
+                let aksiHtml = cekKumpul 
+                    ? `<span style="color:var(--success); font-weight:bold; font-size:0.9rem;"><i class="fas fa-check-circle"></i> Laporan Terkirim</span>`
+                    : `<div class="upload-tugas-area"><input type="url" id="link_prak_tugas_${t.id}" placeholder="Link Laporan"><button onclick="kumpulkanPrak('${t.id}')" class="btn-action-prak" style="background:var(--prak-color); color:#fff; border:none;">Kirim</button></div>`;
+                let linkSoal = t.linkTugas ? `<a href="${t.linkTugas}" target="_blank" style="margin-right:10px; color:var(--prak-color); font-size:0.85rem;"><i class="fas fa-external-link-alt"></i> Ketentuan Tugas</a>` : '';
+                w.innerHTML += `<div class="item-card-prak" style="flex-direction:column; align-items:stretch;"><div style="display:flex; justify-content:space-between;"><div class="item-info"><h3>${t.judul}</h3><p style="color:var(--danger-red);">Deadline: ${t.deadline}</p>${linkSoal}</div></div>${aksiHtml}</div>`;
+            });
+        }
+
+        window.kumpulkanPrak = function(id) {
             const val = document.getElementById(`link_prak_tugas_${id}`).value.trim();
-            if(!val) return alert("Masukkan link laporan terlebih dahulu!");
+            if(!val) return alert("Masukkan link laporan praktikum!");
             let db = JSON.parse(localStorage.getItem(`prak_pengumpulan_${id}`)) || [];
-            db.push({ userId: user.userId, namaMahasiswa: user.nama, linkJawaban: val, nilai: "" });
+            db.push({ userId: user.userId, namaMahasiswa: user.nama, linkJawaban: val, nilai: "", waktu: new Date().toLocaleString('id-ID') });
             localStorage.setItem(`prak_pengumpulan_${id}`, JSON.stringify(db));
             alert("Laporan berhasil dikirim ke Asprak!");
-            loadSemuaDataPraktikum(activeMatkulGlobal);
+            renderTugasPrak(activeMatkulGlobal);
+        }
+
+        function renderNilaiPrak(matkul) {
+            let db = JSON.parse(localStorage.getItem(`prak_tugas_${matkul}`)) || [];
+            let w = document.getElementById('prak-konten-nilai');
+            if(db.length === 0) return w.innerHTML = `<div class="empty-box">Belum ada nilai praktikum.</div>`;
+            let html = `<table class="styled-table"><thead><tr><th style="background:var(--prak-color);">Tugas Laporan</th><th style="background:var(--prak-color);">Status</th><th style="background:var(--prak-color);">Nilai</th></tr></thead><tbody>`;
+            let adaData = false;
+            db.forEach(t => {
+                let cekKumpul = (JSON.parse(localStorage.getItem(`prak_pengumpulan_${t.id}`))||[]).find(p => p.userId === user.userId);
+                if(cekKumpul) {
+                    adaData = true;
+                    let n = cekKumpul.nilai ? `<strong style="color:var(--success);">${cekKumpul.nilai}</strong>` : `<span style="color:var(--warning);">Pending</span>`;
+                    html += `<tr><td>${t.judul}</td><td style="color:var(--success);">Terkumpul</td><td>${n}</td></tr>`;
+                }
+            });
+            w.innerHTML = adaData ? html + `</tbody></table>` : `<div class="empty-box">Anda belum mengumpulkan laporan apa pun.</div>`;
+        }
+
+        function renderAsistensiPrak(matkul) {
+            let db = JSON.parse(localStorage.getItem(`prak_asistensi_${matkul}`)) || [];
+            let w = document.getElementById('prak-konten-asistensi');
+            if(db.length === 0) return w.innerHTML = `<div class="empty-box">Belum ada jadwal asistensi.</div>`;
+            w.innerHTML = '';
+            [...db].reverse().forEach(a => {
+                w.innerHTML += `<div class="item-card-prak"><div class="item-info"><h3>Waktu: ${a.waktu}</h3><p><i class="fas fa-map-marker-alt" style="color:var(--prak-color);"></i> Lokasi/Link: <strong style="color:var(--text-main); margin-left:5px;">${a.lokasi}</strong></p></div></div>`;
+            });
         }
 
         function loadForumPrak(matkul) {
             const cb = document.getElementById('prak-chat-messages');
             let db = JSON.parse(localStorage.getItem(`prak_forum_${matkul}`)) || [];
-            if(db.length === 0) { cb.innerHTML = `<div class="empty-box" style="border:none;">Belum ada diskusi praktikum.</div>`; return; }
+            if(db.length === 0) return cb.innerHTML = `<div class="empty-box" style="border:none;">Belum ada diskusi praktikum.</div>`;
             cb.innerHTML = '';
             db.forEach(m => {
                 const isMe = m.userId === user.userId;
@@ -847,184 +1029,6 @@
             localStorage.setItem(`prak_forum_${activeMatkulGlobal}`, JSON.stringify(db));
             document.getElementById('prak-chat-input').value = '';
             loadForumPrak(activeMatkulGlobal);
-        });
-
-        // ====================================================================
-        // 7. FUNGSI DOSEN (MATERI, TUGAS, ABSEN, NILAI, FORUM UTAMA)
-        // ====================================================================
-        
-        // MATERI DOSEN (DENGAN INDIKATOR WARNA)
-        function renderMateri(matkul) {
-            const wadah = document.getElementById('konten-materi');
-            const dbMateri = JSON.parse(localStorage.getItem(`materi_${matkul}`)) || [];
-            const readMateri = JSON.parse(localStorage.getItem(`read_materi_${user.userId}_${matkul}`)) || [];
-
-            if (dbMateri.length === 0) {
-                wadah.innerHTML = `<div class="empty-box">Belum ada materi ${matkul} yang diunggah oleh Dosen.</div>`;
-                return;
-            }
-
-            wadah.innerHTML = '<div class="materi-grid"></div>';
-            const gridWadah = wadah.querySelector('.materi-grid');
-            
-            dbMateri.forEach(m => {
-                let linkHref = m.link ? m.link : '#';
-                let isRead = readMateri.includes(m.id);
-                
-                let badgeClass = isRead ? 'read' : 'unread';
-                let badgeText = isRead ? '<i class="fas fa-check-circle"></i> Sudah Dibaca' : '<i class="fas fa-circle"></i> Belum Dibaca';
-                let borderColor = isRead ? 'var(--success)' : 'var(--danger-red)';
-                let iconColor = isRead ? 'var(--success)' : 'var(--danger-red)';
-                
-                gridWadah.innerHTML += `
-                    <a href="${linkHref}" target="_blank" class="materi-card" style="border-top: 4px solid ${borderColor};" onclick="markMateriRead('${m.id}')">
-                        <div class="materi-badge ${badgeClass}">${badgeText}</div>
-                        <i class="fas fa-file-alt materi-icon" style="color: ${iconColor};"></i>
-                        <div class="materi-title">${m.judul}</div>
-                        <span style="font-size:0.9rem; margin-top:10px; color: var(--primary); font-weight: bold;"><i class="fas fa-external-link-alt"></i> Buka Materi</span>
-                    </a>
-                `;
-            });
-        }
-
-        window.markMateriRead = function(materiId) {
-            const key = `read_materi_${user.userId}_${activeMatkulGlobal}`;
-            let readMateri = JSON.parse(localStorage.getItem(key)) || [];
-            if (!readMateri.includes(materiId)) {
-                readMateri.push(materiId);
-                localStorage.setItem(key, JSON.stringify(readMateri));
-                setTimeout(() => { renderMateri(activeMatkulGlobal); }, 100);
-            }
-        }
-
-        // TUGAS DOSEN
-        function renderTugas(matkul) {
-            const wadah = document.getElementById('konten-tugas');
-            const dbTugas = JSON.parse(localStorage.getItem(`tugas_${matkul}`)) || [];
-
-            if (dbTugas.length === 0) {
-                wadah.innerHTML = `<div class="empty-box">Belum ada tugas aktif untuk kelas ini.</div>`;
-                return;
-            }
-
-            wadah.innerHTML = '';
-            dbTugas.forEach(tugas => {
-                const dbPengumpulan = JSON.parse(localStorage.getItem(`pengumpulan_${tugas.id}`)) || [];
-                const sudahKumpul = dbPengumpulan.find(p => p.userId === user.userId);
-
-                let btnBukaSoal = tugas.linkTugas ? `<a href="${tugas.linkTugas}" target="_blank" style="margin-right:10px; color:var(--primary); font-size:0.85rem;"><i class="fas fa-external-link-alt"></i> Buka Soal Tugas</a>` : '';
-
-                let aksiHtml = sudahKumpul 
-                    ? `<span style="color:var(--success); font-weight:bold; font-size:0.9rem;"><i class="fas fa-check-circle"></i> Sudah Dikumpulkan</span>`
-                    : `<div class="upload-tugas-area"><input type="url" id="link_tugas_${tugas.id}" placeholder="Masukkan link jawaban" title="Link Jawaban"><button onclick="kumpulkanTugasDosen('${tugas.id}')" class="btn-action" style="background:var(--primary); color:#fff; border:none;"><i class="fas fa-cloud-upload-alt"></i> Kirim Jawaban</button></div>`;
-
-                wadah.innerHTML += `
-                    <div class="item-card" style="flex-direction: column; align-items: stretch;">
-                        <div style="display:flex; justify-content:space-between; align-items:center;">
-                            <div class="item-info">
-                                <h3>${tugas.judul}</h3>
-                                <p><i class="far fa-calendar-times"></i> Tenggat Waktu: <strong style="margin-left:5px; color:var(--warning);">${tugas.deadline}</strong></p>
-                                ${btnBukaSoal}
-                            </div>
-                        </div>
-                        ${aksiHtml}
-                    </div>
-                `;
-            });
-        }
-
-        window.kumpulkanTugasDosen = function(tugasId) {
-            const val = document.getElementById(`link_tugas_${tugasId}`).value.trim();
-            if(!val) return alert("Harap masukkan link jawaban terlebih dahulu!");
-
-            let db = JSON.parse(localStorage.getItem(`pengumpulan_${tugasId}`)) || [];
-            db.push({ userId: user.userId, namaMahasiswa: user.nama, waktu: new Date().toLocaleString('id-ID'), linkJawaban: val, nilai: "" });
-            localStorage.setItem(`pengumpulan_${tugasId}`, JSON.stringify(db));
-            alert("Tugas berhasil dikumpulkan ke Dosen!");
-            renderTugas(activeMatkulGlobal); 
-        }
-
-        // ABSENSI DOSEN
-        function renderAbsensi(matkul) {
-            const wadah = document.getElementById('konten-absensi');
-            const dbAbsensi = JSON.parse(localStorage.getItem(`absensi_${matkul}`)) || [];
-            if (dbAbsensi.length === 0) return wadah.innerHTML = `<div class="empty-box">Belum ada sesi kehadiran yang dibuka oleh dosen.</div>`;
-
-            wadah.innerHTML = '';
-            [...dbAbsensi].reverse().forEach(sesi => {
-                const dbHadir = JSON.parse(localStorage.getItem(`hadir_mhs_${matkul}_${sesi.tanggal}`)) || [];
-                const sudahHadir = dbHadir.includes(user.userId);
-                let btnHadir = sudahHadir ? `<span style="color:var(--success); font-weight:bold;"><i class="fas fa-check-double"></i> Anda Sudah Hadir</span>` : `<button onclick="klikHadirDosen('${sesi.tanggal}')" class="btn-action" style="background:var(--success); color:white; border:none;"><i class="fas fa-hand-paper"></i> Klik Hadir</button>`;
-
-                wadah.innerHTML += `<div class="item-card"><div class="item-info"><h3>Presensi Perkuliahan</h3><p><i class="far fa-calendar-alt"></i> Tanggal Sesi: <strong style="color:var(--text-main); margin-left:5px;">${sesi.tanggal}</strong></p></div><div>${btnHadir}</div></div>`;
-            });
-        }
-
-        window.klikHadirDosen = function(tanggal) {
-            const key = `hadir_mhs_${activeMatkulGlobal}_${tanggal}`;
-            let db = JSON.parse(localStorage.getItem(key)) || [];
-            db.push(user.userId);
-            localStorage.setItem(key, JSON.stringify(db));
-            alert("Presensi kelas berhasil dicatat!");
-            renderAbsensi(activeMatkulGlobal);
-        }
-
-        // NILAI DOSEN
-        function renderNilai(matkul) {
-            const wadah = document.getElementById('konten-nilai');
-            const dbTugas = JSON.parse(localStorage.getItem(`tugas_${matkul}`)) || [];
-            if(dbTugas.length === 0) return wadah.innerHTML = `<div class="empty-box">Belum ada tugas untuk dinilai.</div>`;
-
-            let tabelHTML = `<table class="styled-table"><thead><tr><th>Tugas / Praktikum</th><th>Status Pengumpulan</th><th>Nilai (Skala 100)</th></tr></thead><tbody>`;
-            let adaData = false;
-
-            dbTugas.forEach(tugas => {
-                const hasilSaya = (JSON.parse(localStorage.getItem(`pengumpulan_${tugas.id}`)) || []).find(p => p.userId === user.userId);
-                if(hasilSaya) {
-                    adaData = true;
-                    let nilaiStr = hasilSaya.nilai ? `<strong style="font-size:1.1rem; color:var(--success);">${hasilSaya.nilai}</strong>` : `<span style="color:var(--warning);">Belum Dinilai</span>`;
-                    tabelHTML += `<tr><td style="font-weight:600;">${tugas.judul}</td><td><span style="color:var(--success);"><i class="fas fa-check"></i> Diserahkan (${hasilSaya.waktu})</span></td><td>${nilaiStr}</td></tr>`;
-                }
-            });
-
-            tabelHTML += `</tbody></table>`;
-            wadah.innerHTML = adaData ? tabelHTML : `<div class="empty-box">Anda belum mengumpulkan tugas teori apa pun.</div>`;
-        }
-
-        // TABS UMUM KELAS
-        function bukaTabKelas(tabId, btnElement) {
-            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            btnElement.classList.add('active');
-            if(tabId === 'tab-forum') document.getElementById('chat-messages').scrollTop = document.getElementById('chat-messages').scrollHeight;
-        }
-
-        // FORUM DOSEN
-        const chatMessages = document.getElementById('chat-messages');
-        const chatInput = document.getElementById('chat-input');
-        function loadForumMessages(matkul) {
-            let db = JSON.parse(localStorage.getItem(`forum_${matkul}`)) || [];
-            if (db.length === 0) return chatMessages.innerHTML = `<div style="text-align:center; padding: 40px 20px;"><i class="fas fa-comments" style="font-size:3rem; color:var(--border-color); margin-bottom:15px;"></i><p style="color:var(--text-muted); font-size:0.9rem;">Belum ada diskusi. Jadilah yang pertama memulai percakapan!</p></div>`;
-            
-            chatMessages.innerHTML = '';
-            db.forEach(m => {
-                const isMe = m.userId === user.userId;
-                const roleTag = m.role === 'dosen' ? ' <i class="fas fa-check-circle" style="color:#10b981;" title="Dosen"></i>' : '';
-                chatMessages.innerHTML += `<div class="message ${isMe ? 'msg-me' : 'msg-other'}"><span class="sender">${m.nama} ${roleTag} • ${m.waktu}</span>${m.text}</div>`;
-            });
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-
-        document.getElementById('form-chat').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const text = chatInput.value.trim();
-            if(!text || !activeMatkulGlobal) return;
-            let db = JSON.parse(localStorage.getItem(`forum_${activeMatkulGlobal}`)) || [];
-            db.push({ userId: user.userId, nama: user.nama, role: user.role, text, waktu: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) });
-            localStorage.setItem(`forum_${activeMatkulGlobal}`, JSON.stringify(db));
-            chatInput.value = '';
-            loadForumMessages(activeMatkulGlobal); 
         });
 
         // UMUM (DROPDOWN, LOGOUT, TEMA)
