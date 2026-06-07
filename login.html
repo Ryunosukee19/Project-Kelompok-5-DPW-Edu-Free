@@ -134,13 +134,18 @@
                             // Set sesi aktif agar dashboard bisa membacanya
                             localStorage.setItem('loggedInUser', userDataString);
 
-                            // Arahkan ke Dashboard
-                            if (inputRole === 'dosen' || inputRole === 'asprak') {
-                                window.location.href = "indexlogindosen.html";
+                            // Arahkan ke Dashboard yang Sesuai
+                            if (inputRole === 'dosen') {
+                                // PENTING: Ganti "dosen.html" sesuai dengan nama file dashboard dosen milikmu
+                                window.location.href = "dosen.html"; 
+                            } else if (inputRole === 'asprak') {
+                                // PENTING: Ganti "asprak.html" sesuai dengan nama file dashboard asprak milikmu
+                                window.location.href = "asprak.html";
                             } else {
-                                if (userData.semester === "1") window.location.href = "indexsetelahlogin2.html"; 
-                                else window.location.href = "indexsetelahlogin2.html"; 
+                                // PENTING: Ganti "mahasiswa.html" sesuai dengan nama file dashboard mahasiswa milikmu
+                                window.location.href = "mahasiswa.html"; 
                             }
+
                         } else {
                             alert("Oops! Password salah atau Anda memilih peran yang tidak sesuai.");
                         }
