@@ -127,26 +127,28 @@
         .matkul-title-box p { color: var(--text-muted); font-size: 1.05rem; font-weight: 500;}
         
         /* =========================================
-           TABS - MODIFIKASI AGAR BISA DIGESER (SCROLL)
+           TABS - MODIFIKASI SCROLL HORIZONTAL
         ========================================= */
         .tabs { 
-            display: flex; /* Ubah dari inline-flex jadi flex */
-            flex-wrap: nowrap; /* Paksa agar tidak turun ke bawah */
-            overflow-x: auto; /* Munculkan scroll horizontal jika mentok */
+            display: flex; 
+            flex-wrap: nowrap; 
+            overflow-x: auto; 
             gap: 5px; 
             background: rgba(255,255,255,0.02); 
             padding: 8px; 
             border-radius: 16px; 
             border: 1px solid var(--border-color); 
             margin-bottom: 30px; 
-            /* Sembunyikan scrollbar UI agar bersih (Opsional) */
-            -ms-overflow-style: none;  
-            scrollbar-width: none;  
+            scroll-behavior: smooth;
+            padding-bottom: 12px; 
         }
-        .tabs::-webkit-scrollbar { 
-            display: none; 
-        }
+        /* Mempercantik Scrollbar Tab */
+        .tabs::-webkit-scrollbar { height: 6px; }
+        .tabs::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 10px; }
+        .tabs::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
+
         body:has(#theme-toggle:checked) .tabs { background: #ffffff; }
+        body:has(#theme-toggle:checked) .tabs::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); }
 
         .tab-btn { 
             background: transparent; 
@@ -161,17 +163,25 @@
             display: flex; 
             align-items: center; 
             gap: 8px;
-            white-space: nowrap; /* Kunci agar teks dalam tombol tidak terpotong */
-            flex-shrink: 0; /* Cegah tombol mengecil tertekan */
+            white-space: nowrap; /* Kunci agar teks tidak turun */
+            flex-shrink: 0; /* Cegah tombol mengecil */
         }
         .tab-btn:hover { color: var(--text-main); background: rgba(245, 158, 11, 0.05);}
         .tab-btn.active { background: var(--primary); color: #fff; }
 
-        /* KONTEN TAB DLL TETAP SAMA */
-        .tab-content { display: none; animation: fadeIn 0.3s ease;}
+        .tab-content { display: none; animation: fadeIn 0.3s ease; min-height: 400px;}
         .tab-content.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .section-title-tab { margin-bottom: 25px; font-size: 1.5rem; color: var(--text-main); font-weight: 700; display: flex; align-items: center; gap: 10px;}
+
+        /* BUNGKUSAN TABEL RESPONSIVE (Penting untuk Penilaian dan Cuti) */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            border-radius: 12px;
+            margin-top: 10px;
+        }
 
         /* FORM & CARDS */
         .form-card { background: var(--bg-card); padding: 30px; border-radius: 20px; border: 1px solid var(--border-color); margin-bottom: 25px; }
@@ -179,9 +189,9 @@
         .item-info h3 { font-size: 1.1rem; margin-bottom: 4px; color: var(--text-main);}
         .item-info p { font-size: 0.85rem; color: var(--text-muted);}
 
-        .styled-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9em; border-radius: 12px; overflow: hidden; background: var(--bg-card); }
+        .styled-table { width: 100%; border-collapse: collapse; font-size: 0.9em; border-radius: 12px; overflow: hidden; background: var(--bg-card); }
         .styled-table thead tr { background-color: var(--primary); color: #ffffff; text-align: left; }
-        .styled-table th, .styled-table td { padding: 15px 20px; border-bottom: 1px solid var(--border-color); }
+        .styled-table th, .styled-table td { padding: 15px 20px; border-bottom: 1px solid var(--border-color); min-width: 120px; }
         .input-nilai { width: 80px; padding: 8px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-body); color: var(--text-main); text-align: center; font-weight: bold;}
 
         /* CHAT BOX */
@@ -227,7 +237,7 @@
                 <ul class="dropdown-container show" id="menu-matkul-saya">
                     </ul>
             </li>
-            <li style="margin-top: 15px;"><a href="index.html"><i class="fas fa-sign-out-alt"></i>Log Out</a></li>
+            <li style="margin-top: 15px;"><a href="index.html" id="logout-btn" class="btn-logout"><i class="fas fa-sign-out-alt"></i>Log Out</a></li>
         </ul>
     </nav>
 
@@ -332,6 +342,7 @@
                 <button class="tab-btn" onclick="bukaTabPrak('tab-p-asistensi', this)"><i class="fas fa-calendar-check"></i> Jadwal Asistensi</button>
                 <button class="tab-btn" onclick="bukaTabPrak('tab-p-nilai', this)"><i class="fas fa-star"></i> Penilaian</button>
                 <button class="tab-btn" onclick="bukaTabPrak('tab-p-forum', this)"><i class="fas fa-comments"></i> Diskusi</button>
+                <button class="tab-btn" onclick="bukaTabPrak('tab-p-cuti', this)"><i class="fas fa-notes-medical"></i> Cuti Mahasiswa</button>
             </nav>
 
             <div id="tab-p-pengumuman" class="tab-content active">
@@ -431,19 +442,21 @@
                     <button class="btn-action" onclick="loadTabelPenilaianPrak()"><i class="fas fa-search"></i> Tampilkan</button>
                 </div>
                 
-                <div id="p-panel-nilai" style="display:none; overflow-x:auto;">
-                    <table class="styled-table">
-                        <thead>
-                            <tr>
-                                <th>NIM</th>
-                                <th>Nama Praktikan</th>
-                                <th>Link Jawaban</th>
-                                <th>Nilai</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody id="p-tbody-nilai"></tbody>
-                    </table>
+                <div id="p-panel-nilai" style="display:none;">
+                    <div class="table-responsive">
+                        <table class="styled-table">
+                            <thead>
+                                <tr>
+                                    <th>NIM</th>
+                                    <th>Nama Praktikan</th>
+                                    <th>Link Jawaban</th>
+                                    <th>Nilai</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="p-tbody-nilai"></tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
@@ -451,7 +464,7 @@
                 <h2 class="section-title-tab" style="margin-bottom: 10px;"><i class="fas fa-comments" style="color: var(--primary);"></i> Diskusi Praktikum</h2>
                 <div class="chat-box">
                     <div class="chat-header-info" style="background: rgba(245, 158, 11, 0.05);">
-                        <i class="fas fa-flask" style="color: var(--primary);"></i> <span>Ruang diskusi khusus dengan Asisten Praktikum.</span>
+                        <i class="fas fa-flask" style="color: var(--primary);"></i> <span>Ruang diskusi khusus dengan Praktikan.</span>
                     </div>
                     <div class="chat-messages" id="p-chat-messages"></div>
                     <form class="chat-input-area" id="p-form-chat" onsubmit="kirimChatPrak(event)">
@@ -459,6 +472,11 @@
                         <button type="submit" style="background:var(--primary);"><i class="fas fa-paper-plane"></i></button>
                     </form>
                 </div>
+            </div>
+
+            <div id="tab-p-cuti" class="tab-content">
+                <h2 class="section-title-tab"><i class="fas fa-notes-medical" style="color: var(--primary);"></i> Pengajuan Cuti Mahasiswa</h2>
+                <div id="p-list-cuti"></div>
             </div>
 
         </section>
@@ -609,6 +627,7 @@
             renderTugasPrak();
             renderAsistensi();
             loadChatPrak();
+            renderCutiAsprak(); // Menjalankan tabel cuti
         }
 
         function bukaTabPrak(tabId, btnElement) {
@@ -804,13 +823,120 @@
             }
         }
 
+        // 8. MENU BARU: MANAJEMEN CUTI MAHASISWA
+        function renderCutiAsprak() {
+            let db = JSON.parse(localStorage.getItem(`prak_cuti_${activePrakGlobal}`)) || [];
+            let wadah = document.getElementById('p-list-cuti');
+            
+            if(db.length === 0) {
+                wadah.innerHTML = `<div class="item-card" style="justify-content:center;"><p class="text-muted">Belum ada pengajuan izin/cuti dari praktikan.</p></div>`;
+                return;
+            }
+            
+            // Bungkus ke dalam tabel responsif
+            let html = `<div class="table-responsive">
+                            <table class="styled-table" style="min-width: 800px;">
+                                <thead>
+                                    <tr>
+                                        <th>Tanggal Pengajuan</th>
+                                        <th>NIM</th>
+                                        <th>Nama</th>
+                                        <th>Jenis</th>
+                                        <th>Alasan</th>
+                                        <th>Lampiran</th>
+                                        <th>Status</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>`;
+            
+            // Susun dari data terbaru
+            [...db].reverse().forEach((c) => {
+                let lampiran = c.fileBase64 ? `<a href="${c.fileBase64}" target="_blank" style="color:var(--primary); font-weight:bold;"><i class="fas fa-file-image"></i> Lihat</a>` : '-';
+                
+                let badgeColor = 'var(--warning)';
+                if(c.status === 'Diterima') badgeColor = 'var(--secondary)';
+                if(c.status === 'Ditolak') badgeColor = 'var(--danger-red)';
+                
+                let aksiHtml = c.status === 'Pending' 
+                    ? `<button onclick="updateStatusCuti('${c.id}', 'Diterima')" class="btn-action" style="background:var(--secondary); padding:6px 12px; margin-right:5px; border:none;" title="Terima Izin"><i class="fas fa-check"></i></button>
+                       <button onclick="updateStatusCuti('${c.id}', 'Ditolak')" class="btn-action" style="background:var(--danger-red); padding:6px 12px; border:none;" title="Tolak Izin"><i class="fas fa-times"></i></button>`
+                    : `-`;
+
+                html += `<tr>
+                            <td>${c.waktu}</td>
+                            <td style="color:var(--primary); font-weight:bold;">${c.userId}</td>
+                            <td>${c.nama}</td>
+                            <td>${c.jenis}</td>
+                            <td>${c.alasan}</td>
+                            <td>${lampiran}</td>
+                            <td><strong style="color:${badgeColor};">${c.status}</strong></td>
+                            <td>${aksiHtml}</td>
+                        </tr>`;
+            });
+            
+            html += `</tbody></table></div>`;
+            wadah.innerHTML = html;
+        }
+
+        window.updateStatusCuti = function(id, statusBaru) {
+            if(!confirm(`Apakah Anda yakin ingin mengubah status pengajuan ini menjadi ${statusBaru}?`)) return;
+            
+            let db = JSON.parse(localStorage.getItem(`prak_cuti_${activePrakGlobal}`)) || [];
+            let index = db.findIndex(c => c.id === id);
+            
+            if(index !== -1) {
+                db[index].status = statusBaru;
+                localStorage.setItem(`prak_cuti_${activePrakGlobal}`, JSON.stringify(db));
+                renderCutiAsprak();
+            }
+        }
+
         // Dropdown & General
         var dropdowns = document.getElementsByClassName("dropdown-btn");
         for (let d of dropdowns) { d.addEventListener("click", function() { this.classList.toggle("open"); this.nextElementSibling.classList.toggle("show"); }); }
+        
         document.getElementById('logout-btn').addEventListener('click', (e) => { e.preventDefault(); localStorage.removeItem('loggedInUser'); window.location.href="login.html"; });
+        
         const themeToggle = document.getElementById("theme-toggle");
         if (localStorage.getItem("theme") === "light") themeToggle.checked = true;
         themeToggle.addEventListener("change", function() { localStorage.setItem("theme", this.checked ? "light" : "dark"); });
+
+        // ====================================================================
+        // FITUR DRAG TO SCROLL UNTUK TABS
+        // ====================================================================
+        const tabContainers = document.querySelectorAll('.tabs');
+        tabContainers.forEach(container => {
+            let isDown = false;
+            let startX;
+            let scrollLeft;
+
+            container.addEventListener('mousedown', (e) => {
+                isDown = true;
+                container.style.cursor = 'grabbing';
+                startX = e.pageX - container.offsetLeft;
+                scrollLeft = container.scrollLeft;
+            });
+
+            container.addEventListener('mouseleave', () => {
+                isDown = false;
+                container.style.cursor = 'pointer';
+            });
+
+            container.addEventListener('mouseup', () => {
+                isDown = false;
+                container.style.cursor = 'pointer';
+            });
+
+            container.addEventListener('mousemove', (e) => {
+                if (!isDown) return;
+                e.preventDefault();
+                const x = e.pageX - container.offsetLeft;
+                const walk = (x - startX) * 2; // Mengatur kecepatan geser
+                container.scrollLeft = scrollLeft - walk;
+            });
+        });
+
     </script>
 </body>
 </html>
