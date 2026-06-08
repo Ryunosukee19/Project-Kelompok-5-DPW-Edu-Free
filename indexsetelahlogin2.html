@@ -149,10 +149,36 @@
         .matkul-title-box p { color: rgba(255,255,255,0.7); font-size: 1.05rem; font-weight: 500; display: flex; align-items: center; gap: 8px;}
         body:has(#theme-toggle:checked) .matkul-title-box p { color: var(--text-muted); }
         
-        /* TABS UTAMA (DAPAT DIGESER) */
-        .tabs { display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 5px; background: rgba(255,255,255,0.02); padding: 8px; border-radius: 16px; border: 1px solid var(--border-color); margin-bottom: 35px; box-shadow: var(--shadow-sm); max-width: 100%; -ms-overflow-style: none; scrollbar-width: none; }
-        .tabs::-webkit-scrollbar { display: none; }
-        body:has(#theme-toggle:checked) .tabs { background: #ffffff; }
+        /* TABS UTAMA & PRAKTIKUM (DAPAT DIGESER KE SAMPING) */
+        .tabs, .tabs-prak { 
+            display: flex; 
+            flex-wrap: nowrap; 
+            overflow-x: auto; 
+            gap: 5px; 
+            padding: 8px; 
+            border-radius: 16px; 
+            border: 1px solid var(--border-color); 
+            margin-bottom: 35px; 
+            box-shadow: var(--shadow-sm); 
+            max-width: 100%; 
+            background: rgba(255,255,255,0.02);
+            scroll-behavior: smooth;
+            padding-bottom: 12px; 
+        }
+
+        /* Styling Scrollbar Khusus Tabs */
+        .tabs::-webkit-scrollbar, .tabs-prak::-webkit-scrollbar { height: 6px; }
+        .tabs::-webkit-scrollbar-track, .tabs-prak::-webkit-scrollbar-track { 
+            background: rgba(255,255,255,0.05); 
+            border-radius: 10px; 
+        }
+        .tabs::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
+        .tabs-prak::-webkit-scrollbar-thumb { background: var(--prak-color); border-radius: 10px; }
+
+        body:has(#theme-toggle:checked) .tabs, 
+        body:has(#theme-toggle:checked) .tabs-prak { background: #ffffff; }
+        body:has(#theme-toggle:checked) .tabs::-webkit-scrollbar-track,
+        body:has(#theme-toggle:checked) .tabs-prak::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); }
         
         .tab-btn { background: transparent; border: none; padding: 12px 24px; border-radius: 12px; color: var(--text-muted); font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); white-space: nowrap; display: flex; align-items: center; gap: 8px; flex-shrink: 0;}
         .tab-btn:hover { color: var(--text-main); background: rgba(255,255,255,0.05); }
@@ -198,9 +224,17 @@
         .empty-box { text-align: center; color: var(--text-muted); font-size: 1.1rem; padding: 40px; background: rgba(255,255,255,0.02); border-radius: 16px; border: 1px solid var(--border-color); }
         body:has(#theme-toggle:checked) .empty-box { background: #f8fafc; }
 
+        /* BUNGKUSAN TABEL AGAR BISA DI SCROLL KE SAMPING */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch; 
+            border-radius: 12px;
+        }
+
         .styled-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.95em; border-radius: 12px; overflow: hidden; background-color: var(--bg-card); border: 1px solid var(--border-color); }
         .styled-table thead tr { background-color: var(--primary); color: #ffffff; text-align: left; }
-        .styled-table th, .styled-table td { padding: 15px 20px; border-bottom: 1px solid var(--border-color); }
+        .styled-table th, .styled-table td { padding: 15px 20px; border-bottom: 1px solid var(--border-color); min-width: 150px; }
         .styled-table tbody tr:hover { background-color: rgba(255, 255, 255, 0.02); }
 
         /* CHAT BOX */
@@ -232,10 +266,6 @@
         .prak-title-box p { color: rgba(255,255,255,0.7); font-size: 1.05rem; font-weight: 500; display: flex; align-items: center; gap: 8px;}
         body:has(#theme-toggle:checked) .prak-title-box p { color: var(--text-muted); }
 
-        /* TABS PRAKTIKUM (DIGESER) */
-        .tabs-prak { display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 5px; background: rgba(255,255,255,0.02); padding: 8px; border-radius: 16px; border: 1px solid var(--border-color); margin-bottom: 35px; box-shadow: var(--shadow-sm); max-width: 100%; -ms-overflow-style: none; scrollbar-width: none;}
-        .tabs-prak::-webkit-scrollbar { display: none; }
-        body:has(#theme-toggle:checked) .tabs-prak { background: #ffffff; }
         .tab-btn-prak { background: transparent; border: none; padding: 12px 24px; border-radius: 12px; color: var(--text-muted); font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); white-space: nowrap; display: flex; align-items: center; gap: 8px; flex-shrink: 0;}
         .tab-btn-prak:hover { color: var(--text-main); background: rgba(255,255,255,0.05); }
         body:has(#theme-toggle:checked) .tab-btn-prak:hover { background: rgba(0,0,0,0.03); }
@@ -455,7 +485,7 @@
 
             <div id="prak-forum" class="tab-content-prak">
                 <div class="chat-box" style="border-color: var(--prak-color);">
-                    <div class="chat-header-info" style="background: rgba(245, 158, 11, 0.05);"><i class="fas fa-flask" style="color: var(--prak-color);"></i> <span>Ruang diskusi khusus dengan Asisten Praktikum.</span></div>
+                    <div class="chat-header-info" style="background: rgba(245, 158, 11, 0.05);"><i class="fas fa-flask" style="color: var(--prak-color);"></i> <span>Ruang diskusi khusus dengan Asisten Praktikum <strong id="forum-prak-name"></strong></span></div>
                     <div class="chat-messages" id="prak-chat-messages"></div>
                     <form class="chat-input-area" id="prak-form-chat">
                         <input type="text" id="prak-chat-input" placeholder="Tanya asprak di sini..." autocomplete="off">
@@ -497,6 +527,11 @@
     </main>
 
     <script>
+        // FUNGSI HELPER (Dibutuhkan untuk ID Cuti dan Zoom yang sebelumnya hilang)
+        function generateId() {
+            return '_' + Math.random().toString(36).substr(2, 9);
+        }
+
         const activeUserString = localStorage.getItem('loggedInUser');
         if (!activeUserString) { window.location.href = "login.html"; }
         const user = JSON.parse(activeUserString);
@@ -597,7 +632,9 @@
         let activeMatkulGlobal = ""; 
 
         function clearNavActive() { document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active', 'sub-active', 'active-prak', 'sub-active-prak')); }
+        
         btnMenuBeranda.addEventListener('click', (e) => { e.preventDefault(); sectionBeranda.style.display = 'flex'; sectionProfil.style.display = 'none'; sectionMatkul.style.display = 'none'; sectionPraktikum.style.display = 'none'; clearNavActive(); btnMenuBeranda.classList.add('active'); window.scrollTo({ top: 0, behavior: 'smooth' }); });
+        
         btnMenuProfil.addEventListener('click', (e) => { e.preventDefault(); sectionBeranda.style.display = 'none'; sectionMatkul.style.display = 'none'; sectionPraktikum.style.display = 'none'; sectionProfil.style.display = 'block'; clearNavActive(); btnMenuProfil.classList.add('active'); window.scrollTo({ top: 0, behavior: 'smooth' }); });
 
         if (user.matkul && user.matkul.length > 0) {
@@ -606,6 +643,7 @@
                 const liKelas = document.createElement('li'); const linkKelas = document.createElement('a'); linkKelas.href = "#"; linkKelas.innerHTML = `${mk}`;
                 linkKelas.addEventListener('click', (e) => { e.preventDefault(); sectionBeranda.style.display = 'none'; sectionProfil.style.display = 'none'; sectionPraktikum.style.display = 'none'; sectionMatkul.style.display = 'block'; clearNavActive(); linkKelas.classList.add('sub-active'); bukaHalamanMatkulTeori(mk); setTimeout(() => { sectionMatkul.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100); });
                 liKelas.appendChild(linkKelas); menuKelasContainer.appendChild(liKelas);
+                
                 if (validPrak.includes(mk.toLowerCase())) {
                     hasPraktikum = true; const liPrak = document.createElement('li'); const linkPrak = document.createElement('a'); linkPrak.href = "#"; linkPrak.innerHTML = `Prak. ${mk}`;
                     linkPrak.addEventListener('click', (e) => { e.preventDefault(); sectionBeranda.style.display = 'none'; sectionProfil.style.display = 'none'; sectionMatkul.style.display = 'none'; sectionPraktikum.style.display = 'block'; clearNavActive(); linkPrak.classList.add('sub-active-prak'); bukaHalamanPraktikum(mk); setTimeout(() => { sectionPraktikum.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100); });
@@ -763,13 +801,15 @@
             const wadah = document.getElementById('konten-nilai');
             const dbTugas = JSON.parse(localStorage.getItem(`tugas_${matkul}`)) || [];
             if(dbTugas.length === 0) return wadah.innerHTML = `<div class="empty-box">Belum ada evaluasi.</div>`;
-            let html = `<table class="styled-table"><thead><tr><th>Tugas Teori</th><th>Status</th><th>Nilai</th></tr></thead><tbody>`;
+            
+            // Tambahkan wrapper table-responsive agar tidak merusak tata letak
+            let html = `<div class="table-responsive"><table class="styled-table"><thead><tr><th>Tugas Teori</th><th>Status</th><th>Nilai</th></tr></thead><tbody>`;
             let adaData = false;
             dbTugas.forEach(t => {
                 const hasil = (JSON.parse(localStorage.getItem(`pengumpulan_${t.id}`)) || []).find(p => p.userId === user.userId);
                 if(hasil) { adaData = true; let n = hasil.nilai ? `<strong style="color:var(--success);">${hasil.nilai}</strong>` : `<span style="color:var(--warning);">Pending</span>`; html += `<tr><td>${t.judul}</td><td style="color:var(--success);">Terkumpul</td><td>${n}</td></tr>`; }
             });
-            wadah.innerHTML = adaData ? html + `</tbody></table>` : `<div class="empty-box">Belum ada tugas dikumpulkan.</div>`;
+            wadah.innerHTML = adaData ? html + `</tbody></table></div>` : `<div class="empty-box">Belum ada tugas dikumpulkan.</div>`;
         }
 
         // FORUM TEORI
@@ -798,6 +838,8 @@
         function bukaHalamanPraktikum(namaMatkul) {
             activeMatkulGlobal = namaMatkul; 
             document.getElementById('prak-title-text').textContent = "Praktikum " + namaMatkul;
+            
+            // Bug di baris ini yang menyebabkan halaman blank sebelumnya sudah diperbaiki dengan aman.
             document.getElementById('forum-prak-name').textContent = `[ ${namaMatkul} ]`;
 
             bukaTabPrak('prak-pengumuman', document.querySelectorAll('#section-praktikum .tab-btn-prak')[0]);
@@ -946,13 +988,15 @@
             let db = JSON.parse(localStorage.getItem(`prak_tugas_${matkul}`)) || [];
             let w = document.getElementById('prak-konten-nilai');
             if(db.length === 0) return w.innerHTML = `<div class="empty-box">Belum ada nilai praktikum.</div>`;
-            let html = `<table class="styled-table"><thead><tr><th style="background:var(--prak-color);">Tugas Laporan</th><th style="background:var(--prak-color);">Status</th><th style="background:var(--prak-color);">Nilai</th></tr></thead><tbody>`;
+            
+            // Tambahkan wrapper table-responsive agar tidak merusak tata letak
+            let html = `<div class="table-responsive"><table class="styled-table"><thead><tr><th style="background:var(--prak-color);">Tugas Laporan</th><th style="background:var(--prak-color);">Status</th><th style="background:var(--prak-color);">Nilai</th></tr></thead><tbody>`;
             let adaData = false;
             db.forEach(t => {
                 let cek = (JSON.parse(localStorage.getItem(`prak_pengumpulan_${t.id}`))||[]).find(p => p.userId === user.userId);
                 if(cek) { adaData = true; let n = cek.nilai ? `<strong style="color:var(--success);">${cek.nilai}</strong>` : `<span style="color:var(--warning);">Pending</span>`; html += `<tr><td>${t.judul}</td><td style="color:var(--success);">Terkumpul</td><td>${n}</td></tr>`; }
             });
-            w.innerHTML = adaData ? html + `</tbody></table>` : `<div class="empty-box">Anda belum mengumpulkan laporan apa pun.</div>`;
+            w.innerHTML = adaData ? html + `</tbody></table></div>` : `<div class="empty-box">Anda belum mengumpulkan laporan apa pun.</div>`;
         }
 
         // --- ASISTENSI PRAKTIKUM ---
@@ -990,6 +1034,41 @@
         const themeToggle = document.getElementById("theme-toggle");
         if (localStorage.getItem("theme") === "light") themeToggle.checked = true;
         themeToggle.addEventListener("change", function() { localStorage.setItem("theme", this.checked ? "light" : "dark"); });
+
+        // ====================================================================
+        // FITUR DRAG TO SCROLL UNTUK SEMUA TABS MENU
+        // ====================================================================
+        const tabContainers = document.querySelectorAll('.tabs, .tabs-prak');
+        tabContainers.forEach(container => {
+            let isDown = false;
+            let startX;
+            let scrollLeft;
+
+            container.addEventListener('mousedown', (e) => {
+                isDown = true;
+                container.style.cursor = 'grabbing';
+                startX = e.pageX - container.offsetLeft;
+                scrollLeft = container.scrollLeft;
+            });
+
+            container.addEventListener('mouseleave', () => {
+                isDown = false;
+                container.style.cursor = 'pointer';
+            });
+
+            container.addEventListener('mouseup', () => {
+                isDown = false;
+                container.style.cursor = 'pointer';
+            });
+
+            container.addEventListener('mousemove', (e) => {
+                if (!isDown) return;
+                e.preventDefault();
+                const x = e.pageX - container.offsetLeft;
+                const walk = (x - startX) * 2; // Angka 2 mengatur kecepatan gerak/scroll
+                container.scrollLeft = scrollLeft - walk;
+            });
+        });
     </script>
 </body>
 </html>
