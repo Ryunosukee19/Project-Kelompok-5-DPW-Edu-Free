@@ -6,174 +6,216 @@
     <title>Admin Dashboard - Laporan Nilai</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        /* --- GAYA NOTIFIKASI ADVANCED --- */
+        #notif-dropdown { display: none; position: absolute; top: 45px; right: 0; background: white; border: 1px solid #e5e7eb; border-radius: 12px; width: 340px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); z-index: 9999; text-align: left; overflow: hidden;}
+        .notif-header { padding: 12px 15px; font-weight: bold; background: #f8fafc; border-bottom: 1px solid #e5e7eb; display: flex; justify-content: space-between; align-items: center;}
+        .notif-header button { background: none; border: none; font-size: 11px; cursor: pointer; font-weight: 600; padding: 5px 8px; border-radius: 4px; transition: 0.2s;}
+        .notif-header button:hover { background: #e2e8f0; }
+        .notif-item { padding: 12px 15px; border-bottom: 1px solid #e5e7eb; display: flex; gap: 10px; align-items: flex-start; transition: 0.2s;}
+        .notif-item.unread { background-color: #f0f9ff; border-left: 3px solid #3b82f6; }
+        .notif-item.read { opacity: 0.7; }
+        .notif-icon { flex-shrink: 0; font-size: 16px; padding-top: 2px; }
+        .notif-content { flex: 1; font-size: 12px; color: #334155; line-height: 1.4; }
+        .notif-actions { flex-shrink: 0; display: flex; gap: 8px; font-size: 14px; }
+        .notif-actions i { cursor: pointer; color: #94a3b8; transition: 0.2s; }
+        .notif-actions i:hover { color: #0f172a; }
+        .notif-actions i.fa-trash:hover { color: #ef4444; }
+
+        /* --- PRINT CSS --- */
+        @media print {
+            .sidebar, .top-header, .btn-add-student, .notif-actions { display: none !important; }
+            .main-content { margin-left: 0 !important; width: 100% !important; background: white !important; }
+            body { background: white; }
+            .assignment-horizontal-card { border: 1px solid #ddd; break-inside: avoid; }
+        }
+    </style>
 </head>
 <body>
-
     <div class="container">
-        <!-- Sidebar Navigation - Halaman Home -->
         <aside class="sidebar">
-            <div class="logo">
-                <i class="fas fa-graduation-cap"></i> <span>EduFree</span>
-            </div>
-            
+            <div class="logo"><i class="fas fa-graduation-cap"></i> <span>EduFree</span></div>
             <nav class="menu">
-                <!-- Hanya Home yang ACTIVE -->
-                <a href="index.html" class="menu-item"><i class="fas fa-home"></i> Home</a>
-                
-                <!-- Dropdown Peserta Perbaikan (Tanpa Select Tag) -->
+                <a href="indexadmin.html" class="menu-item"><i class="fas fa-home"></i> Home</a>
                 <details class="menu-group">
-                    <summary class="menu-item">
-                        <i class="fas fa-users"></i> Peserta <i class="fas fa-chevron-down arrow"></i>
-                    </summary>
-                    <div class="submenu-content">
-                        <a href="peserta.html" class="sub-menu-item">Mahasiswa</a>
-                        <a href="dosen.html" class="sub-menu-item">Dosen</a>
-                    </div>
+                    <summary class="menu-item"><i class="fas fa-users"></i> Peserta <i class="fas fa-chevron-down arrow"></i></summary>
+                    <div class="submenu-content"><a href="peserta.html" class="sub-menu-item">Mahasiswa</a><a href="dosen.html" class="sub-menu-item">Dosen</a></div>
                 </details>
-
-                <!-- Dropdown Mata Kuliah Perbaikan (Tanpa Select Tag) -->
                 <details class="menu-group">
-                    <summary class="menu-item">
-                        <i class="fas fa-book"></i> Mata Kuliah <i class="fas fa-chevron-down arrow"></i>
-                    </summary>
-                    <div class="submenu-content">
-                        <a href="matakuliah.html" class="sub-menu-item">Semester 1</a>
-                        <a href="matakuliah2.html" class="sub-menu-item">Semester 2</a>
-                        <a href="matakuliah3.html" class="sub-menu-item">Semester 3</a>
-                    </div>
+                    <summary class="menu-item"><i class="fas fa-book"></i> Mata Kuliah <i class="fas fa-chevron-down arrow"></i></summary>
+                    <div class="submenu-content"><a href="matakuliah.html" class="sub-menu-item">Semester 1</a><a href="matakuliah2.html" class="sub-menu-item">Semester 2</a><a href="matakuliah3.html" class="sub-menu-item">Semester 3</a></div>
                 </details>
-
-                <a href="pengumpulan.html" class="menu-item"><i class="fas fa-file-invoice"></i> Pengumpulan Tugas</a>
+                <a href="beritaadmin.html" class="menu-item"><i class="fas fa-newspaper"></i> Kelola Berita</a>
+                <a href="lupapasswordadmin.html" class="menu-item"><i class="fas fa-file-invoice"></i> Lupa Password</a>
                 <a href="laporan_nilai.html" class="menu-item active"><i class="fas fa-chart-bar"></i> Laporan Nilai</a>
+                <a href="kuisioneradmin.html" class="menu-item"><i class="fas fa-comment-dots"></i> Kuisioner</a>
+                <a href="index.html" class="menu-item" style="margin-top: 20px; color: #ef4444;"><i class="fas fa-sign-out-alt"></i> Log Out</a>
             </nav>
         </aside>
 
-        <!-- Main Content -->
         <main class="main-content">
-            <!-- Header Atas -->
             <header class="top-header">
                 <div class="search-bar">
                     <i class="fas fa-search"></i>
-                    <input type="text" placeholder="Search here...">
+                    <input type="text" id="globalSearch" placeholder="Cari Mata Kuliah atau Nama Dosen...">
                 </div>
-                <div class="user-profile">
-                    <i class="far fa-bell"></i>
-                    <i class="far fa-comment-dots"></i>
-                    <div class="profile-info">
-                        <span class="name">Priscilla Lily</span>
-                        <span class="role">Admin</span>
+                <div class="user-profile" style="position: relative;">
+                    <div style="position: relative; cursor: pointer;" onclick="toggleNotif()">
+                        <i class="far fa-bell"></i>
+                        <span id="notif-badge" style="display: none; position: absolute; top: -5px; right: -5px; background: #ef4444; color: white; border-radius: 50%; padding: 2px 6px; font-size: 10px; font-weight: bold;">0</span>
                     </div>
-                 </div>
+                    <div id="notif-dropdown">
+                        <div class="notif-header">
+                            <span>Notifikasi</span>
+                            <div>
+                                <button onclick="markAllRead()" style="color: #3b82f6;"><i class="fas fa-check-double"></i> Read All</button>
+                                <button onclick="clearAllNotifications()" style="color: #ef4444;"><i class="fas fa-trash-alt"></i> Clear</button>
+                            </div>
+                        </div>
+                        <div id="notif-list" style="max-height: 300px; overflow-y: auto;"></div>
+                    </div>
+                    <i class="far fa-comment-dots"></i>
+                    <div class="profile-info"><span class="name">Super Admin</span><span class="role">Admin</span></div>
+                </div>
             </header>
 
-            <!-- Judul Kiri Atas & Tombol Aksi -->
             <section class="page-control-panel">
                 <div class="panel-left">
-                    <h2>Laporan Nilai</h2>
+                    <h2>Laporan Rekapitulasi Nilai & Presensi</h2>
+                    <p style="color: #888; font-size: 13px; margin-top: 5px;">Data ini diakumulasi otomatis dari input nilai dan presensi dosen pengampu.</p>
                 </div>
                 <div class="panel-right">
-                    <button class="btn-add-student"><i class="fas fa-file-download"></i> Unduh Transkrip</button>
+                    <button class="btn-add-student" onclick="window.print()"><i class="fas fa-file-download"></i> Unduh Laporan</button>
                 </div>
             </section>
 
-            <!-- Statistik Nilai Mata Kuliah (Card Persegi Panjang Horizontal) -->
-            <section class="assignment-list-container">
-                
-                <!-- Card 1: Algoritma Pemrograman -->
-                <div class="assignment-horizontal-card card-purple">
-                    <div class="task-info-block">
-                        <h3>Algoritma Pemrograman</h3>
-                        <p>Dosen: <strong>Putra, M.T.</strong></p>
-                    </div>
-                    <div class="task-status-block">
-                        <p style="font-size: 11px; color: #888; text-transform: uppercase; margin-bottom: 4px;">Indeks Prestasi</p>
-                        <span class="badge badge-active" style="background-color: #f4ecff; color: #8a33fd; font-size: 14px; padding: 4px 15px;">A</span>
-                    </div>
-                    <div class="task-history-block">
-                        <p class="grade-label">Rata-Rata Nilai</p>
-                        <p class="grade-value">88.5<span style="font-size:12px; font-weight:normal; color:#888;"> /100</span></p>
-                    </div>
-                    <div class="task-delay-block">
-                        <p style="font-size: 11px; color: #888; text-transform: uppercase; margin-bottom: 4px;">Statistik Presensi</p>
-                        <p class="delay-text on-time" style="color: #10b981;"><i class="fas fa-percentage"></i> 100% Hadir</p>
-                    </div>
-                    <div class="task-action-block">
-                        <i class="fas fa-chevron-right"></i>
-                    </div>
-                </div>
-
-                <!-- Card 2: Pengantar Teknologi Informasi -->
-                <div class="assignment-horizontal-card card-orange">
-                    <div class="task-info-block">
-                        <h3>Pengantar Teknologi Informasi</h3>
-                        <p>Dosen: <strong>Pratiwi, M.Kom.</strong></p>
-                    </div>
-                    <div class="task-status-block">
-                        <p style="font-size: 11px; color: #888; text-transform: uppercase; margin-bottom: 4px;">Indeks Prestasi</p>
-                        <span class="badge badge-active" style="background-color: #fff7ed; color: #fb8c00; font-size: 14px; padding: 4px 15px;">B+</span>
-                    </div>
-                    <div class="task-history-block">
-                        <p class="grade-label">Rata-Rata Nilai</p>
-                        <p class="grade-value">79.2<span style="font-size:12px; font-weight:normal; color:#888;"> /100</span></p>
-                    </div>
-                    <div class="task-delay-block">
-                        <p style="font-size: 11px; color: #888; text-transform: uppercase; margin-bottom: 4px;">Statistik Presensi</p>
-                        <p class="delay-text on-time" style="color: #10b981;"><i class="fas fa-percentage"></i> 92% Hadir</p>
-                    </div>
-                    <div class="task-action-block">
-                        <i class="fas fa-chevron-right"></i>
-                    </div>
-                </div>
-
-                <!-- Card 3: Bahasa Indonesia -->
-                <div class="assignment-horizontal-card card-green">
-                    <div class="task-info-block">
-                        <h3>Bahasa Indonesia</h3>
-                        <p>Dosen: <strong>Siti, M.Pd.</strong></p>
-                    </div>
-                    <div class="task-status-block">
-                        <p style="font-size: 11px; color: #888; text-transform: uppercase; margin-bottom: 4px;">Indeks Prestasi</p>
-                        <span class="badge badge-active" style="background-color: #ecfdf5; color: #10b981; font-size: 14px; padding: 4px 15px;">A-</span>
-                    </div>
-                    <div class="task-history-block">
-                        <p class="grade-label">Rata-Rata Nilai</p>
-                        <p class="grade-value">84.0<span style="font-size:12px; font-weight:normal; color:#888;"> /100</span></p>
-                    </div>
-                    <div class="task-delay-block">
-                        <p style="font-size: 11px; color: #888; text-transform: uppercase; margin-bottom: 4px;">Statistik Presensi</p>
-                        <p class="delay-text on-time" style="color: #10b981;"><i class="fas fa-percentage"></i> 100% Hadir</p>
-                    </div>
-                    <div class="task-action-block">
-                        <i class="fas fa-chevron-right"></i>
-                    </div>
-                </div>
-
-                <!-- Card 4: PAI -->
-                <div class="assignment-horizontal-card card-red">
-                    <div class="task-info-block">
-                        <h3>Pendidikan Agama Islam (PAI)</h3>
-                        <p>Dosen: <strong>Ahmad, M.Ag.</strong></p>
-                    </div>
-                    <div class="task-status-block">
-                        <p style="font-size: 11px; color: #888; text-transform: uppercase; margin-bottom: 4px;">Indeks Prestasi</p>
-                        <span class="badge badge-late" style="font-size: 14px; padding: 4px 15px;">C</span>
-                    </div>
-                    <div class="task-history-block">
-                        <p class="grade-label">Rata-Rata Nilai</p>
-                        <p class="grade-value">62.8<span style="font-size:12px; font-weight:normal; color:#888;"> /100</span></p>
-                    </div>
-                    <div class="task-delay-block">
-                        <p style="font-size: 11px; color: #888; text-transform: uppercase; margin-bottom: 4px;">Statistik Presensi</p>
-                        <p class="delay-text late" style="color: #ef4444;"><i class="fas fa-percentage"></i> 75% Hadir (Peringatan)</p>
-                    </div>
-                    <div class="task-action-block">
-                        <i class="fas fa-chevron-right"></i>
-                    </div>
-                </div>
-
-            </section>
+            <section class="assignment-list-container" id="laporan-container">
+                </section>
         </main>
     </div>
 
+    <script>
+        // --- 1. SEARCH & NOTIF GLOBAL ---
+        document.getElementById('globalSearch').addEventListener('input', function(e) {
+            let keyword = e.target.value.toLowerCase();
+            document.querySelectorAll('.searchable-item').forEach(card => {
+                card.style.display = card.innerText.toLowerCase().includes(keyword) ? '' : 'none';
+            });
+        });
+
+        function toggleNotif() { document.getElementById('notif-dropdown').style.display = document.getElementById('notif-dropdown').style.display === 'none' ? 'block' : 'none'; }
+        
+        function syncNotifications() {
+            let notifs = JSON.parse(localStorage.getItem('admin_notifs')) || [];
+            let reqPassword = JSON.parse(localStorage.getItem('reset_password_requests')) || [];
+            reqPassword.forEach(req => { let id = 'pwd_'+req.reqId; if(!notifs.find(n=>n.id===id)) notifs.push({id, type:'pwd', icon:'fa-key', color:'#eab308', text:`Reset password: <b>${req.nama}</b>`, isRead:false, isDeleted:false, time:req.waktu}); });
+            let kuisioner = JSON.parse(localStorage.getItem('kuisioner_admin')) || [];
+            kuisioner.forEach(kuis => { let id = 'kuis_'+kuis.id; if(!notifs.find(n=>n.id===id)) notifs.push({id, type:'kuis', icon:'fa-comment-dots', color:'#3b82f6', text:`Evaluasi: <b>${kuis.matkul}</b>`, isRead:false, isDeleted:false, time:kuis.waktu}); });
+            for(let i=0; i<localStorage.length; i++) {
+                let key = localStorage.key(i);
+                if(key !== 'loggedInUser' && key !== 'admin' && !key.includes('eduFree') && !key.includes('reset') && !key.includes('kuisioner') && !key.includes('notif') && !key.includes('matkul') && !key.includes('laporan')) {
+                    try { let user = JSON.parse(localStorage.getItem(key)); let id = 'user_'+user.userId; if(!notifs.find(n=>n.id===id)) notifs.push({id, type:'user', icon:'fa-user-plus', color:'#10b981', text:`Daftar: <b>${user.role.toUpperCase()}</b> (${user.nama})`, isRead:false, isDeleted:false, time:new Date().toLocaleDateString('id-ID')}); } catch(e){}
+                }
+            }
+            localStorage.setItem('admin_notifs', JSON.stringify(notifs)); renderNotifications();
+        }
+
+        function renderNotifications() {
+            let notifs = JSON.parse(localStorage.getItem('admin_notifs')) || [];
+            let activeNotifs = notifs.filter(n => !n.isDeleted).reverse();
+            let unreadCount = activeNotifs.filter(n => !n.isRead).length;
+            const badge = document.getElementById('notif-badge'), list = document.getElementById('notif-list');
+            badge.style.display = unreadCount > 0 ? 'block' : 'none'; badge.innerText = unreadCount;
+            if(activeNotifs.length > 0) {
+                list.innerHTML = activeNotifs.map(n => `<div class="notif-item ${n.isRead ? 'read' : 'unread'}"><div class="notif-icon"><i class="fas ${n.icon}" style="color:${n.color};"></i></div><div class="notif-content"><div>${n.text}</div><div style="font-size:10px; color:#94a3b8; margin-top:4px;">${n.time}</div></div><div class="notif-actions"><i class="fas ${n.isRead ? 'fa-envelope-open' : 'fa-envelope'}" onclick="toggleReadStatus('${n.id}')"></i> <i class="fas fa-trash" onclick="deleteNotification('${n.id}')"></i></div></div>`).join('');
+            } else { list.innerHTML = '<div style="padding:20px; text-align:center; color:#94a3b8; font-size:13px;">Tidak ada notifikasi.</div>'; }
+        }
+        window.toggleReadStatus = function(id) { let notifs = JSON.parse(localStorage.getItem('admin_notifs')) || []; let target = notifs.find(n=>n.id===id); if(target){ target.isRead = !target.isRead; localStorage.setItem('admin_notifs', JSON.stringify(notifs)); renderNotifications(); } };
+        window.deleteNotification = function(id) { let notifs = JSON.parse(localStorage.getItem('admin_notifs')) || []; let target = notifs.find(n=>n.id===id); if(target){ target.isDeleted = true; localStorage.setItem('admin_notifs', JSON.stringify(notifs)); renderNotifications(); } };
+        window.markAllRead = function() { let notifs = JSON.parse(localStorage.getItem('admin_notifs')) || []; notifs.forEach(n=>{ if(!n.isDeleted) n.isRead=true; }); localStorage.setItem('admin_notifs', JSON.stringify(notifs)); renderNotifications(); };
+        window.clearAllNotifications = function() { if(confirm("Hapus semua notifikasi?")) { let notifs = JSON.parse(localStorage.getItem('admin_notifs')) || []; notifs.forEach(n=>n.isDeleted=true); localStorage.setItem('admin_notifs', JSON.stringify(notifs)); renderNotifications(); } };
+
+
+        // --- 2. LOGIKA LAPORAN NILAI & PRESENSI ---
+        
+        // Fungsi simulasi data dari dosen
+        function initDummyLaporanDosen() {
+            if(!localStorage.getItem('laporan_dosen_mentah')) {
+                const dataDosen = [
+                    { matkul: "Dasar Pemrograman Web", dosen: "Putra, M.T.", totalMhs: 35, avgNilai: 88.5, presensiHadir: 100 },
+                    { matkul: "Pengantar Teknologi Informasi", dosen: "Pratiwi, M.Kom.", totalMhs: 40, avgNilai: 79.2, presensiHadir: 92 },
+                    { matkul: "Bahasa Indonesia", dosen: "Siti, M.Pd.", totalMhs: 30, avgNilai: 84.0, presensiHadir: 98 },
+                    { matkul: "Pendidikan Agama Islam", dosen: "Ahmad, M.Ag.", totalMhs: 38, avgNilai: 62.8, presensiHadir: 75 }
+                ];
+                localStorage.setItem('laporan_dosen_mentah', JSON.stringify(dataDosen));
+            }
+        }
+
+        // Fungsi konversi nilai rata-rata menjadi Indeks Prestasi (Huruf)
+        function hitungIndeksPrestasi(rataRata) {
+            if (rataRata >= 85) return { huruf: 'A', bg: '#f4ecff', text: '#8a33fd', card: 'card-purple' }; // A = Sangat Baik
+            if (rataRata >= 80) return { huruf: 'A-', bg: '#ecfdf5', text: '#10b981', card: 'card-green' };  // A- = Baik Sekali
+            if (rataRata >= 75) return { huruf: 'B+', bg: '#fff7ed', text: '#fb8c00', card: 'card-orange' }; // B+ = Baik
+            if (rataRata >= 70) return { huruf: 'B', bg: '#fff7ed', text: '#fb8c00', card: 'card-orange' };  // B = Cukup Baik
+            if (rataRata >= 60) return { huruf: 'C', bg: '#fef2f2', text: '#ef4444', card: 'card-red' };     // C = Cukup
+            return { huruf: 'D', bg: '#fef2f2', text: '#ef4444', card: 'card-red' };                         // D/E = Kurang
+        }
+
+        function muatLaporanNilai() {
+            const container = document.getElementById('laporan-container');
+            container.innerHTML = '';
+            
+            // Mengambil data yang "diinput oleh dosen"
+            const laporanData = JSON.parse(localStorage.getItem('laporan_dosen_mentah')) || [];
+
+            if(laporanData.length === 0) {
+                container.innerHTML = `<div style="text-align: center; padding: 40px; color: #888;">Belum ada dosen yang melaporkan nilai.</div>`;
+                return;
+            }
+
+            laporanData.forEach(lap => {
+                const ip = hitungIndeksPrestasi(lap.avgNilai);
+                
+                // Logika Warna Presensi
+                let presensiColor = lap.presensiHadir >= 90 ? '#10b981' : (lap.presensiHadir >= 75 ? '#eab308' : '#ef4444');
+                let presensiStatus = lap.presensiHadir < 80 ? '(Peringatan Kehadiran)' : 'Hadir';
+
+                container.innerHTML += `
+                    <div class="assignment-horizontal-card ${ip.card} searchable-item" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px;">
+                        
+                        <div class="task-info-block" style="flex: 2; min-width: 200px;">
+                            <h3 style="margin-bottom: 5px; font-size: 16px;">${lap.matkul}</h3>
+                            <p style="color: #555; font-size: 13px;">Dosen Pengampu: <strong>${lap.dosen}</strong></p>
+                            <p style="color: #888; font-size: 11px; margin-top: 5px;"><i class="fas fa-users"></i> ${lap.totalMhs} Mahasiswa</p>
+                        </div>
+                        
+                        <div class="task-status-block" style="flex: 1; text-align: center;">
+                            <p style="font-size: 11px; color: #888; text-transform: uppercase; margin-bottom: 4px;">Indeks Prestasi</p>
+                            <span class="badge" style="background-color: ${ip.bg}; color: ${ip.text}; font-size: 15px; padding: 6px 18px; font-weight: bold;">${ip.huruf}</span>
+                        </div>
+                        
+                        <div class="task-history-block" style="flex: 1; text-align: center;">
+                            <p class="grade-label" style="font-size: 11px; color: #888; text-transform: uppercase; margin-bottom: 4px;">Rata-Rata Kelas</p>
+                            <p class="grade-value" style="font-size: 20px; font-weight: bold; color: #111;">${lap.avgNilai}<span style="font-size:12px; font-weight:normal; color:#888;"> /100</span></p>
+                        </div>
+                        
+                        <div class="task-delay-block" style="flex: 1.5; text-align: right;">
+                            <p style="font-size: 11px; color: #888; text-transform: uppercase; margin-bottom: 4px;">Statistik Presensi</p>
+                            <p style="color: ${presensiColor}; font-weight: bold; font-size: 13px;"><i class="fas fa-percentage"></i> ${lap.presensiHadir}% ${presensiStatus}</p>
+                        </div>
+                        
+                    </div>
+                `;
+            });
+        }
+
+        // Inisialisasi
+        document.addEventListener('DOMContentLoaded', () => {
+            initDummyLaporanDosen(); // Muat data dummy
+            muatLaporanNilai();      // Render UI
+            syncNotifications();     // Muat Notifikasi
+        });
+    </script>
 </body>
 </html>
