@@ -3,156 +3,220 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Masuk | Edu-Free</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { background-color: #0d1321; color: #ffffff; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-        .auth-container { width: 100%; padding: 20px; display: flex; justify-content: center; }
-        .auth-card { background-color: #151e32; padding: 40px; border-radius: 16px; width: 100%; max-width: 450px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 255, 255, 0.05); }
-        
-        .logo { font-size: 28px; font-weight: 700; text-align: center; margin-bottom: 20px; }
-        .logo .edu { color: #38bdf8; } .logo .free { color: #c084fc; }
-        .auth-title { font-size: 22px; font-weight: 600; text-align: center; margin-bottom: 5px; }
-        .auth-subtitle { font-size: 13px; color: #9ca3af; text-align: center; margin-bottom: 30px; }
-        
-        .input-group { margin-bottom: 20px; transition: all 0.3s ease; }
-        .input-group label { display: block; font-size: 13px; color: #cbd5e1; margin-bottom: 8px; }
-        .input-group input, .input-group select { width: 100%; padding: 12px 15px; background-color: #1e293b; border: 1px solid #334155; border-radius: 8px; color: #ffffff; font-size: 14px; outline: none; transition: all 0.3s ease; }
-        .input-group input:focus, .input-group select:focus { border-color: #38bdf8; box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2); }
-        .input-group select option { background-color: #1e293b; color: #ffffff; }
-        
-        .btn-primary { width: 100%; padding: 14px; background: linear-gradient(135deg, #38bdf8, #0ea5e9); color: white; border: none; border-radius: 30px; font-size: 15px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 15px rgba(14, 165, 233, 0.4); transition: all 0.3s ease; margin-top: 10px; }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(14, 165, 233, 0.6); }
-        
-        .auth-switch { text-align: center; margin-top: 25px; font-size: 13px; color: #9ca3af; }
-        .auth-switch a { color: #38bdf8; text-decoration: none; font-weight: 600; }
-        .auth-switch a:hover { text-decoration: underline; }
-    </style>
+    <title>Admin Dashboard - Data Mahasiswa</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
 
-    <div class="auth-container">
-        <div class="auth-card">
-            <div class="logo"><span class="edu">Edu</span><span class="free">-Free.</span></div>
-            <h2 class="auth-title">Selamat Datang Kembali!</h2>
-            <p class="auth-subtitle">Silakan masuk ke akun Anda.</p>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i> <span>EduFree</span>
+            </div>
+            
+            <nav class="menu">
+                <a href="indexadmin.html" class="menu-item"><i class="fas fa-home"></i> Home</a>
+                
+                <details class="menu-group active" open>
+                    <summary class="menu-item">
+                        <i class="fas fa-users"></i> Peserta <i class="fas fa-chevron-down arrow"></i>
+                    </summary>
+                    <div class="submenu-content">
+                        <a href="peserta.html" class="sub-menu-item"style="color:var(--primary-color);">Mahasiswa</a>
+                        <a href="dosen.html" class="sub-menu-item">Dosen</a>
+                    </div>
+                </details>
 
-            <form id="loginForm">
-                <div class="input-group">
-                    <label for="login-role">Masuk Sebagai</label>
-                    <select id="login-role" required>
-                        <option value="mahasiswa" selected>Mahasiswa</option>
-                        <option value="dosen">Dosen</option>
-                        <option value="asprak">Asisten Praktikum</option>
-                        <option value="admin">Administrator</option>
-                    </select>
+                <details class="menu-group">
+                    <summary class="menu-item">
+                        <i class="fas fa-book"></i> Mata Kuliah <i class="fas fa-chevron-down arrow"></i>
+                    </summary>
+                    <div class="submenu-content">
+                        <a href="matakuliah.html" class="sub-menu-item">Semester 1</a>
+                        <a href="matakuliah2.html" class="sub-menu-item">Semester 2</a>
+                        <a href="matakuliah3.html" class="sub-menu-item">Semester 3</a>
+                    </div>
+                </details>
+                <a href="beritaadmin.html" class="menu-item"><i class="fas fa-newspaper"></i> Kelola Berita</a>
+                <a href="lupapasswordadmin.html" class="menu-item"><i class="fas fa-file-invoice"></i>Lupa Password</a>
+                <a href="laporan_nilai.html" class="menu-item"><i class="fas fa-chart-bar"></i> Laporan Nilai</a>
+                <a href="kuisioneradmin.html" class="menu-item"><i class="fas fa-comment-dots"></i> Kuisioner</a>
+                <a href="index.html" class="menu-item" style="margin-top: 20px; color: #ef4444;"><i class="fas fa-sign-out-alt"></i> Log Out</a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-header">
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search here...">
                 </div>
-
-                <div class="input-group">
-                    <label for="login-id" id="login-label-id">NIM</label>
-                    <input type="text" id="login-id" placeholder="Masukkan NIM Anda" required autocomplete="off">
+                <div class="user-profile">
+                    <i class="far fa-bell"></i>
+                    <i class="far fa-comment-dots"></i>
+                    <div class="profile-info">
+                        <span class="name">Super Admin</span>
+                        <span class="role">Admin</span>
+                    </div>
                 </div>
+            </header>
 
-                <div class="input-group">
-                    <label for="login-password">Password</label>
-                    <input type="password" id="login-password" placeholder="Masukkan Password" required>
+            <section class="page-control-panel">
+                <div class="panel-left">
+                    <h2>Halaman Mahasiswa</h2>
                 </div>
+                <div class="panel-right">
+                    <button class="btn-add-student" id="btnBukaModal"><i class="fas fa-plus"></i> Add Student</button>
+                </div>
+            </section>
 
-                <button type="submit" class="btn-primary">Masuk</button>
-            </form>
+            <section class="cards-layout-grid">
+            </section>
+        </main>
+    </div>
 
-            <p class="auth-switch">Belum punya akun? <a href="register.html">Daftar di sini</a></p>
+    <div id="modalTambahMhs" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; align-items: center; justify-content: center;">
+        <div style="background: white; padding: 25px; border-radius: 12px; width: 400px; max-height: 90vh; overflow-y: auto; color: #111; box-shadow: 0 10px 25px rgba(0,0,0,0.2);">
+            <h3 style="margin-bottom: 15px; color: var(--primary-color);">Tambah Mahasiswa</h3>
+            
+            <input type="text" id="mhsNama" placeholder="Nama Lengkap" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 6px; outline:none;">
+            <input type="number" id="mhsNim" placeholder="NIM" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 6px; outline:none;">
+            <input type="text" id="mhsPass" placeholder="Password" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 6px; outline:none;">
+            
+            <select id="mhsSmt" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 6px; outline:none;">
+                <option value="1">Semester 1</option>
+                <option value="2">Semester 2</option>
+            </select>
+
+            <div id="matkulContainer" style="margin-bottom: 15px; text-align: left; max-height: 130px; overflow-y: auto; border: 1px solid #ccc; padding: 10px; border-radius: 6px; font-size: 13px; background: #f9f9f9;">
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                <button onclick="document.getElementById('modalTambahMhs').style.display='none'" style="padding: 8px 15px; border: none; border-radius: 6px; cursor: pointer; background: #eee;">Batal</button>
+                <button onclick="simpanMahasiswa()" style="padding: 8px 15px; border: none; border-radius: 6px; cursor: pointer; background: var(--primary-color); color: white;">Simpan</button>
+            </div>
         </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const loginRole = document.getElementById('login-role');
-            const loginLabelId = document.getElementById('login-label-id');
-            const loginInputId = document.getElementById('login-id');
+        // --- DAFTAR MATA KULIAH DISAMAKAN DENGAN REGISTER.HTML ---
+        const matkulSem1 = ["PTI", "Alpro", "Matematika Teknik", "Matematika Diskret"];
+        const matkulSem2 = ["Struktur Data", "DPW", "Orkom", "Metode Statistika", "Komputasi Aljabar Linier"];
 
-            // Ganti Label dan Tipe Input Berdasarkan Peran
-            loginRole.addEventListener('change', function() {
-                if (this.value === 'dosen') {
-                    loginLabelId.textContent = 'NIP';
-                    loginInputId.placeholder = 'Masukkan NIP Anda';
-                    loginInputId.type = 'number';
-                } else if (this.value === 'asprak') {
-                    loginLabelId.textContent = 'NIM / ID Asprak';
-                    loginInputId.placeholder = 'Masukkan ID Anda';
-                    loginInputId.type = 'number';
-                } else if (this.value === 'admin') {
-                    loginLabelId.textContent = 'Username Admin';
-                    loginInputId.placeholder = 'Ketik Username Rahasia';
-                    loginInputId.type = 'text'; 
-                } else {
-                    loginLabelId.textContent = 'NIM';
-                    loginInputId.placeholder = 'Masukkan NIM Anda';
-                    loginInputId.type = 'number';
-                }
-                loginInputId.value = ''; 
+        function renderMatkulOptions() {
+            const smtPilihan = document.getElementById('mhsSmt').value;
+            const container = document.getElementById('matkulContainer');
+            container.innerHTML = '<p style="margin-bottom: 8px; font-weight: 600; color: #555;">Pilih Mata Kuliah:</p>';
+            
+            const listTampil = smtPilihan === "1" ? matkulSem1 : matkulSem2;
+            
+            listTampil.forEach(mk => {
+                container.innerHTML += `
+                    <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px; cursor: pointer;">
+                        <input type="checkbox" class="matkul-checkbox" value="${mk}"> ${mk}
+                    </label>
+                `;
             });
+        }
 
-            // Logika Verifikasi
-            const loginForm = document.getElementById('loginForm');
-            if (loginForm) {
-                loginForm.addEventListener('submit', function(e) {
-                    e.preventDefault(); 
-                    
-                    const inputRole = loginRole.value;
-                    const inputId = loginInputId.value;
-                    const inputPassword = document.getElementById('login-password').value;
+        function muatDataMahasiswa() {
+            const gridLayout = document.querySelector('.cards-layout-grid');
+            gridLayout.innerHTML = ''; 
 
-                    // 1. JALUR KHUSUS ADMIN
-                    if (inputRole === 'admin') {
-                        const rahasiaUsername = "admin";
-                        const rahasiaPassword = "190207";
-
-                        if (inputId === rahasiaUsername && inputPassword === rahasiaPassword) {
-                            alert("Akses Diberikan. Selamat Datang, Admin Tertinggi!");
-                            localStorage.setItem('loggedInUser', JSON.stringify({
-                                userId: inputId, nama: "Super Admin", role: "admin", semester: "-", matkul: []
-                            }));
-                            window.location.href = "indexadmin.html"; 
-                        } else {
-                            alert("Akses Ditolak! Username atau Password Admin salah.");
-                        }
-                        return; 
-                    }
-
-                    // 2. JALUR MAHASISWA, DOSEN & ASPRAK (Murni Menggunakan localStorage)
-                    const userDataString = localStorage.getItem(inputId);
-
-                    if (userDataString) {
-                        const userData = JSON.parse(userDataString);
-
-                        if (userData.password === inputPassword && userData.role === inputRole) {
-                            alert(`Selamat datang kembali, ${userData.nama}!`);
+            let count = 0;
+            for (let i = 0; i < localStorage.length; i++) {
+                let key = localStorage.key(i);
+                if (key !== 'loggedInUser' && key !== 'admin' && key !== 'eduFreeNewsWithImage' && key !== 'eduFreeNews') {
+                    try {
+                        let user = JSON.parse(localStorage.getItem(key));
+                        if (user && user.role === 'mahasiswa') {
+                            count++;
+                            let matkulList = user.matkul ? user.matkul.join(', ') : '-';
                             
-                            // Set sesi aktif agar dashboard bisa membacanya
-                            localStorage.setItem('loggedInUser', userDataString);
-
-                            // Arahkan ke Dashboard yang Sesuai
-                            if (inputRole === 'dosen') {
-                                // PENTING: Ganti "dosen.html" sesuai dengan nama file dashboard dosen milikmu
-                                window.location.href = "indexlogindosen.html"; 
-                            } else if (inputRole === 'asprak') {
-                                // PENTING: Ganti "asprak.html" sesuai dengan nama file dashboard asprak milikmu
-                                window.location.href = "asprak.html";
-                            } else {
-                                // PENTING: Ganti "mahasiswa.html" sesuai dengan nama file dashboard mahasiswa milikmu
-                                window.location.href = "indexsetelahlogin2.html"; 
-                            }
-
-                        } else {
-                            alert("Oops! Password salah atau Anda memilih peran yang tidak sesuai.");
+                            let cardHTML = `
+                                <div class="student-profile-card">
+                                    <div class="card-action-menu" onclick="hapusAkun('${user.userId}')" style="cursor: pointer; color: #ef4444;" title="Hapus Akun"><i class="fas fa-trash"></i></div>
+                                    <h3 class="student-card-name">${user.nama}</h3>
+                                    <p class="student-card-id">NIM. ${user.userId}</p>
+                                    <span class="badge badge-active">AKTIF</span>
+                                    
+                                    <div class="card-contact-info">
+                                        <p><i class="fas fa-key"></i> Pass: <strong>${user.password}</strong></p>
+                                        <p><i class="fas fa-layer-group"></i> Smt: ${user.semester}</p>
+                                    </div>
+                                    <div class="card-meta-details">
+                                        <div class="meta-row"><span>Peran</span><strong style="text-transform: capitalize;">${user.role}</strong></div>
+                                        <div class="meta-row"><span>Matkul</span><strong><marquee scrollamount="3" style="width: 80px;">${matkulList}</marquee></strong></div>
+                                    </div>
+                                </div>
+                            `;
+                            gridLayout.innerHTML += cardHTML;
                         }
-                    } else {
-                        alert("Akun tidak ditemukan! Silakan daftar terlebih dahulu.");
-                    }
+                    } catch(e) {}
+                }
+            }
+
+            if (count === 0) {
+                gridLayout.innerHTML = '<h3 style="grid-column: 1 / -1; text-align: center; color: #888; padding: 50px;">Belum ada data Mahasiswa.</h3>';
+            }
+        }
+
+        window.hapusAkun = function(id) {
+            if(confirm("Yakin ingin menghapus akun dengan NIM: " + id + "?")) {
+                localStorage.removeItem(id);
+                muatDataMahasiswa();
+            }
+        };
+
+        window.simpanMahasiswa = function() {
+            const nama = document.getElementById('mhsNama').value;
+            const id = document.getElementById('mhsNim').value;
+            const pass = document.getElementById('mhsPass').value;
+            const smt = document.getElementById('mhsSmt').value;
+
+            const checkboxTerpilih = document.querySelectorAll('.matkul-checkbox:checked');
+            let arrayMatkulTerpilih = Array.from(checkboxTerpilih).map(cb => cb.value);
+
+            if(!nama || !id || !pass) return alert("Harap isi Nama, NIM, dan Password!");
+            if(arrayMatkulTerpilih.length === 0) return alert("Harap pilih minimal 1 Mata Kuliah!");
+            if(localStorage.getItem(id)) return alert("NIM ini sudah terdaftar!");
+
+            const userData = {
+                role: "mahasiswa",
+                nama: nama,
+                userId: id,
+                password: pass,
+                semester: smt,
+                matkul: arrayMatkulTerpilih 
+            };
+
+            localStorage.setItem(id, JSON.stringify(userData));
+            
+            document.getElementById('modalTambahMhs').style.display = 'none'; 
+            document.getElementById('mhsNama').value = '';
+            document.getElementById('mhsNim').value = '';
+            document.getElementById('mhsPass').value = '';
+            
+            muatDataMahasiswa(); 
+            alert("Mahasiswa berhasil ditambahkan beserta mata kuliahnya!");
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            muatDataMahasiswa();
+            
+            const btnAdd = document.getElementById('btnBukaModal');
+            if(btnAdd) {
+                btnAdd.addEventListener('click', () => {
+                    document.getElementById('mhsSmt').value = "1"; 
+                    renderMatkulOptions(); 
+                    document.getElementById('modalTambahMhs').style.display = 'flex';
                 });
+            }
+
+            const selectSmt = document.getElementById('mhsSmt');
+            if(selectSmt) {
+                selectSmt.addEventListener('change', renderMatkulOptions);
             }
         });
     </script>
