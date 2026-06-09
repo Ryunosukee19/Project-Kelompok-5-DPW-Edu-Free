@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Kuisioner Evaluasi</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i> <span>EduFree</span>
+            </div>
+            
+            <nav class="menu">
+                <a href="indexadmin.html" class="menu-item"><i class="fas fa-home"></i> Home</a>
+                
+                <details class="menu-group">
+                    <summary class="menu-item">
+                        <i class="fas fa-users"></i> Peserta <i class="fas fa-chevron-down arrow"></i>
+                    </summary>
+                    <div class="submenu-content">
+                        <a href="peserta.html" class="sub-menu-item">Mahasiswa</a>
+                        <a href="dosen.html" class="sub-menu-item">Dosen</a>
+                    </div>
+                </details>
+
+                <details class="menu-group">
+                    <summary class="menu-item">
+                        <i class="fas fa-book"></i> Mata Kuliah <i class="fas fa-chevron-down arrow"></i>
+                    </summary>
+                    <div class="submenu-content">
+                        <a href="matakuliah.html" class="sub-menu-item">Semester 1</a>
+                        <a href="matakuliah2.html" class="sub-menu-item">Semester 2</a>
+                        <a href="matakuliah3.html" class="sub-menu-item">Semester 3</a>
+                    </div>
+                </details>
+
+                <a href="beritaadmin.html" class="menu-item"><i class="fas fa-newspaper"></i> Kelola Berita</a>
+                <a href="pengumpulan.html" class="menu-item"><i class="fas fa-file-invoice"></i> Pengumpulan Tugas</a>
+                <a href="laporan_nilai.html" class="menu-item"><i class="fas fa-chart-bar"></i> Laporan Nilai</a>
+                
+                <!-- MENU KUISIONER (ACTIVE) -->
+                <a href="kuisioner.html" class="menu-item active"><i class="fas fa-comment-dots"></i> Kuisioner</a>
+                
+                <a href="index.html" class="menu-item" style="margin-top: 20px; color: #ef4444;"><i class="fas fa-sign-out-alt"></i> Log Out</a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-header">
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search here...">
+                </div>
+                <div class="user-profile">
+                    <i class="far fa-bell"></i>
+                    <i class="far fa-comment-dots"></i>
+                    <div class="profile-info">
+                        <span class="name">Super Admin</span>
+                        <span class="role">Admin</span>
+                    </div>
+                </div>
+            </header>
+
+            <section class="page-control-panel">
+                <div class="panel-left">
+                    <h2>Kuisioner Evaluasi</h2>
+                </div>
+                <div class="panel-right">
+                    <button class="btn-add-student" onclick="window.print()"><i class="fas fa-print"></i> Cetak Data</button>
+                </div>
+            </section>
+
+            <!-- KARTU STATISTIK (Seperti di indexadmin.html) -->
+            <section class="cards-grid">
+                <div class="card-stat">
+                    <div class="card-info">
+                        <h3 id="stat-total">0</h3>
+                        <p>Total Evaluasi Masuk</p>
+                    </div>
+                    <div class="card-icon"><i class="fas fa-comments"></i></div>
+                </div>
+                
+                <div class="card-stat">
+                    <div class="card-info">
+                        <h3 id="stat-today">0</h3>
+                        <p>Evaluasi Hari Ini</p>
+                    </div>
+                    <div class="card-icon"><i class="fas fa-calendar-day"></i></div>
+                </div>
+
+                <div class="card-stat">
+                    <div class="card-info">
+                        <h3 id="stat-matkul">-</h3>
+                        <p>Mata Kuliah Teraktif</p>
+                    </div>
+                    <div class="card-icon"><i class="fas fa-chart-line"></i></div>
+                </div>
+            </section>
+
+            <!-- TABEL DATA (Seperti di indexadmin.html) -->
+            <section class="table-card" style="margin-top: 25px;">
+                <div class="section-header">
+                    <h3>Daftar Kuisioner Mahasiswa</h3>
+                    <!-- Dropdown Filter -->
+                    <select id="filter-matkul" onchange="renderKuisioner()" class="filter-select" style="padding: 8px 15px; border-radius: 20px; border: 1px solid var(--border-color); outline: none;">
+                        <option value="all">Semua Mata Kuliah</option>
+                    </select>
+                </div>
+                
+                <div style="overflow-x: auto;">
+                    <table class="home-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 15%;">Waktu</th>
+                                <th style="width: 20%;">Mahasiswa</th>
+                                <th style="width: 20%;">Mata Kuliah</th>
+                                <th style="width: 35%;">Isi Evaluasi</th>
+                                <th style="width: 10%; text-align: center;">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="kuisioner-container">
+                            <!-- Data tabel di-render oleh JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- LOGIKA JAVASCRIPT -->
+    <script>
+        function updateStatistik(dataKuisioner) {
+            // Total Kuisioner
+            document.getElementById('stat-total').textContent = dataKuisioner.length;
+
+            // Kuisioner Hari Ini
+            const hariIni = new Date().toLocaleDateString('id-ID');
+            const jumlahHariIni = dataKuisioner.filter(k => k.waktu.includes(hariIni)).length;
+            document.getElementById('stat-today').textContent = jumlahHariIni;
+
+            // Mata Kuliah Paling Banyak Dievaluasi
+            if (dataKuisioner.length > 0) {
+                const countMatkul = {};
+                let maxCount = 0;
+                let topMatkul = "-";
+
+                dataKuisioner.forEach(k => {
+                    countMatkul[k.matkul] = (countMatkul[k.matkul] || 0) + 1;
+                    if (countMatkul[k.matkul] > maxCount) {
+                        maxCount = countMatkul[k.matkul];
+                        topMatkul = k.matkul;
+                    }
+                });
+                
+                // Singkat nama matkul jika terlalu panjang agar muat di kartu
+                if(topMatkul.length > 15) topMatkul = topMatkul.substring(0, 15) + "...";
+                document.getElementById('stat-matkul').textContent = topMatkul;
+            } else {
+                document.getElementById('stat-matkul').textContent = "-";
+            }
+        }
+
+        function populateFilterDropdown(dataKuisioner) {
+            let filterSelect = document.getElementById('filter-matkul');
+            
+            // Mengambil daftar mata kuliah yang unik
+            let uniqueMatkul = [...new Set(dataKuisioner.map(item => item.matkul))];
+            
+            // Kosongkan dan isi ulang agar tidak menumpuk
+            filterSelect.innerHTML = '<option value="all">Semua Mata Kuliah</option>';
+            uniqueMatkul.forEach(mk => {
+                filterSelect.innerHTML += `<option value="${mk}">${mk}</option>`;
+            });
+        }
+
+        function renderKuisioner() {
+            const selectedMatkul = document.getElementById('filter-matkul').value;
+            const container = document.getElementById('kuisioner-container');
+            container.innerHTML = ''; 
+
+            let dbKuisioner = JSON.parse(localStorage.getItem('kuisioner_admin')) || [];
+            
+            // Update stats & dropdown jika pertama kali load (saat filter == all)
+            if(selectedMatkul === 'all') {
+                updateStatistik(dbKuisioner);
+                // Hanya jalankan ini jika isi option baru 1 (artinya belum di-populate)
+                if(document.getElementById('filter-matkul').options.length <= 1) {
+                    populateFilterDropdown(dbKuisioner);
+                }
+            }
+
+            // Saring data berdasarkan dropdown
+            if (selectedMatkul !== 'all') {
+                dbKuisioner = dbKuisioner.filter(k => k.matkul === selectedMatkul);
+            }
+
+            if (dbKuisioner.length === 0) {
+                container.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #888; padding: 30px;">Belum ada kuisioner.</td></tr>`;
+                return;
+            }
+
+            // Tampilkan dari yang terbaru
+            [...dbKuisioner].reverse().forEach(k => {
+                let statusBadge = `<span class="status status-progress">${k.matkul}</span>`;
+                
+                container.innerHTML += `
+                    <tr>
+                        <td style="color: var(--text-gray); font-size: 12px;">${k.waktu}</td>
+                        <td>
+                            <strong>${k.namaMahasiswa}</strong><br>
+                            <span style="font-size: 11px; color: var(--text-gray);">NIM: ${k.userId}</span>
+                        </td>
+                        <td>${statusBadge}</td>
+                        <td style="font-style: italic; color: #555;">"${k.pesan}"</td>
+                        <td style="text-align: center;">
+                            <button onclick="hapusKuisioner('${k.id}')" style="background: none; border: none; color: #ef4444; cursor: pointer; padding: 8px;" title="Hapus">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        window.hapusKuisioner = function(idKuisioner) {
+            if(confirm("Yakin ingin menghapus evaluasi ini?")) {
+                let dbKuisioner = JSON.parse(localStorage.getItem('kuisioner_admin')) || [];
+                dbKuisioner = dbKuisioner.filter(k => k.id !== idKuisioner);
+                localStorage.setItem('kuisioner_admin', JSON.stringify(dbKuisioner));
+                
+                renderKuisioner();
+            }
+        };
+
+        // Inisialisasi
+        document.addEventListener('DOMContentLoaded', renderKuisioner);
+    </script>
+</body>
+</html>
