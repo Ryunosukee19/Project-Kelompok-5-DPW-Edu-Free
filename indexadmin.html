@@ -10,17 +10,14 @@
 <body>
 
     <div class="container">
-        <!-- Sidebar Navigation - Halaman Home -->
         <aside class="sidebar">
             <div class="logo">
                 <i class="fas fa-graduation-cap"></i> <span>EduFree</span>
             </div>
             
             <nav class="menu">
-                <!-- Hanya Home yang ACTIVE -->
-                <a href="index.html" class="menu-item active"><i class="fas fa-home"></i> Home</a>
+                <a href="indexadmin.html" class="menu-item active"><i class="fas fa-home"></i> Home</a>
                 
-                <!-- Dropdown Peserta Perbaikan (Tanpa Select Tag) -->
                 <details class="menu-group">
                     <summary class="menu-item">
                         <i class="fas fa-users"></i> Peserta <i class="fas fa-chevron-down arrow"></i>
@@ -31,7 +28,6 @@
                     </div>
                 </details>
 
-                <!-- Dropdown Mata Kuliah Perbaikan (Tanpa Select Tag) -->
                 <details class="menu-group">
                     <summary class="menu-item">
                         <i class="fas fa-book"></i> Mata Kuliah <i class="fas fa-chevron-down arrow"></i>
@@ -58,7 +54,7 @@
                     <i class="far fa-bell"></i>
                     <i class="far fa-comment-dots"></i>
                     <div class="profile-info">
-                        <span class="name">Priscilla Lily</span>
+                        <span class="name">Super Admin</span>
                         <span class="role">Admin</span>
                     </div>
                 </div>
@@ -67,7 +63,7 @@
             <section class="cards-grid">
                 <div class="card-stat">
                     <div class="card-info">
-                        <h3>1,254</h3>
+                        <h3>0</h3>
                         <p>Jumlah Mahasiswa</p>
                     </div>
                     <div class="card-icon"><i class="fas fa-user-graduate"></i></div>
@@ -75,7 +71,7 @@
                 
                 <div class="card-stat">
                     <div class="card-info">
-                        <h3>78</h3>
+                        <h3>0</h3>
                         <p>Jumlah Dosen</p>
                     </div>
                     <div class="card-icon"><i class="fas fa-chalkboard-teacher"></i></div>
@@ -83,15 +79,14 @@
 
                 <div class="card-stat">
                     <div class="card-info">
-                        <h3>32</h3>
-                        <p>Jumlah Mata Kuliah</p>
+                        <h3>0</h3>
+                        <p>Jumlah Asprak</p>
                     </div>
-                    <div class="card-icon"><i class="fas fa-book-open"></i></div>
+                    <div class="card-icon"><i class="fas fa-user-cog"></i></div>
                 </div>
             </section>
 
             <div class="dashboard-grid">
-                
                 <section class="grid-left table-card">
                     <div class="section-header">
                         <h3>Tugas Mata Kuliah</h3>
@@ -116,16 +111,6 @@
                                 <td>Pemrograman Web</td>
                                 <td><span class="status status-progress">In Progress</span></td>
                             </tr>
-                            <tr>
-                                <td>Ushop Mobile App</td>
-                                <td>Pemrograman Mobile</td>
-                                <td><span class="status status-pending">Pending</span></td>
-                            </tr>
-                            <tr>
-                                <td>Database Normalization</td>
-                                <td>Sistem Basis Data</td>
-                                <td><span class="status status-review">Review</span></td>
-                            </tr>
                         </tbody>
                     </table>
                 </section>
@@ -136,45 +121,66 @@
                         <button class="btn-see-all">See all &rarr;</button>
                     </div>
                     <div class="active-students-list">
-                        <div class="student-item">
-                            <div class="student-details">
-                                <h4>Lewis S. Cunningham</h4>
-                                <p>Teknik Informatika</p>
-                            </div>
-                            <div class="student-actions">
-                                <i class="far fa-user"></i>
-                                <i class="far fa-envelope"></i>
-                                <i class="fas fa-phone-alt"></i>
-                            </div>
-                        </div>
-                        <div class="student-item">
-                            <div class="student-details">
-                                <h4>Jane Cooper</h4>
-                                <p>Sistem Informasi</p>
-                            </div>
-                            <div class="student-actions">
-                                <i class="far fa-user"></i>
-                                <i class="far fa-envelope"></i>
-                                <i class="fas fa-phone-alt"></i>
-                            </div>
-                        </div>
-                        <div class="student-item">
-                            <div class="student-details">
-                                <h4>Floyd Miles</h4>
-                                <p>Sains Data</p>
-                            </div>
-                            <div class="student-actions">
-                                <i class="far fa-user"></i>
-                                <i class="far fa-envelope"></i>
-                                <i class="fas fa-phone-alt"></i>
-                            </div>
-                        </div>
                     </div>
                 </section>
-
             </div>
         </main>
     </div>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            let users = [];
+            let countMahasiswa = 0;
+            let countDosen = 0;
+            let countAsprak = 0;
+
+            for (let i = 0; i < localStorage.length; i++) {
+                let key = localStorage.key(i);
+                if (key !== 'loggedInUser' && key !== 'admin') { 
+                    try {
+                        let data = JSON.parse(localStorage.getItem(key));
+                        if (data && data.role) {
+                            users.push(data);
+                            if (data.role === 'mahasiswa') countMahasiswa++;
+                            if (data.role === 'dosen') countDosen++;
+                            if (data.role === 'asprak') countAsprak++;
+                        }
+                    } catch(e) {} 
+                }
+            }
+
+            const statCards = document.querySelectorAll('.card-stat');
+            if(statCards.length >= 3) {
+                statCards[0].querySelector('h3').textContent = countMahasiswa;
+                statCards[1].querySelector('h3').textContent = countDosen;
+                statCards[2].querySelector('h3').textContent = countAsprak;
+                statCards[2].querySelector('p').textContent = "Jumlah Asprak";
+                statCards[2].querySelector('.card-icon').innerHTML = '<i class="fas fa-user-cog"></i>';
+            }
+
+            const activeStudentList = document.querySelector('.active-students-list');
+            const mahasiswaSaja = users.filter(u => u.role === 'mahasiswa');
+            
+            activeStudentList.innerHTML = ''; 
+            
+            if (mahasiswaSaja.length === 0) {
+                activeStudentList.innerHTML = '<p style="color:#888; font-size:13px; text-align:center;">Belum ada mahasiswa yang mendaftar.</p>';
+            } else {
+                mahasiswaSaja.slice(-5).reverse().forEach(mhs => {
+                    activeStudentList.innerHTML += `
+                        <div class="student-item">
+                            <div class="student-details">
+                                <h4>${mhs.nama}</h4>
+                                <p>NIM: ${mhs.userId} | Smt: ${mhs.semester}</p>
+                            </div>
+                            <div class="student-actions">
+                                <i class="fas fa-key" title="Pass: ${mhs.password}"></i>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+        });
+    </script>
 </body>
 </html>
