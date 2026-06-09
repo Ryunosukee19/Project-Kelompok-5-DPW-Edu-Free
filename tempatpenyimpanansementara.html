@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - Data Mahasiswa</title>
+    <title>Admin Dashboard - Home</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -16,14 +16,14 @@
             </div>
             
             <nav class="menu">
-                <a href="indexadmin.html" class="menu-item"><i class="fas fa-home"></i> Home</a>
+                <a href="indexadmin.html" class="menu-item active"><i class="fas fa-home"></i> Home</a>
                 
-                <details class="menu-group active" open>
+                <details class="menu-group">
                     <summary class="menu-item">
                         <i class="fas fa-users"></i> Peserta <i class="fas fa-chevron-down arrow"></i>
                     </summary>
                     <div class="submenu-content">
-                        <a href="peserta.html" class="sub-menu-item"style="color:var(--primary-color);">Mahasiswa</a>
+                        <a href="peserta.html" class="sub-menu-item">Mahasiswa</a>
                         <a href="dosen.html" class="sub-menu-item">Dosen</a>
                     </div>
                 </details>
@@ -62,161 +62,125 @@
                 </div>
             </header>
 
-            <section class="page-control-panel">
-                <div class="panel-left">
-                    <h2>Halaman Mahasiswa</h2>
+            <section class="cards-grid">
+                <div class="card-stat">
+                    <div class="card-info">
+                        <h3>0</h3>
+                        <p>Jumlah Mahasiswa</p>
+                    </div>
+                    <div class="card-icon"><i class="fas fa-user-graduate"></i></div>
                 </div>
-                <div class="panel-right">
-                    <button class="btn-add-student" id="btnBukaModal"><i class="fas fa-plus"></i> Add Student</button>
+                
+                <div class="card-stat">
+                    <div class="card-info">
+                        <h3>0</h3>
+                        <p>Jumlah Dosen</p>
+                    </div>
+                    <div class="card-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+                </div>
+
+                <div class="card-stat">
+                    <div class="card-info">
+                        <h3>0</h3>
+                        <p>Jumlah Asprak</p>
+                    </div>
+                    <div class="card-icon"><i class="fas fa-user-cog"></i></div>
                 </div>
             </section>
 
-            <section class="cards-layout-grid">
-            </section>
+            <div class="dashboard-grid">
+                <section class="grid-left table-card">
+                    <div class="section-header">
+                        <h3>Tugas Mata Kuliah</h3>
+                        <button class="btn-see-all">See all &rarr;</button>
+                    </div>
+                    <table class="home-table">
+                        <thead>
+                            <tr>
+                                <th>Judul Tugas</th>
+                                <th>Mata Kuliah</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>UI/UX Design App</td>
+                                <td>Desain Antarmuka</td>
+                                <td><span class="status status-review">Review</span></td>
+                            </tr>
+                            <tr>
+                                <td>Web Development Project</td>
+                                <td>Pemrograman Web</td>
+                                <td><span class="status status-progress">In Progress</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <section class="grid-right list-card">
+                    <div class="section-header">
+                        <h3>Mahasiswa yang Aktif</h3>
+                        <button class="btn-see-all">See all &rarr;</button>
+                    </div>
+                    <div class="active-students-list">
+                    </div>
+                </section>
+            </div>
         </main>
     </div>
 
-    <div id="modalTambahMhs" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; align-items: center; justify-content: center;">
-        <div style="background: white; padding: 25px; border-radius: 12px; width: 400px; max-height: 90vh; overflow-y: auto; color: #111; box-shadow: 0 10px 25px rgba(0,0,0,0.2);">
-            <h3 style="margin-bottom: 15px; color: var(--primary-color);">Tambah Mahasiswa</h3>
-            
-            <input type="text" id="mhsNama" placeholder="Nama Lengkap" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 6px; outline:none;">
-            <input type="number" id="mhsNim" placeholder="NIM" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 6px; outline:none;">
-            <input type="text" id="mhsPass" placeholder="Password" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 6px; outline:none;">
-            
-            <select id="mhsSmt" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 6px; outline:none;">
-                <option value="1">Semester 1</option>
-                <option value="2">Semester 2</option>
-            </select>
-
-            <div id="matkulContainer" style="margin-bottom: 15px; text-align: left; max-height: 130px; overflow-y: auto; border: 1px solid #ccc; padding: 10px; border-radius: 6px; font-size: 13px; background: #f9f9f9;">
-            </div>
-
-            <div style="display: flex; justify-content: flex-end; gap: 10px;">
-                <button onclick="document.getElementById('modalTambahMhs').style.display='none'" style="padding: 8px 15px; border: none; border-radius: 6px; cursor: pointer; background: #eee;">Batal</button>
-                <button onclick="simpanMahasiswa()" style="padding: 8px 15px; border: none; border-radius: 6px; cursor: pointer; background: var(--primary-color); color: white;">Simpan</button>
-            </div>
-        </div>
-    </div>
-
     <script>
-        // --- DAFTAR MATA KULIAH DISAMAKAN DENGAN REGISTER.HTML ---
-        const matkulSem1 = ["PTI", "Alpro", "Matematika Teknik", "Matematika Diskret"];
-        const matkulSem2 = ["Struktur Data", "DPW", "Orkom", "Metode Statistika", "Komputasi Aljabar Linier"];
+        document.addEventListener('DOMContentLoaded', () => {
+            let users = [];
+            let countMahasiswa = 0;
+            let countDosen = 0;
+            let countAsprak = 0;
 
-        function renderMatkulOptions() {
-            const smtPilihan = document.getElementById('mhsSmt').value;
-            const container = document.getElementById('matkulContainer');
-            container.innerHTML = '<p style="margin-bottom: 8px; font-weight: 600; color: #555;">Pilih Mata Kuliah:</p>';
-            
-            const listTampil = smtPilihan === "1" ? matkulSem1 : matkulSem2;
-            
-            listTampil.forEach(mk => {
-                container.innerHTML += `
-                    <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px; cursor: pointer;">
-                        <input type="checkbox" class="matkul-checkbox" value="${mk}"> ${mk}
-                    </label>
-                `;
-            });
-        }
-
-        function muatDataMahasiswa() {
-            const gridLayout = document.querySelector('.cards-layout-grid');
-            gridLayout.innerHTML = ''; 
-
-            let count = 0;
             for (let i = 0; i < localStorage.length; i++) {
                 let key = localStorage.key(i);
-                if (key !== 'loggedInUser' && key !== 'admin' && key !== 'eduFreeNewsWithImage' && key !== 'eduFreeNews') {
+                if (key !== 'loggedInUser' && key !== 'admin') { 
                     try {
-                        let user = JSON.parse(localStorage.getItem(key));
-                        if (user && user.role === 'mahasiswa') {
-                            count++;
-                            let matkulList = user.matkul ? user.matkul.join(', ') : '-';
-                            
-                            let cardHTML = `
-                                <div class="student-profile-card">
-                                    <div class="card-action-menu" onclick="hapusAkun('${user.userId}')" style="cursor: pointer; color: #ef4444;" title="Hapus Akun"><i class="fas fa-trash"></i></div>
-                                    <h3 class="student-card-name">${user.nama}</h3>
-                                    <p class="student-card-id">NIM. ${user.userId}</p>
-                                    <span class="badge badge-active">AKTIF</span>
-                                    
-                                    <div class="card-contact-info">
-                                        <p><i class="fas fa-key"></i> Pass: <strong>${user.password}</strong></p>
-                                        <p><i class="fas fa-layer-group"></i> Smt: ${user.semester}</p>
-                                    </div>
-                                    <div class="card-meta-details">
-                                        <div class="meta-row"><span>Peran</span><strong style="text-transform: capitalize;">${user.role}</strong></div>
-                                        <div class="meta-row"><span>Matkul</span><strong><marquee scrollamount="3" style="width: 80px;">${matkulList}</marquee></strong></div>
-                                    </div>
-                                </div>
-                            `;
-                            gridLayout.innerHTML += cardHTML;
+                        let data = JSON.parse(localStorage.getItem(key));
+                        if (data && data.role) {
+                            users.push(data);
+                            if (data.role === 'mahasiswa') countMahasiswa++;
+                            if (data.role === 'dosen') countDosen++;
+                            if (data.role === 'asprak') countAsprak++;
                         }
-                    } catch(e) {}
+                    } catch(e) {} 
                 }
             }
 
-            if (count === 0) {
-                gridLayout.innerHTML = '<h3 style="grid-column: 1 / -1; text-align: center; color: #888; padding: 50px;">Belum ada data Mahasiswa.</h3>';
+            const statCards = document.querySelectorAll('.card-stat');
+            if(statCards.length >= 3) {
+                statCards[0].querySelector('h3').textContent = countMahasiswa;
+                statCards[1].querySelector('h3').textContent = countDosen;
+                statCards[2].querySelector('h3').textContent = countAsprak;
+                statCards[2].querySelector('p').textContent = "Jumlah Asprak";
+                statCards[2].querySelector('.card-icon').innerHTML = '<i class="fas fa-user-cog"></i>';
             }
-        }
 
-        window.hapusAkun = function(id) {
-            if(confirm("Yakin ingin menghapus akun dengan NIM: " + id + "?")) {
-                localStorage.removeItem(id);
-                muatDataMahasiswa();
-            }
-        };
-
-        window.simpanMahasiswa = function() {
-            const nama = document.getElementById('mhsNama').value;
-            const id = document.getElementById('mhsNim').value;
-            const pass = document.getElementById('mhsPass').value;
-            const smt = document.getElementById('mhsSmt').value;
-
-            const checkboxTerpilih = document.querySelectorAll('.matkul-checkbox:checked');
-            let arrayMatkulTerpilih = Array.from(checkboxTerpilih).map(cb => cb.value);
-
-            if(!nama || !id || !pass) return alert("Harap isi Nama, NIM, dan Password!");
-            if(arrayMatkulTerpilih.length === 0) return alert("Harap pilih minimal 1 Mata Kuliah!");
-            if(localStorage.getItem(id)) return alert("NIM ini sudah terdaftar!");
-
-            const userData = {
-                role: "mahasiswa",
-                nama: nama,
-                userId: id,
-                password: pass,
-                semester: smt,
-                matkul: arrayMatkulTerpilih 
-            };
-
-            localStorage.setItem(id, JSON.stringify(userData));
+            const activeStudentList = document.querySelector('.active-students-list');
+            const mahasiswaSaja = users.filter(u => u.role === 'mahasiswa');
             
-            document.getElementById('modalTambahMhs').style.display = 'none'; 
-            document.getElementById('mhsNama').value = '';
-            document.getElementById('mhsNim').value = '';
-            document.getElementById('mhsPass').value = '';
+            activeStudentList.innerHTML = ''; 
             
-            muatDataMahasiswa(); 
-            alert("Mahasiswa berhasil ditambahkan beserta mata kuliahnya!");
-        };
-
-        document.addEventListener('DOMContentLoaded', () => {
-            muatDataMahasiswa();
-            
-            const btnAdd = document.getElementById('btnBukaModal');
-            if(btnAdd) {
-                btnAdd.addEventListener('click', () => {
-                    document.getElementById('mhsSmt').value = "1"; 
-                    renderMatkulOptions(); 
-                    document.getElementById('modalTambahMhs').style.display = 'flex';
+            if (mahasiswaSaja.length === 0) {
+                activeStudentList.innerHTML = '<p style="color:#888; font-size:13px; text-align:center;">Belum ada mahasiswa yang mendaftar.</p>';
+            } else {
+                mahasiswaSaja.slice(-5).reverse().forEach(mhs => {
+                    activeStudentList.innerHTML += `
+                        <div class="student-item">
+                            <div class="student-details">
+                                <h4>${mhs.nama}</h4>
+                                <p>NIM: ${mhs.userId} | Smt: ${mhs.semester}</p>
+                            </div>
+                            <div class="student-actions">
+                                <i class="fas fa-key" title="Pass: ${mhs.password}"></i>
+                            </div>
+                        </div>
+                    `;
                 });
-            }
-
-            const selectSmt = document.getElementById('mhsSmt');
-            if(selectSmt) {
-                selectSmt.addEventListener('change', renderMatkulOptions);
             }
         });
     </script>
