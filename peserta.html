@@ -6,28 +6,31 @@
     <title>Admin Dashboard - Data Mahasiswa</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Tambahan style untuk notifikasi & filter */
+        #notif-dropdown { display: none; position: absolute; top: 40px; right: 0; background: white; border: 1px solid #ccc; border-radius: 8px; width: 280px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); z-index: 1000; text-align: left; }
+        .notif-item { padding: 10px; border-bottom: 1px solid #eee; font-size: 13px; color: #333; }
+        .notif-item:last-child { border-bottom: none; }
+        .filter-container select { padding: 8px 12px; border-radius: 6px; border: 1px solid #ccc; outline: none; font-family: inherit; }
+    </style>
 </head>
 <body>
-
     <div class="container">
         <aside class="sidebar">
             <div class="logo">
                 <i class="fas fa-graduation-cap"></i> <span>EduFree</span>
             </div>
-            
             <nav class="menu">
                 <a href="indexadmin.html" class="menu-item"><i class="fas fa-home"></i> Home</a>
-                
                 <details class="menu-group active" open>
                     <summary class="menu-item">
                         <i class="fas fa-users"></i> Peserta <i class="fas fa-chevron-down arrow"></i>
                     </summary>
                     <div class="submenu-content">
-                        <a href="peserta.html" class="sub-menu-item"style="color:var(--primary-color);">Mahasiswa</a>
+                        <a href="peserta.html" class="sub-menu-item" style="color:var(--primary-color);">Mahasiswa</a>
                         <a href="dosen.html" class="sub-menu-item">Dosen</a>
                     </div>
                 </details>
-
                 <details class="menu-group">
                     <summary class="menu-item">
                         <i class="fas fa-book"></i> Mata Kuliah <i class="fas fa-chevron-down arrow"></i>
@@ -39,7 +42,7 @@
                     </div>
                 </details>
                 <a href="beritaadmin.html" class="menu-item"><i class="fas fa-newspaper"></i> Kelola Berita</a>
-                <a href="lupapasswordadmin.html" class="menu-item"><i class="fas fa-file-invoice"></i>Lupa Password</a>
+                <a href="lupapasswordadmin.html" class="menu-item"><i class="fas fa-file-invoice"></i> Lupa Password</a>
                 <a href="laporan_nilai.html" class="menu-item"><i class="fas fa-chart-bar"></i> Laporan Nilai</a>
                 <a href="kuisioneradmin.html" class="menu-item"><i class="fas fa-comment-dots"></i> Kuisioner</a>
                 <a href="index.html" class="menu-item" style="margin-top: 20px; color: #ef4444;"><i class="fas fa-sign-out-alt"></i> Log Out</a>
@@ -50,10 +53,18 @@
             <header class="top-header">
                 <div class="search-bar">
                     <i class="fas fa-search"></i>
-                    <input type="text" placeholder="Search here...">
+                    <input type="text" id="globalSearch" placeholder="Cari Nama atau NIM/NIP...">
                 </div>
-                <div class="user-profile">
-                    <i class="far fa-bell"></i>
+                <div class="user-profile" style="position: relative;">
+                    <div style="position: relative; cursor: pointer;" onclick="toggleNotif()">
+                        <i class="far fa-bell"></i>
+                        <span id="notif-badge" style="display: none; position: absolute; top: -5px; right: -5px; background: #ef4444; color: white; border-radius: 50%; padding: 2px 6px; font-size: 10px; font-weight: bold;">0</span>
+                    </div>
+                    <div id="notif-dropdown">
+                        <div style="padding: 10px 15px; font-weight: bold; border-bottom: 1px solid #eee; background: #f9f9f9; border-radius: 8px 8px 0 0;">Notifikasi Sistem</div>
+                        <div id="notif-list" style="max-height: 250px; overflow-y: auto;"></div>
+                    </div>
+
                     <i class="far fa-comment-dots"></i>
                     <div class="profile-info">
                         <span class="name">Super Admin</span>
@@ -63,161 +74,176 @@
             </header>
 
             <section class="page-control-panel">
-                <div class="panel-left">
+                <div class="panel-left filter-container">
                     <h2>Halaman Mahasiswa</h2>
+                    <div style="display: flex; gap: 10px; margin-top: 10px;">
+                        <select id="filterSmtMhs" onchange="updateFilterMatkulMhs()">
+                            <option value="all">Semua Semester</option>
+                            <option value="1">Semester 1</option>
+                            <option value="2">Semester 2</option>
+                        </select>
+                        <select id="filterMatkulMhs" onchange="muatDataMahasiswa()">
+                            <option value="all">Semua Mata Kuliah</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="panel-right">
                     <button class="btn-add-student" id="btnBukaModal"><i class="fas fa-plus"></i> Add Student</button>
                 </div>
             </section>
 
-            <section class="cards-layout-grid">
-            </section>
+            <section class="cards-layout-grid" id="data-container"></section>
         </main>
     </div>
 
-    <div id="modalTambahMhs" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; align-items: center; justify-content: center;">
-        <div style="background: white; padding: 25px; border-radius: 12px; width: 400px; max-height: 90vh; overflow-y: auto; color: #111; box-shadow: 0 10px 25px rgba(0,0,0,0.2);">
+    <div id="modalTambahMhs" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 2000; align-items: center; justify-content: center;">
+        <div style="background: white; padding: 25px; border-radius: 12px; width: 400px; box-shadow: 0 10px 25px rgba(0,0,0,0.2);">
             <h3 style="margin-bottom: 15px; color: var(--primary-color);">Tambah Mahasiswa</h3>
-            
-            <input type="text" id="mhsNama" placeholder="Nama Lengkap" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 6px; outline:none;">
-            <input type="number" id="mhsNim" placeholder="NIM" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 6px; outline:none;">
-            <input type="text" id="mhsPass" placeholder="Password" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 6px; outline:none;">
-            
-            <select id="mhsSmt" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 6px; outline:none;">
+            <input type="text" id="mhsNama" placeholder="Nama Lengkap" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 6px;">
+            <input type="number" id="mhsNim" placeholder="NIM" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 6px;">
+            <input type="text" id="mhsPass" placeholder="Password" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 6px;">
+            <select id="mhsSmt" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 6px;" onchange="renderFormMatkul()">
                 <option value="1">Semester 1</option>
                 <option value="2">Semester 2</option>
             </select>
-
-            <div id="matkulContainer" style="margin-bottom: 15px; text-align: left; max-height: 130px; overflow-y: auto; border: 1px solid #ccc; padding: 10px; border-radius: 6px; font-size: 13px; background: #f9f9f9;">
-            </div>
-
+            <div id="matkulContainer" style="margin-bottom: 15px; max-height: 130px; overflow-y: auto; border: 1px solid #ccc; padding: 10px; border-radius: 6px; font-size: 13px; background: #f9f9f9;"></div>
             <div style="display: flex; justify-content: flex-end; gap: 10px;">
-                <button onclick="document.getElementById('modalTambahMhs').style.display='none'" style="padding: 8px 15px; border: none; border-radius: 6px; cursor: pointer; background: #eee;">Batal</button>
+                <button onclick="document.getElementById('modalTambahMhs').style.display='none'" style="padding: 8px 15px; border: none; border-radius: 6px; cursor: pointer;">Batal</button>
                 <button onclick="simpanMahasiswa()" style="padding: 8px 15px; border: none; border-radius: 6px; cursor: pointer; background: var(--primary-color); color: white;">Simpan</button>
             </div>
         </div>
     </div>
 
     <script>
-        // --- DAFTAR MATA KULIAH DISAMAKAN DENGAN REGISTER.HTML ---
         const matkulSem1 = ["PTI", "Alpro", "Matematika Teknik", "Matematika Diskret"];
         const matkulSem2 = ["Struktur Data", "DPW", "Orkom", "Metode Statistika", "Komputasi Aljabar Linier"];
 
-        function renderMatkulOptions() {
-            const smtPilihan = document.getElementById('mhsSmt').value;
-            const container = document.getElementById('matkulContainer');
-            container.innerHTML = '<p style="margin-bottom: 8px; font-weight: 600; color: #555;">Pilih Mata Kuliah:</p>';
-            
-            const listTampil = smtPilihan === "1" ? matkulSem1 : matkulSem2;
-            
-            listTampil.forEach(mk => {
-                container.innerHTML += `
-                    <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px; cursor: pointer;">
-                        <input type="checkbox" class="matkul-checkbox" value="${mk}"> ${mk}
-                    </label>
-                `;
+        // --- FITUR 1: SEARCH & NOTIFIKASI GLOBAL ---
+        document.getElementById('globalSearch').addEventListener('input', function(e) {
+            let keyword = e.target.value.toLowerCase();
+            document.querySelectorAll('.searchable-item').forEach(card => {
+                let text = card.innerText.toLowerCase();
+                card.style.display = text.includes(keyword) ? '' : 'none';
             });
+        });
+
+        function toggleNotif() {
+            const dp = document.getElementById('notif-dropdown');
+            dp.style.display = dp.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function cekNotifikasi() {
+            let notifList = [];
+            // Cek Password
+            let reqPassword = JSON.parse(localStorage.getItem('reset_password_requests')) || [];
+            if (reqPassword.length > 0) notifList.push(`<div class="notif-item"><i class="fas fa-key" style="color:#eab308;"></i> <b>${reqPassword.length}</b> permintaan reset password.</div>`);
+            
+            // Cek Kuisioner
+            let kuisioner = JSON.parse(localStorage.getItem('kuisioner_admin')) || [];
+            if (kuisioner.length > 0) notifList.push(`<div class="notif-item"><i class="fas fa-comment-dots" style="color:#3b82f6;"></i> <b>${kuisioner.length}</b> data evaluasi baru masuk.</div>`);
+            
+            // Cek User Terdaftar
+            let userCount = 0;
+            for (let i = 0; i < localStorage.length; i++) {
+                let k = localStorage.key(i);
+                if (k !== 'loggedInUser' && k !== 'admin' && !k.includes('eduFree') && !k.includes('reset') && !k.includes('kuisioner')) userCount++;
+            }
+            if (userCount > 0) notifList.push(`<div class="notif-item"><i class="fas fa-users" style="color:#10b981;"></i> Total <b>${userCount}</b> pendaftar (Mhs/Dosen) di sistem.</div>`);
+
+            if(notifList.length > 0) {
+                document.getElementById('notif-badge').style.display = 'block';
+                document.getElementById('notif-badge').innerText = reqPassword.length + kuisioner.length; // Angka badge
+                document.getElementById('notif-list').innerHTML = notifList.join('');
+            } else {
+                document.getElementById('notif-list').innerHTML = '<div class="notif-item" style="text-align:center; color:#888;">Tidak ada aktivitas baru.</div>';
+            }
+        }
+
+        // --- FITUR 2: FILTER & LOAD MAHASISWA ---
+        function updateFilterMatkulMhs() {
+            const smt = document.getElementById('filterSmtMhs').value;
+            const selectMatkul = document.getElementById('filterMatkulMhs');
+            selectMatkul.innerHTML = '<option value="all">Semua Mata Kuliah</option>';
+            
+            let listTampil = smt === "1" ? matkulSem1 : smt === "2" ? matkulSem2 : [...matkulSem1, ...matkulSem2];
+            listTampil.forEach(mk => {
+                selectMatkul.innerHTML += `<option value="${mk}">${mk}</option>`;
+            });
+            muatDataMahasiswa(); 
         }
 
         function muatDataMahasiswa() {
-            const gridLayout = document.querySelector('.cards-layout-grid');
-            gridLayout.innerHTML = ''; 
-
+            const grid = document.getElementById('data-container');
+            grid.innerHTML = ''; 
+            const filterSmt = document.getElementById('filterSmtMhs').value;
+            const filterMatkul = document.getElementById('filterMatkulMhs').value;
             let count = 0;
+
             for (let i = 0; i < localStorage.length; i++) {
                 let key = localStorage.key(i);
-                if (key !== 'loggedInUser' && key !== 'admin' && key !== 'eduFreeNewsWithImage' && key !== 'eduFreeNews') {
+                if (key !== 'loggedInUser' && key !== 'admin' && !key.includes('eduFree') && !key.includes('reset') && !key.includes('kuisioner')) {
                     try {
                         let user = JSON.parse(localStorage.getItem(key));
                         if (user && user.role === 'mahasiswa') {
-                            count++;
-                            let matkulList = user.matkul ? user.matkul.join(', ') : '-';
                             
-                            let cardHTML = `
-                                <div class="student-profile-card">
-                                    <div class="card-action-menu" onclick="hapusAkun('${user.userId}')" style="cursor: pointer; color: #ef4444;" title="Hapus Akun"><i class="fas fa-trash"></i></div>
-                                    <h3 class="student-card-name">${user.nama}</h3>
-                                    <p class="student-card-id">NIM. ${user.userId}</p>
-                                    <span class="badge badge-active">AKTIF</span>
-                                    
-                                    <div class="card-contact-info">
-                                        <p><i class="fas fa-key"></i> Pass: <strong>${user.password}</strong></p>
-                                        <p><i class="fas fa-layer-group"></i> Smt: ${user.semester}</p>
-                                    </div>
-                                    <div class="card-meta-details">
-                                        <div class="meta-row"><span>Peran</span><strong style="text-transform: capitalize;">${user.role}</strong></div>
-                                        <div class="meta-row"><span>Matkul</span><strong><marquee scrollamount="3" style="width: 80px;">${matkulList}</marquee></strong></div>
-                                    </div>
-                                </div>
-                            `;
-                            gridLayout.innerHTML += cardHTML;
+                            // Logika Cek Filter
+                            let passSmt = (filterSmt === 'all' || user.semester === filterSmt);
+                            let passMatkul = (filterMatkul === 'all' || (user.matkul && user.matkul.includes(filterMatkul)));
+                            
+                            if (passSmt && passMatkul) {
+                                count++;
+                                let matkulList = user.matkul ? user.matkul.join(', ') : '-';
+                                grid.innerHTML += `
+                                    <div class="student-profile-card searchable-item">
+                                        <div class="card-action-menu" onclick="hapusAkun('${user.userId}')" style="cursor: pointer; color: #ef4444;"><i class="fas fa-trash"></i></div>
+                                        <h3 class="student-card-name">${user.nama}</h3>
+                                        <p class="student-card-id">NIM. ${user.userId}</p>
+                                        <span class="badge badge-active">AKTIF</span>
+                                        <div class="card-meta-details" style="margin-top:15px;">
+                                            <div class="meta-row"><span>Smt</span><strong>${user.semester}</strong></div>
+                                            <div class="meta-row" title="${matkulList}"><span>Matkul</span><strong style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100px;">${matkulList}</strong></div>
+                                        </div>
+                                    </div>`;
+                            }
                         }
                     } catch(e) {}
                 }
             }
-
-            if (count === 0) {
-                gridLayout.innerHTML = '<h3 style="grid-column: 1 / -1; text-align: center; color: #888; padding: 50px;">Belum ada data Mahasiswa.</h3>';
-            }
+            if (count === 0) grid.innerHTML = '<h3 style="grid-column: 1 / -1; text-align: center; color: #888;">Tidak ada data mahasiswa yang sesuai kriteria.</h3>';
         }
 
-        window.hapusAkun = function(id) {
-            if(confirm("Yakin ingin menghapus akun dengan NIM: " + id + "?")) {
-                localStorage.removeItem(id);
-                muatDataMahasiswa();
-            }
-        };
+        // --- FITUR 3: CRUD ---
+        function renderFormMatkul() {
+            const smt = document.getElementById('mhsSmt').value;
+            const container = document.getElementById('matkulContainer');
+            container.innerHTML = '<p style="margin-bottom: 8px; font-weight: 600;">Pilih Mata Kuliah:</p>';
+            let list = smt === "1" ? matkulSem1 : matkulSem2;
+            list.forEach(mk => {
+                container.innerHTML += `<label style="display: flex; gap: 8px; margin-bottom: 6px;"><input type="checkbox" class="matkul-checkbox" value="${mk}"> ${mk}</label>`;
+            });
+        }
 
         window.simpanMahasiswa = function() {
-            const nama = document.getElementById('mhsNama').value;
-            const id = document.getElementById('mhsNim').value;
-            const pass = document.getElementById('mhsPass').value;
-            const smt = document.getElementById('mhsSmt').value;
+            const nama = document.getElementById('mhsNama').value, id = document.getElementById('mhsNim').value, pass = document.getElementById('mhsPass').value, smt = document.getElementById('mhsSmt').value;
+            const matkul = Array.from(document.querySelectorAll('.matkul-checkbox:checked')).map(cb => cb.value);
+            if(!nama || !id || !pass) return alert("Isi semua data utama!");
+            if(matkul.length === 0) return alert("Pilih minimal 1 matkul!");
+            if(localStorage.getItem(id)) return alert("NIM terdaftar!");
+            localStorage.setItem(id, JSON.stringify({role: "mahasiswa", nama, userId: id, password: pass, semester: smt, matkul}));
+            document.getElementById('modalTambahMhs').style.display = 'none';
+            muatDataMahasiswa(); cekNotifikasi(); alert("Berhasil!");
+        };
 
-            const checkboxTerpilih = document.querySelectorAll('.matkul-checkbox:checked');
-            let arrayMatkulTerpilih = Array.from(checkboxTerpilih).map(cb => cb.value);
-
-            if(!nama || !id || !pass) return alert("Harap isi Nama, NIM, dan Password!");
-            if(arrayMatkulTerpilih.length === 0) return alert("Harap pilih minimal 1 Mata Kuliah!");
-            if(localStorage.getItem(id)) return alert("NIM ini sudah terdaftar!");
-
-            const userData = {
-                role: "mahasiswa",
-                nama: nama,
-                userId: id,
-                password: pass,
-                semester: smt,
-                matkul: arrayMatkulTerpilih 
-            };
-
-            localStorage.setItem(id, JSON.stringify(userData));
-            
-            document.getElementById('modalTambahMhs').style.display = 'none'; 
-            document.getElementById('mhsNama').value = '';
-            document.getElementById('mhsNim').value = '';
-            document.getElementById('mhsPass').value = '';
-            
-            muatDataMahasiswa(); 
-            alert("Mahasiswa berhasil ditambahkan beserta mata kuliahnya!");
+        window.hapusAkun = function(id) {
+            if(confirm("Hapus akun NIM: " + id + "?")) { localStorage.removeItem(id); muatDataMahasiswa(); cekNotifikasi(); }
         };
 
         document.addEventListener('DOMContentLoaded', () => {
-            muatDataMahasiswa();
-            
-            const btnAdd = document.getElementById('btnBukaModal');
-            if(btnAdd) {
-                btnAdd.addEventListener('click', () => {
-                    document.getElementById('mhsSmt').value = "1"; 
-                    renderMatkulOptions(); 
-                    document.getElementById('modalTambahMhs').style.display = 'flex';
-                });
-            }
-
-            const selectSmt = document.getElementById('mhsSmt');
-            if(selectSmt) {
-                selectSmt.addEventListener('change', renderMatkulOptions);
-            }
+            cekNotifikasi(); updateFilterMatkulMhs();
+            document.getElementById('btnBukaModal').addEventListener('click', () => {
+                document.getElementById('mhsSmt').value = "1"; renderFormMatkul();
+                document.getElementById('modalTambahMhs').style.display = 'flex';
+            });
         });
     </script>
 </body>
