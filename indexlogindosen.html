@@ -259,6 +259,9 @@
                 <button class="tab-btn active" onclick="bukaTabKelas('tab-kontrak', this)"><i class="fas fa-file-signature"></i> Kontrak Kuliah</button>
                 <button class="tab-btn" onclick="bukaTabKelas('tab-materi', this)"><i class="fas fa-file-upload"></i> Kelola Materi</button>
                 <button class="tab-btn" onclick="bukaTabKelas('tab-tugas', this)"><i class="fas fa-tasks"></i> Kelola Tugas</button>
+                <button class="tab-btn" onclick="bukaTabKelas('tab-ujian', this)"><i class="fas fa-file-alt"></i> UTS / UAS</button>
+                <button class="tab-btn" onclick="bukaTabKelas('tab-kuis', this)"><i class="fas fa-question-circle"></i> Kuis</button>
+                
                 <button class="tab-btn" onclick="bukaTabKelas('tab-absensi', this)"><i class="fas fa-user-check"></i> Absensi</button>
                 <button class="tab-btn" onclick="bukaTabKelas('tab-nilai', this)"><i class="fas fa-star-half-alt"></i> Cek & Input Nilai</button>
                 <button class="tab-btn" onclick="bukaTabKelas('tab-forum', this)"><i class="fas fa-comments"></i> Forum Diskusi</button>
@@ -317,6 +320,48 @@
                 </div>
                 <h3 style="margin-bottom: 15px; font-size:1.1rem; color:var(--text-main);">Tugas Aktif</h3>
                 <div id="konten-tugas-list"></div>
+            </div>
+
+            <div id="tab-ujian" class="tab-content">
+                <h2 class="section-title-tab"><i class="fas fa-file-alt" style="color: var(--primary);"></i> Kelola Ujian (UTS / UAS)</h2>
+                <div class="upload-form-card">
+                    <div class="input-group">
+                        <label>Judul Ujian</label>
+                        <input type="text" id="input-judul-ujian" placeholder="Cth: Ujian Tengah Semester (UTS)">
+                    </div>
+                    <div class="input-group">
+                        <label>Link Akses Ujian (Google Drive / Form / URL)</label>
+                        <input type="url" id="input-link-ujian" placeholder="Cth: https://docs.google.com/...">
+                    </div>
+                    <div class="input-group">
+                        <label>Batas Waktu (Deadline)</label>
+                        <input type="date" id="input-deadline-ujian">
+                    </div>
+                    <button class="btn-action" id="btn-upload-ujian"><i class="fas fa-paper-plane"></i> Publikasikan Ujian</button>
+                </div>
+                <h3 style="margin-bottom: 15px; font-size:1.1rem; color:var(--text-main);">Daftar Ujian Aktif</h3>
+                <div id="konten-ujian-list"></div>
+            </div>
+
+            <div id="tab-kuis" class="tab-content">
+                <h2 class="section-title-tab"><i class="fas fa-question-circle" style="color: var(--primary);"></i> Kelola Kuis</h2>
+                <div class="upload-form-card">
+                    <div class="input-group">
+                        <label>Judul Kuis</label>
+                        <input type="text" id="input-judul-kuis" placeholder="Cth: Kuis Pertemuan 3">
+                    </div>
+                    <div class="input-group">
+                        <label>Link Kuis (Quizizz / Kahoot / Google Form)</label>
+                        <input type="url" id="input-link-kuis" placeholder="Cth: https://quizizz.com/...">
+                    </div>
+                    <div class="input-group">
+                        <label>Batas Waktu (Deadline)</label>
+                        <input type="date" id="input-deadline-kuis">
+                    </div>
+                    <button class="btn-action" id="btn-upload-kuis"><i class="fas fa-paper-plane"></i> Publikasikan Kuis</button>
+                </div>
+                <h3 style="margin-bottom: 15px; font-size:1.1rem; color:var(--text-main);">Daftar Kuis Aktif</h3>
+                <div id="konten-kuis-list"></div>
             </div>
 
             <div id="tab-absensi" class="tab-content">
@@ -433,6 +478,8 @@
             renderKontrakDosen();
             renderMateri();
             renderTugas();
+            renderUjian(); // Fungsi render UTS/UAS
+            renderKuis();  // Fungsi render Kuis
             renderAbsensi();
             loadForumMessages(namaMatkul);
         }
@@ -538,6 +585,64 @@
             });
         }
 
+        // 2.1 UTS / UAS (BARU)
+        document.getElementById('btn-upload-ujian').addEventListener('click', function() {
+            const judul = document.getElementById('input-judul-ujian').value;
+            const linkUjian = document.getElementById('input-link-ujian').value;
+            const deadline = document.getElementById('input-deadline-ujian').value;
+            if (!judul || !linkUjian || !deadline) return alert("Lengkapi judul, link akses, dan deadline ujian!");
+
+            const ujianBaru = { id: generateId(), judul, link: linkUjian, deadline, tanggalDibuat: new Date().toLocaleDateString('id-ID') };
+            let db = JSON.parse(localStorage.getItem(`ujian_${activeMatkulGlobal}`)) || [];
+            db.push(ujianBaru);
+            localStorage.setItem(`ujian_${activeMatkulGlobal}`, JSON.stringify(db));
+            
+            alert("Ujian berhasil dipublikasikan!");
+            document.getElementById('input-judul-ujian').value = ''; document.getElementById('input-link-ujian').value = ''; document.getElementById('input-deadline-ujian').value = '';
+            renderUjian();
+        });
+
+        function renderUjian() {
+            const list = document.getElementById('konten-ujian-list');
+            let db = JSON.parse(localStorage.getItem(`ujian_${activeMatkulGlobal}`)) || [];
+            if (db.length === 0) return list.innerHTML = `<p style="color:var(--text-muted); font-size:0.9rem;">Belum ada ujian di kelas ini.</p>`;
+
+            list.innerHTML = '';
+            db.forEach((item, index) => {
+                let btnBukaSoal = item.link ? `<a href="${item.link}" target="_blank" style="margin-right:10px; color:var(--primary); font-size:0.85rem;"><i class="fas fa-external-link-alt"></i> Buka Akses Ujian</a>` : '';
+                list.innerHTML += `<div class="item-card"><div class="item-info"><h3>${item.judul}</h3><p style="color:var(--danger-red); font-weight:700;"><i class="fas fa-exclamation-circle"></i> Deadline: ${item.deadline}</p>${btnBukaSoal}</div><button onclick="hapusData('ujian', ${index})" class="btn-action" style="background:transparent; color:var(--danger-red); border:1px solid var(--danger-red);"><i class="fas fa-trash"></i> Hapus</button></div>`;
+            });
+        }
+
+        // 2.2 KUIS (BARU)
+        document.getElementById('btn-upload-kuis').addEventListener('click', function() {
+            const judul = document.getElementById('input-judul-kuis').value;
+            const linkKuis = document.getElementById('input-link-kuis').value;
+            const deadline = document.getElementById('input-deadline-kuis').value;
+            if (!judul || !linkKuis || !deadline) return alert("Lengkapi judul, link kuis, dan deadline!");
+
+            const kuisBaru = { id: generateId(), judul, link: linkKuis, deadline, tanggalDibuat: new Date().toLocaleDateString('id-ID') };
+            let db = JSON.parse(localStorage.getItem(`kuis_${activeMatkulGlobal}`)) || [];
+            db.push(kuisBaru);
+            localStorage.setItem(`kuis_${activeMatkulGlobal}`, JSON.stringify(db));
+            
+            alert("Kuis berhasil dipublikasikan!");
+            document.getElementById('input-judul-kuis').value = ''; document.getElementById('input-link-kuis').value = ''; document.getElementById('input-deadline-kuis').value = '';
+            renderKuis();
+        });
+
+        function renderKuis() {
+            const list = document.getElementById('konten-kuis-list');
+            let db = JSON.parse(localStorage.getItem(`kuis_${activeMatkulGlobal}`)) || [];
+            if (db.length === 0) return list.innerHTML = `<p style="color:var(--text-muted); font-size:0.9rem;">Belum ada kuis di kelas ini.</p>`;
+
+            list.innerHTML = '';
+            db.forEach((item, index) => {
+                let btnBukaSoal = item.link ? `<a href="${item.link}" target="_blank" style="margin-right:10px; color:var(--primary); font-size:0.85rem;"><i class="fas fa-external-link-alt"></i> Buka Link Kuis</a>` : '';
+                list.innerHTML += `<div class="item-card"><div class="item-info"><h3>${item.judul}</h3><p style="color:var(--danger-red); font-weight:700;"><i class="fas fa-exclamation-circle"></i> Deadline: ${item.deadline}</p>${btnBukaSoal}</div><button onclick="hapusData('kuis', ${index})" class="btn-action" style="background:transparent; color:var(--danger-red); border:1px solid var(--danger-red);"><i class="fas fa-trash"></i> Hapus</button></div>`;
+            });
+        }
+
         // 3. ABSENSI 
         document.getElementById('btn-buka-absensi').addEventListener('click', function() {
             let db = JSON.parse(localStorage.getItem(`absensi_${activeMatkulGlobal}`)) || [];
@@ -607,6 +712,7 @@
             inputElement.style.borderColor = "var(--secondary)";
         }
 
+        // UPDATE Fungsi Hapus Data
         function hapusData(tipe, index) {
             if(confirm(`Yakin ingin menghapus ${tipe} ini?`)) {
                 let db = JSON.parse(localStorage.getItem(`${tipe}_${activeMatkulGlobal}`));
@@ -614,6 +720,8 @@
                 localStorage.setItem(`${tipe}_${activeMatkulGlobal}`, JSON.stringify(db));
                 if(tipe === 'materi') renderMateri();
                 if(tipe === 'tugas') renderTugas();
+                if(tipe === 'ujian') renderUjian(); // Trigger untuk UTS/UAS
+                if(tipe === 'kuis') renderKuis();   // Trigger untuk Kuis
                 if(tipe === 'kontrak') renderKontrakDosen();
             }
         }
