@@ -114,19 +114,26 @@
 
             <div class="dashboard-grid">
                 <section class="grid-left table-card">
-                    <div class="section-header">
+                    <div class="section-header" style="flex-wrap: wrap; gap: 10px;">
                         <h3>Tugas Mata Kuliah Terkini</h3>
-                        <button class="btn-see-all">See all &rarr;</button>
+                        <select id="filterTugasAdmin" onchange="loadTugasAdmin()" style="padding: 6px 12px; border-radius: 6px; border: 1px solid #ccc; outline: none; font-family: inherit; font-size: 13px; background: #f9f9f9;">
+                            <option value="all">Tampilkan Semua Mata Kuliah</option>
+                            </select>
                     </div>
-                    <table class="home-table">
-                        <thead>
-                            <tr><th>Judul Tugas</th><th>Mata Kuliah</th><th>Status</th></tr>
-                        </thead>
-                        <tbody>
-                            <tr><td>UI/UX Design App</td><td>Dasar Pemrograman Web</td><td><span class="status status-review">Review</span></td></tr>
-                            <tr><td>Logika Predikat</td><td>Matematika Diskret</td><td><span class="status status-progress">In Progress</span></td></tr>
-                        </tbody>
-                    </table>
+                    <div style="overflow-x: auto; max-height: 350px;">
+                        <table class="home-table">
+                            <thead>
+                                <tr>
+                                    <th>Judul Tugas</th>
+                                    <th>Mata Kuliah</th>
+                                    <th>Deadline</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tugas-terkini-tbody">
+                                </tbody>
+                        </table>
+                    </div>
                 </section>
 
                 <section class="grid-right list-card">
@@ -141,6 +148,12 @@
     </div>
 
     <script>
+        // Data Master Matkul
+        const semuaMatkulAdmin = [
+            "PTI", "Alpro", "Matematika Teknik", "Matematika Diskret", 
+            "Struktur Data", "DPW", "Orkom", "Metode Statistika", "Komputasi Aljabar Linier"
+        ];
+
         // --- 1. FITUR SEARCH BAR UNIVERSAL ---
         const searchInput = document.getElementById('globalSearch');
         if (searchInput) {
@@ -161,7 +174,6 @@
         function syncNotifications() {
             let notifs = JSON.parse(localStorage.getItem('admin_notifs')) || [];
 
-            // Cek Permintaan Reset Password
             let reqPassword = JSON.parse(localStorage.getItem('reset_password_requests')) || [];
             reqPassword.forEach(req => {
                 let id = 'pwd_' + req.reqId;
@@ -170,7 +182,6 @@
                 }
             });
 
-            // Cek Kuisioner Baru
             let kuisioner = JSON.parse(localStorage.getItem('kuisioner_admin')) || [];
             kuisioner.forEach(kuis => {
                 let id = 'kuis_' + kuis.id;
@@ -179,10 +190,9 @@
                 }
             });
 
-            // Cek Registrasi User Baru
             for (let i = 0; i < localStorage.length; i++) {
                 let key = localStorage.key(i);
-                if (key !== 'loggedInUser' && key !== 'admin' && !key.includes('eduFree') && !key.includes('reset') && !key.includes('kuisioner') && !key.includes('notif')) {
+                if (key !== 'loggedInUser' && key !== 'admin' && !key.includes('eduFree') && !key.includes('reset') && !key.includes('kuisioner') && !key.includes('notif') && !key.includes('tugas') && !key.includes('materi') && !key.includes('absensi') && !key.includes('pengumpulan')) {
                     try {
                         let user = JSON.parse(localStorage.getItem(key));
                         let id = 'user_' + user.userId;
@@ -253,16 +263,80 @@
             }
         };
 
-        // --- 3. LOGIKA HALAMAN HOME (Statistik & Data Terbaru) ---
+        // --- 3. MODUL BARU: DATA TUGAS DARI DOSEN ---
+        function initFilterTugas() {
+            const filterDropdown = document.getElementById('filterTugasAdmin');
+            semuaMatkulAdmin.forEach(mk => {
+                filterDropdown.innerHTML += `<option value="${mk}">${mk}</option>`;
+            });
+        }
+
+        window.loadTugasAdmin = function() {
+            const tbody = document.getElementById('tugas-terkini-tbody');
+            const selectedMatkul = document.getElementById('filterTugasAdmin').value;
+            tbody.innerHTML = '';
+
+            let semuaTugas = [];
+            // Tentukan matkul mana saja yang akan dicari (satu atau semua)
+            let matkulToSearch = selectedMatkul === 'all' ? semuaMatkulAdmin : [selectedMatkul];
+
+            // Tarik data tugas dari localStorage milik Dosen
+            matkulToSearch.forEach(mk => {
+                let tugasDb = JSON.parse(localStorage.getItem(`tugas_${mk}`)) || [];
+                tugasDb.forEach(t => {
+                    semuaTugas.push({ ...t, matkul: mk });
+                });
+            });
+
+            if (semuaTugas.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#888; padding: 20px;">Belum ada tugas yang dipublikasikan oleh dosen.</td></tr>';
+                return;
+            }
+
+            // Urutkan (Tugas paling baru diinput berada di atas)
+            semuaTugas.reverse();
+
+            // Set waktu hari ini (tanpa jam/menit untuk perbandingan yang akurat)
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            // Render ke tabel
+            semuaTugas.forEach(t => {
+                const deadlineDate = new Date(t.deadline);
+                let statusBadge = '';
+
+                // Logika Penentuan Status Deadline
+                if (deadlineDate >= today) {
+                    // Masih ada waktu
+                    statusBadge = '<span class="status status-progress" style="background-color: #ecfdf5; color: #10b981; border: 1px solid #10b981;">Aktif</span>';
+                } else {
+                    // Waktu sudah lewat
+                    statusBadge = '<span class="status status-review" style="background-color: #fef2f2; color: #ef4444; border: 1px solid #ef4444;">Selesai/Ditutup</span>';
+                }
+
+                tbody.innerHTML += `
+                    <tr class="searchable-item">
+                        <td style="font-weight: 600; color: #111;">${t.judul}</td>
+                        <td style="color: var(--primary-color); font-weight: 600; font-size: 13px;">${t.matkul}</td>
+                        <td style="font-size: 13px; color: #555;"><i class="far fa-calendar-alt"></i> ${t.deadline}</td>
+                        <td>${statusBadge}</td>
+                    </tr>
+                `;
+            });
+        };
+
+        // --- 4. LOGIKA HALAMAN HOME (Statistik & Mhs Terbaru) ---
         document.addEventListener('DOMContentLoaded', () => {
-            syncNotifications(); // Jalankan notif
+            syncNotifications(); 
+            initFilterTugas();   // Muat dropdown matkul
+            loadTugasAdmin();    // Muat data tabel tugas pertama kali
 
             let mhsCount = 0, dosenCount = 0, asprakCount = 0;
             let semuaMahasiswa = [];
 
             for (let i = 0; i < localStorage.length; i++) {
                 let key = localStorage.key(i);
-                if (key !== 'loggedInUser' && key !== 'admin' && !key.includes('eduFree') && !key.includes('reset') && !key.includes('kuisioner') && !key.includes('notif')) {
+                if (key !== 'loggedInUser' && key !== 'admin' && !key.includes('eduFree') && !key.includes('reset') && !key.includes('kuisioner') && !key.includes('notif') && !key.includes('tugas') && !key.includes('materi') && !key.includes('absensi') && !key.includes('pengumpulan') && !key.includes('ujian') && !key.includes('kuis') && !key.includes('kontrak')) {
                     try {
                         let data = JSON.parse(localStorage.getItem(key));
                         if (data.role === 'mahasiswa') { mhsCount++; semuaMahasiswa.push(data); }
@@ -283,9 +357,9 @@
             } else {
                 semuaMahasiswa.slice(-5).reverse().forEach(mhs => {
                     recentContainer.innerHTML += `
-                        <div class="student-item" style="display: flex; justify-content: space-between; padding: 12px 10px; border-bottom: 1px solid #f1f1f1;">
+                        <div class="student-item searchable-item" style="display: flex; justify-content: space-between; padding: 12px 10px; border-bottom: 1px solid #f1f1f1;">
                             <div>
-                                <h4 style="margin:0; font-size:14px;">${mhs.nama}</h4>
+                                <h4 style="margin:0; font-size:14px; color:#111;">${mhs.nama}</h4>
                                 <p style="margin:4px 0 0 0; font-size:12px; color:#888;">NIM: ${mhs.userId} &nbsp;|&nbsp; Smt: ${mhs.semester}</p>
                             </div>
                         </div>`;
