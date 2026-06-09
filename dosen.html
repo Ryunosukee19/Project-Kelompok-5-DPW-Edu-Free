@@ -22,7 +22,7 @@
                     <summary class="menu-item">
                         <i class="fas fa-users"></i> Peserta <i class="fas fa-chevron-down arrow"></i>
                     </summary>
-                    <div class="submenu-content">
+                    <div class="submenu-content active">
                         <a href="peserta.html" class="sub-menu-item">Mahasiswa</a>
                         <a href="dosen.html" class="sub-menu-item" style="color:var(--primary-color);">Dosen</a>
                     </div>
@@ -42,7 +42,6 @@
                 <a href="pengumpulan.html" class="menu-item"><i class="fas fa-file-invoice"></i> Pengumpulan Tugas</a>
                 <a href="laporan_nilai.html" class="menu-item"><i class="fas fa-chart-bar"></i> Laporan Nilai</a>
                 <a href="index.html" class="menu-item">Log Out</a>
-                
             </nav>
         </aside>
 
@@ -90,7 +89,7 @@
             <input type="text" id="pengajarPass" placeholder="Password" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 6px; outline:none;">
             
             <div id="matkulPengajarContainer" style="margin-bottom: 15px; text-align: left; max-height: 140px; overflow-y: auto; border: 1px solid #ccc; padding: 10px; border-radius: 6px; font-size: 13px; background: #f9f9f9;">
-                </div>
+            </div>
 
             <div style="display: flex; justify-content: flex-end; gap: 10px;">
                 <button onclick="document.getElementById('modalTambahDosen').style.display='none'" style="padding: 8px 15px; border: none; border-radius: 6px; cursor: pointer; background: #eee;">Batal</button>
@@ -100,15 +99,12 @@
     </div>
 
     <script>
-        // --- DAFTAR MATA KULIAH ---
-        const matkulSem1 = ["Dasar Pemrograman Web", "Orkom", "Metode Statistika", "Komputasi Aljabar Linier", "Struktur Data"];
-        const matkulSem2 = ["Pengantar Teknologi Informasi", "Algoritma Pemrograman", "Matematika Diskret", "Matematika Teknik"];
+        // --- DAFTAR MATA KULIAH DISAMAKAN DENGAN REGISTER.HTML ---
+        const matkulSem1 = ["PTI", "Alpro", "Matematika Teknik", "Matematika Diskret"];
+        const matkulSem2 = ["Struktur Data", "DPW", "Orkom", "Metode Statistika", "Komputasi Aljabar Linier"];
         const semuaMatkul = [...matkulSem1, ...matkulSem2];
-        
-        // Khusus Asprak: Mata kuliah yang memiliki praktikum
-        const matkulAsprak = ["Dasar Pemrograman Web", "Struktur Data", "Pengantar Teknologi Informasi", "Algoritma Pemrograman"];
+        const matkulAsprak = ["PTI", "Alpro", "Struktur Data", "DPW"];
 
-        // --- FUNGSI MERENDER OPSI MATKUL (RADIO UNTUK DOSEN, CHECKBOX UNTUK ASPRAK) ---
         function renderMatkulPengajar() {
             const role = document.getElementById('pengajarRole').value;
             const container = document.getElementById('matkulPengajarContainer');
@@ -116,7 +112,6 @@
             let htmlContent = '<p style="margin-bottom: 4px; font-weight: 600; color: #555;">Pilih Mata Kuliah yang Diampu:</p>';
 
             if (role === 'dosen') {
-                // Dosen: Radio Button (Pilih 1)
                 htmlContent += '<p style="font-size:11px; color:#ef4444; margin-bottom:8px;">(Hanya bisa memilih 1 Mata Kuliah)</p>';
                 semuaMatkul.forEach(mk => {
                     htmlContent += `
@@ -128,7 +123,6 @@
                 container.innerHTML = htmlContent;
                 
             } else if (role === 'asprak') {
-                // Asprak: Checkbox (Maksimal 2)
                 htmlContent += '<p style="font-size:11px; color:#ef4444; margin-bottom:8px;">(Pilih maksimal 2 Mata Kuliah Praktikum)</p>';
                 matkulAsprak.forEach(mk => {
                     htmlContent += `
@@ -139,13 +133,12 @@
                 });
                 container.innerHTML = htmlContent;
 
-                // Logika Pembatasan Maksimal 2 Checkbox khusus Asprak
                 const asprakCheckboxes = document.querySelectorAll('.checkbox-asprak');
                 asprakCheckboxes.forEach(cb => {
                     cb.addEventListener('change', function() {
                         const checkedCount = document.querySelectorAll('.checkbox-asprak:checked').length;
                         if (checkedCount > 2) {
-                            this.checked = false; // Batalkan centangan jika lebih dari 2
+                            this.checked = false; 
                             alert("Maksimal hanya boleh memilih 2 Mata Kuliah Praktikum!");
                         }
                     });
@@ -153,7 +146,6 @@
             }
         }
 
-        // --- FUNGSI MEMUAT DATA CARD ---
         function muatDataPengajar() {
             const gridLayout = document.querySelector('.cards-layout-grid');
             gridLayout.innerHTML = ''; 
@@ -161,7 +153,6 @@
             let count = 0;
             for (let i = 0; i < localStorage.length; i++) {
                 let key = localStorage.key(i);
-                // Abaikan key yang bukan data user
                 if (key !== 'loggedInUser' && key !== 'admin' && key !== 'eduFreeNewsWithImage' && key !== 'eduFreeNews') {
                     try {
                         let user = JSON.parse(localStorage.getItem(key));
@@ -200,7 +191,6 @@
             }
         }
 
-        // --- FUNGSI HAPUS ---
         window.hapusAkun = function(id) {
             if(confirm("Yakin ingin menghapus akun dengan ID: " + id + "?")) {
                 localStorage.removeItem(id);
@@ -208,14 +198,12 @@
             }
         };
 
-        // --- FUNGSI SIMPAN ---
         window.simpanPengajar = function() {
             const role = document.getElementById('pengajarRole').value;
             const nama = document.getElementById('pengajarNama').value;
             const id = document.getElementById('pengajarId').value;
             const pass = document.getElementById('pengajarPass').value;
 
-            // Logika Penarikan Nilai Matkul Berdasarkan Role
             let arrayMatkulTerpilih = [];
             if (role === 'dosen') {
                 const selectedRadio = document.querySelector('input[name="pilihanMatkulPengajar"]:checked');
@@ -225,7 +213,6 @@
                 arrayMatkulTerpilih = Array.from(selectedCheckboxes).map(cb => cb.value);
             }
 
-            // Validasi
             if(!nama || !id || !pass) return alert("Harap isi Nama, NIP/ID, dan Password!");
             if(arrayMatkulTerpilih.length === 0) return alert("Harap pilih mata kuliah yang diampu!");
             if(localStorage.getItem(id)) return alert("NIP/ID ini sudah terdaftar!");
@@ -241,7 +228,6 @@
 
             localStorage.setItem(id, JSON.stringify(userData));
             
-            // Tutup dan Bersihkan Modal
             document.getElementById('modalTambahDosen').style.display = 'none';
             document.getElementById('pengajarNama').value = '';
             document.getElementById('pengajarId').value = '';
@@ -251,21 +237,18 @@
             alert(role.toUpperCase() + " berhasil ditambahkan beserta mata kuliahnya!");
         };
 
-        // --- INISIALISASI SAAT HALAMAN DIMUAT ---
         document.addEventListener('DOMContentLoaded', () => {
             muatDataPengajar();
             
-            // Buka Modal & Render Default Matkul
             const btnAdd = document.getElementById('btnBukaModalDosen');
             if(btnAdd) {
                 btnAdd.addEventListener('click', () => {
-                    document.getElementById('pengajarRole').value = 'dosen'; // Default role Dosen
-                    renderMatkulPengajar(); // Render Matkul Dosen
+                    document.getElementById('pengajarRole').value = 'dosen';
+                    renderMatkulPengajar();
                     document.getElementById('modalTambahDosen').style.display = 'flex';
                 });
             }
 
-            // Event Listener jika Role diganti oleh Admin
             const selectRole = document.getElementById('pengajarRole');
             if(selectRole) {
                 selectRole.addEventListener('change', renderMatkulPengajar);
