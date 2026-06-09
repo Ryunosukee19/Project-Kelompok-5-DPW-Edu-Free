@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
-        /* --- GAYA NOTIFIKASI ADVANCED --- */
+        /* --- GAYA NOTIFIKASI ADVANCED (TEMA ADMIN) --- */
         #notif-dropdown { display: none; position: absolute; top: 45px; right: 0; background: white; border: 1px solid #e5e7eb; border-radius: 12px; width: 340px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); z-index: 9999; text-align: left; overflow: hidden;}
         .notif-header { padding: 12px 15px; font-weight: bold; background: #f8fafc; border-bottom: 1px solid #e5e7eb; display: flex; justify-content: space-between; align-items: center;}
         .notif-header button { background: none; border: none; font-size: 11px; cursor: pointer; font-weight: 600; padding: 5px 8px; border-radius: 4px; transition: 0.2s;}
@@ -82,8 +82,8 @@
 
             <section class="page-control-panel">
                 <div class="panel-left">
-                    <h2>Laporan Rekapitulasi Nilai & Presensi</h2>
-                    <p style="color: #888; font-size: 13px; margin-top: 5px;">Data ini diakumulasi otomatis dari input nilai dan presensi dosen pengampu.</p>
+                    <h2>Laporan Rekapitulasi Kelas</h2>
+                    <p style="color: #888; font-size: 13px; margin-top: 5px;">Data ini diakumulasi <b style="color:var(--primary-color);">secara otomatis</b> dari input nilai dan absensi pada Dashboard Dosen.</p>
                 </div>
                 <div class="panel-right">
                     <button class="btn-add-student" onclick="window.print()"><i class="fas fa-file-download"></i> Unduh Laporan</button>
@@ -114,7 +114,7 @@
             kuisioner.forEach(kuis => { let id = 'kuis_'+kuis.id; if(!notifs.find(n=>n.id===id)) notifs.push({id, type:'kuis', icon:'fa-comment-dots', color:'#3b82f6', text:`Evaluasi: <b>${kuis.matkul}</b>`, isRead:false, isDeleted:false, time:kuis.waktu}); });
             for(let i=0; i<localStorage.length; i++) {
                 let key = localStorage.key(i);
-                if(key !== 'loggedInUser' && key !== 'admin' && !key.includes('eduFree') && !key.includes('reset') && !key.includes('kuisioner') && !key.includes('notif') && !key.includes('matkul') && !key.includes('laporan')) {
+                if(key !== 'loggedInUser' && key !== 'admin' && !key.includes('eduFree') && !key.includes('reset') && !key.includes('kuisioner') && !key.includes('notif') && !key.includes('matkul') && !key.includes('laporan') && !key.includes('tugas') && !key.includes('materi') && !key.includes('absensi') && !key.includes('pengumpulan')) {
                     try { let user = JSON.parse(localStorage.getItem(key)); let id = 'user_'+user.userId; if(!notifs.find(n=>n.id===id)) notifs.push({id, type:'user', icon:'fa-user-plus', color:'#10b981', text:`Daftar: <b>${user.role.toUpperCase()}</b> (${user.nama})`, isRead:false, isDeleted:false, time:new Date().toLocaleDateString('id-ID')}); } catch(e){}
                 }
             }
@@ -137,57 +137,115 @@
         window.clearAllNotifications = function() { if(confirm("Hapus semua notifikasi?")) { let notifs = JSON.parse(localStorage.getItem('admin_notifs')) || []; notifs.forEach(n=>n.isDeleted=true); localStorage.setItem('admin_notifs', JSON.stringify(notifs)); renderNotifications(); } };
 
 
-        // --- 2. LOGIKA LAPORAN NILAI & PRESENSI ---
+        // --- 2. LOGIKA LAPORAN NILAI DINAMIS (INTEGRASI DATA DOSEN) ---
         
-        // Fungsi simulasi data dari dosen
-        function initDummyLaporanDosen() {
-            if(!localStorage.getItem('laporan_dosen_mentah')) {
-                const dataDosen = [
-                    { matkul: "Dasar Pemrograman Web", dosen: "Putra, M.T.", totalMhs: 35, avgNilai: 88.5, presensiHadir: 100 },
-                    { matkul: "Pengantar Teknologi Informasi", dosen: "Pratiwi, M.Kom.", totalMhs: 40, avgNilai: 79.2, presensiHadir: 92 },
-                    { matkul: "Bahasa Indonesia", dosen: "Siti, M.Pd.", totalMhs: 30, avgNilai: 84.0, presensiHadir: 98 },
-                    { matkul: "Pendidikan Agama Islam", dosen: "Ahmad, M.Ag.", totalMhs: 38, avgNilai: 62.8, presensiHadir: 75 }
-                ];
-                localStorage.setItem('laporan_dosen_mentah', JSON.stringify(dataDosen));
-            }
-        }
+        // 9 Mata Kuliah yang terdaftar di sistem
+        const semuaMatkul = [
+            "PTI", "Alpro", "Matematika Teknik", "Matematika Diskret", 
+            "Struktur Data", "DPW", "Orkom", "Metode Statistika", "Komputasi Aljabar Linier"
+        ];
 
-        // Fungsi konversi nilai rata-rata menjadi Indeks Prestasi (Huruf)
         function hitungIndeksPrestasi(rataRata) {
-            if (rataRata >= 85) return { huruf: 'A', bg: '#f4ecff', text: '#8a33fd', card: 'card-purple' }; // A = Sangat Baik
-            if (rataRata >= 80) return { huruf: 'A-', bg: '#ecfdf5', text: '#10b981', card: 'card-green' };  // A- = Baik Sekali
-            if (rataRata >= 75) return { huruf: 'B+', bg: '#fff7ed', text: '#fb8c00', card: 'card-orange' }; // B+ = Baik
-            if (rataRata >= 70) return { huruf: 'B', bg: '#fff7ed', text: '#fb8c00', card: 'card-orange' };  // B = Cukup Baik
-            if (rataRata >= 60) return { huruf: 'C', bg: '#fef2f2', text: '#ef4444', card: 'card-red' };     // C = Cukup
-            return { huruf: 'D', bg: '#fef2f2', text: '#ef4444', card: 'card-red' };                         // D/E = Kurang
+            if (rataRata === 0) return { huruf: '-', bg: '#f1f5f9', text: '#64748b', card: 'card-default' };
+            if (rataRata >= 85) return { huruf: 'A', bg: '#f4ecff', text: '#8a33fd', card: 'card-purple' }; // A 
+            if (rataRata >= 80) return { huruf: 'A-', bg: '#ecfdf5', text: '#10b981', card: 'card-green' };  // A- 
+            if (rataRata >= 75) return { huruf: 'B+', bg: '#fff7ed', text: '#fb8c00', card: 'card-orange' }; // B+ 
+            if (rataRata >= 70) return { huruf: 'B', bg: '#fff7ed', text: '#fb8c00', card: 'card-orange' };  // B 
+            if (rataRata >= 60) return { huruf: 'C', bg: '#fef2f2', text: '#ef4444', card: 'card-red' };     // C 
+            return { huruf: 'D/E', bg: '#fef2f2', text: '#ef4444', card: 'card-red' };                       // D/E
         }
 
-        function muatLaporanNilai() {
+        function muatLaporanDinamis() {
             const container = document.getElementById('laporan-container');
             container.innerHTML = '';
             
-            // Mengambil data yang "diinput oleh dosen"
-            const laporanData = JSON.parse(localStorage.getItem('laporan_dosen_mentah')) || [];
+            // Siapkan wadah perhitungan untuk setiap matkul
+            let rekapMatkul = {};
+            semuaMatkul.forEach(mk => {
+                rekapMatkul[mk] = { 
+                    dosen: "Belum Ditentukan", totalMhs: 0, 
+                    sumNilai: 0, countNilai: 0, 
+                    totalSesiAbsen: 0, totalKehadiranMhs: 0 
+                };
+            });
 
-            if(laporanData.length === 0) {
-                container.innerHTML = `<div style="text-align: center; padding: 40px; color: #888;">Belum ada dosen yang melaporkan nilai.</div>`;
-                return;
+            // 1. Tentukan Dosen Pengampu & Hitung Total Mahasiswa per Matkul
+            for (let i = 0; i < localStorage.length; i++) {
+                let key = localStorage.key(i);
+                try {
+                    let user = JSON.parse(localStorage.getItem(key));
+                    if(user && user.role === 'dosen' && user.matkul) {
+                        user.matkul.forEach(mk => { if(rekapMatkul[mk]) rekapMatkul[mk].dosen = user.nama; });
+                    }
+                    if(user && user.role === 'mahasiswa' && user.matkul) {
+                        user.matkul.forEach(mk => { if(rekapMatkul[mk]) rekapMatkul[mk].totalMhs++; });
+                    }
+                } catch(e) {}
             }
 
-            laporanData.forEach(lap => {
-                const ip = hitungIndeksPrestasi(lap.avgNilai);
+            // 2. Tarik Data Nilai (Tugas, Ujian, Kuis) & Presensi
+            semuaMatkul.forEach(mk => {
+                // Menghitung Akumulasi Nilai
+                ['tugas', 'ujian', 'kuis'].forEach(kategori => {
+                    let items = JSON.parse(localStorage.getItem(`${kategori}_${mk}`)) || [];
+                    items.forEach(item => {
+                        let kumpul = JSON.parse(localStorage.getItem(`pengumpulan_${item.id}`)) || [];
+                        kumpul.forEach(p => {
+                            if(p.nilai && p.nilai !== "") {
+                                rekapMatkul[mk].sumNilai += parseFloat(p.nilai);
+                                rekapMatkul[mk].countNilai++;
+                            }
+                        });
+                    });
+                });
+
+                // Menghitung Presensi (Berdasarkan Sesi yang dibuka Dosen)
+                let sesiAbsen = JSON.parse(localStorage.getItem(`absensi_${mk}`)) || [];
+                rekapMatkul[mk].totalSesiAbsen = sesiAbsen.length;
                 
-                // Logika Warna Presensi
-                let presensiColor = lap.presensiHadir >= 90 ? '#10b981' : (lap.presensiHadir >= 75 ? '#eab308' : '#ef4444');
-                let presensiStatus = lap.presensiHadir < 80 ? '(Peringatan Kehadiran)' : 'Hadir';
+                sesiAbsen.forEach(sesi => {
+                    // Cari mahasiswa yang hadir di tanggal ini untuk matkul ini
+                    let hadirMhs = JSON.parse(localStorage.getItem(`hadir_mhs_${mk}_${sesi.tanggal}`)) || [];
+                    rekapMatkul[mk].totalKehadiranMhs += hadirMhs.length;
+                });
+            });
+
+            // 3. Render ke UI Dashboard Admin
+            semuaMatkul.forEach(mk => {
+                let data = rekapMatkul[mk];
+                
+                // Kalkulasi Rata-rata Nilai
+                let avg = data.countNilai > 0 ? (data.sumNilai / data.countNilai).toFixed(1) : 0;
+                let ip = hitungIndeksPrestasi(parseFloat(avg));
+                
+                // Kalkulasi Persentase Kehadiran
+                // Persentase = Total Hadir / (Total Sesi * Total Mahasiswa yg ambil matkul) * 100
+                let persentaseHadir = 0;
+                let expectedKehadiran = data.totalSesiAbsen * data.totalMhs;
+                if(expectedKehadiran > 0) {
+                    persentaseHadir = ((data.totalKehadiranMhs / expectedKehadiran) * 100).toFixed(0);
+                }
+
+                // Status & Warna UI Presensi
+                let presensiWarna = '#64748b'; // Default Abu-abu
+                let presensiStatus = 'Belum Ada Sesi';
+                let iconPresensi = 'fa-minus-circle';
+
+                if(data.totalSesiAbsen > 0) {
+                    presensiWarna = persentaseHadir >= 90 ? '#10b981' : (persentaseHadir >= 75 ? '#eab308' : '#ef4444');
+                    presensiStatus = persentaseHadir < 80 ? 'Hadir (Peringatan)' : 'Hadir';
+                    iconPresensi = 'fa-percentage';
+                }
+
+                let nilaiTeks = avg > 0 ? `${avg}<span style="font-size:12px; font-weight:normal; color:#888;"> /100</span>` : '<span style="font-size:14px; color:#888;">Belum ada nilai</span>';
 
                 container.innerHTML += `
-                    <div class="assignment-horizontal-card ${ip.card} searchable-item" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px;">
+                    <div class="assignment-horizontal-card ${ip.card} searchable-item" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px; border-left: 5px solid ${ip.text};">
                         
                         <div class="task-info-block" style="flex: 2; min-width: 200px;">
-                            <h3 style="margin-bottom: 5px; font-size: 16px;">${lap.matkul}</h3>
-                            <p style="color: #555; font-size: 13px;">Dosen Pengampu: <strong>${lap.dosen}</strong></p>
-                            <p style="color: #888; font-size: 11px; margin-top: 5px;"><i class="fas fa-users"></i> ${lap.totalMhs} Mahasiswa</p>
+                            <h3 style="margin-bottom: 5px; font-size: 16px;">${mk}</h3>
+                            <p style="color: #555; font-size: 13px;">Pengampu: <strong>${data.dosen}</strong></p>
+                            <p style="color: #888; font-size: 11px; margin-top: 5px;"><i class="fas fa-users"></i> ${data.totalMhs} Mahasiswa Terdaftar</p>
                         </div>
                         
                         <div class="task-status-block" style="flex: 1; text-align: center;">
@@ -195,14 +253,16 @@
                             <span class="badge" style="background-color: ${ip.bg}; color: ${ip.text}; font-size: 15px; padding: 6px 18px; font-weight: bold;">${ip.huruf}</span>
                         </div>
                         
-                        <div class="task-history-block" style="flex: 1; text-align: center;">
+                        <div class="task-history-block" style="flex: 1.5; text-align: center;">
                             <p class="grade-label" style="font-size: 11px; color: #888; text-transform: uppercase; margin-bottom: 4px;">Rata-Rata Kelas</p>
-                            <p class="grade-value" style="font-size: 20px; font-weight: bold; color: #111;">${lap.avgNilai}<span style="font-size:12px; font-weight:normal; color:#888;"> /100</span></p>
+                            <p class="grade-value" style="font-size: 20px; font-weight: bold; color: #111;">${nilaiTeks}</p>
+                            <p style="font-size: 10px; color: #aaa; margin-top: 2px;">(${data.countNilai} Nilai Diinput)</p>
                         </div>
                         
                         <div class="task-delay-block" style="flex: 1.5; text-align: right;">
                             <p style="font-size: 11px; color: #888; text-transform: uppercase; margin-bottom: 4px;">Statistik Presensi</p>
-                            <p style="color: ${presensiColor}; font-weight: bold; font-size: 13px;"><i class="fas fa-percentage"></i> ${lap.presensiHadir}% ${presensiStatus}</p>
+                            <p style="color: ${presensiWarna}; font-weight: bold; font-size: 13px;"><i class="fas ${iconPresensi}"></i> ${data.totalSesiAbsen > 0 ? persentaseHadir + '%' : ''} ${presensiStatus}</p>
+                            <p style="font-size: 10px; color: #aaa; margin-top: 2px;">(${data.totalSesiAbsen} Sesi Dibuka)</p>
                         </div>
                         
                     </div>
@@ -212,9 +272,8 @@
 
         // Inisialisasi
         document.addEventListener('DOMContentLoaded', () => {
-            initDummyLaporanDosen(); // Muat data dummy
-            muatLaporanNilai();      // Render UI
-            syncNotifications();     // Muat Notifikasi
+            muatLaporanDinamis();      
+            syncNotifications();     
         });
     </script>
 </body>
