@@ -6,32 +6,52 @@
     <title>Admin Dashboard - Home</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        #notif-dropdown {
+            display: none; position: absolute; top: 45px; right: 0; 
+            background: white; border: 1px solid #e5e7eb; border-radius: 12px; 
+            width: 340px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); z-index: 9999; text-align: left;
+            overflow: hidden;
+        }
+        .notif-header {
+            padding: 12px 15px; font-weight: bold; background: #f8fafc; 
+            border-bottom: 1px solid #e5e7eb; display: flex; justify-content: space-between; align-items: center;
+        }
+        .notif-header button {
+            background: none; border: none; font-size: 11px; cursor: pointer; font-weight: 600; padding: 5px 8px; border-radius: 4px; transition: 0.2s;
+        }
+        .notif-header button:hover { background: #e2e8f0; }
+        .notif-item {
+            padding: 12px 15px; border-bottom: 1px solid #e5e7eb; display: flex; gap: 10px; align-items: flex-start; transition: 0.2s;
+        }
+        .notif-item.unread { background-color: #f0f9ff; border-left: 3px solid #3b82f6; }
+        .notif-item.read { opacity: 0.7; }
+        .notif-icon { flex-shrink: 0; font-size: 16px; padding-top: 2px; }
+        .notif-content { flex: 1; font-size: 12px; color: #334155; line-height: 1.4; }
+        .notif-actions { flex-shrink: 0; display: flex; gap: 8px; font-size: 14px; }
+        .notif-actions i { cursor: pointer; color: #94a3b8; transition: 0.2s; }
+        .notif-actions i:hover { color: #0f172a; }
+        .notif-actions i.fa-trash:hover { color: #ef4444; }
+    </style>
 </head>
 <body>
-
     <div class="container">
         <aside class="sidebar">
             <div class="logo">
                 <i class="fas fa-graduation-cap"></i> <span>EduFree</span>
             </div>
-            
             <nav class="menu">
                 <a href="indexadmin.html" class="menu-item active"><i class="fas fa-home"></i> Home</a>
-                
                 <details class="menu-group">
-                    <summary class="menu-item">
-                        <i class="fas fa-users"></i> Peserta <i class="fas fa-chevron-down arrow"></i>
-                    </summary>
+                    <summary class="menu-item"><i class="fas fa-users"></i> Peserta <i class="fas fa-chevron-down arrow"></i></summary>
                     <div class="submenu-content">
                         <a href="peserta.html" class="sub-menu-item">Mahasiswa</a>
                         <a href="dosen.html" class="sub-menu-item">Dosen</a>
                     </div>
                 </details>
-
                 <details class="menu-group">
-                    <summary class="menu-item">
-                        <i class="fas fa-book"></i> Mata Kuliah <i class="fas fa-chevron-down arrow"></i>
-                    </summary>
+                    <summary class="menu-item"><i class="fas fa-book"></i> Mata Kuliah <i class="fas fa-chevron-down arrow"></i></summary>
                     <div class="submenu-content">
                         <a href="matakuliah.html" class="sub-menu-item">Semester 1</a>
                         <a href="matakuliah2.html" class="sub-menu-item">Semester 2</a>
@@ -50,10 +70,25 @@
             <header class="top-header">
                 <div class="search-bar">
                     <i class="fas fa-search"></i>
-                    <input type="text" placeholder="Search here...">
+                    <input type="text" id="globalSearch" placeholder="Cari data (Nama, NIM, dll)...">
                 </div>
-                <div class="user-profile">
-                    <i class="far fa-bell"></i>
+                <div class="user-profile" style="position: relative;">
+                    <div style="position: relative; cursor: pointer;" onclick="toggleNotif()">
+                        <i class="far fa-bell"></i>
+                        <span id="notif-badge" style="display: none; position: absolute; top: -5px; right: -5px; background: #ef4444; color: white; border-radius: 50%; padding: 2px 6px; font-size: 10px; font-weight: bold;">0</span>
+                    </div>
+                    
+                    <div id="notif-dropdown">
+                        <div class="notif-header">
+                            <span>Notifikasi</span>
+                            <div>
+                                <button onclick="markAllRead()" style="color: #3b82f6;"><i class="fas fa-check-double"></i> Read All</button>
+                                <button onclick="clearAllNotifications()" style="color: #ef4444;"><i class="fas fa-trash-alt"></i> Clear</button>
+                            </div>
+                        </div>
+                        <div id="notif-list" style="max-height: 300px; overflow-y: auto;"></div>
+                    </div>
+
                     <i class="far fa-comment-dots"></i>
                     <div class="profile-info">
                         <span class="name">Super Admin</span>
@@ -64,26 +99,15 @@
 
             <section class="cards-grid">
                 <div class="card-stat">
-                    <div class="card-info">
-                        <h3>0</h3>
-                        <p>Jumlah Mahasiswa</p>
-                    </div>
+                    <div class="card-info"><h3 id="stat-mhs">0</h3><p>Jumlah Mahasiswa</p></div>
                     <div class="card-icon"><i class="fas fa-user-graduate"></i></div>
                 </div>
-                
                 <div class="card-stat">
-                    <div class="card-info">
-                        <h3>0</h3>
-                        <p>Jumlah Dosen</p>
-                    </div>
+                    <div class="card-info"><h3 id="stat-dsn">0</h3><p>Jumlah Dosen</p></div>
                     <div class="card-icon"><i class="fas fa-chalkboard-teacher"></i></div>
                 </div>
-
                 <div class="card-stat">
-                    <div class="card-info">
-                        <h3>0</h3>
-                        <p>Jumlah Asprak</p>
-                    </div>
+                    <div class="card-info"><h3 id="stat-asprak">0</h3><p>Jumlah Asprak</p></div>
                     <div class="card-icon"><i class="fas fa-user-cog"></i></div>
                 </div>
             </section>
@@ -91,95 +115,180 @@
             <div class="dashboard-grid">
                 <section class="grid-left table-card">
                     <div class="section-header">
-                        <h3>Tugas Mata Kuliah</h3>
+                        <h3>Tugas Mata Kuliah Terkini</h3>
                         <button class="btn-see-all">See all &rarr;</button>
                     </div>
                     <table class="home-table">
                         <thead>
-                            <tr>
-                                <th>Judul Tugas</th>
-                                <th>Mata Kuliah</th>
-                                <th>Status</th>
-                            </tr>
+                            <tr><th>Judul Tugas</th><th>Mata Kuliah</th><th>Status</th></tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>UI/UX Design App</td>
-                                <td>Desain Antarmuka</td>
-                                <td><span class="status status-review">Review</span></td>
-                            </tr>
-                            <tr>
-                                <td>Web Development Project</td>
-                                <td>Pemrograman Web</td>
-                                <td><span class="status status-progress">In Progress</span></td>
-                            </tr>
+                            <tr><td>UI/UX Design App</td><td>Dasar Pemrograman Web</td><td><span class="status status-review">Review</span></td></tr>
+                            <tr><td>Logika Predikat</td><td>Matematika Diskret</td><td><span class="status status-progress">In Progress</span></td></tr>
                         </tbody>
                     </table>
                 </section>
 
                 <section class="grid-right list-card">
                     <div class="section-header">
-                        <h3>Mahasiswa yang Aktif</h3>
-                        <button class="btn-see-all">See all &rarr;</button>
+                        <h3>Mahasiswa Pendaftar Baru</h3>
+                        <button class="btn-see-all" onclick="window.location.href='peserta.html'">See all &rarr;</button>
                     </div>
-                    <div class="active-students-list">
-                    </div>
+                    <div class="active-students-list" id="recent-students"></div>
                 </section>
             </div>
         </main>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            let users = [];
-            let countMahasiswa = 0;
-            let countDosen = 0;
-            let countAsprak = 0;
+        // --- 1. FITUR SEARCH BAR UNIVERSAL ---
+        const searchInput = document.getElementById('globalSearch');
+        if (searchInput) {
+            searchInput.addEventListener('input', function(e) {
+                let keyword = e.target.value.toLowerCase();
+                document.querySelectorAll('.student-item, tbody tr').forEach(el => {
+                    el.style.display = el.innerText.toLowerCase().includes(keyword) ? '' : 'none';
+                });
+            });
+        }
 
+        // --- 2. SISTEM NOTIFIKASI ADVANCED ---
+        function toggleNotif() {
+            const dp = document.getElementById('notif-dropdown');
+            dp.style.display = dp.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function syncNotifications() {
+            let notifs = JSON.parse(localStorage.getItem('admin_notifs')) || [];
+
+            // Cek Permintaan Reset Password
+            let reqPassword = JSON.parse(localStorage.getItem('reset_password_requests')) || [];
+            reqPassword.forEach(req => {
+                let id = 'pwd_' + req.reqId;
+                if (!notifs.find(n => n.id === id)) {
+                    notifs.push({ id, type: 'pwd', icon: 'fa-key', color: '#eab308', text: `Permintaan reset password dari <b>${req.nama}</b>`, isRead: false, isDeleted: false, time: req.waktu });
+                }
+            });
+
+            // Cek Kuisioner Baru
+            let kuisioner = JSON.parse(localStorage.getItem('kuisioner_admin')) || [];
+            kuisioner.forEach(kuis => {
+                let id = 'kuis_' + kuis.id;
+                if (!notifs.find(n => n.id === id)) {
+                    notifs.push({ id, type: 'kuis', icon: 'fa-comment-dots', color: '#3b82f6', text: `Evaluasi baru untuk <b>${kuis.matkul}</b> dari ${kuis.namaMahasiswa}`, isRead: false, isDeleted: false, time: kuis.waktu });
+                }
+            });
+
+            // Cek Registrasi User Baru
             for (let i = 0; i < localStorage.length; i++) {
                 let key = localStorage.key(i);
-                if (key !== 'loggedInUser' && key !== 'admin') { 
+                if (key !== 'loggedInUser' && key !== 'admin' && !key.includes('eduFree') && !key.includes('reset') && !key.includes('kuisioner') && !key.includes('notif')) {
                     try {
-                        let data = JSON.parse(localStorage.getItem(key));
-                        if (data && data.role) {
-                            users.push(data);
-                            if (data.role === 'mahasiswa') countMahasiswa++;
-                            if (data.role === 'dosen') countDosen++;
-                            if (data.role === 'asprak') countAsprak++;
+                        let user = JSON.parse(localStorage.getItem(key));
+                        let id = 'user_' + user.userId;
+                        if (!notifs.find(n => n.id === id)) {
+                            notifs.push({ id, type: 'user', icon: 'fa-user-plus', color: '#10b981', text: `User baru mendaftar sebagai <b>${user.role.toUpperCase()}</b> (${user.nama})`, isRead: false, isDeleted: false, time: new Date().toLocaleDateString('id-ID') });
                         }
-                    } catch(e) {} 
+                    } catch(e) {}
                 }
             }
 
-            const statCards = document.querySelectorAll('.card-stat');
-            if(statCards.length >= 3) {
-                statCards[0].querySelector('h3').textContent = countMahasiswa;
-                statCards[1].querySelector('h3').textContent = countDosen;
-                statCards[2].querySelector('h3').textContent = countAsprak;
-                statCards[2].querySelector('p').textContent = "Jumlah Asprak";
-                statCards[2].querySelector('.card-icon').innerHTML = '<i class="fas fa-user-cog"></i>';
+            localStorage.setItem('admin_notifs', JSON.stringify(notifs));
+            renderNotifications();
+        }
+
+        function renderNotifications() {
+            let notifs = JSON.parse(localStorage.getItem('admin_notifs')) || [];
+            let activeNotifs = notifs.filter(n => !n.isDeleted).reverse();
+            let unreadCount = activeNotifs.filter(n => !n.isRead).length;
+
+            const badge = document.getElementById('notif-badge');
+            const list = document.getElementById('notif-list');
+
+            badge.style.display = unreadCount > 0 ? 'block' : 'none';
+            badge.innerText = unreadCount;
+
+            if (activeNotifs.length > 0) {
+                list.innerHTML = activeNotifs.map(n => `
+                    <div class="notif-item ${n.isRead ? 'read' : 'unread'}">
+                        <div class="notif-icon"><i class="fas ${n.icon}" style="color:${n.color};"></i></div>
+                        <div class="notif-content">
+                            <div>${n.text}</div>
+                            <div style="font-size: 10px; color: #94a3b8; margin-top: 4px;">${n.time}</div>
+                        </div>
+                        <div class="notif-actions">
+                            <i class="fas ${n.isRead ? 'fa-envelope-open' : 'fa-envelope'}" title="Tandai Status" onclick="toggleReadStatus('${n.id}')"></i>
+                            <i class="fas fa-trash" title="Hapus" onclick="deleteNotification('${n.id}')"></i>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                list.innerHTML = '<div style="padding: 20px; text-align: center; color: #94a3b8; font-size: 13px;"><i class="fas fa-bell-slash fa-2x" style="margin-bottom:10px; opacity:0.5;"></i><br>Tidak ada notifikasi.</div>';
+            }
+        }
+
+        window.toggleReadStatus = function(id) {
+            let notifs = JSON.parse(localStorage.getItem('admin_notifs')) || [];
+            let target = notifs.find(n => n.id === id);
+            if(target) { target.isRead = !target.isRead; localStorage.setItem('admin_notifs', JSON.stringify(notifs)); renderNotifications(); }
+        };
+
+        window.deleteNotification = function(id) {
+            let notifs = JSON.parse(localStorage.getItem('admin_notifs')) || [];
+            let target = notifs.find(n => n.id === id);
+            if(target) { target.isDeleted = true; localStorage.setItem('admin_notifs', JSON.stringify(notifs)); renderNotifications(); }
+        };
+
+        window.markAllRead = function() {
+            let notifs = JSON.parse(localStorage.getItem('admin_notifs')) || [];
+            notifs.forEach(n => { if(!n.isDeleted) n.isRead = true; });
+            localStorage.setItem('admin_notifs', JSON.stringify(notifs)); renderNotifications();
+        };
+
+        window.clearAllNotifications = function() {
+            if(confirm("Hapus semua notifikasi?")) {
+                let notifs = JSON.parse(localStorage.getItem('admin_notifs')) || [];
+                notifs.forEach(n => n.isDeleted = true);
+                localStorage.setItem('admin_notifs', JSON.stringify(notifs)); renderNotifications();
+            }
+        };
+
+        // --- 3. LOGIKA HALAMAN HOME (Statistik & Data Terbaru) ---
+        document.addEventListener('DOMContentLoaded', () => {
+            syncNotifications(); // Jalankan notif
+
+            let mhsCount = 0, dosenCount = 0, asprakCount = 0;
+            let semuaMahasiswa = [];
+
+            for (let i = 0; i < localStorage.length; i++) {
+                let key = localStorage.key(i);
+                if (key !== 'loggedInUser' && key !== 'admin' && !key.includes('eduFree') && !key.includes('reset') && !key.includes('kuisioner') && !key.includes('notif')) {
+                    try {
+                        let data = JSON.parse(localStorage.getItem(key));
+                        if (data.role === 'mahasiswa') { mhsCount++; semuaMahasiswa.push(data); }
+                        if (data.role === 'dosen') dosenCount++;
+                        if (data.role === 'asprak') asprakCount++;
+                    } catch(e) {}
+                }
             }
 
-            const activeStudentList = document.querySelector('.active-students-list');
-            const mahasiswaSaja = users.filter(u => u.role === 'mahasiswa');
-            
-            activeStudentList.innerHTML = ''; 
-            
-            if (mahasiswaSaja.length === 0) {
-                activeStudentList.innerHTML = '<p style="color:#888; font-size:13px; text-align:center;">Belum ada mahasiswa yang mendaftar.</p>';
+            document.getElementById('stat-mhs').textContent = mhsCount;
+            document.getElementById('stat-dsn').textContent = dosenCount;
+            document.getElementById('stat-asprak').textContent = asprakCount;
+
+            const recentContainer = document.getElementById('recent-students');
+            recentContainer.innerHTML = ''; 
+            if (semuaMahasiswa.length === 0) {
+                recentContainer.innerHTML = '<p style="color:#888; font-size:13px; text-align:center; padding: 20px;">Belum ada pendaftar.</p>';
             } else {
-                mahasiswaSaja.slice(-5).reverse().forEach(mhs => {
-                    activeStudentList.innerHTML += `
-                        <div class="student-item">
-                            <div class="student-details">
-                                <h4>${mhs.nama}</h4>
-                                <p>NIM: ${mhs.userId} | Smt: ${mhs.semester}</p>
+                semuaMahasiswa.slice(-5).reverse().forEach(mhs => {
+                    recentContainer.innerHTML += `
+                        <div class="student-item" style="display: flex; justify-content: space-between; padding: 12px 10px; border-bottom: 1px solid #f1f1f1;">
+                            <div>
+                                <h4 style="margin:0; font-size:14px;">${mhs.nama}</h4>
+                                <p style="margin:4px 0 0 0; font-size:12px; color:#888;">NIM: ${mhs.userId} &nbsp;|&nbsp; Smt: ${mhs.semester}</p>
                             </div>
-                            <div class="student-actions">
-                                <i class="fas fa-key" title="Pass: ${mhs.password}"></i>
-                            </div>
-                        </div>
-                    `;
+                        </div>`;
                 });
             }
         });
