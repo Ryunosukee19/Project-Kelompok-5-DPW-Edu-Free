@@ -411,6 +411,7 @@
                 <button class="tab-btn" onclick="bukaTabKelas('tab-forum', this)"><i class="fas fa-comments"></i> Forum Kelas</button>
                 <button class="tab-btn" onclick="bukaTabKelas('tab-kontrak-teori', this)"><i class="fas fa-file-signature"></i> Kontrak Kuliah</button>
                 <button class="tab-btn" onclick="bukaTabKelas('tab-zoom', this)"><i class="fas fa-video"></i> Jadwal Zoom</button>
+                <button class="tab-btn" onclick="bukaTabKelas('tab-kuisioner', this)"><i class="fas fa-clipboard-check"></i> Kuisioner</button>
             </nav>
 
             <div id="tab-absensi" class="tab-content"><div id="konten-absensi"></div></div>
@@ -427,7 +428,20 @@
                 <div id="konten-kuis"></div>
             </div>
 
-            <div id="tab-nilai" class="tab-content"><div id="konten-nilai"></div></div>
+            <div id="tab-nilai" class="tab-content">
+                <h2 class="section-title-tab"><i class="fas fa-star" style="color: var(--primary);"></i> Penilaian Dosen</h2>
+                <div class="upload-form-card">
+                    <div class="input-group">
+                        <label>Pilih Kategori Penilaian</label>
+                        <select id="kategori-nilai-mhs" onchange="renderTabelNilaiKategori()" style="padding:12px; border-radius:10px; width:100%; background:var(--bg-body); color:var(--text-main); border:1px solid var(--border-color);">
+                            <option value="tugas">Tugas Dosen</option>
+                            <option value="ujian">UTS / UAS</option>
+                            <option value="kuis">Kuis</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="konten-nilai-kategori"></div>
+            </div>
             
             <div id="tab-forum" class="tab-content">
                 <div class="chat-box">
@@ -471,6 +485,21 @@
                 </div>
                 <div id="konten-zoom-list"></div>
             </div>
+
+            <div id="tab-kuisioner" class="tab-content">
+                <h2 class="section-title-tab"><i class="fas fa-comment-dots" style="color: var(--primary);"></i> Kuisioner Evaluasi Pembelajaran</h2>
+                <div class="form-card">
+                    <p style="color:var(--text-muted); margin-bottom: 20px;">Berikan penilaian dan saran Anda untuk mata kuliah ini. Masukan Anda akan dikirim langsung ke Admin Universitas.</p>
+                    <div class="input-group">
+                        <label>Pesan / Saran / Evaluasi</label>
+                        <textarea id="input-pesan-kuisioner" rows="5" placeholder="Tulis masukan Anda terkait dosen, materi, atau sistem di mata kuliah ini..."></textarea>
+                    </div>
+                    <button class="btn-action" onclick="kirimKuisioner()"><i class="fas fa-paper-plane"></i> Kirim Kuisioner</button>
+                </div>
+                <h3 style="margin-bottom: 15px; font-size:1.1rem; color:var(--text-main);">Riwayat Kuisioner Anda</h3>
+                <div id="konten-riwayat-kuisioner"></div>
+            </div>
+
         </section>
 
         <section id="section-praktikum">
@@ -612,7 +641,6 @@
                     let dbMateri = JSON.parse(localStorage.getItem(`materi_${mk}`)) || [];
                     dbMateri.forEach(m => { if (!dismissedNotifs.includes(m.id)) activeNotifs.push({ id: m.id, title: `Materi Dosen: ${m.judul}`, desc: `MK: ${mk}`, type: 'materi' }); });
                     
-                    // Tambahan notifikasi untuk Ujian dan Kuis
                     let dbUjian = JSON.parse(localStorage.getItem(`ujian_${mk}`)) || [];
                     dbUjian.forEach(u => { if (!dismissedNotifs.includes(u.id)) activeNotifs.push({ id: u.id, title: `Ujian: ${u.judul}`, desc: `MK: ${mk} - Tenggat: ${u.deadline}`, type: 'ujian' }); });
                     let dbKuis = JSON.parse(localStorage.getItem(`kuis_${mk}`)) || [];
@@ -684,9 +712,16 @@
             renderAbsensi(namaMatkul); 
             renderMateri(namaMatkul); 
             renderTugas(namaMatkul); 
-            renderUjian(namaMatkul); // Render UTS/UAS
-            renderKuis(namaMatkul);  // Render Kuis
-            renderNilai(namaMatkul); 
+            renderUjian(namaMatkul); 
+            renderKuis(namaMatkul);  
+            
+            // Set ke Nilai Tugas secara Default
+            document.getElementById('kategori-nilai-mhs').value = "tugas";
+            renderTabelNilaiKategori(); 
+            
+            // Load Form Kuisioner
+            renderRiwayatKuisioner();
+
             loadForumMessages(namaMatkul); 
             renderKontrakTeori(namaMatkul); 
             renderZoom(namaMatkul);
@@ -696,7 +731,9 @@
             document.querySelectorAll('#section-matkul .tab-content').forEach(tab => tab.classList.remove('active'));
             document.querySelectorAll('#section-matkul .tab-btn').forEach(btn => btn.classList.remove('active'));
             document.getElementById(tabId).classList.add('active'); btnElement.classList.add('active');
+            
             if(tabId === 'tab-forum') document.getElementById('chat-messages').scrollTop = document.getElementById('chat-messages').scrollHeight;
+            if(tabId === 'tab-nilai') renderTabelNilaiKategori(); 
         }
 
         // MATERI DENGAN LOGIKA SEQUENTIAL LOCK
@@ -867,21 +904,66 @@
             alert("Presensi teori dicatat!"); renderAbsensi(activeMatkulGlobal);
         }
 
-        // NILAI TEORI
-        function renderNilai(matkul) {
-            const wadah = document.getElementById('konten-nilai');
-            const dbTugas = JSON.parse(localStorage.getItem(`tugas_${matkul}`)) || [];
-            if(dbTugas.length === 0) return wadah.innerHTML = `<div class="empty-box">Belum ada evaluasi.</div>`;
-            
-            // Tambahkan wrapper table-responsive agar tidak merusak tata letak
-            let html = `<div class="table-responsive"><table class="styled-table"><thead><tr><th>Tugas Teori</th><th>Status</th><th>Nilai</th></tr></thead><tbody>`;
+        // PENILAIAN DOSEN (MODIFIKASI KATEGORI)
+        window.renderTabelNilaiKategori = function() {
+            const kategori = document.getElementById('kategori-nilai-mhs').value;
+            const wadah = document.getElementById('konten-nilai-kategori');
+            if(!kategori || !activeMatkulGlobal) return;
+
+            const dbItem = JSON.parse(localStorage.getItem(`${kategori}_${activeMatkulGlobal}`)) || [];
+            if(dbItem.length === 0) return wadah.innerHTML = `<div class="empty-box">Belum ada evaluasi dari dosen untuk kategori ini.</div>`;
+
+            let html = `<div class="table-responsive"><table class="styled-table"><thead><tr><th>Item Evaluasi</th><th>Status Pengerjaan</th><th>Nilai</th></tr></thead><tbody>`;
             let adaData = false;
-            dbTugas.forEach(t => {
-                const hasil = (JSON.parse(localStorage.getItem(`pengumpulan_${t.id}`)) || []).find(p => p.userId === user.userId);
-                if(hasil) { adaData = true; let n = hasil.nilai ? `<strong style="color:var(--success);">${hasil.nilai}</strong>` : `<span style="color:var(--warning);">Pending</span>`; html += `<tr><td>${t.judul}</td><td style="color:var(--success);">Terkumpul</td><td>${n}</td></tr>`; }
+
+            dbItem.forEach(item => {
+                const hasil = (JSON.parse(localStorage.getItem(`pengumpulan_${item.id}`)) || []).find(p => p.userId === user.userId);
+                let status = hasil ? `<span style="color:var(--success);"><i class="fas fa-check-circle"></i> Sudah Dikerjakan</span>` : `<span style="color:var(--danger-red);"><i class="fas fa-times-circle"></i> Belum Dikerjakan</span>`;
+                let n = (hasil && hasil.nilai) ? `<strong style="color:var(--success); font-size:1.1rem;">${hasil.nilai}</strong>` : `<span style="color:var(--warning);">Pending</span>`;
+                
+                html += `<tr><td><strong>${item.judul}</strong></td><td>${status}</td><td>${n}</td></tr>`;
+                adaData = true;
             });
-            wadah.innerHTML = adaData ? html + `</tbody></table></div>` : `<div class="empty-box">Belum ada tugas dikumpulkan.</div>`;
+            
+            wadah.innerHTML = adaData ? html + `</tbody></table></div>` : `<div class="empty-box">Belum ada item di kategori ini.</div>`;
         }
+
+        // KUISIONER EVALUASI PEMBELAJARAN (FUNGSI BARU)
+        window.kirimKuisioner = function() {
+            const pesan = document.getElementById('input-pesan-kuisioner').value.trim();
+            if(!pesan) return alert("Pesan kuisioner tidak boleh kosong!");
+            
+            // Menyimpan ke db admin di local storage
+            let dbAdmin = JSON.parse(localStorage.getItem('kuisioner_admin')) || [];
+            dbAdmin.push({
+                id: generateId(),
+                matkul: activeMatkulGlobal,
+                userId: user.userId,
+                namaMahasiswa: user.nama,
+                pesan: pesan,
+                waktu: new Date().toLocaleString('id-ID')
+            });
+            localStorage.setItem('kuisioner_admin', JSON.stringify(dbAdmin));
+
+            alert("Kuisioner berhasil dikirim ke Admin!");
+            document.getElementById('input-pesan-kuisioner').value = '';
+            renderRiwayatKuisioner();
+        }
+
+        function renderRiwayatKuisioner() {
+            let dbAdmin = JSON.parse(localStorage.getItem('kuisioner_admin')) || [];
+            let w = document.getElementById('konten-riwayat-kuisioner');
+            
+            let myKuis = dbAdmin.filter(k => k.userId === user.userId && k.matkul === activeMatkulGlobal);
+            
+            if(myKuis.length === 0) return w.innerHTML = `<div class="empty-box">Anda belum pernah mengirim kuisioner untuk mata kuliah ini.</div>`;
+            
+            w.innerHTML = '';
+            [...myKuis].reverse().forEach(k => {
+                w.innerHTML += `<div class="item-card"><div class="item-info"><h3>Masukan Terkirim</h3><p style="color:var(--text-main); font-size:0.95rem; margin-top:5px;">"${k.pesan}"</p><p style="font-size:0.8rem; margin-top:8px; color:var(--primary);"><i class="far fa-clock"></i> ${k.waktu}</p></div></div>`;
+            });
+        }
+
 
         // FORUM TEORI
         function loadForumMessages(matkul) {
