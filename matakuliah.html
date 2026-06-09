@@ -3,25 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - Data Mahasiswa</title>
+    <title>Admin Dashboard - Mata Kuliah Semester 1</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
 
     <div class="container">
-        <!-- Sidebar Navigation - Halaman Home -->
         <aside class="sidebar">
             <div class="logo">
                 <i class="fas fa-graduation-cap"></i> <span>EduFree</span>
             </div>
             
             <nav class="menu">
-                <!-- Hanya Home yang ACTIVE -->
-                <a href="index.html" class="menu-item"><i class="fas fa-home"></i> Home</a>
+                <a href="indexadmin.html" class="menu-item"><i class="fas fa-home"></i> Home</a>
                 
-                <!-- Dropdown Peserta Perbaikan (Tanpa Select Tag) -->
-                <details class="menu-group active">
+                <details class="menu-group">
                     <summary class="menu-item">
                         <i class="fas fa-users"></i> Peserta <i class="fas fa-chevron-down arrow"></i>
                     </summary>
@@ -31,13 +28,12 @@
                     </div>
                 </details>
 
-                <!-- Dropdown Mata Kuliah Perbaikan (Tanpa Select Tag) -->
-                <details class="menu-group">
+                <details class="menu-group active" open>
                     <summary class="menu-item">
                         <i class="fas fa-book"></i> Mata Kuliah <i class="fas fa-chevron-down arrow"></i>
                     </summary>
                     <div class="submenu-content">
-                        <a href="matakuliah.html" class="sub-menu-item">Semester 1</a>
+                        <a href="matakuliah.html" class="sub-menu-item" style="color:var(--primary-color);">Semester 1</a>
                         <a href="matakuliah2.html" class="sub-menu-item">Semester 2</a>
                         <a href="matakuliah3.html" class="sub-menu-item">Semester 3</a>
                     </div>
@@ -58,7 +54,7 @@
                     <i class="far fa-bell"></i>
                     <i class="far fa-comment-dots"></i>
                     <div class="profile-info">
-                        <span class="name">Priscilla Lily</span>
+                        <span class="name">Super Admin</span>
                         <span class="role">Admin</span>
                     </div>
                 </div>
@@ -77,61 +73,71 @@
                 
                 <div class="student-profile-card">
                     <div class="card-action-menu"><i class="fas fa-ellipsis-v"></i></div>
-                    <h3 class="student-card-name">Algoritma Pemrograman</h3>
+                    <h3 class="student-card-name">Dasar Pemrograman Web</h3>
                     <p class="student-card-id">Wajib</p>
-                    
                     <div class="card-contact-info">
-                        <p><i class="far fa-envelope"></i> Putra@gmail.com</p>
-                        <p><i class="fas fa-phone-alt"></i> (+62) 85x-xxx-xxx-xxx</p>
+                        <p><i class="far fa-envelope"></i> admin@edufree.com</p>
+                        <p><i class="fas fa-phone-alt"></i> (Lab Komputer)</p>
                     </div>
                     <div class="card-meta-details">
                         <div class="meta-row"><span>Prodi</span><strong>Teknik Informatika</strong></div>
-                        <div class="meta-row"><span>Jadwal</span><strong>Senin - 07.00 - 2026</strong></div>
+                        <div class="meta-row"><span>Jadwal</span><strong>Senin - 07.00</strong></div>
                     </div>
                 </div>
 
                 <div class="student-profile-card">
                     <div class="card-action-menu"><i class="fas fa-ellipsis-v"></i></div>
-                    <h3 class="student-card-name">Pengantar Teknologi Informasi</h3>
+                    <h3 class="student-card-name">Orkom</h3>
                     <p class="student-card-id">Wajib</p>
-                    
                     <div class="card-contact-info">
-                        <p><i class="far fa-envelope"></i> Putra@gmail.com</p>
-                        <p><i class="fas fa-phone-alt"></i> (+62) 85x-xxx-xxx-xxx</p>
+                        <p><i class="far fa-envelope"></i> admin@edufree.com</p>
+                        <p><i class="fas fa-phone-alt"></i> (Ruang Teori)</p>
                     </div>
                     <div class="card-meta-details">
                         <div class="meta-row"><span>Prodi</span><strong>Teknik Informatika</strong></div>
-                        <div class="meta-row"><span>Jadwal</span><strong>Senin - 09.30 - 2026</strong></div>
+                        <div class="meta-row"><span>Jadwal</span><strong>Senin - 09.30</strong></div>
                     </div>
                 </div>
 
                 <div class="student-profile-card">
                     <div class="card-action-menu"><i class="fas fa-ellipsis-v"></i></div>
-                    <h3 class="student-card-name">Bahasa Indonesia</h3>
-                    <p class="student-card-id">Pilihan</p>
-                    
+                    <h3 class="student-card-name">Metode Statistika</h3>
+                    <p class="student-card-id">Wajib</p>
                     <div class="card-contact-info">
-                        <p><i class="far fa-envelope"></i> Putra@gmail.com</p>
-                        <p><i class="fas fa-phone-alt"></i> (+62) 85x-xxx-xxx-xxx</p>
+                        <p><i class="far fa-envelope"></i> admin@edufree.com</p>
+                        <p><i class="fas fa-phone-alt"></i> (Ruang Teori)</p>
                     </div>
                     <div class="card-meta-details">
                         <div class="meta-row"><span>Prodi</span><strong>Teknik Informatika</strong></div>
-                        <div class="meta-row"><span>Jadwal</span><strong>Selasa - 09.30 - 2026</strong></div>
+                        <div class="meta-row"><span>Jadwal</span><strong>Selasa - 07.30</strong></div>
                     </div>
                 </div>
 
                 <div class="student-profile-card">
                     <div class="card-action-menu"><i class="fas fa-ellipsis-v"></i></div>
-                    <h3 class="student-card-name">PAI</h3>
-                    <p class="student-card-id">Pilihan</p>
-                    
+                    <h3 class="student-card-name">Komputasi Aljabar Linier</h3>
+                    <p class="student-card-id">Wajib</p>
                     <div class="card-contact-info">
-                        <p><i class="far fa-envelope"></i> Putra@gmail.com</p>
-                        <p><i class="fas fa-phone-alt"></i> (+62) 85x-xxx-xxx-xxx</p>
+                        <p><i class="far fa-envelope"></i> admin@edufree.com</p>
+                        <p><i class="fas fa-phone-alt"></i> (Lab Komputer)</p>
                     </div>
                     <div class="card-meta-details">
                         <div class="meta-row"><span>Prodi</span><strong>Teknik Informatika</strong></div>
-                        <div class="meta-row"><span>Jadwal</span><strong>Senin - 13.00 - 2026</strong></div>
+                        <div class="meta-row"><span>Jadwal</span><strong>Selasa - 10.00</strong></div>
+                    </div>
+                </div>
+
+                <div class="student-profile-card">
+                    <div class="card-action-menu"><i class="fas fa-ellipsis-v"></i></div>
+                    <h3 class="student-card-name">Struktur Data</h3>
+                    <p class="student-card-id">Wajib</p>
+                    <div class="card-contact-info">
+                        <p><i class="far fa-envelope"></i> admin@edufree.com</p>
+                        <p><i class="fas fa-phone-alt"></i> (Lab Komputer)</p>
+                    </div>
+                    <div class="card-meta-details">
+                        <div class="meta-row"><span>Prodi</span><strong>Teknik Informatika</strong></div>
+                        <div class="meta-row"><span>Jadwal</span><strong>Rabu - 08.00</strong></div>
                     </div>
                 </div>
 
