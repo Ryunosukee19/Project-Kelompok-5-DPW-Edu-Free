@@ -38,10 +38,10 @@
                         <a href="matakuliah3.html" class="sub-menu-item">Semester 3</a>
                     </div>
                 </details>
-                <a href="beritaadmin.html" class="menu-item"><i class="fas fa-newspaper"></i> Kelola Berita</a>
+
                 <a href="pengumpulan.html" class="menu-item"><i class="fas fa-file-invoice"></i> Pengumpulan Tugas</a>
                 <a href="laporan_nilai.html" class="menu-item"><i class="fas fa-chart-bar"></i> Laporan Nilai</a>
-                <a href="index.html" class="menu-item">Log Out</a>
+                <a href="berita.html" class="menu-item"><i class="fas fa-newspaper"></i> Kelola Berita</a>
             </nav>
         </aside>
 
@@ -66,7 +66,7 @@
                     <h2>Halaman Dosen & Asprak</h2>
                 </div>
                 <div class="panel-right">
-                    <button class="btn-add-student"><i class="fas fa-plus"></i> Add Dosen</button>
+                    <button class="btn-add-student" id="btnBukaModalDosen"><i class="fas fa-plus"></i> Add Dosen</button>
                 </div>
             </section>
 
@@ -76,16 +76,21 @@
     </div>
 
     <div id="modalTambahDosen" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; align-items: center; justify-content: center;">
-        <div style="background: white; padding: 25px; border-radius: 12px; width: 350px; color: #111; box-shadow: 0 10px 25px rgba(0,0,0,0.2);">
+        <div style="background: white; padding: 25px; border-radius: 12px; width: 400px; max-height: 90vh; overflow-y: auto; color: #111; box-shadow: 0 10px 25px rgba(0,0,0,0.2);">
             <h3 style="margin-bottom: 15px; color: var(--primary-color);">Tambah Pengajar</h3>
-            <select id="pengajarRole" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 6px; outline:none;">
+            
+            <select id="pengajarRole" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 6px; outline:none; font-weight:600;">
                 <option value="dosen">Dosen</option>
                 <option value="asprak">Asisten Praktikum (Asprak)</option>
             </select>
+            
             <input type="text" id="pengajarNama" placeholder="Nama Lengkap" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 6px; outline:none;">
             <input type="number" id="pengajarId" placeholder="NIP / ID Asprak" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 6px; outline:none;">
-            <input type="text" id="pengajarPass" placeholder="Password" style="width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 6px; outline:none;">
+            <input type="text" id="pengajarPass" placeholder="Password" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 6px; outline:none;">
             
+            <div id="matkulPengajarContainer" style="margin-bottom: 15px; text-align: left; max-height: 140px; overflow-y: auto; border: 1px solid #ccc; padding: 10px; border-radius: 6px; font-size: 13px; background: #f9f9f9;">
+                </div>
+
             <div style="display: flex; justify-content: flex-end; gap: 10px;">
                 <button onclick="document.getElementById('modalTambahDosen').style.display='none'" style="padding: 8px 15px; border: none; border-radius: 6px; cursor: pointer; background: #eee;">Batal</button>
                 <button onclick="simpanPengajar()" style="padding: 8px 15px; border: none; border-radius: 6px; cursor: pointer; background: var(--primary-color); color: white;">Simpan</button>
@@ -94,6 +99,60 @@
     </div>
 
     <script>
+        // --- DAFTAR MATA KULIAH ---
+        const matkulSem1 = ["Dasar Pemrograman Web", "Orkom", "Metode Statistika", "Komputasi Aljabar Linier", "Struktur Data"];
+        const matkulSem2 = ["Pengantar Teknologi Informasi", "Algoritma Pemrograman", "Matematika Diskret", "Matematika Teknik"];
+        const semuaMatkul = [...matkulSem1, ...matkulSem2];
+        
+        // Khusus Asprak: Mata kuliah yang memiliki praktikum
+        const matkulAsprak = ["Dasar Pemrograman Web", "Struktur Data", "Pengantar Teknologi Informasi", "Algoritma Pemrograman"];
+
+        // --- FUNGSI MERENDER OPSI MATKUL (RADIO UNTUK DOSEN, CHECKBOX UNTUK ASPRAK) ---
+        function renderMatkulPengajar() {
+            const role = document.getElementById('pengajarRole').value;
+            const container = document.getElementById('matkulPengajarContainer');
+            
+            let htmlContent = '<p style="margin-bottom: 4px; font-weight: 600; color: #555;">Pilih Mata Kuliah yang Diampu:</p>';
+
+            if (role === 'dosen') {
+                // Dosen: Radio Button (Pilih 1)
+                htmlContent += '<p style="font-size:11px; color:#ef4444; margin-bottom:8px;">(Hanya bisa memilih 1 Mata Kuliah)</p>';
+                semuaMatkul.forEach(mk => {
+                    htmlContent += `
+                        <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px; cursor: pointer;">
+                            <input type="radio" name="pilihanMatkulPengajar" value="${mk}"> ${mk}
+                        </label>
+                    `;
+                });
+                container.innerHTML = htmlContent;
+                
+            } else if (role === 'asprak') {
+                // Asprak: Checkbox (Maksimal 2)
+                htmlContent += '<p style="font-size:11px; color:#ef4444; margin-bottom:8px;">(Pilih maksimal 2 Mata Kuliah Praktikum)</p>';
+                matkulAsprak.forEach(mk => {
+                    htmlContent += `
+                        <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px; cursor: pointer;">
+                            <input type="checkbox" class="checkbox-asprak" value="${mk}"> ${mk}
+                        </label>
+                    `;
+                });
+                container.innerHTML = htmlContent;
+
+                // Logika Pembatasan Maksimal 2 Checkbox khusus Asprak
+                const asprakCheckboxes = document.querySelectorAll('.checkbox-asprak');
+                asprakCheckboxes.forEach(cb => {
+                    cb.addEventListener('change', function() {
+                        const checkedCount = document.querySelectorAll('.checkbox-asprak:checked').length;
+                        if (checkedCount > 2) {
+                            this.checked = false; // Batalkan centangan jika lebih dari 2
+                            alert("Maksimal hanya boleh memilih 2 Mata Kuliah Praktikum!");
+                        }
+                    });
+                });
+            }
+        }
+
+        // --- FUNGSI MEMUAT DATA CARD ---
         function muatDataPengajar() {
             const gridLayout = document.querySelector('.cards-layout-grid');
             gridLayout.innerHTML = ''; 
@@ -101,7 +160,8 @@
             let count = 0;
             for (let i = 0; i < localStorage.length; i++) {
                 let key = localStorage.key(i);
-                if (key !== 'loggedInUser' && key !== 'admin') {
+                // Abaikan key yang bukan data user
+                if (key !== 'loggedInUser' && key !== 'admin' && key !== 'eduFreeNewsWithImage' && key !== 'eduFreeNews') {
                     try {
                         let user = JSON.parse(localStorage.getItem(key));
                         if (user && (user.role === 'dosen' || user.role === 'asprak')) {
@@ -139,6 +199,7 @@
             }
         }
 
+        // --- FUNGSI HAPUS ---
         window.hapusAkun = function(id) {
             if(confirm("Yakin ingin menghapus akun dengan ID: " + id + "?")) {
                 localStorage.removeItem(id);
@@ -146,13 +207,26 @@
             }
         };
 
+        // --- FUNGSI SIMPAN ---
         window.simpanPengajar = function() {
             const role = document.getElementById('pengajarRole').value;
             const nama = document.getElementById('pengajarNama').value;
             const id = document.getElementById('pengajarId').value;
             const pass = document.getElementById('pengajarPass').value;
 
-            if(!nama || !id || !pass) return alert("Harap isi semua kolom!");
+            // Logika Penarikan Nilai Matkul Berdasarkan Role
+            let arrayMatkulTerpilih = [];
+            if (role === 'dosen') {
+                const selectedRadio = document.querySelector('input[name="pilihanMatkulPengajar"]:checked');
+                if (selectedRadio) arrayMatkulTerpilih.push(selectedRadio.value);
+            } else if (role === 'asprak') {
+                const selectedCheckboxes = document.querySelectorAll('.checkbox-asprak:checked');
+                arrayMatkulTerpilih = Array.from(selectedCheckboxes).map(cb => cb.value);
+            }
+
+            // Validasi
+            if(!nama || !id || !pass) return alert("Harap isi Nama, NIP/ID, dan Password!");
+            if(arrayMatkulTerpilih.length === 0) return alert("Harap pilih mata kuliah yang diampu!");
             if(localStorage.getItem(id)) return alert("NIP/ID ini sudah terdaftar!");
 
             const userData = {
@@ -161,28 +235,39 @@
                 userId: id,
                 password: pass,
                 semester: "-",
-                matkul: ["Didaftarkan Admin"]
+                matkul: arrayMatkulTerpilih
             };
 
             localStorage.setItem(id, JSON.stringify(userData));
-            document.getElementById('modalTambahDosen').style.display = 'none';
             
+            // Tutup dan Bersihkan Modal
+            document.getElementById('modalTambahDosen').style.display = 'none';
             document.getElementById('pengajarNama').value = '';
             document.getElementById('pengajarId').value = '';
             document.getElementById('pengajarPass').value = '';
             
             muatDataPengajar();
-            alert(role.toUpperCase() + " berhasil ditambahkan!");
+            alert(role.toUpperCase() + " berhasil ditambahkan beserta mata kuliahnya!");
         };
 
+        // --- INISIALISASI SAAT HALAMAN DIMUAT ---
         document.addEventListener('DOMContentLoaded', () => {
             muatDataPengajar();
             
-            const btnAdd = document.querySelector('.btn-add-student');
+            // Buka Modal & Render Default Matkul
+            const btnAdd = document.getElementById('btnBukaModalDosen');
             if(btnAdd) {
                 btnAdd.addEventListener('click', () => {
+                    document.getElementById('pengajarRole').value = 'dosen'; // Default role Dosen
+                    renderMatkulPengajar(); // Render Matkul Dosen
                     document.getElementById('modalTambahDosen').style.display = 'flex';
                 });
+            }
+
+            // Event Listener jika Role diganti oleh Admin
+            const selectRole = document.getElementById('pengajarRole');
+            if(selectRole) {
+                selectRole.addEventListener('change', renderMatkulPengajar);
             }
         });
     </script>
