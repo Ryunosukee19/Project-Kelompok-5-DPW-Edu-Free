@@ -375,17 +375,28 @@
             </div>
 
             <div id="tab-nilai" class="tab-content">
-                <h2 class="section-title-tab"><i class="fas fa-chart-bar" style="color: var(--primary);"></i> Cek Pengumpulan & Nilai Laporan</h2>
+                <h2 class="section-title-tab"><i class="fas fa-chart-bar" style="color: var(--primary);"></i> Cek Pengumpulan & Input Nilai</h2>
+                
                 <div class="upload-form-card">
-                    <div class="input-group">
-                        <label>Pilih Tugas untuk Dicek & Dinilai</label>
-                        <select id="select-tugas-nilai" style="padding:12px; border-radius:10px; width:100%; background:var(--bg-body); color:var(--text-main); border:1px solid var(--border-color);">
-                            <option value="">-- Pilih --</option>
-                        </select>
+                    <div style="display:flex; gap:15px; margin-bottom:15px;">
+                        <div class="input-group" style="flex:1; margin-bottom:0;">
+                            <label>Kategori Penilaian</label>
+                            <select id="select-kategori-nilai" onchange="populateDropdownItem()" style="padding:12px; border-radius:10px; width:100%; background:var(--bg-body); color:var(--text-main); border:1px solid var(--border-color);">
+                                <option value="">-- Pilih Kategori --</option>
+                                <option value="tugas">Tugas</option>
+                                <option value="ujian">UTS / UAS</option>
+                                <option value="kuis">Kuis</option>
+                            </select>
+                        </div>
+                        <div class="input-group" style="flex:2; margin-bottom:0;">
+                            <label>Pilih Item untuk Dicek & Dinilai</label>
+                            <select id="select-item-nilai" style="padding:12px; border-radius:10px; width:100%; background:var(--bg-body); color:var(--text-main); border:1px solid var(--border-color);">
+                                <option value="">-- Pilih Item --</option>
+                            </select>
+                        </div>
                     </div>
                     <button class="btn-action" id="btn-load-pengumpulan"><i class="fas fa-search"></i> Tampilkan</button>
                 </div>
-                
                 <div id="panel-penilaian" style="display:none; overflow-x:auto;">
                     <table class="styled-table">
                         <thead>
@@ -478,8 +489,8 @@
             renderKontrakDosen();
             renderMateri();
             renderTugas();
-            renderUjian(); // Fungsi render UTS/UAS
-            renderKuis();  // Fungsi render Kuis
+            renderUjian(); 
+            renderKuis();  
             renderAbsensi();
             loadForumMessages(namaMatkul);
         }
@@ -493,7 +504,10 @@
             if(tabId === 'tab-forum') {
                 document.getElementById('chat-messages').scrollTop = document.getElementById('chat-messages').scrollHeight;
             } else if (tabId === 'tab-nilai') {
-                populateDropdownTugas(); 
+                // Mereset dropdown setiap kali masuk ke tab nilai
+                document.getElementById('select-kategori-nilai').value = "";
+                document.getElementById('select-item-nilai').innerHTML = '<option value="">-- Pilih Item --</option>';
+                document.getElementById('panel-penilaian').style.display = 'none';
             }
         }
 
@@ -501,7 +515,7 @@
 
         // ========================== CRUD MODULES ==========================
 
-        // 0. KONTRAK KULIAH (BARU)
+        // 0. KONTRAK KULIAH
         window.simpanKontrakDosen = function() {
             const judul = document.getElementById('input-judul-kontrak').value;
             const link = document.getElementById('input-link-kontrak').value;
@@ -585,7 +599,7 @@
             });
         }
 
-        // 2.1 UTS / UAS (BARU)
+        // 2.1 UTS / UAS
         document.getElementById('btn-upload-ujian').addEventListener('click', function() {
             const judul = document.getElementById('input-judul-ujian').value;
             const linkUjian = document.getElementById('input-link-ujian').value;
@@ -614,7 +628,7 @@
             });
         }
 
-        // 2.2 KUIS (BARU)
+        // 2.2 KUIS
         document.getElementById('btn-upload-kuis').addEventListener('click', function() {
             const judul = document.getElementById('input-judul-kuis').value;
             const linkKuis = document.getElementById('input-link-kuis').value;
@@ -673,46 +687,63 @@
             });
         }
 
-        // 4. PENILAIAN 
-        function populateDropdownTugas() {
-            const select = document.getElementById('select-tugas-nilai');
-            let db = JSON.parse(localStorage.getItem(`tugas_${activeMatkulGlobal}`)) || [];
-            select.innerHTML = '<option value="">-- Pilih Tugas --</option>';
-            db.forEach(t => select.innerHTML += `<option value="${t.id}">${t.judul}</option>`);
+        // 4. PENILAIAN (FUNGSI BARU UNTUK DUAL DROPDOWN)
+        window.populateDropdownItem = function() {
+            const kategori = document.getElementById('select-kategori-nilai').value;
+            const selectItem = document.getElementById('select-item-nilai');
+            
+            // Reset isian item setiap kali kategori diubah
+            selectItem.innerHTML = '<option value="">-- Pilih Item --</option>';
+            
+            // Sembunyikan panel nilai saat kategori berganti agar UI tetap bersih
+            document.getElementById('panel-penilaian').style.display = 'none';
+
+            if (!kategori || !activeMatkulGlobal) return;
+            
+            // Mengambil data berdasarkan kategori yang dipilih (tugas, ujian, kuis)
+            let db = JSON.parse(localStorage.getItem(`${kategori}_${activeMatkulGlobal}`)) || [];
+            db.forEach(item => {
+                selectItem.innerHTML += `<option value="${item.id}">${item.judul}</option>`;
+            });
         }
 
         document.getElementById('btn-load-pengumpulan').addEventListener('click', function() {
-            const tugasId = document.getElementById('select-tugas-nilai').value;
-            if(!tugasId) return alert("Silakan pilih tugas terlebih dahulu!");
+            const itemId = document.getElementById('select-item-nilai').value;
+            if(!itemId) return alert("Silakan pilih kategori dan item penilaian terlebih dahulu!");
+            
             document.getElementById('panel-penilaian').style.display = 'block';
-            renderTabelPengumpulan(tugasId);
+            renderTabelPengumpulan(itemId);
         });
 
-        function renderTabelPengumpulan(tugasId) {
+        function renderTabelPengumpulan(itemId) {
             const tbody = document.getElementById('tbody-pengumpulan');
-            let db = JSON.parse(localStorage.getItem(`pengumpulan_${tugasId}`)) || [];
-            if (db.length === 0) return tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--text-muted);">Belum ada mahasiswa yang mengumpulkan tugas ini.</td></tr>`;
+            
+            // Menggunakan basis ID item yang sama persis untuk proses pengumpulan
+            let db = JSON.parse(localStorage.getItem(`pengumpulan_${itemId}`)) || [];
+            
+            if (db.length === 0) return tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--text-muted);">Belum ada mahasiswa yang mengumpulkan/mengerjakan bagian ini.</td></tr>`;
 
             tbody.innerHTML = '';
             db.forEach((p, index) => {
                 let linkBtn = p.linkJawaban ? `<a href="${p.linkJawaban}" target="_blank" style="color:var(--primary); font-weight:bold;"><i class="fas fa-external-link-alt"></i> Buka Link</a>` : 'Tidak ada link';
                 let nimMhs = p.userId || "Tidak Diketahui";
-                tbody.innerHTML += `<tr><td style="color:var(--secondary); font-weight:bold;">${nimMhs}</td><td style="font-weight:bold;">${p.namaMahasiswa}</td><td>${linkBtn}</td><td style="font-size:0.85rem;">${p.waktu}</td><td><input type="number" class="input-nilai" id="nilai_${tugasId}_${index}" value="${p.nilai||''}" placeholder="0-100"></td><td><button onclick="simpanNilai('${tugasId}', ${index})" class="btn-action" style="padding:8px 16px; font-size:0.8rem;"><i class="fas fa-save"></i> Simpan</button></td></tr>`;
+                tbody.innerHTML += `<tr><td style="color:var(--secondary); font-weight:bold;">${nimMhs}</td><td style="font-weight:bold;">${p.namaMahasiswa}</td><td>${linkBtn}</td><td style="font-size:0.85rem;">${p.waktu}</td><td><input type="number" class="input-nilai" id="nilai_${itemId}_${index}" value="${p.nilai||''}" placeholder="0-100"></td><td><button onclick="simpanNilai('${itemId}', ${index})" class="btn-action" style="padding:8px 16px; font-size:0.8rem;"><i class="fas fa-save"></i> Simpan</button></td></tr>`;
             });
         }
 
-        window.simpanNilai = function(tugasId, index) {
-            let inputElement = document.getElementById(`nilai_${tugasId}_${index}`);
+        window.simpanNilai = function(itemId, index) {
+            let inputElement = document.getElementById(`nilai_${itemId}_${index}`);
             let nilaiBaru = inputElement.value;
             if(nilaiBaru === "" || nilaiBaru < 0 || nilaiBaru > 100) return alert("Masukkan angka nilai valid (0 - 100)!");
-            let db = JSON.parse(localStorage.getItem(`pengumpulan_${tugasId}`));
+            
+            let db = JSON.parse(localStorage.getItem(`pengumpulan_${itemId}`));
             db[index].nilai = nilaiBaru;
-            localStorage.setItem(`pengumpulan_${tugasId}`, JSON.stringify(db));
+            localStorage.setItem(`pengumpulan_${itemId}`, JSON.stringify(db));
+            
             alert(`Nilai untuk ${db[index].namaMahasiswa} berhasil disimpan!`);
             inputElement.style.borderColor = "var(--secondary)";
         }
 
-        // UPDATE Fungsi Hapus Data
         function hapusData(tipe, index) {
             if(confirm(`Yakin ingin menghapus ${tipe} ini?`)) {
                 let db = JSON.parse(localStorage.getItem(`${tipe}_${activeMatkulGlobal}`));
@@ -720,8 +751,8 @@
                 localStorage.setItem(`${tipe}_${activeMatkulGlobal}`, JSON.stringify(db));
                 if(tipe === 'materi') renderMateri();
                 if(tipe === 'tugas') renderTugas();
-                if(tipe === 'ujian') renderUjian(); // Trigger untuk UTS/UAS
-                if(tipe === 'kuis') renderKuis();   // Trigger untuk Kuis
+                if(tipe === 'ujian') renderUjian(); 
+                if(tipe === 'kuis') renderKuis();   
                 if(tipe === 'kontrak') renderKontrakDosen();
             }
         }
