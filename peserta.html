@@ -89,7 +89,7 @@
             </select>
 
             <div id="matkulContainer" style="margin-bottom: 15px; text-align: left; max-height: 130px; overflow-y: auto; border: 1px solid #ccc; padding: 10px; border-radius: 6px; font-size: 13px; background: #f9f9f9;">
-                </div>
+            </div>
 
             <div style="display: flex; justify-content: flex-end; gap: 10px;">
                 <button onclick="document.getElementById('modalTambahMhs').style.display='none'" style="padding: 8px 15px; border: none; border-radius: 6px; cursor: pointer; background: #eee;">Batal</button>
@@ -99,11 +99,10 @@
     </div>
 
     <script>
-        // --- DAFTAR MATA KULIAH DIPERBARUI ---
-        const matkulSem1 = ["Pengantar Teknologi Informasi", "Algoritma Pemrograman", "Matematika Teknik", "Matematika Diskret"];
-        const matkulSem2 = ["Dasar Pemrograman Web", "Orkom", "Metode Statistika", "Komputasi Aljabar Linier", "Struktur Data"];
+        // --- DAFTAR MATA KULIAH DISAMAKAN DENGAN REGISTER.HTML ---
+        const matkulSem1 = ["PTI", "Alpro", "Matematika Teknik", "Matematika Diskret"];
+        const matkulSem2 = ["Struktur Data", "DPW", "Orkom", "Metode Statistika", "Komputasi Aljabar Linier"];
 
-        // --- FUNGSI MERENDER CHECKBOX MATKUL ---
         function renderMatkulOptions() {
             const smtPilihan = document.getElementById('mhsSmt').value;
             const container = document.getElementById('matkulContainer');
@@ -120,7 +119,6 @@
             });
         }
 
-        // --- FUNGSI MEMUAT DATA CARD MAHASISWA ---
         function muatDataMahasiswa() {
             const gridLayout = document.querySelector('.cards-layout-grid');
             gridLayout.innerHTML = ''; 
@@ -176,11 +174,9 @@
             const pass = document.getElementById('mhsPass').value;
             const smt = document.getElementById('mhsSmt').value;
 
-            // Mengambil semua checkbox yang dicentang oleh Admin
             const checkboxTerpilih = document.querySelectorAll('.matkul-checkbox:checked');
             let arrayMatkulTerpilih = Array.from(checkboxTerpilih).map(cb => cb.value);
 
-            // Validasi Input
             if(!nama || !id || !pass) return alert("Harap isi Nama, NIM, dan Password!");
             if(arrayMatkulTerpilih.length === 0) return alert("Harap pilih minimal 1 Mata Kuliah!");
             if(localStorage.getItem(id)) return alert("NIM ini sudah terdaftar!");
@@ -196,7 +192,6 @@
 
             localStorage.setItem(id, JSON.stringify(userData));
             
-            // Tutup dan Bersihkan Modal
             document.getElementById('modalTambahMhs').style.display = 'none'; 
             document.getElementById('mhsNama').value = '';
             document.getElementById('mhsNim').value = '';
@@ -209,17 +204,15 @@
         document.addEventListener('DOMContentLoaded', () => {
             muatDataMahasiswa();
             
-            // Event Listener Buka Modal
             const btnAdd = document.getElementById('btnBukaModal');
             if(btnAdd) {
                 btnAdd.addEventListener('click', () => {
-                    document.getElementById('mhsSmt').value = "1"; // Default buka di Semester 1
-                    renderMatkulOptions(); // Render checkbox Sem 1
+                    document.getElementById('mhsSmt').value = "1"; 
+                    renderMatkulOptions(); 
                     document.getElementById('modalTambahMhs').style.display = 'flex';
                 });
             }
 
-            // Event Listener jika dropdown Semester diganti oleh Admin
             const selectSmt = document.getElementById('mhsSmt');
             if(selectSmt) {
                 selectSmt.addEventListener('change', renderMatkulOptions);
