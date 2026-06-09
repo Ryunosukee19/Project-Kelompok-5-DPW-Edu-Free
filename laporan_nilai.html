@@ -8,6 +8,27 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
+        /* --- FIX SIDEBAR AGAR TIDAK IKUT SCROLL --- */
+        .sidebar {
+            position: fixed !important; /* Mengunci sidebar di layar */
+            top: 0;
+            left: 0;
+            height: 100vh !important; /* Tinggi penuh 100% dari layar */
+            width: 260px; /* Lebar standar, sesuaikan jika di style.css Anda berbeda */
+            overflow-y: auto; /* Jika menu sangat panjang, sidebar bisa di-scroll secara independen */
+            z-index: 1000;
+        }
+        
+        /* Mempercantik scrollbar bawaan di dalam sidebar */
+        .sidebar::-webkit-scrollbar { width: 5px; }
+        .sidebar::-webkit-scrollbar-thumb { background-color: #ccc; border-radius: 5px; }
+
+        .main-content {
+            margin-left: 260px !important; /* Mendorong konten ke kanan agar tidak tertutup sidebar */
+            width: calc(100% - 260px) !important;
+            min-height: 100vh;
+        }
+
         /* --- GAYA NOTIFIKASI ADVANCED (TEMA ADMIN) --- */
         #notif-dropdown { display: none; position: absolute; top: 45px; right: 0; background: white; border: 1px solid #e5e7eb; border-radius: 12px; width: 340px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); z-index: 9999; text-align: left; overflow: hidden;}
         .notif-header { padding: 12px 15px; font-weight: bold; background: #f8fafc; border-bottom: 1px solid #e5e7eb; display: flex; justify-content: space-between; align-items: center;}
@@ -139,7 +160,6 @@
 
         // --- 2. LOGIKA LAPORAN NILAI DINAMIS (INTEGRASI DATA DOSEN) ---
         
-        // 9 Mata Kuliah yang terdaftar di sistem
         const semuaMatkul = [
             "PTI", "Alpro", "Matematika Teknik", "Matematika Diskret", 
             "Struktur Data", "DPW", "Orkom", "Metode Statistika", "Komputasi Aljabar Linier"
@@ -159,7 +179,6 @@
             const container = document.getElementById('laporan-container');
             container.innerHTML = '';
             
-            // Siapkan wadah perhitungan untuk setiap matkul
             let rekapMatkul = {};
             semuaMatkul.forEach(mk => {
                 rekapMatkul[mk] = { 
@@ -169,7 +188,6 @@
                 };
             });
 
-            // 1. Tentukan Dosen Pengampu & Hitung Total Mahasiswa per Matkul
             for (let i = 0; i < localStorage.length; i++) {
                 let key = localStorage.key(i);
                 try {
@@ -183,9 +201,7 @@
                 } catch(e) {}
             }
 
-            // 2. Tarik Data Nilai (Tugas, Ujian, Kuis) & Presensi
             semuaMatkul.forEach(mk => {
-                // Menghitung Akumulasi Nilai
                 ['tugas', 'ujian', 'kuis'].forEach(kategori => {
                     let items = JSON.parse(localStorage.getItem(`${kategori}_${mk}`)) || [];
                     items.forEach(item => {
@@ -199,35 +215,28 @@
                     });
                 });
 
-                // Menghitung Presensi (Berdasarkan Sesi yang dibuka Dosen)
                 let sesiAbsen = JSON.parse(localStorage.getItem(`absensi_${mk}`)) || [];
                 rekapMatkul[mk].totalSesiAbsen = sesiAbsen.length;
                 
                 sesiAbsen.forEach(sesi => {
-                    // Cari mahasiswa yang hadir di tanggal ini untuk matkul ini
                     let hadirMhs = JSON.parse(localStorage.getItem(`hadir_mhs_${mk}_${sesi.tanggal}`)) || [];
                     rekapMatkul[mk].totalKehadiranMhs += hadirMhs.length;
                 });
             });
 
-            // 3. Render ke UI Dashboard Admin
             semuaMatkul.forEach(mk => {
                 let data = rekapMatkul[mk];
                 
-                // Kalkulasi Rata-rata Nilai
                 let avg = data.countNilai > 0 ? (data.sumNilai / data.countNilai).toFixed(1) : 0;
                 let ip = hitungIndeksPrestasi(parseFloat(avg));
                 
-                // Kalkulasi Persentase Kehadiran
-                // Persentase = Total Hadir / (Total Sesi * Total Mahasiswa yg ambil matkul) * 100
                 let persentaseHadir = 0;
                 let expectedKehadiran = data.totalSesiAbsen * data.totalMhs;
                 if(expectedKehadiran > 0) {
                     persentaseHadir = ((data.totalKehadiranMhs / expectedKehadiran) * 100).toFixed(0);
                 }
 
-                // Status & Warna UI Presensi
-                let presensiWarna = '#64748b'; // Default Abu-abu
+                let presensiWarna = '#64748b'; 
                 let presensiStatus = 'Belum Ada Sesi';
                 let iconPresensi = 'fa-minus-circle';
 
