@@ -3,183 +3,232 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Admin | Edu Free</title>
-    <link rel="stylesheet" href="styleindex.css">
-    <style>
-        body {
-            background-color: var(--bg-main, #0f172a);
-            color: var(--text-main, #fff);
-            font-family: Arial, sans-serif;
-            margin: 0; padding: 0;
-        }
-
-        .admin-header {
-            background: rgba(0,0,0,0.2);
-            padding: 20px 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .admin-container {
-            max-width: 1000px;
-            margin: 40px auto;
-            padding: 0 20px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-        }
-
-        .admin-card {
-            background: var(--bg-card, #1e293b);
-            border: 1px solid var(--border-color, rgba(255,255,255,0.1));
-            border-radius: 15px;
-            padding: 30px;
-        }
-
-        .admin-card h2 { margin-top: 0; color: var(--primary, #38bdf8); }
-
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; margin-bottom: 8px; font-weight: bold; }
-        .form-group input, .form-group textarea {
-            width: 100%; padding: 12px 15px; border-radius: 8px;
-            border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.2);
-            color: #fff; font-family: inherit; box-sizing: border-box;
-        }
-        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: #38bdf8; }
-        .form-group input[type="file"] { padding: 9px; cursor: pointer; }
-
-        .btn-submit {
-            background: var(--primary, #38bdf8); color: #fff; border: none;
-            padding: 15px; border-radius: 8px; width: 100%; font-size: 1.1rem;
-            cursor: pointer; font-weight: bold; transition: 0.3s;
-        }
-        .btn-submit:hover { background: #0284c7; }
-
-        .btn-logout {
-            background: #ef4444; color: #fff; border: none; padding: 10px 20px;
-            border-radius: 30px; cursor: pointer; text-decoration: none; font-weight: bold;
-        }
-
-        /* Tabel Daftar Berita */
-        .news-list-item {
-            background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1);
-            padding: 15px; border-radius: 8px; margin-bottom: 15px;
-            display: flex; justify-content: space-between; align-items: center;
-        }
-        .news-list-info h4 { margin: 0 0 5px 0; }
-        .news-list-info p { margin: 0; font-size: 0.85rem; color: #aaa; }
-        .btn-delete { background: #ef4444; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; }
-    </style>
+    <title>Admin Dashboard - Kelola Berita</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
 
-    <div class="admin-header">
-        <div class="logo">Admin Edu-Free.</div>
-        <a href="index.html" class="btn-logout">Keluar ke Beranda</a>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i> <span>EduFree</span>
+            </div>
+            
+            <nav class="menu">
+                <a href="indexadmin.html" class="menu-item"><i class="fas fa-home"></i> Home</a>
+                
+                <details class="menu-group">
+                    <summary class="menu-item">
+                        <i class="fas fa-users"></i> Peserta <i class="fas fa-chevron-down arrow"></i>
+                    </summary>
+                    <div class="submenu-content">
+                        <a href="peserta.html" class="sub-menu-item">Mahasiswa</a>
+                        <a href="dosen.html" class="sub-menu-item">Dosen</a>
+                    </div>
+                </details>
+
+                <details class="menu-group">
+                    <summary class="menu-item">
+                        <i class="fas fa-book"></i> Mata Kuliah <i class="fas fa-chevron-down arrow"></i>
+                    </summary>
+                    <div class="submenu-content">
+                        <a href="matakuliah.html" class="sub-menu-item">Semester 1</a>
+                        <a href="matakuliah2.html" class="sub-menu-item">Semester 2</a>
+                        <a href="matakuliah3.html" class="sub-menu-item">Semester 3</a>
+                    </div>
+                </details>
+
+                <a href="pengumpulan.html" class="menu-item"><i class="fas fa-file-invoice"></i> Pengumpulan Tugas</a>
+                <a href="laporan_nilai.html" class="menu-item"><i class="fas fa-chart-bar"></i> Laporan Nilai</a>
+                
+                <a href="berita.html" class="menu-item active"><i class="fas fa-newspaper"></i> Kelola Berita</a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-header">
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search here...">
+                </div>
+                <div class="user-profile">
+                    <i class="far fa-bell"></i>
+                    <i class="far fa-comment-dots"></i>
+                    <div class="profile-info">
+                        <span class="name">Super Admin</span>
+                        <span class="role">Admin</span>
+                    </div>
+                </div>
+            </header>
+
+            <section class="page-control-panel">
+                <div class="panel-left">
+                    <h2>Kelola Berita Utama</h2>
+                </div>
+                <div class="panel-right">
+                    <button class="btn-add-student" onclick="bukaModalBerita()"><i class="fas fa-plus"></i> Tambah Berita</button>
+                </div>
+            </section>
+
+            <section class="assignment-list-container" id="news-container">
+                </section>
+        </main>
     </div>
 
-    <div class="admin-container">
-        <div class="admin-card">
-            <h2>Buat Berita Baru</h2>
-            <form id="news-form">
-                <div class="form-group">
-                    <label>Judul Berita</label>
-                    <input type="text" id="news-title" required>
-                </div>
-                <div class="form-group">
-                    <label>Tanggal Publikasi</label>
-                    <input type="date" id="news-date" required>
-                </div>
-                <div class="form-group">
-                    <label>Gambar Berita (Max 500KB disarankan)</label>
-                    <input type="file" id="news-image" accept="image/png, image/jpeg, image/webp">
-                </div>
-                <div class="form-group">
-                    <label>Isi Berita</label>
-                    <textarea id="news-desc" rows="5" required></textarea>
-                </div>
-                <button type="submit" class="btn-submit">Publikasikan</button>
-            </form>
-        </div>
+    <div id="modalBerita" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; align-items: center; justify-content: center;">
+        <div style="background: white; padding: 25px; border-radius: 12px; width: 500px; max-height: 90vh; overflow-y: auto; color: #111; box-shadow: 0 10px 25px rgba(0,0,0,0.2);">
+            <h3 style="margin-bottom: 15px; color: var(--primary-color);">Tulis Berita Baru</h3>
+            
+            <label style="font-size: 13px; color: #555; font-weight: 600;">Judul Berita</label>
+            <input type="text" id="beritaJudul" placeholder="Masukkan judul..." style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 6px; outline:none;">
+            
+            <label style="font-size: 13px; color: #555; font-weight: 600;">Lampirkan Foto (Opsional)</label>
+            <input type="file" id="beritaGambar" accept="image/*" onchange="previewImage(event)" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 10px; border: 1px dashed #ccc; border-radius: 6px; outline:none; cursor: pointer;">
+            
+            <div id="previewContainer" style="display: none; margin-bottom: 15px; text-align: center;">
+                <img id="previewImg" src="" alt="Preview" style="max-width: 100%; max-height: 150px; border-radius: 8px; object-fit: cover; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                <button onclick="hapusPreview()" style="display: block; margin: 5px auto 0; padding: 5px 10px; font-size: 11px; background: #ef4444; color: white; border: none; border-radius: 4px; cursor: pointer;">Batal Pilih Foto</button>
+            </div>
 
-        <div class="admin-card">
-            <h2>Berita Terpublikasi</h2>
-            <div id="admin-news-list">
-                </div>
+            <label style="font-size: 13px; color: #555; font-weight: 600;">Isi Berita</label>
+            <textarea id="beritaIsi" rows="5" placeholder="Tulis deskripsi atau pengumuman di sini..." style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 6px; outline:none; font-family: inherit; resize: vertical;"></textarea>
+            
+            <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                <button onclick="tutupModalBerita()" style="padding: 10px 18px; border: none; border-radius: 6px; cursor: pointer; background: #eee; font-weight: 600;">Batal</button>
+                <button onclick="simpanBerita()" style="padding: 10px 18px; border: none; border-radius: 6px; cursor: pointer; background: var(--primary-color); color: white; font-weight: 600;">Publikasikan</button>
+            </div>
         </div>
     </div>
 
     <script>
-        // Gunakan key yang sama dengan index.html
-        let newsDatabase = JSON.parse(localStorage.getItem('eduFreeNewsWithImage')) || [];
+        // Kunci penyimpanan harus sama persis dengan yang dipanggil di index.html
+        const NEWS_STORAGE_KEY = 'eduFreeNewsWithImage';
+        let base64String = ""; // Variabel penampung gambar
 
-        function renderAdminNews() {
-            const listContainer = document.getElementById('admin-news-list');
-            listContainer.innerHTML = '';
+        // --- FUNGSI MODAL ---
+        function bukaModalBerita() {
+            document.getElementById('modalBerita').style.display = 'flex';
+        }
 
-            if (newsDatabase.length === 0) {
-                listContainer.innerHTML = '<p style="color:#aaa;">Belum ada berita.</p>';
+        function tutupModalBerita() {
+            document.getElementById('modalBerita').style.display = 'none';
+            document.getElementById('beritaJudul').value = '';
+            document.getElementById('beritaIsi').value = '';
+            hapusPreview(); // Reset gambar
+        }
+
+        // --- FUNGSI PREVIEW GAMBAR (KONVERSI KE BASE64) ---
+        function previewImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                // Batasi ukuran file (misal maksimal 2MB) agar localStorage tidak cepat penuh
+                if(file.size > 2 * 1024 * 1024) {
+                    alert("Ukuran gambar terlalu besar! Maksimal 2MB.");
+                    hapusPreview();
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    base64String = e.target.result; // Simpan teks Base64
+                    document.getElementById('previewImg').src = base64String;
+                    document.getElementById('previewContainer').style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function hapusPreview() {
+            base64String = "";
+            document.getElementById('beritaGambar').value = ""; // Reset input file
+            document.getElementById('previewContainer').style.display = 'none';
+            document.getElementById('previewImg').src = "";
+        }
+
+        // --- FUNGSI RENDER BERITA DI HALAMAN ADMIN ---
+        function muatBerita() {
+            const container = document.getElementById('news-container');
+            container.innerHTML = ''; 
+
+            let dataBerita = JSON.parse(localStorage.getItem(NEWS_STORAGE_KEY)) || [];
+
+            if (dataBerita.length === 0) {
+                container.innerHTML = '<div style="text-align: center; padding: 50px; color: #888;"><h3>Belum ada berita yang dipublikasikan.</h3></div>';
                 return;
             }
 
-            // Tampilkan dari yang terbaru
-            [...newsDatabase].reverse().forEach((news, index) => {
-                // Kalkulasi index asli (karena array di-reverse untuk tampilan)
-                const originalIndex = newsDatabase.length - 1 - index;
-                
-                listContainer.innerHTML += `
-                    <div class="news-list-item">
-                        <div class="news-list-info">
-                            <h4>${news.title}</h4>
-                            <p>📅 ${news.date}</p>
+            // Render dari yang terbaru
+            dataBerita.slice().reverse().forEach(berita => {
+                let imgThumb = '';
+                if(berita.imageBase64) {
+                    imgThumb = `<img src="${berita.imageBase64}" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px; border: 1px solid #eaeaea;">`;
+                } else {
+                    imgThumb = `<div style="width: 100px; height: 100px; background: #f1f3f6; border-radius: 8px; display:flex; align-items:center; justify-content:center; color:#ccc;"><i class="fas fa-image fa-2x"></i></div>`;
+                }
+
+                let cardHTML = `
+                    <div class="assignment-horizontal-card card-purple" style="display: flex; gap: 20px; align-items: flex-start;">
+                        <div style="flex-shrink: 0;">
+                            ${imgThumb}
                         </div>
-                        <button onclick="deleteNews(${originalIndex})" class="btn-delete">Hapus</button>
+                        <div class="task-info-block" style="flex: 1;">
+                            <h3 style="font-size: 16px; color: var(--text-dark); margin-bottom: 6px;">${berita.title}</h3>
+                            <p style="color: var(--text-gray); line-height: 1.5; font-size: 13px; margin-bottom: 10px;">${berita.desc}</p>
+                            <p style="font-size: 11px; color: var(--primary-color); font-weight: 600;"><i class="far fa-clock"></i> ${berita.date}</p>
+                        </div>
+                        <div class="task-action-block" style="flex-shrink: 0; text-align: right;">
+                            <button onclick="hapusBerita(${berita.id})" style="background: none; border: none; color: #ef4444; cursor: pointer; font-size: 16px; padding: 5px;" title="Hapus Berita">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
                     </div>
                 `;
+                container.innerHTML += cardHTML;
             });
         }
 
-        function deleteNews(index) {
-            if(confirm('Yakin ingin menghapus berita ini?')) {
-                newsDatabase.splice(index, 1);
-                localStorage.setItem('eduFreeNewsWithImage', JSON.stringify(newsDatabase));
-                renderAdminNews();
-            }
-        }
+        // --- FUNGSI SIMPAN BERITA ---
+        window.simpanBerita = function() {
+            const judul = document.getElementById('beritaJudul').value;
+            const isi = document.getElementById('beritaIsi').value;
 
-        document.getElementById('news-form').addEventListener('submit', function(e) {
-            e.preventDefault(); 
-            const title = document.getElementById('news-title').value;
-            const date = document.getElementById('news-date').value;
-            const desc = document.getElementById('news-desc').value;
-            const imageInput = document.getElementById('news-image');
+            if(!judul || !isi) return alert("Harap isi Judul dan Isi berita!");
 
-            const saveAndRender = (base64String) => {
-                newsDatabase.push({ title, date, desc, imageBase64: base64String });
-                try {
-                    localStorage.setItem('eduFreeNewsWithImage', JSON.stringify(newsDatabase));
-                    alert("Berita berhasil dipublikasikan!");
-                    document.getElementById('news-form').reset();
-                    renderAdminNews();
-                } catch (error) {
-                    newsDatabase.pop(); 
-                    alert("Gagal mempublikasikan! Gambar terlalu besar. Coba gunakan gambar lain.");
-                }
+            // Tanggal format Indonesia
+            const tglSekarang = new Date().toLocaleDateString('id-ID', {
+                weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+            });
+
+            // Format data disesuaikan dengan permintaan index.html
+            const beritaBaru = {
+                id: Date.now(),
+                title: judul,
+                desc: isi,
+                date: tglSekarang,
+                imageBase64: base64String // Akan terisi Base64 jika ada gambar, atau string kosong jika tidak ada
             };
 
-            if (imageInput.files && imageInput.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(event) { saveAndRender(event.target.result); };
-                reader.readAsDataURL(imageInput.files[0]);
-            } else {
-                saveAndRender(null);
-            }
-        });
+            let dataBerita = JSON.parse(localStorage.getItem(NEWS_STORAGE_KEY)) || [];
+            dataBerita.push(beritaBaru);
+            localStorage.setItem(NEWS_STORAGE_KEY, JSON.stringify(dataBerita));
 
-        // Load list pertama kali halaman dibuka
-        renderAdminNews();
+            tutupModalBerita();
+            muatBerita(); 
+            alert("Berita berhasil dipublikasikan! Silakan cek Beranda (index.html).");
+        };
+
+        // --- FUNGSI HAPUS BERITA ---
+        window.hapusBerita = function(idBerita) {
+            if(confirm("Yakin ingin menghapus berita ini? Halaman utama juga akan kehilangan berita ini.")) {
+                let dataBerita = JSON.parse(localStorage.getItem(NEWS_STORAGE_KEY)) || [];
+                dataBerita = dataBerita.filter(b => b.id !== idBerita);
+                localStorage.setItem(NEWS_STORAGE_KEY, JSON.stringify(dataBerita));
+                muatBerita();
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', muatBerita);
     </script>
 </body>
 </html>
