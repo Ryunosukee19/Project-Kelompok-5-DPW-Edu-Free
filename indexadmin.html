@@ -8,6 +8,29 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
+        /* --- TAMBAHAN CSS UNTUK FIX SIDEBAR --- */
+        .container {
+            display: flex;
+            align-items: flex-start; /* Diperlukan agar sticky berjalan mulus di dalam flexbox */
+        }
+
+        .sidebar {
+            position: sticky; /* Membuat sidebar menetap */
+            top: 0; /* Menempel di paling atas */
+            height: 100vh; /* Tingginya sepanjang layar monitor */
+            overflow-y: auto; /* Memunculkan scrollbar pada sidebar HANYA jika menu terlalu banyak/panjang */
+        }
+        
+        /* Menyembunyikan scrollbar bawaan di sidebar agar lebih rapi (Opsional) */
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .sidebar::-webkit-scrollbar-thumb {
+            background-color: #cbd5e1; 
+            border-radius: 10px;
+        }
+        /* -------------------------------------- */
+
         #notif-dropdown {
             display: none; position: absolute; top: 45px; right: 0; 
             background: white; border: 1px solid #e5e7eb; border-radius: 12px; 
