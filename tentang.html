@@ -1,183 +1,730 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="tentang.css">
+    <title>Tentang Edu-Free | Platform Kursus Online Premium</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* =========================================
+           1. VARIABEL WARNA BARU (COSMIC AURORA)
+        ========================================= */
+        :root {
+            --bg-main: #070514;          /* Ungu obsidian sangat gelap (Latar belakang) */
+            --bg-card: #120e2b;          /* Ungu gelap premium untuk kartu/kontainer */
+            --primary: #a855f7;          /* Neon Violet */
+            --secondary: #ec4899;        /* Electric Pink */
+            --accent: #10b981;           /* Luminous Teal (Untuk penanda sukses/rating) */
+            --text-main: #f8fafc;        /* Putih mutiara */
+            --text-muted: #94a3b8;       /* Abu-abu silver lembut */
+            --border-color: rgba(168, 85, 247, 0.15); /* Border ungu transparan */
+            --grad-hero: linear-gradient(135deg, #ca8a04 0%, #a855f7 50%, #ec4899 100%);
+            --grad-btn: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        /* =========================================
+           2. NAVBAR MENGKILAP (GLOSSY EFFECT)
+        ========================================= */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 8%;
+            background: rgba(7, 5, 20, 0.8);
+            backdrop-filter: blur(12px); /* Efek kaca buram */
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: var(--grad-btn);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover, 
+        .nav-links a.active {
+            color: #fff;
+            text-shadow: 0 0 10px rgba(168, 85, 247, 0.6);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .btn-login {
+            color: var(--text-main);
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+        }
+
+        .btn-login:hover {
+            color: var(--secondary);
+        }
+
+        .btn-register-nav {
+            background: var(--grad-btn);
+            color: #fff;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            box-shadow: 0 4px 20px rgba(236, 72, 153, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .btn-register-nav:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(236, 72, 153, 0.6);
+        }
+
+        .btn-theme-toggle {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            color: #fbbf24; /* Warna kuning bulan */
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-theme-toggle:hover {
+            background: rgba(168, 85, 247, 0.2);
+            border-color: var(--primary);
+        }
+
+        /* =========================================
+           3. HERO SECTION (JUDUL DENGAN GRADIENT TEXT)
+        ========================================= */
+        .hero-about {
+            text-align: center;
+            padding: 80px 20px 40px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+            background: linear-gradient(to right, #fff 20%, #a855f7 60%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 650px;
+            margin: 0 auto;
+        }
+
+        .about-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 5% 100px;
+            display: flex;
+            flex-direction: column;
+            gap: 100px;
+        }
+
+        /* Global Tag Style */
+        .tag {
+            display: inline-block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            background: rgba(168, 85, 247, 0.15);
+            color: #c084fc;
+            padding: 6px 16px;
+            border-radius: 20px;
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 15px;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            line-height: 1.2;
+            color: #ffffff;
+        }
+
+        /* =========================================
+           4. DESC SECTION (TENTANG & KARTU STATISTIK)
+        ========================================= */
+        .desc-grid {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 60px;
+            align-items: center;
+        }
+        
+        .desc-paragraph {
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            font-size: 1.05rem;
+        }
+        
+        .stats-card {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .stat-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 35px 20px;
+            border-radius: 20px;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-item::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(236, 72, 153, 0.1));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-8px);
+            border-color: var(--secondary);
+            box-shadow: 0 10px 30px rgba(236, 72, 153, 0.15);
+        }
+        
+        .stat-item:hover::before {
+            opacity: 1;
+        }
+
+        .stat-number {
+            display: block;
+            font-size: 2.8rem;
+            font-weight: 800;
+            background: linear-gradient(to right, #38bdf8, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 5px;
+        }
+        
+        /* Khusus warna rating kepuasan menggunakan aksen hijau mint neon */
+        .stat-item:last-child .stat-number {
+            background: linear-gradient(to right, #34d399, #059669);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* =========================================
+           5. GOALS SECTION (MISI DENGAN EFEK GLOW)
+        ========================================= */
+        .goals-header {
+            text-align: center;
+            margin-bottom: 60px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .goals-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .goal-item {
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid var(--border-color);
+            padding: 35px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .goal-item:hover {
+            background: var(--bg-card);
+            border-color: var(--primary);
+            box-shadow: 0 10px 30px rgba(168, 85, 247, 0.1);
+        }
+        
+        .goal-indicator {
+            margin-bottom: 25px;
+        }
+        
+        .goal-dot {
+            display: inline-block;
+            width: 45px;
+            height: 45px;
+            background: rgba(236, 72, 153, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(236, 72, 153, 0.3);
+        }
+        
+        .goal-dot::after {
+            content: '';
+            width: 14px;
+            height: 14px;
+            background: var(--secondary);
+            border-radius: 50%;
+            box-shadow: 0 0 12px var(--secondary);
+        }
+        
+        .goal-headline {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #fff;
+        }
+        
+        .goal-desc {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* =========================================
+           6. STEPS SECTION (METODE LANGKAH MODERN)
+        ========================================= */
+        .steps-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        
+        .step-card {
+            background: var(--bg-card);
+            padding: 40px 30px;
+            border-radius: 20px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s ease;
+        }
+        
+        .step-card:hover {
+            transform: scale(1.03);
+            border-color: var(--secondary);
+        }
+
+        .step-number {
+            font-size: 4.5rem;
+            font-weight: 900;
+            background: linear-gradient(to bottom, rgba(168, 85, 247, 0.15), transparent);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: absolute;
+            top: 5px;
+            right: 25px;
+            z-index: -1;
+        }
+        
+        .step-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin: 15px 0;
+            color: #f1f5f9;
+        }
+        
+        .step-desc {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* =========================================
+           7. AWARD SECTION (PENGHARGAAN MEWAH GLOW)
+        ========================================= */
+        .award-box {
+            background: linear-gradient(135deg, #130e2f 0%, rgba(7, 5, 20, 0.6) 100%);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            border-radius: 24px;
+            padding: 50px;
+            display: flex;
+            align-items: center;
+            gap: 50px;
+            box-shadow: inset 0 0 30px rgba(168, 85, 247, 0.1);
+        }
+        
+        .award-visual {
+            flex-shrink: 0;
+        }
+        
+        .medal-badge {
+            font-size: 4rem;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(236, 72, 153, 0.2));
+            width: 130px;
+            height: 130px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            border: 2px solid var(--secondary);
+            box-shadow: 0 0 30px rgba(236, 72, 153, 0.3);
+            animation: pulse 3s infinite;
+        }
+        
+        .award-issuer {
+            color: #f43f5e;
+            font-weight: 600;
+            margin-bottom: 12px;
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+        }
+        
+        .award-desc {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 30px rgba(236, 72, 153, 0.3); }
+            50% { transform: scale(1.05); box-shadow: 0 0 45px rgba(168, 85, 247, 0.5); }
+            100% { transform: scale(1); box-shadow: 0 0 30px rgba(236, 72, 153, 0.3); }
+        }
+
+        /* =========================================
+           8. CTA SECTION (GRADIENT BANNER DAHSYAT)
+        ========================================= */
+        .cta-container {
+            text-align: center;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(236, 72, 153, 0.15) 100%);
+            border: 1px solid rgba(236, 72, 153, 0.25);
+            padding: 70px 30px;
+            border-radius: 24px;
+            position: relative;
+            backdrop-filter: blur(8px);
+        }
+        
+        .cta-title {
+            font-size: 2.3rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+        
+        .cta-description {
+            color: var(--text-muted);
+            margin-bottom: 35px;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+            font-size: 1.05rem;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+        
+        .btn {
+            padding: 14px 36px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+        }
+        
+        .btn-primary {
+            background: var(--grad-btn);
+            color: #fff;
+            border: none;
+            box-shadow: 0 4px 20px rgba(236, 72, 153, 0.4);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(236, 72, 153, 0.7);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #fff;
+            transform: translateY(-3px);
+        }
+
+        /* =========================================
+           9. RESPONSIVE / MOBILE DESIGN
+        ========================================= */
+        @media (max-width: 992px) {
+            .navbar {
+                flex-direction: column;
+                gap: 20px;
+                padding: 20px;
+            }
+            .nav-left, .nav-right {
+                flex-direction: column;
+                gap: 15px;
+                width: 100%;
+                text-align: center;
+            }
+            .nav-links {
+                justify-content: center;
+            }
+            .desc-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .award-box {
+                grid-template-columns: 1fr;
+                flex-direction: column;
+                text-align: center;
+                padding: 30px;
+            }
+            .title {
+                font-size: 2.5rem;
+            }
+            .section-title {
+                font-size: 2rem;
+            }
+            .cta-title {
+                font-size: 1.8rem;
+            }
+            .cta-buttons {
+                flex-direction: column;
+                gap: 12px;
+            }
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1 class="title">Tentang Edu-Free</h1>
-<p class="subtitle">Platform kursus online gratis untuk belajar coding dengan mudah dan fleksibel.</p>
 
-<div class="about-container">
-
-   <section class="desc-section">
-  <div class="desc-container">
-    <div class="desc-grid">
-      
-      <!-- Kolom Kiri: Teks Narasi Deskripsi -->
-      <div class="desc-text-side">
-        <span class="desc-tag">Tentang Platform</span>
-        <h2 class="desc-title">Mendobrak Batasan Belajar Coding untuk Semua</h2>
-        <p class="desc-paragraph">
-          Kami adalah platform edukasi teknologi inklusif yang lahir dari keresahan akan mahalnya biaya pendidikan IT. Kami percaya bahwa keterampilan coding adalah hak digital setiap orang, bukan hak istimewa segelintir kalangan.
-        </p>
-        <p class="desc-paragraph">
-          Melalui kurikulum yang disusun oleh praktisi industri, kami menyediakan ekosistem belajar yang ramah pemula, interaktif, dan 100% gratis selamanya. Tanpa syarat, tanpa biaya tersembunyi.
-        </p>
-      </div>
-
-      <!-- Kolom Kanan: Statistik Dampak Sosial (Impact Metrics) -->
-      <div class="desc-stats-side">
-        <div class="stats-card">
-          <div class="stat-item">
-            <span class="stat-number">50K+</span>
-            <span class="stat-label">Siswa Aktif</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-number">120+</span>
-            <span class="stat-label">Modul Kelas Gratis</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-number">5K+</span>
-            <span class="stat-label">Alumni Bekerja</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-number">4.8</span>
-            <span class="stat-label">Rating Kepuasan</span>
-          </div>
+    <nav class="navbar">
+        <div class="nav-left">
+            <a href="#" class="logo">Edu-Free.</a>
+            <ul class="nav-links">
+                <li><a href="#">Beranda</a></li>
+                <li><a href="#">Tim Kami</a></li>
+                <li><a href="#" class="active">Tentang</a></li>
+                <li><a href="#">Berita</a></li>
+            </ul>
         </div>
-      </div>
+        
+        <div class="nav-right">
+            <a href="#" class="btn-login">Masuk</a>
+            <a href="#" class="btn-register-nav">Daftar Gratis</a>
+            <button class="btn-theme-toggle">🌙 Gelap</button>
+        </div>
+    </nav>
+
+    <header class="hero-about">
+        <h1 class="title">Tentang Edu-Free</h1>
+        <p class="subtitle">Platform kursus online gratis untuk belajar coding dengan standar kurikulum global, mudah, dan sepenuhnya fleksibel.</p>
+    </header>
+
+    <div class="about-container">
+
+        <section class="desc-section">
+            <div class="desc-grid">
+                <div class="desc-text-side">
+                    <span class="tag">Tentang Platform</span>
+                    <h2 class="section-title">Mendobrak Batasan Belajar Coding untuk Semua</h2>
+                    <p class="desc-paragraph">
+                        Kami adalah platform edukasi teknologi inklusif yang lahir dari keresahan akan mahalnya biaya pendidikan IT. Kami percaya bahwa keterampilan coding adalah hak digital setiap orang, bukan hak istimewa segelintir kalangan.
+                    </p>
+                    <p class="desc-paragraph">
+                        Melalui kurikulum yang disusun oleh praktisi industri, kami menyediakan ekosistem belajar yang ramah pemula, interaktif, dan 100% gratis selamanya. Tanpa syarat, tanpa biaya tersembunyi.
+                    </p>
+                </div>
+
+                <div class="desc-stats-side">
+                    <div class="stats-card">
+                        <div class="stat-item">
+                            <span class="stat-number">50K+</span>
+                            <span class="stat-label">Siswa Aktif</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">120+</span>
+                            <span class="stat-label">Modul Gratis</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">5K+</span>
+                            <span class="stat-label">Alumni Bekerja</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">4.8</span>
+                            <span class="stat-label">Rating Kepuasan</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="goals-section">
+            <div class="goals-header">
+                <span class="tag">Misi Utama</span>
+                <h2 class="section-title">Tujuan yang Ingin Kami Capai</h2>
+                <p class="desc-paragraph">Kami membangun platform ini untuk memastikan setiap orang bisa mulai belajar coding dengan rasa percaya diri.</p>
+            </div>
+
+            <div class="goals-list">
+                <div class="goal-item">
+                    <div class="goal-indicator"><span class="goal-dot"></span></div>
+                    <div class="goal-text">
+                        <h3 class="goal-headline">Demokratisasi Akses Coding</h3>
+                        <p class="goal-desc">Menghapus kendala biaya dengan menyediakan kurikulum pemrograman yang lengkap, terstruktur, dan dapat diakses gratis oleh siapa saja.</p>
+                    </div>
+                </div>
+
+                <div class="goal-item">
+                    <div class="goal-indicator"><span class="goal-dot"></span></div>
+                    <div class="goal-text">
+                        <h3 class="goal-headline">Lingkungan Belajar Fleksibel</h3>
+                        <p class="goal-desc">Memberikan kebebasan penuh kepada siswa untuk mengatur jadwal belajarnya sendiri tanpa tekanan batas waktu atau rute kelas yang kaku.</p>
+                    </div>
+                </div>
+
+                <div class="goal-item">
+                    <div class="goal-indicator"><span class="goal-dot"></span></div>
+                    <div class="goal-text">
+                        <h3 class="goal-headline">Fokus Pada Pemahaman & Praktik</h3>
+                        <p class="goal-desc">Memastikan setiap materi dibekali dengan latihan praktik langsung di browser agar konsep logika pemrograman lebih mudah dikuasai.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="steps-section">
+            <div class="steps-header">
+                <span class="tag">Metode Belajar</span>
+                <h2 class="section-title">Cara Belajar Coding di Sini</h2>
+                <p class="desc-paragraph">Mulailah kode IT Anda dengan 4 langkah mudah, interaktif, dan sepenuhnya fleksibel.</p>
+            </div>
+
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-number">01</div>
+                    <h3 class="step-name">Pilih Alur Belajar</h3>
+                    <p class="step-desc">Tentukan fokus Anda, mulai dari Frontend, Backend, hingga Mobile Developer dengan kurikulum yang terarah.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">02</div>
+                    <h3 class="step-name">Praktik Langsung</h3>
+                    <p class="step-desc">Belajar lewat video interaktif dan langsung ketik kode di editor browser tanpa instalasi rumit.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">03</div>
+                    <h3 class="step-name">Bangun Portofolio</h3>
+                    <p class="step-desc">Selesaikan tantangan studi kasus nyata di setiap akhir modul untuk dijadikan modal melamar kerja.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">04</div>
+                    <h3 class="step-name">Gabung Komunitas</h3>
+                    <p class="step-desc">Mengalami kendala? Tanyakan langsung di forum diskusi dan selesaikan bersama ribuan siswa lain.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="award-section">
+            <div class="award-box">
+                <div class="award-visual">
+                    <div class="medal-badge">🏆</div>
+                </div>
+                <div class="award-content">
+                    <span class="tag">Prestasi Platform</span>
+                    <h2 class="section-title" style="margin-bottom: 5px; color: #fff;">Best EdTech Platform 2025</h2>
+                    <p class="award-issuer">Oleh Indonesia Digital Education Awards</p>
+                    <p class="award-desc">
+                        Penghargaan tertinggi atas kontribusi kami dalam menyediakan akses belajar coding gratis, inklusif, dan fleksibel untuk ribuan calon developer di Indonesia.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <div class="cta-container">
+                <h2 class="cta-title">Mari Berkolaborasi dan Bertumbuh Bersama</h2>
+                <p class="cta-description">
+                    Kami selalu terbuka untuk peluang baru, kemitraan strategis, dan talenta berbakat yang ingin membawa perubahan positif di dunia IT.
+                </p>
+                <div class="cta-buttons">
+                    <a href="#" class="btn btn-primary">Hubungi Kami</a>
+                    <a href="#" class="btn btn-secondary">Lihat Lainnya</a>
+                </div>
+            </div>
+        </section>
 
     </div>
-  </div>
-</section>
-
-
-   <section class="goals-section">
-  <div class="goals-container">
-    <div class="goals-header">
-      <span class="goals-tag">Misi Utama</span>
-      <h2 class="goals-title">Tujuan yang Ingin Kami Capai</h2>
-      <p class="goals-subtitle">Kami membangun platform ini untuk memastikan setiap orang bisa mulai belajar coding dengan rasa percaya diri.</p>
-    </div>
-
-    <div class="goals-list">
-      <!-- Tujuan 1 -->
-      <div class="goal-item">
-        <div class="goal-indicator">
-          <span class="goal-dot"></span>
-        </div>
-        <div class="goal-text">
-          <h3 class="goal-headline">Demokratisasi Akses Belajar Coding</h3>
-          <p class="goal-desc">Menghapus kendala biaya dengan menyediakan kurikulum pemrograman yang lengkap, terstruktur, dan dapat diakses gratis oleh siapa saja.</p>
-        </div>
-      </div>
-
-      <!-- Tujuan 2 -->
-      <div class="goal-item">
-        <div class="goal-indicator">
-          <span class="goal-dot"></span>
-        </div>
-        <div class="goal-text">
-          <h3 class="goal-headline">Menyediakan Lingkungan Belajar yang Fleksibel</h3>
-          <p class="goal-desc">Memberikan kebebasan penuh kepada siswa untuk mengatur jadwal belajarnya sendiri tanpa tekanan batas waktu atau rute kelas yang kaku.</p>
-        </div>
-      </div>
-
-      <!-- Tujuan 3 -->
-      <div class="goal-item">
-        <div class="goal-indicator">
-          <span class="goal-dot"></span>
-        </div>
-        <div class="goal-text">
-          <h3 class="goal-headline">Fokus Pada Pemahaman dan Praktik</h3>
-          <p class="goal-desc">Memastikan setiap materi dibekali dengan latihan praktik langsung (hands-on) di browser agar konsep logika pemrograman lebih mudah dikuasai.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-    <section class="steps-section">
-  <div class="steps-container">
-    <div class="steps-header">
-      <span class="steps-tag">Metode Belajar</span>
-      <h2 class="steps-title">Cara Belajar Coding di Sini</h2>
-      <p class="steps-subtitle">Mulailah code IT Anda dengan 4 langkah mudah, interaktif, dan sepenuhnya fleksibel.</p>
-    </div>
-
-    <div class="steps-grid">
-      <!-- Langkah 1 -->
-      <div class="step-card">
-        <div class="step-number">01</div>
-        <h3 class="step-name">Pilih Alur Belajar</h3>
-        <p class="step-desc">Tentukan fokus Anda, mulai dari Frontend, Backend, hingga Mobile Developer dengan kurikulum yang terarah.</p>
-      </div>
-
-      <!-- Langkah 2 -->
-      <div class="step-card">
-        <div class="step-number">02</div>
-        <h3 class="step-name">Praktik Langsung</h3>
-        <p class="step-desc">Belajar lewat video interaktif dan langsung ketik kode di *code editor* browser tanpa instalasi rumit.</p>
-      </div>
-
-      <!-- Langkah 3 -->
-      <div class="step-card">
-        <div class="step-number">03</div>
-        <h3 class="step-name">Bangun Portofolio</h3>
-        <p class="step-desc">Selesaikan tantangan studi kasus nyata di setiap akhir modul untuk dijadikan modal melamar kerja.</p>
-      </div>
-
-      <!-- Langkah 4 -->
-      <div class="step-card">
-        <div class="step-number">04</div>
-        <h3 class="step-name">Gabung Komunitas</h3>
-        <p class="step-desc">Mengalami kendala atau *bug*? Tanyakan langsung di forum diskusi dan selesaikan bersama ribuan siswa lain.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-    <section class="award-section">
-  <div class="award-container">
-    <div class="award-box">
-      <!-- Sisi Kiri: Visual/Ikon -->
-      <div class="award-visual">
-        <div class="medal-badge">🏆</div>
-      </div>
-      
-      <!-- Sisi Kanan: Teks Konten -->
-      <div class="award-content">
-        <span class="award-tag">Prestasi Platform</span>
-        <h2 class="award-title">Best EdTech Platform 2025</h2>
-        <p class="award-issuer">Oleh Indonesia Digital Education Awards</p>
-        <p class="award-desc">
-          Penghargaan tertinggi atas kontribusi kami dalam menyediakan akses belajar coding gratis, inklusif, dan fleksibel untuk ribuan calon developer di Indonesia.
-        </p>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-    <section class="cta-section">
-  <div class="cta-container">
-    <h2 class="cta-title">Mari Berkolaborasi dan Bertumbuh Bersama</h2>
-    <p class="cta-description">
-      Kami selalu terbuka untuk peluang baru, kemitraan strategis, dan talenta berbakat yang ingin membawa perubahan positif.
-    </p>
-    <div class="cta-buttons">
-      <a href="#contact" class="btn btn-primary">Hubungi Kami</a>
-      <a href="#career" class="btn btn-secondary">lihat lainnya</a>
-    </div>
-  </div>
-</section>
-
-
-</div>
 </body>
 </html>
