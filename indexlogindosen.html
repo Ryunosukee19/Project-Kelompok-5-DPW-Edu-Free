@@ -9,19 +9,16 @@
     
     <style>
         /* =========================================
-           TEMA DOSEN: EMERALD / TEAL & RESET DASAR
+           TEMA & RESET DASAR (Modern UI/UX)
         ========================================= */
         :root {
             --bg-body: #0f172a; 
             --bg-sidebar: #1e293b; 
             --bg-card: #1f2937;
             --bg-card-hover: #334155;
-            
-            /* Warna Dosen (Emerald Green) */
-            --primary: #10b981; 
-            --primary-hover: #059669;
-            --secondary: #f59e0b; /* Aksen Amber/Emas */
-            
+            --primary: #38bdf8; 
+            --primary-hover: #0ea5e9;
+            --secondary: #818cf8; 
             --success: #10b981;
             --warning: #f59e0b;
             --danger-red: #ef4444;
@@ -31,8 +28,7 @@
             --sidebar-width: 260px;
             --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             --shadow-lg: 0 10px 25px -3px rgba(0, 0, 0, 0.2);
-            --shadow-glow: 0 0 15px rgba(16, 185, 129, 0.3); 
-            --banner-gradient: linear-gradient(135deg, #064e3b 0%, #0f172a 100%);
+            --banner-gradient: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
         }
 
         body:has(#theme-toggle:checked) {
@@ -40,19 +36,15 @@
             --bg-sidebar: #ffffff; 
             --bg-card: #ffffff;
             --bg-card-hover: #f1f5f9;
-            
-            /* Warna Dosen Light Mode */
-            --primary: #059669; 
-            --primary-hover: #047857;
-            --secondary: #d97706; 
-            
+            --primary: #0284c7; 
+            --primary-hover: #0369a1;
+            --secondary: #6366f1; 
             --text-main: #0f172a;
             --text-muted: #64748b; 
             --border-color: rgba(0, 0, 0, 0.08); 
             --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
             --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
-            --shadow-glow: 0 4px 15px rgba(5, 150, 105, 0.2);
-            --banner-gradient: linear-gradient(135deg, #d1fae5 0%, #f3f4f6 100%);
+            --banner-gradient: linear-gradient(135deg, #e0e7ff 0%, #f3e8ff 100%);
         }
         
         .icon-sun { display: none; } 
@@ -65,51 +57,37 @@
         ul { list-style: none; }
 
         /* =========================================
-           ANIMASI
-        ========================================= */
-        @keyframes slideUpFade {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes pulseGlow {
-            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
-        }
-
-        /* =========================================
            SIDEBAR MODERN
         ========================================= */
         .sidebar { position: fixed; top: 0; left: 0; width: var(--sidebar-width); height: 100vh; background-color: var(--bg-sidebar); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; z-index: 1000; transition: all 0.4s ease; }
-        .sidebar-header { display: flex; justify-content: center; align-items: center; padding: 30px 20px; border-bottom: 1px solid var(--border-color); position: relative; overflow: hidden;}
-        .logo { font-size: 2rem; font-weight: 800; color: var(--primary); letter-spacing: -0.5px; position: relative; z-index: 2;}
+        .sidebar-header { display: flex; justify-content: center; align-items: center; padding: 30px 20px; border-bottom: 1px solid var(--border-color); }
+        .logo { font-size: 2rem; font-weight: 800; color: var(--primary); letter-spacing: -0.5px; }
         .logo span { color: var(--secondary); }
         
         .theme-switch-wrapper { padding: 20px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: center; } 
-        .theme-toggle-label { cursor: pointer; color: var(--text-muted); display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 0.9rem; font-weight: 600; transition: all 0.3s ease; width: 100%; padding: 8px; border-radius: 12px;} 
-        .theme-toggle-label:hover { color: var(--text-main); background: rgba(255,255,255,0.03); transform: scale(1.02);} 
+        .theme-toggle-label { cursor: pointer; color: var(--text-muted); display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 0.9rem; font-weight: 600; transition: all 0.3s ease; width: 100%;} 
+        .theme-toggle-label:hover { color: var(--text-main); } 
         .theme-checkbox { display: none; } 
         
         .nav-links { padding: 20px 15px; flex-grow: 1; overflow-y: auto; } 
         .nav-links::-webkit-scrollbar { width: 4px; } .nav-links::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
         
-        .nav-links li a { display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; color: var(--text-muted); font-weight: 600; font-size: 0.95rem; border-radius: 12px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; margin-bottom: 5px; }
-        .nav-links li a:hover { background-color: rgba(255,255,255,0.03); color: var(--text-main); transform: translateX(5px);} 
-        .nav-links li a.active { background-color: rgba(16, 185, 129, 0.1); color: var(--primary); border-left: 4px solid var(--primary); border-radius: 0 12px 12px 0; transform: translateX(0); }
+        .nav-links li a { display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; color: var(--text-muted); font-weight: 600; font-size: 0.95rem; border-radius: 12px; transition: all 0.3s ease; cursor: pointer; margin-bottom: 5px; }
+        .nav-links li a:hover { background-color: rgba(255,255,255,0.03); color: var(--text-main); }
+        .nav-links li a.active { background-color: rgba(56, 189, 248, 0.1); color: var(--primary); border-left: 4px solid var(--primary); border-radius: 0 12px 12px 0; }
         
-        .nav-links i { width: 20px; text-align: center; margin-right: 12px; font-size: 1.1rem; transition: transform 0.3s ease;}
-        .nav-links li a:hover i { transform: scale(1.1); color: var(--primary); } 
+        .nav-links i { width: 20px; text-align: center; margin-right: 12px; font-size: 1.1rem; }
         
         .dropdown-btn { cursor: pointer; } 
-        .arrow { font-size: 0.7rem; transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); } 
+        .arrow { font-size: 0.7rem; transition: transform 0.3s ease; } 
         .dropdown-btn.open .arrow { transform: rotate(180deg); }
         .dropdown-container { display: none; background-color: transparent; flex-direction: column; padding-left: 10px; margin-top: 5px; border-left: 2px solid var(--border-color); margin-left: 20px; } 
-        .dropdown-container.show { display: flex; animation: slideDown 0.4s ease; } 
+        .dropdown-container.show { display: flex; animation: slideDown 0.3s ease; } 
         @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
         
-        .dropdown-container li a { padding: 10px 15px; font-size: 0.85rem; border-radius: 8px; margin-bottom: 2px; transition: all 0.3s ease;} 
-        .dropdown-container li a:hover { padding-left: 20px; color: var(--primary); background: rgba(16, 185, 129, 0.05); }
-        .dropdown-container li a.sub-active { color: var(--primary); background: rgba(16, 185, 129, 0.1); font-weight: 700; border-left: none; }
+        .dropdown-container li a { padding: 10px 15px; font-size: 0.85rem; border-radius: 8px; margin-bottom: 2px; } 
+        .dropdown-container li a:hover { padding-left: 20px; color: var(--primary); background: rgba(56, 189, 248, 0.05); }
+        .dropdown-container li a.sub-active { color: var(--primary); background: rgba(56, 189, 248, 0.1); font-weight: 700; border-left: none; }
         
         .btn-logout { margin-top: auto; color: #ef4444 !important; }
 
@@ -120,50 +98,44 @@
 
         .header-top-right { position: fixed; top: 30px; right: 50px; display: flex; gap: 15px; z-index: 100; align-items: center;}
         
-        .header-notif { position: relative; display: flex; align-items: center; justify-content: center; cursor: pointer; width: 45px; height: 45px; border-radius: 50%; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); background: rgba(31, 41, 55, 0.7); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); backdrop-filter: blur(12px);}
-        .header-notif:hover { transform: translateY(-3px) scale(1.05); border-color: var(--primary); box-shadow: var(--shadow-glow);}
+        .header-notif { position: relative; display: flex; align-items: center; justify-content: center; cursor: pointer; width: 45px; height: 45px; border-radius: 50%; transition: all 0.3s ease; background: var(--bg-card); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); backdrop-filter: blur(10px);}
+        .header-notif:hover { transform: translateY(-3px); border-color: var(--primary); }
         
-        .header-profile { display: flex; align-items: center; cursor: pointer; padding: 6px 15px 6px 6px; border-radius: 50px; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); background: rgba(31, 41, 55, 0.7); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); backdrop-filter: blur(12px); }
-        .header-profile:hover { transform: translateY(-3px); box-shadow: var(--shadow-glow); border-color: var(--primary); }
-        .header-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid transparent; background-color: #fff; transition: border-color 0.3s ease;}
-        .header-profile:hover .header-avatar { border-color: var(--primary); }
+        .header-profile { display: flex; align-items: center; cursor: pointer; padding: 6px 15px 6px 6px; border-radius: 50px; transition: all 0.3s ease; background: var(--bg-card); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); backdrop-filter: blur(10px); }
+        .header-profile:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: var(--primary); }
+        .header-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid transparent; background-color: #fff; }
 
         /* =========================================
            1. SECTION BERANDA
         ========================================= */
         #section-beranda { display: flex; align-items: center; justify-content: space-between; gap: 50px; background: var(--bg-card); padding: 60px 50px; border-radius: 30px; border: 1px solid var(--border-color); width: 100%; min-height: 450px; position: relative; overflow: hidden; box-shadow: var(--shadow-sm); margin-top: 50px;}
         
-        .hero-content { flex: 1.2; z-index: 2; animation: fadeRight 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
-        @keyframes fadeRight { from { opacity: 0; transform: translateX(-30px); } to { opacity: 1; transform: translateX(0); } }
+        .hero-content { flex: 1.2; z-index: 2; animation: fadeRight 0.6s ease; }
+        @keyframes fadeRight { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
 
-        .badge-hero { display: inline-flex; align-items: center; gap: 8px; background: rgba(16, 185, 129, 0.15); color: var(--primary); padding: 8px 20px; border-radius: 30px; font-size: 0.85rem; font-weight: 700; margin-bottom: 25px; border: 1px solid rgba(16, 185, 129, 0.2); text-transform: uppercase; letter-spacing: 1px; animation: pulseGlow 2s infinite;}
+        .badge-hero { display: inline-flex; align-items: center; gap: 8px; background: rgba(56, 189, 248, 0.15); color: var(--primary); padding: 8px 20px; border-radius: 30px; font-size: 0.85rem; font-weight: 700; margin-bottom: 25px; border: 1px solid rgba(56, 189, 248, 0.2); text-transform: uppercase; letter-spacing: 1px;}
         .hero-content h1 { font-size: 3.2rem; font-weight: 800; line-height: 1.15; margin-bottom: 20px; letter-spacing: -1px; }
-        .hero-content h1 span { color: var(--primary); position: relative; display: inline-block;}
-        .hero-content h1 span::after { content: ''; position: absolute; bottom: 5px; left: 0; width: 100%; height: 8px; background: var(--primary); opacity: 0.2; z-index: -1; border-radius: 4px; transform: skewX(-15deg);} 
-        
+        .hero-content h1 span { color: var(--primary); }
         .hero-content p { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 35px; line-height: 1.7; max-width: 90%; }
         
         .hero-image { flex: 1; z-index: 1; display: flex; justify-content: center; animation: floatImg 6s ease-in-out infinite; } 
-        .hero-image img { width: 100%; max-width: 450px; border-radius: 24px; box-shadow: var(--shadow-lg); border: 1px solid var(--border-color); transition: transform 0.5s;}
-        .hero-image:hover img { transform: scale(1.02) rotate(1deg); }
+        .hero-image img { width: 100%; max-width: 450px; border-radius: 24px; box-shadow: var(--shadow-lg); border: 1px solid var(--border-color);}
         @keyframes floatImg { 0% { transform: translateY(0px); } 50% { transform: translateY(-15px); } 100% { transform: translateY(0px); } }
 
         /* =========================================
-           SECTION PROFIL
+           SECTION PROFIL (BARU)
         ========================================= */
-        #section-profil { display: none; width: 100%; animation: slideUpFade 0.5s ease; margin-top: 50px; padding-top: 20px;}
-        .profile-container-main { background: var(--bg-card); border-radius: 24px; border: 1px solid var(--border-color); padding: 50px; display: flex; gap: 50px; box-shadow: var(--shadow-sm); flex-wrap: wrap; transition: transform 0.3s;}
-        .profile-container-main:hover { box-shadow: var(--shadow-lg); }
+        #section-profil { display: none; width: 100%; animation: fadeIn 0.4s ease; margin-top: 50px; padding-top: 20px;}
+        .profile-container-main { background: var(--bg-card); border-radius: 24px; border: 1px solid var(--border-color); padding: 50px; display: flex; gap: 50px; box-shadow: var(--shadow-sm); flex-wrap: wrap;}
         
         .profile-left-col { display: flex; flex-direction: column; align-items: center; width: 260px; }
-        .profile-img-glow { width: 220px; height: 220px; border-radius: 50%; border: 4px solid var(--primary); padding: 4px; box-shadow: 0 0 30px rgba(16, 185, 129, 0.3); margin-bottom: 30px; position: relative; background: var(--bg-body); transition: transform 0.4s;}
-        .profile-img-glow:hover { transform: scale(1.05); }
+        .profile-img-glow { width: 220px; height: 220px; border-radius: 50%; border: 4px solid var(--primary); padding: 4px; box-shadow: 0 0 30px rgba(56, 189, 248, 0.3); margin-bottom: 30px; position: relative; background: var(--bg-body);}
         .profile-img-glow img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
         
-        .btn-outline-primary { width: 100%; background: rgba(16, 185, 129, 0.05); border: 1px solid var(--primary); color: var(--primary); padding: 12px; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.3s; margin-bottom: 12px; display:flex; justify-content:center; align-items:center; gap:8px;}
-        .btn-outline-primary:hover { background: var(--primary); color: #fff; transform: translateY(-2px); box-shadow: var(--shadow-glow);}
+        .btn-outline-primary { width: 100%; background: rgba(56, 189, 248, 0.05); border: 1px solid var(--primary); color: var(--primary); padding: 12px; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.3s; margin-bottom: 12px; display:flex; justify-content:center; align-items:center; gap:8px;}
+        .btn-outline-primary:hover { background: rgba(56, 189, 248, 0.15); transform: translateY(-2px); }
         .btn-outline-danger { width: 100%; background: rgba(239, 68, 68, 0.05); border: 1px solid var(--danger-red); color: var(--danger-red); padding: 12px; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.3s; display:flex; justify-content:center; align-items:center; gap:8px;}
-        .btn-outline-danger:hover { background: var(--danger-red); color: #fff; transform: translateY(-2px); box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);}
+        .btn-outline-danger:hover { background: rgba(239, 68, 68, 0.15); transform: translateY(-2px); }
 
         .profile-right-col { flex: 1; min-width: 300px;}
         .profile-title-header { display: flex; align-items: center; gap: 15px; font-size: 1.8rem; font-weight: 800; color: var(--text-main); margin-bottom: 35px; }
@@ -173,135 +145,78 @@
         .form-full-width { grid-column: span 2; }
         
         .form-group-ui { display: flex; flex-direction: column; gap: 8px;}
-        .form-group-ui label { font-size: 0.9rem; color: var(--text-muted); font-weight: 600; transition: color 0.3s;}
-        .form-group-ui input, .form-group-ui textarea { width: 100%; padding: 16px; background: var(--bg-body); border: 1px solid var(--border-color); border-radius: 12px; color: var(--text-main); outline: none; font-family: inherit; font-size: 0.95rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);}
-        .form-group-ui input:focus, .form-group-ui textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1); transform: translateY(-1px);}
-        .form-group-ui input:focus + label, .form-group-ui textarea:focus + label { color: var(--primary); }
+        .form-group-ui label { font-size: 0.9rem; color: var(--text-muted); font-weight: 600; }
+        .form-group-ui input, .form-group-ui textarea { width: 100%; padding: 16px; background: var(--bg-body); border: 1px solid var(--border-color); border-radius: 12px; color: var(--text-main); outline: none; font-family: inherit; font-size: 0.95rem;}
+        .form-group-ui input:focus, .form-group-ui textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.1);}
 
         /* =========================================
            2. SECTION RUANG KELAS (MATKUL)
         ========================================= */
-        #section-matkul { display: none; width: 100%; margin-top: 60px; padding-top: 20px;}
+        #section-matkul { display: none; width: 100%; animation: fadeIn 0.4s ease; margin-top: 60px; padding-top: 20px;}
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
         
-        .matkul-header { display: flex; flex-direction: column; justify-content: center; margin-bottom: 25px; padding: 45px 50px; border-radius: 24px; background: var(--banner-gradient); box-shadow: var(--shadow-sm); position: relative; overflow: hidden; border: 1px solid var(--border-color); animation: slideUpFade 0.6s ease;}
-        .matkul-header::after { content: ''; position: absolute; right: -50px; top: -50px; width: 300px; height: 300px; background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%); border-radius: 50%; pointer-events: none; animation: floatImg 8s ease-in-out infinite;}
+        .matkul-header { display: flex; flex-direction: column; justify-content: center; margin-bottom: 25px; padding: 45px 50px; border-radius: 24px; background: var(--banner-gradient); box-shadow: var(--shadow-sm); position: relative; overflow: hidden; border: 1px solid var(--border-color);}
+        .matkul-header::after { content: ''; position: absolute; right: 0; top: 0; width: 40%; height: 100%; background-image: radial-gradient(rgba(255,255,255,0.08) 2px, transparent 2px); background-size: 20px 20px; pointer-events: none;}
 
         .matkul-title-box { z-index: 2; position: relative; }
-        .matkul-title-box h1 { font-size: 2.8rem; color: #ffffff; margin-bottom: 12px; font-weight: 800; letter-spacing: -0.5px; text-shadow: 0 2px 10px rgba(0,0,0,0.2);}
-        body:has(#theme-toggle:checked) .matkul-title-box h1 { color: var(--text-main); text-shadow: none;}
+        .matkul-title-box h1 { font-size: 2.8rem; color: #ffffff; margin-bottom: 12px; font-weight: 800; letter-spacing: -0.5px;}
+        body:has(#theme-toggle:checked) .matkul-title-box h1 { color: var(--text-main); }
         .matkul-title-box p { color: rgba(255,255,255,0.7); font-size: 1.05rem; font-weight: 500; display: flex; align-items: center; gap: 8px;}
         body:has(#theme-toggle:checked) .matkul-title-box p { color: var(--text-muted); }
         
-        /* TABS - BISA DIGESER (SCROLLABLE) & FULL NAMA */
-        .tabs { 
-            display: flex; 
-            gap: 8px; 
-            background: rgba(255,255,255,0.02); 
-            padding: 10px; 
-            border-radius: 16px; 
-            border: 1px solid var(--border-color); 
-            margin-bottom: 35px; 
-            box-shadow: var(--shadow-sm); 
-            overflow-x: auto; /* Memungkinkan geser kanan-kiri */
-            max-width: 100%; 
-            animation: slideUpFade 0.7s ease;
-            white-space: nowrap; /* Teks tidak akan turun ke bawah */
-            flex-wrap: nowrap; /* Memastikan tab sejajar 1 baris */
-            scroll-behavior: smooth;
-        }
-        
-        /* Kustomisasi Scrollbar Khusus Tab Menu */
-        .tabs::-webkit-scrollbar { height: 6px; }
-        .tabs::-webkit-scrollbar-track { background: transparent; border-radius: 10px; }
-        .tabs::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
-        .tabs:hover::-webkit-scrollbar-thumb { background: var(--primary); }
-
+        /* TABS */
+        .tabs { display: inline-flex; gap: 5px; background: rgba(255,255,255,0.02); padding: 8px; border-radius: 16px; border: 1px solid var(--border-color); margin-bottom: 35px; box-shadow: var(--shadow-sm); overflow-x: auto; max-width: 100%;}
         body:has(#theme-toggle:checked) .tabs { background: #ffffff; }
         
-        .tab-btn { 
-            flex: 0 0 auto; /* Supaya ukuran tab menyesuaikan teks, tidak mengecil */
-            background: transparent; 
-            border: none; 
-            padding: 12px 24px; 
-            border-radius: 12px; 
-            color: var(--text-muted); 
-            font-weight: 600; 
-            font-size: 0.95rem; 
-            cursor: pointer; 
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
-            display: flex; 
-            align-items: center; 
-            gap: 8px; 
-            position: relative; 
-            overflow: hidden;
-        }
-        .tab-btn::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 0; height: 3px; background: var(--primary); transition: width 0.3s ease; border-radius: 3px 3px 0 0;}
-        .tab-btn:hover { color: var(--text-main); background: rgba(255,255,255,0.05); transform: translateY(-2px);}
-        .tab-btn:hover::after { width: 40%; }
+        .tab-btn { background: transparent; border: none; padding: 12px 24px; border-radius: 12px; color: var(--text-muted); font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); white-space: nowrap; display: flex; align-items: center; gap: 8px;}
+        .tab-btn:hover { color: var(--text-main); background: rgba(255,255,255,0.05); }
         body:has(#theme-toggle:checked) .tab-btn:hover { background: rgba(0,0,0,0.03); }
-        .tab-btn.active { background: var(--primary); color: #fff; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); transform: translateY(-2px);}
-        .tab-btn.active::after { display: none; }
+        .tab-btn.active { background: var(--primary); color: #fff; box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3); }
 
-        .tab-content { display: none; background: transparent; min-height: 400px; }
-        .tab-content.active { display: block; animation: slideUpFade 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+        .tab-content { display: none; background: transparent; min-height: 400px; animation: fadeIn 0.3s ease;}
+        .tab-content.active { display: block; }
         .section-title-tab { margin-bottom: 25px; font-size: 1.6rem; color: var(--text-main); font-weight: 800; display: flex; align-items: center; gap: 12px;}
 
-        /* FORM UPLOAD & KARTU YANG LEBIH POP */
-        .upload-form-card { background: var(--bg-card); padding: 30px; border-radius: 20px; border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); margin-bottom: 25px; transition: transform 0.3s, box-shadow 0.3s; }
-        .upload-form-card:focus-within { box-shadow: var(--shadow-lg); border-color: rgba(16, 185, 129, 0.3);}
-        
+        /* FORM UPLOAD & KARTU */
+        .upload-form-card { background: var(--bg-card); padding: 30px; border-radius: 20px; border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); margin-bottom: 25px; }
         .input-group { margin-bottom: 15px; }
-        .input-group label { display: block; margin-bottom: 8px; font-size: 0.9rem; color: var(--text-muted); font-weight: 600; transition: color 0.3s;}
-        .input-group input, .input-group textarea, .input-group select { width: 100%; padding: 14px; background: var(--bg-body); border: 1px solid var(--border-color); border-radius: 12px; color: var(--text-main); outline: none; font-family: inherit; transition: all 0.3s ease;}
-        .input-group input:focus, .input-group textarea:focus, .input-group select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1); transform: translateY(-1px);}
+        .input-group label { display: block; margin-bottom: 8px; font-size: 0.9rem; color: var(--text-muted); font-weight: 600;}
+        .input-group input, .input-group textarea, .input-group select { width: 100%; padding: 14px; background: var(--bg-body); border: 1px solid var(--border-color); border-radius: 12px; color: var(--text-main); outline: none; font-family: inherit;}
+        .input-group input:focus, .input-group textarea:focus { border-color: var(--primary); }
         
-        .btn-action { background: var(--primary); color: white; border: none; padding: 12px 24px; border-radius: 12px; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: inline-flex; align-items: center; gap: 8px;}
-        .btn-action:hover { background: var(--primary-hover); transform: translateY(-3px); box-shadow: var(--shadow-glow);}
-        .btn-action:active { transform: translateY(0); }
+        .btn-action { background: var(--primary); color: white; border: none; padding: 12px 24px; border-radius: 12px; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 8px;}
+        .btn-action:hover { background: var(--primary-hover); transform: translateY(-2px);}
 
-        /* ITEM CARD */
-        .item-card { background: var(--bg-card); border: 1px solid var(--border-color); padding: 20px 25px; border-radius: 16px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden; }
-        .item-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--primary); transform: scaleY(0); transition: transform 0.4s ease; transform-origin: bottom;}
-        .item-card:hover::before { transform: scaleY(1); }
-        .item-card:hover { transform: translateY(-4px); border-color: rgba(16, 185, 129, 0.3); box-shadow: var(--shadow-lg); background: var(--bg-card-hover);}
-        
-        .item-info h3 { font-size: 1.1rem; margin-bottom: 4px; color: var(--text-main); font-weight: 700; transition: color 0.3s;}
-        .item-card:hover .item-info h3 { color: var(--primary); }
+        .item-card { background: var(--bg-card); border: 1px solid var(--border-color); padding: 20px 25px; border-radius: 16px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; transition: all 0.3s ease; }
+        .item-card:hover { transform: translateY(-2px); border-color: rgba(56, 189, 248, 0.3); }
+        .item-info h3 { font-size: 1.1rem; margin-bottom: 4px; color: var(--text-main); font-weight: 700;}
         .item-info p { font-size: 0.85rem; color: var(--text-muted); font-weight: 500;}
 
-        /* TABEL NILAI / PENGUMPULAN LEBIH RAPI */
-        .styled-table { width: 100%; border-collapse: separate; border-spacing: 0; margin-top: 20px; font-size: 0.9em; border-radius: 12px; overflow: hidden; background: var(--bg-card); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm);}
+        /* TABEL NILAI / PENGUMPULAN */
+        .styled-table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 0.9em; border-radius: 12px; overflow: hidden; background: var(--bg-card); border: 1px solid var(--border-color);}
         .styled-table thead tr { background-color: var(--primary); color: #ffffff; text-align: left; }
-        .styled-table th { padding: 15px 20px; font-weight: 700; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.5px;}
-        .styled-table td { padding: 15px 20px; border-bottom: 1px solid var(--border-color); transition: background-color 0.3s;}
-        .styled-table tbody tr { transition: all 0.3s ease; }
-        .styled-table tbody tr:hover td { background-color: rgba(255, 255, 255, 0.03); }
-        .styled-table tbody tr:last-child td { border-bottom: none; }
-        .input-nilai { width: 80px; padding: 8px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-body); color: var(--text-main); text-align: center; font-weight: bold; transition: all 0.3s;}
-        .input-nilai:focus { border-color: var(--secondary); outline:none; box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1); transform: scale(1.05);} /* Fokus pakai warna amber (secondary) */
+        .styled-table th, .styled-table td { padding: 15px 20px; border-bottom: 1px solid var(--border-color); }
+        .styled-table tbody tr:hover { background-color: rgba(255, 255, 255, 0.02); }
+        .input-nilai { width: 80px; padding: 8px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-body); color: var(--text-main); text-align: center; font-weight: bold;}
+        .input-nilai:focus { border-color: var(--secondary); outline:none;}
 
         /* FORUM DISKUSI */
-        .chat-box { border: 1px solid var(--border-color); border-radius: 24px; height: 500px; display: flex; flex-direction: column; background: var(--bg-card); overflow: hidden; box-shadow: var(--shadow-sm); transition: box-shadow 0.3s;}
-        .chat-box:focus-within { box-shadow: var(--shadow-lg); border-color: rgba(16, 185, 129, 0.3);}
-        .chat-header-info { padding: 15px 25px; border-bottom: 1px solid var(--border-color); background: rgba(0,0,0,0.1); display: flex; align-items: center; gap: 10px; backdrop-filter: blur(5px);}
+        .chat-box { border: 1px solid var(--border-color); border-radius: 24px; height: 500px; display: flex; flex-direction: column; background: var(--bg-card); overflow: hidden;}
+        .chat-header-info { padding: 15px 25px; border-bottom: 1px solid var(--border-color); background: rgba(0,0,0,0.2); display: flex; align-items: center; gap: 10px;}
         .chat-header-info i { color: var(--primary); font-size: 1.2rem;}
         .chat-header-info span { font-weight: 600; font-size: 0.9rem;}
-        
         .chat-messages { flex: 1; padding: 25px; overflow-y: auto; display: flex; flex-direction: column; gap: 18px; scroll-behavior: smooth; }
         .chat-messages::-webkit-scrollbar { width: 6px; } .chat-messages::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
-        
-        .message { max-width: 75%; padding: 14px 18px; font-size: 0.95rem; line-height: 1.5; position: relative; border-radius: 18px; animation: slideUpFade 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.05);}
+        .message { max-width: 75%; padding: 14px 18px; font-size: 0.95rem; line-height: 1.5; position: relative; border-radius: 16px;}
         .message .sender { font-size: 0.75rem; font-weight: 700; margin-bottom: 6px; display: block; letter-spacing: 0.5px;}
         .msg-other { background: rgba(255,255,255,0.05); align-self: flex-start; border: 1px solid var(--border-color); border-bottom-left-radius: 4px; }
         .msg-other .sender { color: var(--secondary); }
-        .msg-me { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%); color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; border: none; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2);}
-        .msg-me .sender { color: rgba(255,255,255,0.9); }
-        
-        .chat-input-area { padding: 20px; background: rgba(0,0,0,0.1); border-top: 1px solid var(--border-color); display: flex; gap: 15px; align-items: center; backdrop-filter: blur(5px);}
-        .chat-input-area input { flex: 1; padding: 16px 20px; border: 1px solid var(--border-color); border-radius: 20px; background: var(--bg-body); color: var(--text-main); outline: none; font-size: 0.95rem; font-weight: 500; transition: all 0.3s;}
-        .chat-input-area input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);}
-        .chat-input-area button { background: var(--primary); color: white; border: none; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; display: flex; justify-content: center; align-items: center; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);}
-        .chat-input-area button:hover { background: var(--primary-hover); transform: scale(1.1) rotate(10deg); box-shadow: var(--shadow-glow);}
+        .msg-me { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%); color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; border: none; }
+        .msg-me .sender { color: rgba(255,255,255,0.8); }
+        .chat-input-area { padding: 20px; background: rgba(0,0,0,0.2); border-top: 1px solid var(--border-color); display: flex; gap: 15px; align-items: center; }
+        .chat-input-area input { flex: 1; padding: 16px 20px; border: 1px solid var(--border-color); border-radius: 16px; background: var(--bg-body); color: var(--text-main); outline: none; font-size: 0.95rem; font-weight: 500; transition: border 0.3s;}
+        .chat-input-area input:focus { border-color: var(--primary); }
+        .chat-input-area button { background: var(--primary); color: white; border: none; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; display: flex; justify-content: center; align-items: center;}
     </style>
 </head>
 <body>
@@ -319,20 +234,20 @@
         </div>
 
         <ul class="nav-links">
-            <li><a href="#" id="menu-beranda" class="active"><i class="fas fa-home"></i> Beranda</a></li>
+            <li><a href="#" id="menu-beranda" class="active"><i class="fas fa-home" style="margin-right:10px;"></i> Beranda</a></li>
             
-            <li><a href="#" id="menu-profil"><i class="fas fa-user-circle"></i> Profil Saya</a></li>
+            <li><a href="#" id="menu-profil"><i class="fas fa-user-circle" style="margin-right:10px;"></i> Profil Saya</a></li>
             
             <li>
                 <a class="dropdown-btn open">
-                    <span><i class="fas fa-layer-group"></i> Kelas Diampu</span>
+                    <span><i class="fas fa-layer-group" style="margin-right:10px;"></i> Kelas Diampu</span>
                     <span class="arrow"><i class="fas fa-chevron-down"></i></span>
                 </a>
                 <ul class="dropdown-container show" id="menu-matkul-saya">
                     </ul>
             </li>
             
-            <li style="margin-top: 15px;"><a href="index.html"><i class="fas fa-sign-out-alt"></i>Log Out</a></li>
+            <li style="margin-top: 15px;"><a href="index.html" id="logout-btn"><i class="fas fa-sign-out-alt" style="margin-right:10px;"></i>Log Out</a></li>
         </ul>
     </nav>
 
@@ -351,7 +266,7 @@
         <section id="section-beranda">
             <div class="hero-content">
                 <div class="badge-hero"><i class="fas fa-shield-alt"></i> Portal Manajemen Dosen</div>
-                <h1>Kelola Kelas & Evaluasi <br><span>Lebih Mudah.</span></h1>
+                <h1>Kelola Kelas & Evaluasi <span>Lebih Mudah.</span></h1>
                 <p id="welcome-message">Selamat Datang di Pusat Kendali Kelas. Silakan pilih kelas di menu samping untuk mengunggah materi, tugas, dan berdiskusi dengan mahasiswa.</p>
                 <button class="btn-action" style="padding: 14px 30px; font-size: 1rem;" onclick="document.querySelector('.dropdown-btn').click();"><i class="fas fa-chalkboard"></i> Buka Ruang Kelas</button>
             </div>
@@ -411,13 +326,13 @@
                 </div>
             </div>
 
-            <!-- MENU TAB SEKARANG BISA DIGESER (SCROLLABLE) -->
             <nav class="tabs">
                 <button class="tab-btn active" onclick="bukaTabKelas('tab-kontrak', this)"><i class="fas fa-file-signature"></i> Kontrak Kuliah</button>
                 <button class="tab-btn" onclick="bukaTabKelas('tab-materi', this)"><i class="fas fa-file-upload"></i> Kelola Materi</button>
                 <button class="tab-btn" onclick="bukaTabKelas('tab-tugas', this)"><i class="fas fa-tasks"></i> Kelola Tugas</button>
                 <button class="tab-btn" onclick="bukaTabKelas('tab-ujian', this)"><i class="fas fa-file-alt"></i> UTS / UAS</button>
                 <button class="tab-btn" onclick="bukaTabKelas('tab-kuis', this)"><i class="fas fa-question-circle"></i> Kuis</button>
+                
                 <button class="tab-btn" onclick="bukaTabKelas('tab-absensi', this)"><i class="fas fa-user-check"></i> Absensi</button>
                 <button class="tab-btn" onclick="bukaTabKelas('tab-nilai', this)"><i class="fas fa-star-half-alt"></i> Cek & Input Nilai</button>
                 <button class="tab-btn" onclick="bukaTabKelas('tab-forum', this)"><i class="fas fa-comments"></i> Forum Diskusi</button>
@@ -537,7 +452,7 @@
                     <div style="display:flex; gap:15px; margin-bottom:15px;">
                         <div class="input-group" style="flex:1; margin-bottom:0;">
                             <label>Kategori Penilaian</label>
-                            <select id="select-kategori-nilai" onchange="populateDropdownItem()">
+                            <select id="select-kategori-nilai" onchange="populateDropdownItem()" style="padding:12px; border-radius:10px; width:100%; background:var(--bg-body); color:var(--text-main); border:1px solid var(--border-color);">
                                 <option value="">-- Pilih Kategori --</option>
                                 <option value="tugas">Tugas</option>
                                 <option value="ujian">UTS / UAS</option>
@@ -546,7 +461,7 @@
                         </div>
                         <div class="input-group" style="flex:2; margin-bottom:0;">
                             <label>Pilih Item untuk Dicek & Dinilai</label>
-                            <select id="select-item-nilai">
+                            <select id="select-item-nilai" style="padding:12px; border-radius:10px; width:100%; background:var(--bg-body); color:var(--text-main); border:1px solid var(--border-color);">
                                 <option value="">-- Pilih Item --</option>
                             </select>
                         </div>
@@ -605,17 +520,17 @@
         const menuContainer = document.getElementById('menu-matkul-saya');
         const sectionBeranda = document.getElementById('section-beranda');
         const sectionMatkul = document.getElementById('section-matkul');
-        const sectionProfil = document.getElementById('section-profil'); 
+        const sectionProfil = document.getElementById('section-profil'); // Ambil referensi section profil
         
         const btnMenuBeranda = document.getElementById('menu-beranda');
-        const btnMenuProfil = document.getElementById('menu-profil'); 
+        const btnMenuProfil = document.getElementById('menu-profil'); // Ambil referensi tombol menu profil
 
         // Event Klik Beranda
         btnMenuBeranda.addEventListener('click', (e) => {
             e.preventDefault();
             sectionBeranda.style.display = 'flex';
             sectionMatkul.style.display = 'none';
-            sectionProfil.style.display = 'none'; 
+            sectionProfil.style.display = 'none'; // Sembunyikan profil
             
             document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active', 'sub-active'));
             btnMenuBeranda.classList.add('active');
@@ -626,7 +541,7 @@
             e.preventDefault();
             sectionBeranda.style.display = 'none';
             sectionMatkul.style.display = 'none';
-            sectionProfil.style.display = 'block'; 
+            sectionProfil.style.display = 'block'; // Tampilkan profil
             
             document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active', 'sub-active'));
             btnMenuProfil.classList.add('active');
@@ -644,7 +559,7 @@
                 linkMatkul.addEventListener('click', (e) => {
                     e.preventDefault();
                     sectionBeranda.style.display = 'none';
-                    sectionProfil.style.display = 'none'; 
+                    sectionProfil.style.display = 'none'; // Sembunyikan profil saat masuk kelas
                     sectionMatkul.style.display = 'block';
                     
                     document.querySelectorAll('.nav-links li a').forEach(a => a.classList.remove('active', 'sub-active'));
@@ -717,7 +632,7 @@
             
             w.innerHTML = '';
             db.forEach((d, i) => {
-                w.innerHTML += `<div class="item-card" style="animation: slideUpFade 0.4s ease backwards; animation-delay: ${i * 0.1}s;"><div class="item-info"><h3>${d.judul}</h3><p><i class="far fa-clock"></i> ${d.tanggal}</p></div><div><a href="${d.link}" target="_blank" class="btn-action" style="margin-right:10px;"><i class="fas fa-external-link-alt"></i> Buka Dokumen</a><button onclick="hapusData('kontrak', ${i})" class="btn-action" style="background:transparent; color:var(--danger-red); border:1px solid var(--danger-red);"><i class="fas fa-trash"></i></button></div></div>`;
+                w.innerHTML += `<div class="item-card"><div class="item-info"><h3>${d.judul}</h3><p><i class="far fa-clock"></i> ${d.tanggal}</p></div><div><a href="${d.link}" target="_blank" class="btn-action" style="margin-right:10px;"><i class="fas fa-external-link-alt"></i> Buka Dokumen</a><button onclick="hapusData('kontrak', ${i})" class="btn-action" style="background:transparent; color:var(--danger-red); border:1px solid var(--danger-red);"><i class="fas fa-trash"></i></button></div></div>`;
             });
         }
 
@@ -745,7 +660,7 @@
             list.innerHTML = '';
             db.forEach((item, index) => {
                 let linkBtn = item.link ? `<a href="${item.link}" target="_blank" class="btn-action" style="margin-right:5px;"><i class="fas fa-external-link-alt"></i> Buka Link</a>` : '';
-                list.innerHTML += `<div class="item-card" style="animation: slideUpFade 0.4s ease backwards; animation-delay: ${index * 0.1}s;"><div class="item-info"><h3>${item.judul}</h3><p><i class="fas fa-clock"></i> Diunggah: ${item.tanggal}</p></div><div>${linkBtn}<button onclick="hapusData('materi', ${index})" class="btn-action" style="background:transparent; color:var(--danger-red); border:1px solid var(--danger-red);"><i class="fas fa-trash"></i> Hapus</button></div></div>`;
+                list.innerHTML += `<div class="item-card"><div class="item-info"><h3>${item.judul}</h3><p><i class="fas fa-clock"></i> Diunggah: ${item.tanggal}</p></div><div>${linkBtn}<button onclick="hapusData('materi', ${index})" class="btn-action" style="background:transparent; color:var(--danger-red); border:1px solid var(--danger-red);"><i class="fas fa-trash"></i> Hapus</button></div></div>`;
             });
         }
 
@@ -774,7 +689,7 @@
             list.innerHTML = '';
             db.forEach((item, index) => {
                 let btnBukaSoal = item.linkTugas ? `<a href="${item.linkTugas}" target="_blank" style="margin-right:10px; color:var(--primary); font-size:0.85rem;"><i class="fas fa-external-link-alt"></i> Buka Soal Tugas</a>` : '';
-                list.innerHTML += `<div class="item-card" style="animation: slideUpFade 0.4s ease backwards; animation-delay: ${index * 0.1}s;"><div class="item-info"><h3>${item.judul}</h3><p style="color:var(--danger-red); font-weight:700;"><i class="fas fa-exclamation-circle"></i> Deadline: ${item.deadline}</p>${btnBukaSoal}</div><button onclick="hapusData('tugas', ${index})" class="btn-action" style="background:transparent; color:var(--danger-red); border:1px solid var(--danger-red);"><i class="fas fa-trash"></i> Hapus</button></div>`;
+                list.innerHTML += `<div class="item-card"><div class="item-info"><h3>${item.judul}</h3><p style="color:var(--danger-red); font-weight:700;"><i class="fas fa-exclamation-circle"></i> Deadline: ${item.deadline}</p>${btnBukaSoal}</div><button onclick="hapusData('tugas', ${index})" class="btn-action" style="background:transparent; color:var(--danger-red); border:1px solid var(--danger-red);"><i class="fas fa-trash"></i> Hapus</button></div>`;
             });
         }
 
@@ -803,7 +718,7 @@
             list.innerHTML = '';
             db.forEach((item, index) => {
                 let btnBukaSoal = item.link ? `<a href="${item.link}" target="_blank" style="margin-right:10px; color:var(--primary); font-size:0.85rem;"><i class="fas fa-external-link-alt"></i> Buka Akses Ujian</a>` : '';
-                list.innerHTML += `<div class="item-card" style="animation: slideUpFade 0.4s ease backwards; animation-delay: ${index * 0.1}s;"><div class="item-info"><h3>${item.judul}</h3><p style="color:var(--danger-red); font-weight:700;"><i class="fas fa-exclamation-circle"></i> Deadline: ${item.deadline}</p>${btnBukaSoal}</div><button onclick="hapusData('ujian', ${index})" class="btn-action" style="background:transparent; color:var(--danger-red); border:1px solid var(--danger-red);"><i class="fas fa-trash"></i> Hapus</button></div>`;
+                list.innerHTML += `<div class="item-card"><div class="item-info"><h3>${item.judul}</h3><p style="color:var(--danger-red); font-weight:700;"><i class="fas fa-exclamation-circle"></i> Deadline: ${item.deadline}</p>${btnBukaSoal}</div><button onclick="hapusData('ujian', ${index})" class="btn-action" style="background:transparent; color:var(--danger-red); border:1px solid var(--danger-red);"><i class="fas fa-trash"></i> Hapus</button></div>`;
             });
         }
 
@@ -832,7 +747,7 @@
             list.innerHTML = '';
             db.forEach((item, index) => {
                 let btnBukaSoal = item.link ? `<a href="${item.link}" target="_blank" style="margin-right:10px; color:var(--primary); font-size:0.85rem;"><i class="fas fa-external-link-alt"></i> Buka Link Kuis</a>` : '';
-                list.innerHTML += `<div class="item-card" style="animation: slideUpFade 0.4s ease backwards; animation-delay: ${index * 0.1}s;"><div class="item-info"><h3>${item.judul}</h3><p style="color:var(--danger-red); font-weight:700;"><i class="fas fa-exclamation-circle"></i> Deadline: ${item.deadline}</p>${btnBukaSoal}</div><button onclick="hapusData('kuis', ${index})" class="btn-action" style="background:transparent; color:var(--danger-red); border:1px solid var(--danger-red);"><i class="fas fa-trash"></i> Hapus</button></div>`;
+                list.innerHTML += `<div class="item-card"><div class="item-info"><h3>${item.judul}</h3><p style="color:var(--danger-red); font-weight:700;"><i class="fas fa-exclamation-circle"></i> Deadline: ${item.deadline}</p>${btnBukaSoal}</div><button onclick="hapusData('kuis', ${index})" class="btn-action" style="background:transparent; color:var(--danger-red); border:1px solid var(--danger-red);"><i class="fas fa-trash"></i> Hapus</button></div>`;
             });
         }
 
@@ -854,7 +769,7 @@
             if (db.length === 0) return list.innerHTML = `<p style="color:var(--text-muted); font-size:0.9rem;">Belum ada riwayat sesi absensi.</p>`;
 
             list.innerHTML = '';
-            [...db].reverse().forEach((item, i) => {
+            [...db].reverse().forEach(item => {
                 const keyHadir = `hadir_mhs_${activeMatkulGlobal}_${item.tanggal}`;
                 let dbHadir = JSON.parse(localStorage.getItem(keyHadir)) || [];
                 
@@ -862,20 +777,24 @@
                     ? `<div class="attendee-list"><h4><i class="fas fa-list-ul"></i> Daftar Hadir (${dbHadir.length} Mahasiswa)</h4><ul>${dbHadir.map(n => `<li><i class="fas fa-check-circle"></i> NIM: <strong>${n}</strong></li>`).join('')}</ul></div>` 
                     : `<div class="attendee-list" style="background:transparent;"><p style="color:var(--danger-red); font-size:0.85rem;"><i class="fas fa-times-circle"></i> Belum ada mahasiswa yang mengisi daftar hadir.</p></div>`;
 
-                list.innerHTML += `<div class="item-card" style="flex-direction: column; align-items: stretch; animation: slideUpFade 0.4s ease backwards; animation-delay: ${i * 0.1}s;"><div style="display:flex; justify-content:space-between; align-items:center;"><div class="item-info"><h3>Sesi Tanggal: ${item.tanggal}</h3><p>Status: <span style="color:var(--secondary); font-weight:bold;">${item.status}</span></p></div></div>${htmlDaftarHadir}</div>`;
+                list.innerHTML += `<div class="item-card" style="flex-direction: column; align-items: stretch;"><div style="display:flex; justify-content:space-between; align-items:center;"><div class="item-info"><h3>Sesi Tanggal: ${item.tanggal}</h3><p>Status: <span style="color:var(--secondary); font-weight:bold;">${item.status}</span></p></div></div>${htmlDaftarHadir}</div>`;
             });
         }
 
-        // 4. PENILAIAN
+        // 4. PENILAIAN (FUNGSI BARU UNTUK DUAL DROPDOWN)
         window.populateDropdownItem = function() {
             const kategori = document.getElementById('select-kategori-nilai').value;
             const selectItem = document.getElementById('select-item-nilai');
             
+            // Reset isian item setiap kali kategori diubah
             selectItem.innerHTML = '<option value="">-- Pilih Item --</option>';
+            
+            // Sembunyikan panel nilai saat kategori berganti agar UI tetap bersih
             document.getElementById('panel-penilaian').style.display = 'none';
 
             if (!kategori || !activeMatkulGlobal) return;
             
+            // Mengambil data berdasarkan kategori yang dipilih (tugas, ujian, kuis)
             let db = JSON.parse(localStorage.getItem(`${kategori}_${activeMatkulGlobal}`)) || [];
             db.forEach(item => {
                 selectItem.innerHTML += `<option value="${item.id}">${item.judul}</option>`;
@@ -893,9 +812,10 @@
         function renderTabelPengumpulan(itemId) {
             const tbody = document.getElementById('tbody-pengumpulan');
             
+            // Menggunakan basis ID item yang sama persis untuk proses pengumpulan
             let db = JSON.parse(localStorage.getItem(`pengumpulan_${itemId}`)) || [];
             
-            if (db.length === 0) return tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--text-muted); padding: 30px;">Belum ada mahasiswa yang mengumpulkan/mengerjakan bagian ini.</td></tr>`;
+            if (db.length === 0) return tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--text-muted);">Belum ada mahasiswa yang mengumpulkan/mengerjakan bagian ini.</td></tr>`;
 
             tbody.innerHTML = '';
             db.forEach((p, index) => {
@@ -961,7 +881,7 @@
         
         const btnLogout = document.getElementById('logout-btn');
         if(btnLogout){
-            btnLogout.addEventListener('click', (e) => { e.preventDefault(); localStorage.removeItem('loggedInUser'); window.location.href="login.html"; });
+           btnLogout.addEventListener('click', (e) => { e.preventDefault(); localStorage.removeItem('loggedInUser'); window.location.href="login.html"; });
         }
         
         const themeToggle = document.getElementById("theme-toggle");
