@@ -568,7 +568,7 @@
                             <tr>
                                 <th>NIM</th>
                                 <th>Nama Mahasiswa</th>
-                                <th>Link Jawaban</th>
+                                <th>Link/Bukti Jawaban</th>
                                 <th>Waktu Submit</th>
                                 <th>Nilai</th>
                                 <th>Aksi</th>
@@ -608,14 +608,11 @@
         // ==========================================
         // PERBAIKAN: PISAHKAN DATABASE PROFIL & SESI
         // ==========================================
-        // Kita buat key khusus (seolah-olah tabel database) yang tidak akan dihapus saat log out
         const profileDbKey = `profil_data_${user.id || 'dosen_dpw_01'}`;
         let savedProfile = JSON.parse(localStorage.getItem(profileDbKey)) || {};
 
-        // Set nama di Header (Ambil dari DB Profil dulu, kalau kosong baru dari Sesi)
         document.getElementById('top-name').textContent = savedProfile.nama || user.nama || "Dosen Penguji";
         
-        // Load data LocalStorage ke form Profil dari DATABASE PROFIL
         document.getElementById('input-profil-nama').value = savedProfile.nama || user.nama || "";
         document.getElementById('input-profil-nip').value = savedProfile.nip || "";
         document.getElementById('input-profil-tgl').value = savedProfile.tglLahir || "";
@@ -630,7 +627,6 @@
             const univBaru = document.getElementById('input-profil-univ').value;
             const alamatBaru = document.getElementById('input-profil-alamat').value;
 
-            // 1. Simpan ke Database Profil (TIDAK AKAN HILANG SAAT LOGOUT)
             let updatedProfile = {
                 nama: namaBaru,
                 nip: nipBaru,
@@ -640,12 +636,10 @@
             };
             localStorage.setItem(profileDbKey, JSON.stringify(updatedProfile));
             
-            // 2. Update juga Sesi Login yang sedang aktif (agar sinkron)
             let currentUser = JSON.parse(localStorage.getItem('loggedInUser')) || user;
             currentUser.nama = namaBaru;
             localStorage.setItem('loggedInUser', JSON.stringify(currentUser));
             
-            // Update tampilan nama di header langsung
             document.getElementById('top-name').textContent = namaBaru;
             
             alert("Data Profil Edu-Free berhasil diperbarui dan disimpan permanen!");
@@ -661,7 +655,6 @@
         const btnMenuBeranda = document.getElementById('menu-beranda');
         const btnMenuProfil = document.getElementById('menu-profil'); 
 
-        // Event Klik Beranda
         btnMenuBeranda.addEventListener('click', (e) => {
             e.preventDefault();
             sectionBeranda.style.display = 'flex';
@@ -672,7 +665,6 @@
             btnMenuBeranda.classList.add('active');
         });
 
-        // Event Klik Profil Saya
         btnMenuProfil.addEventListener('click', (e) => {
             e.preventDefault();
             sectionBeranda.style.display = 'none';
@@ -713,7 +705,6 @@
             document.getElementById('matkul-title-text').textContent = namaMatkul;
             document.getElementById('forum-matkul-name').textContent = `[ ${namaMatkul} ]`;
 
-            // Buka Tab Kontrak Secara Default
             bukaTabKelas('tab-kontrak', document.querySelectorAll('.tab-btn')[0]);
             document.getElementById('panel-penilaian').style.display = 'none';
 
@@ -941,6 +932,9 @@
             renderTabelPengumpulan(itemId);
         });
 
+        // ===================================================================
+        // MODIFIKASI: FUNGSI RENDER TABEL & BUKA GAMBAR BASE64
+        // ===================================================================
         function renderTabelPengumpulan(itemId) {
             const tbody = document.getElementById('tbody-pengumpulan');
             
@@ -950,11 +944,35 @@
 
             tbody.innerHTML = '';
             db.forEach((p, index) => {
-                let linkBtn = p.linkJawaban ? `<a href="${p.linkJawaban}" target="_blank" style="color:var(--primary); font-weight:bold;"><i class="fas fa-external-link-alt"></i> Buka Link</a>` : 'Tidak ada link';
+                let linkBtn = 'Tidak ada file';
+                
+                // Logika Pengecekan: Apakah gambar (screenshot) atau link URL biasa
+                if (p.linkJawaban) {
+                    if (p.tipeJawaban === 'image') {
+                        linkBtn = `<button onclick="bukaGambarUtuh('${p.linkJawaban}')" style="background:rgba(245, 158, 11, 0.1); border:1px solid rgba(245, 158, 11, 0.3); border-radius:8px; padding:6px 12px; color:var(--warning); font-weight:bold; cursor:pointer; transition:0.3s;" onmouseover="this.style.background='var(--warning)'; this.style.color='#fff';" onmouseout="this.style.background='rgba(245, 158, 11, 0.1)'; this.style.color='var(--warning)';"><i class="fas fa-image"></i> Lihat Bukti (Gambar)</button>`;
+                    } else {
+                        linkBtn = `<a href="${p.linkJawaban}" target="_blank" style="color:var(--primary); font-weight:bold;"><i class="fas fa-external-link-alt"></i> Buka Link</a>`;
+                    }
+                }
+
                 let nimMhs = p.userId || "Tidak Diketahui";
                 tbody.innerHTML += `<tr><td style="color:var(--secondary); font-weight:bold;">${nimMhs}</td><td style="font-weight:bold;">${p.namaMahasiswa}</td><td>${linkBtn}</td><td style="font-size:0.85rem;">${p.waktu}</td><td><input type="number" class="input-nilai" id="nilai_${itemId}_${index}" value="${p.nilai||''}" placeholder="0-100"></td><td><button onclick="simpanNilai('${itemId}', ${index})" class="btn-action" style="padding:8px 16px; font-size:0.8rem;"><i class="fas fa-save"></i> Simpan</button></td></tr>`;
             });
         }
+
+        // Fungsi Baru untuk Merender Gambar di Tab Baru (Aman dari pemblokiran browser)
+        window.bukaGambarUtuh = function(base64String) {
+            let win = window.open();
+            win.document.write(`
+                <html lang="id">
+                <head><title>Bukti Pengumpulan Mahasiswa</title></head>
+                <body style="margin:0; background:#0f172a; display:flex; justify-content:center; align-items:center; min-height:100vh;">
+                    <img src="${base64String}" style="max-width:100%; max-height:100vh; object-fit:contain; box-shadow: 0 10px 25px rgba(0,0,0,0.5);"/>
+                </body>
+                </html>
+            `);
+        }
+        // ===================================================================
 
         window.simpanNilai = function(itemId, index) {
             let inputElement = document.getElementById(`nilai_${itemId}_${index}`);
@@ -1002,7 +1020,6 @@
             if(!text || !activeMatkulGlobal) return;
             let db = JSON.parse(localStorage.getItem(`forum_${activeMatkulGlobal}`)) || [];
             
-            // Mengambil nama terbaru dari Local Storage atau variabel user
             const currentName = savedProfile.nama || user.nama || "Dosen DPW";
             
             db.push({ userId: user.userId || 'dosen_dpw_01', nama: currentName, role: "dosen", text, waktu: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) });
