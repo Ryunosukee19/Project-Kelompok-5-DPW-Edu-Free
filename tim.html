@@ -4,16 +4,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tim Kami | Edu-Free.</title>
-    <link rel="stylesheet" href="styleindex.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../../HalamanUtama/styleindex.css">
     
     <style>
         /* =========================================
-           KONTEN TIM KAMI (Hanya mengatur area bawah, Header diambil dari styleindex.css)
+           1. CSS LAYOUT HEADER (Tanpa Menimpa styleindex.css)
+        ========================================= */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-main, #0f172a); /* Warna dasar dari tema gelap */
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            position: sticky; 
+            top: 0;
+            z-index: 100;
+            background-color: inherit;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 25px;
+            margin-right: auto;
+            margin-left: 50px;
+            list-style: none; 
+            padding: 0;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 25px; 
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        /* =========================================
+           2. KONTEN TIM KAMI (Area Bawah)
         ========================================= */
         .team-section { 
-            padding: 120px 5% 60px 5%; /* Jarak atas agar tidak tertutup header sticky */
+            padding: 80px 5% 60px 5%; 
             display: flex; 
             flex-direction: column; 
             align-items: center; 
@@ -55,6 +93,7 @@
             gap: 30px; 
             width: 100%; 
             max-width: 1100px; 
+            margin: 0 auto;
         }
         
         .team-card { 
@@ -70,6 +109,7 @@
             cursor: pointer; 
             box-shadow: 0 4px 10px rgba(0,0,0,0.2); 
             animation: zoomIn 0.5s ease backwards;
+            text-decoration: none;
         }
         
         .team-card:hover { 
@@ -122,39 +162,32 @@
             from { opacity: 0; transform: scale(0.95); } 
             to { opacity: 1; transform: scale(1); } 
         }
-
-        /* TEMA TERANG KHUSUS UNTUK KARTU TIM */
-        body:has(#theme-toggle:checked) .section-header h2 { color: #0f172a; }
-        body:has(#theme-toggle:checked) .team-card { 
-            background: #ffffff; 
-            border-color: rgba(0, 0, 0, 0.08); 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
-        }
-        body:has(#theme-toggle:checked) .team-card:hover { background: #f1f5f9; }
-        body:has(#theme-toggle:checked) .team-name { color: #0f172a; }
-        body:has(#theme-toggle:checked) .team-nim { color: #64748b; }
-        body:has(#theme-toggle:checked) .team-img { border-color: rgba(0, 0, 0, 0.08); }
     </style>
 </head>
 <body>
 
     <header>
         <div class="logo">Edu-Free.</div>
+        
         <ul class="nav-menu">
-            <li><a href="index.html">Beranda</a></li>
-            <li><a href="tim.html" class="active">Tim Kami</a></li>
-            <li><a href="tentang.html">Tentang</a></li>
-            <li><a href="index.html">Berita</a></li>
+            <li><a href="index.html" class="nav-link">Beranda</a></li>
+            <li><a href="tim.html" class="active nav-link">Tim Kami</a></li>
+            <li><a href="tentang.html" class="nav-link">Tentang</a></li>
+            <li><a href="berita.html" class="nav-link">Berita</a></li>
         </ul>
-        <div class="auth-buttons">
-            <a href="login.html"><button class="btn btn-login">Masuk</button></a>
-            <a href="register.html"><button class="btn btn-register">Daftar Gratis</button></a>
+
+        <div class="header-right">
+            <div class="auth-buttons">
+                <a href="login.html"><button class="btn btn-login">Masuk</button></a>
+                <a href="register.html"><button class="btn btn-register">Daftar Gratis</button></a>
+            </div>
+            
+            <input type="checkbox" id="theme-toggle" class="theme-checkbox" hidden>
+            <label for="theme-toggle" class="theme-toggle-label">
+                <span class="icon-moon">🌙Gelap</span>
+                <span class="icon-sun">☀️Terang</span>
+            </label>
         </div>
-        <input type="checkbox" id="theme-toggle" class="theme-checkbox" hidden>
-        <label for="theme-toggle" class="theme-toggle-label">
-            <span class="icon-moon">🌙Gelap</span>
-            <span class="icon-sun">☀️Terang</span>
-        </label>
     </header>
 
     <section class="team-section">
@@ -212,12 +245,10 @@
         document.addEventListener("DOMContentLoaded", function() {
             const themeToggle = document.getElementById("theme-toggle");
 
-            // Cek memori saat halaman pertama kali dibuka
             if (localStorage.getItem("theme") === "light") {
                 themeToggle.checked = true;
             }
 
-            // Simpan ke LocalStorage agar saat pindah ke Login/Dashboard temanya tidak berubah
             themeToggle.addEventListener("change", function() {
                 if (this.checked) {
                     localStorage.setItem("theme", "light");
