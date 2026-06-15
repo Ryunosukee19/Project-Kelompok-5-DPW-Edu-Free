@@ -55,7 +55,18 @@
         /* HEADER & SIDEBAR */
         .sidebar { position: fixed; top: 0; left: 0; width: var(--sidebar-width); height: 100vh; background-color: var(--bg-sidebar); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; z-index: 1000; transition: all 0.4s ease;}
         .sidebar-header { display: flex; justify-content: center; align-items: center; padding: 30px 20px; border-bottom: 1px solid var(--border-color); }
-        .logo { font-size: 1.8rem; font-weight: 800; color: var(--primary); letter-spacing: -0.5px; }
+        
+        /* LOGO EDU-FREE BERGRADASI */
+        .logo { 
+            font-size: 1.8rem; 
+            font-weight: 800; 
+            letter-spacing: -0.5px; 
+            background: linear-gradient(90deg, #38bdf8 0%, #818cf8 50%, #c084fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative; 
+            z-index: 2;
+        }
         
         .theme-switch-wrapper { padding: 20px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: center; } 
         .theme-toggle-label { cursor: pointer; color: var(--text-muted); display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 0.9rem; font-weight: 600; width: 100%; transition: all 0.3s ease;} 
@@ -216,7 +227,7 @@
 
     <nav class="sidebar">
         <div class="sidebar-header">
-            <div class="logo">Panel <span>Asprak.</span></div>
+            <div class="logo">Edu-Free.</div>
         </div>
         
         <div class="theme-switch-wrapper">
@@ -484,10 +495,12 @@
 
     <script>
         const activeUserString = localStorage.getItem('loggedInUser');
-        if (!activeUserString) { window.location.href = "login.html"; }
-        const user = JSON.parse(activeUserString);
+        // if (!activeUserString) { window.location.href = "login.html"; } // Hilangkan komentar untuk pakai login sungguhan
+        
+        // Mock data agar tetap bisa berjalan
+        const user = activeUserString ? JSON.parse(activeUserString) : { userId: "250411100157", nama: "Dwi Farhan Hidayat", role: "asprak", matkul: ["DPW", "Alpro"] };
 
-        if(user.role !== 'asprak') { window.location.href = "login.html"; }
+        if(user.role !== 'asprak') { /* window.location.href = "login.html"; */ }
 
         document.getElementById('top-name').textContent = user.nama;
         
@@ -627,7 +640,7 @@
             renderTugasPrak();
             renderAsistensi();
             loadChatPrak();
-            renderCutiAsprak(); // Menjalankan tabel cuti
+            renderCutiAsprak();
         }
 
         function bukaTabPrak(tabId, btnElement) {
@@ -833,7 +846,6 @@
                 return;
             }
             
-            // Bungkus ke dalam tabel responsif
             let html = `<div class="table-responsive">
                             <table class="styled-table" style="min-width: 800px;">
                                 <thead>
@@ -850,7 +862,6 @@
                                 </thead>
                                 <tbody>`;
             
-            // Susun dari data terbaru
             [...db].reverse().forEach((c) => {
                 let lampiran = c.fileBase64 ? `<a href="${c.fileBase64}" target="_blank" style="color:var(--primary); font-weight:bold;"><i class="fas fa-file-image"></i> Lihat</a>` : '-';
                 
@@ -902,9 +913,7 @@
         if (localStorage.getItem("theme") === "light") themeToggle.checked = true;
         themeToggle.addEventListener("change", function() { localStorage.setItem("theme", this.checked ? "light" : "dark"); });
 
-        // ====================================================================
         // FITUR DRAG TO SCROLL UNTUK TABS
-        // ====================================================================
         const tabContainers = document.querySelectorAll('.tabs');
         tabContainers.forEach(container => {
             let isDown = false;
@@ -917,22 +926,19 @@
                 startX = e.pageX - container.offsetLeft;
                 scrollLeft = container.scrollLeft;
             });
-
             container.addEventListener('mouseleave', () => {
                 isDown = false;
                 container.style.cursor = 'pointer';
             });
-
             container.addEventListener('mouseup', () => {
                 isDown = false;
                 container.style.cursor = 'pointer';
             });
-
             container.addEventListener('mousemove', (e) => {
                 if (!isDown) return;
                 e.preventDefault();
                 const x = e.pageX - container.offsetLeft;
-                const walk = (x - startX) * 2; // Mengatur kecepatan geser
+                const walk = (x - startX) * 2;
                 container.scrollLeft = scrollLeft - walk;
             });
         });
