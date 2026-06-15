@@ -3,615 +3,706 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tentang Edu-Free | Platform Kursus Online Modern</title>
+    <title>Tentang Edu-Free | Platform Kursus Online</title>
+    <!-- Menggunakan font Google 'Inter' untuk tampilan web modern -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
-
-        html {
-            scroll-behavior: smooth;
+        /* =========================================
+           1. VARIABEL & RESET (Sistem Tema Dinamis)
+        ========================================= */
+        :root {
+            /* TEMA GELAP (DEFAULT UNTUK KONTEN) - Warna Midnight Tech */
+            --bg-main: #0B1120;
+            --bg-card: #151E32;
+            --primary: #00E5FF; /* Cyan Neon */
+            --secondary: #B388FF; /* Pastel Purple */
+            --text-main: #F8FAFC;
+            --text-muted: #94A3B8;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            --gradient-text: linear-gradient(135deg, #00E5FF, #B388FF);
         }
 
-        /* ========================================================
-           VARIABEL WARNA DEFAULT (TEMA GELAP CYBER GLASS)
-        ======================================================== */
-        :root {
-            --bg-dark: #0b0c10;           /* Hitam pekat modern untuk kontras tinggi */
-            --bg-card: rgba(31, 40, 51, 0.6); /* Efek kaca (Glassmorphism) transparan */
-            --primary: #66fcf1;           /* Aksen 1: Neon Cyan */
-            --secondary: #c5a3ff;         /* Aksen 2: Pastel Purple */
-            --accent: #ff007f;            /* Aksen 3: Electric Pink */
-            --text-main: #ffffff;         /* Teks putih bersih */
-            --text-muted: #c5c6c7;        /* Teks abu-abu keperakan */
-            --glass-border: rgba(102, 252, 241, 0.15); /* Border cyan tipis */
-            --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+        /* TEMA TERANG (DIPICU OLEH CLASS .light-mode) */
+        body.light-mode {
+            --bg-main: #F8FAFC;
+            --bg-card: #FFFFFF;
+            --primary: #0284C7; /* Blue solid */
+            --secondary: #7C3AED; /* Purple solid */
+            --text-main: #0F172A;
+            --text-muted: #475569;
+            --border-color: rgba(0, 0, 0, 0.1);
+            --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            --gradient-text: linear-gradient(135deg, #0284C7, #7C3AED);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Inter', sans-serif;
         }
 
         body {
-            background-color: var(--bg-dark);
+            background-color: var(--bg-main);
             color: var(--text-main);
             line-height: 1.6;
-            overflow-x: hidden;
-            transition: background-color 0.4s ease, color 0.4s ease;
+            transition: background-color 0.4s ease, color 0.4s ease; /* Transisi halus saat ganti tema */
         }
 
-        a { text-decoration: none; color: inherit; }
-        ul { list-style: none; }
+        a {
+            text-decoration: none;
+        }
 
-        /* ========================================================
-           HEADER & NAVIGASI (WARNA TETAP DIKUNCI / HARDCODED)
-        ======================================================== */
-        header {
+        /* =========================================
+           2. NAVBAR (DIKUNCI WARNANYA SECARA HARDCODE)
+        ========================================= */
+        /* Warna navbar ini tidak menggunakan variabel CSS di atas, sehingga 
+           tetap gelap meskipun mode terang diaktifkan */
+        .navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 8%;
-            background: rgba(15, 23, 42, 0.9) !important; /* Terkunci ke warna gelap asli */
-            backdrop-filter: blur(10px);
+            padding: 20px 5%;
+            background-color: #0f172a !important; 
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
             position: sticky;
             top: 0;
             z-index: 1000;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 40px;
         }
 
         .logo {
             font-size: 1.8rem;
             font-weight: 800;
-            background: linear-gradient(to right, #38bdf8, #c084fc) !important; /* Terkunci ke gradasi asli */
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #38bdf8 !important;
+            letter-spacing: -0.5px;
         }
 
-        .nav-menu { display: flex; gap: 30px; }
-        .nav-menu a { font-weight: 500; color: #94a3b8 !important; transition: color 0.3s ease; }
-        .nav-menu a:hover, .nav-menu a.active { color: #38bdf8 !important; }
+        .logo span {
+            color: #818cf8 !important; 
+        }
 
-        .auth-buttons {
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            color: #94a3b8 !important;
+            font-weight: 500;
+            font-size: 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover, 
+        .nav-links a.active {
+            color: #38bdf8 !important;
+            text-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
+        }
+
+        .nav-right {
             display: flex;
             align-items: center;
+            gap: 25px;
         }
 
-        .auth-buttons .btn {
+        .btn-login {
+            color: #f8fafc !important;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+        }
+
+        .btn-login:hover {
+            color: #38bdf8 !important;
+        }
+
+        .btn-register-nav {
+            background-color: #38bdf8 !important;
+            color: #fff !important;
             padding: 10px 24px;
             border-radius: 30px;
             font-weight: 600;
             font-size: 0.95rem;
-            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.3) !important;
             transition: all 0.3s ease;
         }
 
-        .btn-login {
-            background: transparent;
-            color: #f8fafc !important;
-            border: none;
-            margin-right: 15px;
-        }
-        .btn-login:hover { color: #38bdf8 !important; }
-
-        .btn-register {
-            background: linear-gradient(135deg, #38bdf8, #0284c7) !important; /* Terkunci ke tombol biru asli */
-            color: #fff !important;
-            border: none;
-            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.4);
-        }
-        .btn-register:hover {
+        .btn-register-nav:hover {
+            background-color: #0ea5e9 !important;
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(56, 189, 248, 0.6);
         }
 
-        /* ========================================================
-           THEME TOGGLE SYSTEM (FITUR KLIK TERANG/GELAP)
-        ======================================================= */
-        .theme-checkbox { display: none; }
-        .theme-toggle-label {
-            cursor: pointer;
-            font-size: 1.3rem;
-            margin-left: 20px;
-            user-select: none;
+        .btn-theme-toggle {
             background: rgba(255, 255, 255, 0.05);
-            padding: 6px 14px;
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #f8fafc !important;
+            padding: 8px 16px;
             border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 6px;
-            color: #f8fafc;
-        }
-        .icon-sun { display: none; }
-
-        /* Memicu Perubahan Warna Konten Saat Checkbox Diaktifkan */
-        body:has(#theme-toggle:checked) {
-            --bg-dark: #f4f7f6;        
-            --bg-card: rgba(255, 255, 255, 0.85);        
-            --primary: #005b96;        
-            --secondary: #8a2be2;      
-            --accent: #ff007f;
-            --text-main: #1f2833;      
-            --text-muted: #4a5568;     
-            --glass-border: rgba(0, 91, 150, 0.2); 
-            --card-shadow: 0 10px 30px rgba(0,0,0,0.05);
-        }
-        /* Menjaga Header Tetap Berwarna Gelap Meski Konten Berubah Terang */
-        body:has(#theme-toggle:checked) header { 
-            background: rgba(15, 23, 42, 0.95) !important; 
-        }
-        body:has(#theme-toggle:checked) .icon-moon { display: none; }
-        body:has(#theme-toggle:checked) .icon-sun { display: inline; }
-
-        /* ========================================================
-           HERO SECTION
-        ======================================================== */
-        .hero {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 80px 8%;
-            min-height: 80vh;
-            position: relative;
-            overflow: hidden;
-        }
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: -20%; left: -10%; width: 50vw; height: 50vw;
-            background: radial-gradient(circle, rgba(102, 252, 241, 0.1) 0%, transparent 60%);
-            z-index: -1;
-        }
-        body:has(#theme-toggle:checked) .hero::before { display: none; }
-
-        .hero-content { flex: 1; max-width: 600px; }
-        .badge-hero {
-            display: inline-block;
-            background: rgba(197, 163, 255, 0.1);
-            color: var(--secondary);
-            padding: 8px 20px;
-            border-radius: 30px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: 25px;
-            border: 1px solid rgba(197, 163, 255, 0.4);
-        }
-        .hero-content h1 { font-size: 3.5rem; line-height: 1.2; margin-bottom: 25px; }
-        .hero-content p { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 35px; }
-        .hero-image { flex: 1; display: flex; justify-content: flex-end; }
-        .hero-image img {
-            width: 90%;
-            max-width: 550px;
-            border-radius: 24px;
-            border: 1px solid var(--glass-border);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
-            animation: float 6s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-            100% { transform: translateY(0px); }
-        }
-
-        /* === Global Section Styles === */
-        .section-header { text-align: center; margin-bottom: 50px; }
-        .section-header h2 { font-size: 2.2rem; margin-bottom: 10px; }
-        .section-header p { color: var(--text-muted); }
-
-        /* ========================================================
-           KATEGORI / MATERI SECTION
-        ======================================================== */
-        .categories { padding: 60px 8%; }
-        .cat-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 25px;
-        }
-        .cat-card {
-            background: var(--bg-card);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 40px 30px;
-            text-align: center;
+            gap: 8px;
             transition: all 0.3s ease;
-            cursor: pointer;
-            display: block; 
-            backdrop-filter: blur(12px);
-            box-shadow: var(--card-shadow);
         }
-        .cat-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--primary);
-            box-shadow: 0 15px 35px rgba(102, 252, 241, 0.2);
+        
+        .btn-theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.1);
         }
-        .cat-icon { font-size: 3.5rem; margin-bottom: 15px; }
-        .cat-card h3 { font-size: 1.3rem; margin-bottom: 5px; }
-        .cat-card span { font-size: 0.95rem; color: var(--primary); font-weight: 600; }
 
-        .back-to-top {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 50px;
-            height: 50px;
-            background: var(--primary);
-            color: #0b0c10;
-            border: none;
-            border-radius: 50%;
-            cursor: pointer;
-            z-index: 999;
-            font-size: 1.5rem;
-            font-weight: bold;
-            box-shadow: 0 4px 15px rgba(102, 252, 241, 0.4);
-            transition: all 0.3s;
-        }
-        .back-to-top:hover { transform: translateY(-3px); }
-
-        /* ========================================================
-           SERTIFIKAT COMPETENCY SECTION
-        ======================================================== */
-        .certificate-section {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 80px 8%;
-            background: rgba(255, 255, 255, 0.01);
-            border-top: 1px solid var(--glass-border);
-            border-bottom: 1px solid var(--glass-border);
-            flex-wrap: wrap;
-        }
-        .cert-text { flex: 1; min-width: 300px; padding-right: 40px; margin-bottom: 30px; }
-        .cert-text h2 { font-size: 2.2rem; margin-bottom: 20px; }
-        .cert-text p { color: var(--text-muted); margin-bottom: 20px; font-size: 1.1rem; }
-        .cert-benefits li { margin-bottom: 10px; font-weight: 500; color: var(--primary); list-style: none;}
-        .cert-visual { flex: 1; min-width: 300px; display: flex; justify-content: center; }
-        .cert-mockup {
-            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-            color: #0f172a;
-            width: 100%;
-            max-width: 450px;
-            transform: rotate(2deg);
-            transition: transform 0.4s ease;
-        }
-        .cert-mockup:hover { transform: rotate(0deg) scale(1.05); }
-        .cert-border {
-            border: 3px solid #cbd5e1;
-            padding: 30px 20px;
+        /* =========================================
+           3. HERO SECTION (KONTEN UTAMA)
+        ========================================= */
+        .hero-about {
             text-align: center;
-            border-radius: 4px;
+            padding: 80px 20px 40px;
+            max-width: 800px;
+            margin: 0 auto;
         }
-        .cert-border h3 { color: #0f172a; font-size: 1.6rem; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 2px;}
-        .cert-border h4 { font-size: 1.8rem; color: #0284c7; font-family: 'Times New Roman', serif; margin: 15px 0;}
-        .cert-footer-mock { margin-top: 20px; font-weight: bold; border-top: 1px solid #94a3b8; padding-top: 10px; display: inline-block;}
+        .title {
+            font-size: 3.2rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            letter-spacing: -1px;
+            background: var(--gradient-text);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .subtitle {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+        }
 
-        /* ========================================================
-           KALENDER KEGIATAN SECTION
-        ======================================================== */
-        .calendar-section { padding: 80px 8%; }
-        .calendar-grid {
+        .about-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 5% 80px;
+            display: flex;
+            flex-direction: column;
+            gap: 100px;
+        }
+
+        .tag {
+            display: inline-block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            background: rgba(0, 229, 255, 0.1);
+            color: var(--primary);
+            padding: 6px 16px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(0, 229, 255, 0.2);
+        }
+        
+        body.light-mode .tag {
+            background: rgba(2, 132, 199, 0.1);
+            border-color: rgba(2, 132, 199, 0.2);
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+
+        /* =========================================
+           4. DESC SECTION (TENTANG & STATISTIK)
+        ========================================= */
+        .desc-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+        .desc-paragraph {
+            color: var(--text-muted);
+            margin-bottom: 18px;
+            font-size: 1.05rem;
+        }
+        .stats-card {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .stat-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 35px 20px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+        }
+        .stat-item:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary);
+        }
+        .stat-number {
+            display: block;
+            font-size: 2.8rem;
+            font-weight: 800;
+            background: var(--gradient-text);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 5px;
+        }
+        .stat-label {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        /* =========================================
+           5. GOALS SECTION (MISI)
+        ========================================= */
+        .goals-header {
+            text-align: center;
+            margin-bottom: 60px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .goals-list {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            max-width: 1000px;
-            margin: 0 auto;
+            gap: 30px;
         }
-        .event-card {
+        .goal-item {
             background: var(--bg-card);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            gap: 20px;
+            border: 1px solid var(--border-color);
+            padding: 35px;
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
             transition: all 0.3s ease;
         }
-        .event-card:hover {
+        .goal-item:hover {
+            border-bottom: 4px solid var(--primary);
             transform: translateY(-5px);
-            border-color: var(--accent);
-            box-shadow: 0 10px 25px rgba(255, 0, 127, 0.15);
         }
-        .event-date {
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            color: #0b0c10;
-            padding: 15px;
-            border-radius: 10px;
-            text-align: center;
-            min-width: 80px;
-            font-weight: 600;
+        .goal-indicator {
+            margin-bottom: 25px;
         }
-        .event-date .date { display: block; font-size: 1.8rem; font-weight: 800; line-height: 1; }
-        .event-date .month { display: block; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; margin-top: 5px; }
-        .event-details h3 { font-size: 1.1rem; margin-bottom: 5px; }
-        .event-details p { font-size: 0.9rem; color: var(--text-muted); }
+        .goal-dot {
+            display: inline-block;
+            width: 45px;
+            height: 45px;
+            background: rgba(0, 229, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        body.light-mode .goal-dot {
+            background: rgba(2, 132, 199, 0.1);
+        }
+        .goal-dot::after {
+            content: '';
+            width: 14px;
+            height: 14px;
+            background: var(--primary);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--primary);
+        }
+        .goal-headline {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        .goal-desc {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
 
-        /* ========================================================
-           ULASAN / FEEDBACK SECTION
-        ======================================================== */
-        .reviews-section { padding: 80px 8%; background: rgba(0, 0, 0, 0.2); }
-        .feedback-wrapper {
-            max-width: 700px;
-            margin: 0 auto;
+        /* =========================================
+           6. STEPS SECTION (CARA BELAJAR)
+        ========================================= */
+        .steps-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        .step-card {
             background: var(--bg-card);
-            padding: 40px;
-            border-radius: 22px;
-            border: 1px solid var(--glass-border);
+            padding: 40px 30px;
+            border-radius: 20px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+        }
+        .step-card:hover {
+            transform: scale(1.03);
+            border-color: var(--secondary);
+        }
+        .step-number {
+            font-size: 5rem;
+            font-weight: 800;
+            color: var(--border-color);
+            position: absolute;
+            top: 5px;
+            right: 25px;
+            z-index: -1;
+        }
+        .step-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin: 15px 0;
+            color: var(--primary);
+        }
+        .step-desc {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* =========================================
+           7. AWARD SECTION (PENGHARGAAN)
+        ========================================= */
+        .award-box {
+            background: linear-gradient(135deg, var(--bg-card) 0%, rgba(11, 17, 32, 0.4) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 50px;
+            display: flex;
+            align-items: center;
+            gap: 40px;
             box-shadow: var(--card-shadow);
         }
-        .feedback-form .form-group {
-            margin-bottom: 20px;
-        }
-        .feedback-form input,
-        .feedback-form select,
-        .feedback-form textarea {
-            width: 100%;
-            padding: 15px;
-            border-radius: 10px;
-            border: 1px solid var(--glass-border);
-            background: rgba(0, 0, 0, 0.1);
-            color: var(--text-main);
-            font-size: 1rem;
-            outline: none;
-            transition: border-color 0.3s;
-        }
-        .feedback-form input:focus,
-        .feedback-form select:focus,
-        .feedback-form textarea:focus {
-            border-color: var(--primary);
-        }
-        .feedback-form select option {
-            background: #1e293b;
-            color: #ffffff;
-        }
-
-        /* ========================================================
-           NEWSLETTER SECTION
-        ======================================================== */
-        .newsletter-section { padding: 80px 8%; display: flex; justify-content: center; }
-        .newsletter-box {
-            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.9));
-            border: 1px solid var(--primary);
-            border-radius: 24px;
-            padding: 50px 30px;
-            text-align: center;
-            max-width: 800px;
-            width: 100%;
-            box-shadow: 0 20px 40px rgba(102, 252, 241, 0.15);
-        }
-        .newsletter-box h2 { font-size: 2rem; margin-bottom: 15px; }
-        .newsletter-box p { color: var(--text-muted); margin-bottom: 30px; }
-        .newsletter-form {
-            display: flex;
-            gap: 15px;
-            max-width: 500px;
-            margin: 0 auto;
-            flex-wrap: wrap;
-        }
-        .newsletter-form input {
-            flex: 1;
-            min-width: 200px;
-            padding: 15px 20px;
-            border-radius: 30px;
-            border: 1px solid var(--glass-border);
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--text-main);
-            font-size: 1rem;
-            outline: none;
-        }
-        .newsletter-form button {
-            padding: 15px 30px;
-            font-size: 1rem;
+        .award-visual {
             flex-shrink: 0;
-            border-radius: 30px;
-            background: linear-gradient(135deg, var(--accent), #ff4b2b);
-            color: white;
-            border: none;
+        }
+        .medal-badge {
+            font-size: 4.5rem;
+            background: rgba(255, 215, 0, 0.1);
+            width: 130px;
+            height: 130px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            border: 2px dashed rgba(255, 215, 0, 0.5);
+            animation: pulse 3s infinite;
+        }
+        .award-issuer {
+            color: var(--secondary);
             font-weight: 600;
-            cursor: pointer;
+            margin-bottom: 10px;
+        }
+        .award-desc {
+            color: var(--text-muted);
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 rgba(255,215,0,0); }
+            50% { transform: scale(1.05); box-shadow: 0 0 20px rgba(255,215,0,0.2); }
+            100% { transform: scale(1); box-shadow: 0 0 0 rgba(255,215,0,0); }
         }
 
-        /* === Tampilan Mobile Responsive === */
-        @media (max-width: 900px) {
-            .certificate-section { flex-direction: column; text-align: center; }
-            .cert-text { padding-right: 0; }
+        /* =========================================
+           8. CTA SECTION
+        ========================================= */
+        .cta-container {
+            text-align: center;
+            background: linear-gradient(135deg, rgba(0, 229, 255, 0.1), rgba(179, 136, 255, 0.1));
+            border: 1px solid var(--border-color);
+            padding: 70px 30px;
+            border-radius: 24px;
+        }
+        .cta-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+        .cta-description {
+            color: var(--text-muted);
+            margin-bottom: 35px;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+            font-size: 1.05rem;
+        }
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+        .btn {
+            padding: 14px 35px;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .btn-primary {
+            background: var(--primary);
+            color: #0B1120;
+            border: none;
+            box-shadow: 0 4px 15px rgba(0, 229, 255, 0.3);
+        }
+        body.light-mode .btn-primary { color: #fff; box-shadow: 0 4px 15px rgba(2, 132, 199, 0.3); }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 229, 255, 0.5);
+        }
+        body.light-mode .btn-primary:hover { box-shadow: 0 6px 20px rgba(2, 132, 199, 0.5); }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+        }
+        .btn-secondary:hover {
+            background: var(--bg-card);
+            border-color: var(--text-main);
+            transform: translateY(-3px);
+        }
+
+        /* =========================================
+           9. RESPONSIVE / MOBILE
+        ========================================= */
+        @media (max-width: 992px) {
+            .navbar {
+                flex-direction: column;
+                gap: 20px;
+            }
+            .nav-left, .nav-right {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
         }
 
         @media (max-width: 768px) {
-            header { padding: 15px 5%; }
-            .logo { font-size: 1.5rem; }
-            .nav-menu { display: none; } 
-            .auth-buttons { display: none; }
-            
-            .hero { flex-direction: column; text-align: center; padding-top: 40px;}
-            .hero-content h1 { font-size: 2.5rem; }
-            .hero-image { margin-top: 40px; justify-content: center; width: 100%;}
-            
-            .newsletter-form { flex-direction: column; }
-            .newsletter-form button { width: 100%; }
-            .back-to-top { bottom: 20px; right: 20px; }
-        }
-
-        /* ========================================================
-           FLOATING WHATSAPP
-        ======================================================== */
-        .floating-wa {
-            position: fixed; 
-            bottom: 30px;    
-            left: 30px;      
-            z-index: 1000;   
-            background-color: #25D366; 
-            border-radius: 50px;       
-            padding: 12px;             
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3); 
-            transition: transform 0.3s ease; 
-        }
-        .floating-wa:hover {
-            transform: scale(1.1);
+            .desc-grid, .award-box {
+                grid-template-columns: 1fr;
+                flex-direction: column;
+                text-align: center;
+            }
+            .award-box {
+                gap: 30px;
+                padding: 30px;
+            }
+            .stats-card {
+                margin-top: 30px;
+            }
+            .title {
+                font-size: 2.5rem;
+            }
+            .section-title {
+                font-size: 1.8rem;
+            }
+            .cta-buttons {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="logo">Edu-Free.</div>
-        <ul class="nav-menu">
-            <li><a href="#" class="active">Beranda</a></li>
-            <li><a href="#">Tim Kami</a></li>
-            <li><a href="#">Tentang</a></li>
-            <li><a href="#">Berita</a></li>
-        </ul>
-        <div class="auth-buttons">
-            <button class="btn btn-login">Masuk</button>
-            <button class="btn btn-register">Daftar Gratis</button>
-            
-            <input type="checkbox" id="theme-toggle" class="theme-checkbox">
-            <label for="theme-toggle" class="theme-toggle-label">
-                <span class="icon-moon">🌙 Gelap</span>
-                <span class="icon-sun">☀️ Terang</span>
-            </label>
-        </div>
-    </header>
-
-    <section class="hero">
-        <div class="hero-content">
-            <span class="badge-hero">Platform E-Learning</span>
-            <h1>Tingkatkan Skill Coding Kamu Bersama Kelompok Kami.</h1>
-            <p>Materi Pembelajaran, Kuis singkat, dan juga tugas tergantung semester yang kamu pilih! Klik di bawah ini jika ingin mengetahui seputar Dunia IT.</p>
-            <button class="btn btn-register" style="border-radius: 8px; padding: 14px 32px;">Coba Jelajahi</button>
-        </div>
-        <div class="hero-image">
-            <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Coding Illustration">
-        </div>
-    </section>
-
-    <section class="categories">
-        <div class="section-header">
-            <h2>Materi Pembelajaran</h2>
-            <p>Beragam kategori alur belajar pemrograman yang siap diakses secara interaktif.</p>
-        </div>
-        <div class="cat-grid">
-            <div class="cat-card">
-                <div class="cat-icon">🌐</div>
-                <h3>Frontend Web</h3>
-                <span>HTML, CSS, JavaScript, React</span>
-            </div>
-            <div class="cat-card">
-                <div class="cat-icon">🖧</div>
-                <h3>Backend Developer</h3>
-                <span>Node.js, Python, SQL, REST API</span>
-            </div>
-            <div class="cat-card">
-                <div class="cat-icon">📱</div>
-                <h3>Mobile Application</h3>
-                <span>Flutter, React Native, Android Dev</span>
-            </div>
-        </div>
-    </section>
-
-    <section class="certificate-section">
-        <div class="cert-text">
-            <h2>Sertifikat Kompetensi Resmi</h2>
-            <p>Setiap menyelesaikan kelas atau tantangan alur belajar, kamu akan mendapatkan sertifikat digital sebagai bukti valid keahlianmu.</p>
-            <ul class="cert-benefits">
-                <li>✓ Didukung Verifikasi QR Code Unik</li>
-                <li>✓ Diakui oleh Jaringan Perusahaan Mitra</li>
-                <li>✓ Dapat Diunduh & Dibagikan Langsung ke LinkedIn</li>
+    <!-- NAVBAR (Warnanya tetap konstan karena telah dikunci) -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <a href="#" class="logo">Edu-Free<span>.</span></a>
+            <ul class="nav-links">
+                <li><a href="#">Beranda</a></li>
+                <li><a href="#">Tim Kami</a></li>
+                <li><a href="#" class="active">Tentang</a></li>
+                <li><a href="#">Berita</a></li>
             </ul>
         </div>
-        <div class="cert-visual">
-            <div class="cert-mockup">
-                <div class="cert-border">
-                    <h3>Sertifikat Kelulusan</h3>
-                    <p>Diberikan Kepada</p>
-                    <h4>Peserta Terbaik Edu-Free</h4>
-                    <p>Atas pencapaian luar biasa menyelesaikan program Full-Stack Developer.</p>
-                    <div class="cert-footer-mock">Edu-Free Verifikator</div>
+        
+        <div class="nav-right">
+            <a href="#" class="btn-login">Masuk</a>
+            <a href="#" class="btn-register-nav">Daftar Gratis</a>
+            <!-- Tombol Toggle Tema -->
+            <button class="btn-theme-toggle" id="themeToggleBtn">☀️ Terang</button>
+        </div>
+    </nav>
+
+    <!-- HEADER HALAMAN -->
+    <header class="hero-about">
+        <h1 class="title">Tentang Edu-Free</h1>
+        <p class="subtitle">Platform kursus online gratis untuk belajar coding dengan standar kurikulum tinggi, interaktif, dan fleksibel.</p>
+    </header>
+
+    <div class="about-container">
+
+        <!-- DESKRIPSI & STATISTIK -->
+        <section class="desc-section">
+            <div class="desc-grid">
+                <div class="desc-text-side">
+                    <span class="tag">Tentang Platform</span>
+                    <h2 class="section-title">Mendobrak Batasan Belajar Coding untuk Semua</h2>
+                    <p class="desc-paragraph">
+                        Kami adalah tim beranggotakan 6 pengembang web yang membangun platform edukasi inklusif. Edu-Free lahir dari visi besar kami untuk menghapus batasan biaya pendidikan di bidang IT. Kami percaya keterampilan coding adalah hak digital semua orang.
+                    </p>
+                    <p class="desc-paragraph">
+                        Melalui kurikulum yang kami rancang sedemikian rupa, kami menyediakan ekosistem belajar yang ramah pemula, terstruktur, dan 100% gratis selamanya. Tanpa syarat, tanpa biaya tersembunyi.
+                    </p>
+                </div>
+
+                <div class="desc-stats-side">
+                    <div class="stats-card">
+                        <div class="stat-item">
+                            <span class="stat-number">50K+</span>
+                            <span class="stat-label">Siswa Aktif</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">120+</span>
+                            <span class="stat-label">Modul Gratis</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">5K+</span>
+                            <span class="stat-label">Alumni Bekerja</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">4.8</span>
+                            <span class="stat-label">Rating Kepuasan</span>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <section class="calendar-section">
-        <div class="section-header">
-            <h2>Kalender Kegiatan Komunitas</h2>
-            <p>Ikuti sesi live mentoring dan workshop mingguan bersama para praktisi industri.</p>
-        </div>
-        <div class="calendar-grid">
-            <div class="event-card">
-                <div class="event-date">
-                    <span class="date">24</span>
-                    <span class="month">Juni</span>
+        <!-- MISI UTAMA -->
+        <section class="goals-section">
+            <div class="goals-header">
+                <span class="tag">Misi Utama</span>
+                <h2 class="section-title">Tujuan yang Ingin Kami Capai</h2>
+                <p class="desc-paragraph">Kami membangun antarmuka dan kurikulum ini untuk memastikan setiap orang bisa mulai ngoding dengan rasa percaya diri.</p>
+            </div>
+
+            <div class="goals-list">
+                <div class="goal-item">
+                    <div class="goal-indicator"><span class="goal-dot"></span></div>
+                    <div class="goal-text">
+                        <h3 class="goal-headline">Demokratisasi Akses Coding</h3>
+                        <p class="goal-desc">Menghapus kendala biaya dengan menyediakan kurikulum pemrograman yang lengkap, terstruktur, dan dapat diakses gratis oleh siapa saja.</p>
+                    </div>
                 </div>
-                <div class="event-details">
-                    <h3>Live Mentoring: React Hooks & State</h3>
-                    <p>Pukul 19.30 WIB • Bersama Senior Frontend Engineer</p>
+
+                <div class="goal-item">
+                    <div class="goal-indicator"><span class="goal-dot"></span></div>
+                    <div class="goal-text">
+                        <h3 class="goal-headline">Lingkungan Belajar Fleksibel</h3>
+                        <p class="goal-desc">Memberikan kebebasan penuh kepada siswa untuk mengatur jadwal belajarnya sendiri tanpa tekanan batas waktu atau rute kelas yang kaku.</p>
+                    </div>
+                </div>
+
+                <div class="goal-item">
+                    <div class="goal-indicator"><span class="goal-dot"></span></div>
+                    <div class="goal-text">
+                        <h3 class="goal-headline">Fokus Pada Pemahaman & Praktik</h3>
+                        <p class="goal-desc">Memastikan setiap materi dibekali dengan latihan praktik langsung di browser agar konsep logika dan struktur data lebih mudah dikuasai.</p>
+                    </div>
                 </div>
             </div>
-            <div class="event-card">
-                <div class="event-date">
-                    <span class="date">02</span>
-                    <span class="month">Juli</span>
+        </section>
+
+        <!-- CARA BELAJAR -->
+        <section class="steps-section">
+            <div class="steps-header">
+                <span class="tag">Metode Belajar</span>
+                <h2 class="section-title">Cara Belajar Coding di Sini</h2>
+                <p class="desc-paragraph">Mulailah kode IT Anda dengan 4 langkah mudah, interaktif, dan sepenuhnya fleksibel.</p>
+            </div>
+
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-number">01</div>
+                    <h3 class="step-name">Pilih Alur Belajar</h3>
+                    <p class="step-desc">Tentukan fokus Anda, mulai dari Web Dev, Data Science, hingga UI/UX dengan kurikulum yang terarah.</p>
                 </div>
-                <div class="event-details">
-                    <h3>Webinar: Menembus Kerja Remote IT Internasional</h3>
-                    <p>Pukul 14.00 WIB • Sesi diskusi eksklusif gratis</p>
+                <div class="step-card">
+                    <div class="step-number">02</div>
+                    <h3 class="step-name">Praktik Langsung</h3>
+                    <p class="step-desc">Belajar lewat video interaktif dan langsung ketik kode di editor browser tanpa instalasi rumit.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">03</div>
+                    <h3 class="step-name">Bangun Portofolio</h3>
+                    <p class="step-desc">Selesaikan tantangan studi kasus nyata di setiap akhir modul untuk dijadikan modal karya Anda.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">04</div>
+                    <h3 class="step-name">Gabung Komunitas</h3>
+                    <p class="step-desc">Mengalami kendala error? Tanyakan langsung di forum diskusi dan selesaikan bersama ribuan siswa lain.</p>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <section class="reviews-section">
-        <div class="section-header">
-            <h2>Ulasan & Feedback Developer</h2>
-            <p>Bagikan pengalaman belajarmu untuk membantu kami terus berkembang.</p>
-        </div>
-        <div class="feedback-wrapper">
-            <form class="feedback-form" onsubmit="event.preventDefault();">
-                <div class="form-group">
-                    <input type="text" placeholder="Nama Lengkap" required>
+        <!-- PENGHARGAAN -->
+        <section class="award-section">
+            <div class="award-box">
+                <div class="award-visual">
+                    <div class="medal-badge">🏆</div>
                 </div>
-                <div class="form-group">
-                    <select required>
-                        <option value="" disabled selected>Pilih Alur Belajar</option>
-                        <option value="frontend">Frontend Web Developer</option>
-                        <option value="backend">Backend Developer</option>
-                        <option value="mobile">Mobile App Developer</option>
-                    </select>
+                <div class="award-content">
+                    <span class="tag">Prestasi Platform</span>
+                    <h2 class="section-title" style="margin-bottom: 5px;">Best Web Dev Project 2026</h2>
+                    <p class="award-issuer">Oleh Komite Kurikulum Teknologi</p>
+                    <p class="award-desc">
+                        Penghargaan sebagai salah satu proyek platform belajar terbaik atas inovasi tampilan dan kontribusi dalam menyediakan akses belajar yang inklusif untuk semua.
+                    </p>
                 </div>
-                <div class="form-group">
-                    <textarea rows="4" placeholder="Tulis masukan atau ulasan belajar kamu di sini..." required></textarea>
+            </div>
+        </section>
+
+        <!-- CTA SECTION -->
+        <section class="cta-section">
+            <div class="cta-container">
+                <h2 class="cta-title">Mari Berkolaborasi dan Bertumbuh Bersama</h2>
+                <p class="cta-description">
+                    Kami selalu terbuka untuk peluang baru, kemitraan strategis, dan masukan dari kamu yang ingin membawa perubahan positif di dunia IT.
+                </p>
+                <div class="cta-buttons">
+                    <a href="#" class="btn btn-primary">Hubungi Tim Kami</a>
+                    <a href="#" class="btn btn-secondary">Jelajahi Modul</a>
                 </div>
-                <button class="btn btn-register" type="submit" style="width: 100%; border-radius: 10px; padding: 15px;">Kirim Ulasan</button>
-            </form>
-        </div>
-    </section>
+            </div>
+        </section>
 
-    <section class="newsletter-section">
-        <div class="newsletter-box">
-            <h2>Berlangganan Newsletter Tech</h2>
-            <p>Dapatkan tips coding, rilis kelas baru, dan info lowongan kerja IT mingguan langsung ke email-mu.</p>
-            <form class="newsletter-form" onsubmit="event.preventDefault();">
-                <input type="email" placeholder="Masukkan alamat email kamu" required>
-                <button type="submit">Langganan</button>
-            </form>
-        </div>
-    </section>
+    </div>
 
-    <button class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">↑</button>
-    
-    <a href="#" class="floating-wa" target="_blank">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="white">
-            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397 0 11.948 0c3.179.001 6.165 1.24 8.413 3.488 2.247 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.907-11.891 11.907-2.013-.001-3.99-.51-5.747-1.48L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.747 1.451 5.436 0 9.86-4.413 9.863-9.83.001-2.624-1.023-5.092-2.884-6.954C16.452 1.95 13.987 1.95 11.957 1.95c-5.432 0-9.855 4.414-9.858 9.831-.001 1.637.478 3.235 1.385 4.622L2.457 20.3l4.19-1.146zm11.758-6.143c-.279-.139-1.647-.812-1.9-.904-.253-.093-.437-.139-.62.139-.183.278-.707.904-.867 1.088-.16.186-.32.208-.6.069-.28-.139-1.181-.435-2.251-1.39-.832-.743-1.393-1.661-1.556-1.938-.163-.278-.017-.429.122-.566.126-.124.279-.324.419-.487.14-.162.186-.278.279-.463.093-.186.046-.347-.023-.487-.069-.139-.62-1.493-.849-2.049-.224-.539-.47-.466-.62-.474-.15-.008-.323-.01-.495-.01-.172 0-.453.065-.69.324-.237.259-.904.884-.904 2.158 0 1.274.928 2.505 1.057 2.679.13.174 1.825 2.787 4.422 3.911.618.267 1.1.427 1.477.546.622.197 1.187.17 1.634.103.498-.075 1.648-.674 1.88-1.324.232-.649.232-1.206.163-1.324-.069-.118-.253-.186-.532-.325z"/>
-        </svg>
-    </a>
+    <!-- SCRIPT UNTUK TOGGLE TEMA GELAP / TERANG -->
+    <script>
+        const themeToggleBtn = document.getElementById('themeToggleBtn');
+        const bodyElement = document.body;
 
+        themeToggleBtn.addEventListener('click', () => {
+            // Menambah/menghapus class light-mode pada body
+            bodyElement.classList.toggle('light-mode');
+            
+            // Mengubah teks tombol berdasarkan mode yang sedang aktif
+            if (bodyElement.classList.contains('light-mode')) {
+                themeToggleBtn.innerHTML = '🌙 Gelap';
+            } else {
+                themeToggleBtn.innerHTML = '☀️ Terang';
+            }
+        });
+    </script>
 </body>
 </html>
