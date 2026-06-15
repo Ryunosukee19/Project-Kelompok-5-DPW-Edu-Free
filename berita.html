@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Berita | Edu Free - Platform Kursus Online</title>
+    <link rel="stylesheet" href="styleindex.css">
+    
+    <style>
+        /* =========================================
+           1. LAYOUT DASAR & HEADER
+        ========================================= */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-main, #0f172a);
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background-color: inherit;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 25px;
+            margin-right: auto;
+            margin-left: 50px;
+            list-style: none; /* Menghilangkan titik pada list */
+            padding: 0;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-main, #fff);
+            font-weight: 500;
+        }
+
+        .nav-link.active {
+            color: var(--primary, #38bdf8);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 25px; 
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        main {
+            width: 100%;
+        }
+
+        /* =========================================
+           2. CSS UNTUK HALAMAN BERITA
+        ========================================= */
+        .news-wrapper { padding: 40px 8%; max-width: 1200px; margin: 0 auto; min-height: 80vh; }
+        .news-header { text-align: center; margin-bottom: 40px; }
+        .news-header h2 { font-size: 2.5rem; color: var(--text-main, #fff); margin-bottom: 10px; }
+        
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        .news-card {
+            background: var(--bg-card, #1e293b);
+            border: 1px solid var(--border-color, rgba(255,255,255,0.1));
+            border-radius: 15px;
+            padding: 25px;
+            transition: transform 0.3s ease;
+            color: var(--text-main, #fff);
+            display: flex;
+            flex-direction: column;
+        }
+        .news-card:hover { transform: translateY(-5px); border-color: var(--primary, #38bdf8); }
+        
+        .news-img-container {
+            width: 100%; height: 180px; overflow: hidden;
+            border-radius: 10px; margin-bottom: 15px; background: rgba(0,0,0,0.2);
+        }
+        .news-img-container img { width: 100%; height: 100%; object-fit: cover; }
+        .news-date { font-size: 0.85rem; color: var(--primary, #38bdf8); margin-bottom: 10px; display: block; }
+        .news-title { font-size: 1.3rem; margin-bottom: 15px; }
+        .news-desc { font-size: 0.95rem; line-height: 1.6; opacity: 0.8; }
+    </style>
+</head>
+<body>
+    <a href="https://wa.me/082143511969" class="floating-wa" target="_blank" title="Hubungi Kami di WhatsApp">
+    <img src="./logowa.png" alt="WhatsApp Icon" width="40" height="35">
+    </a>
+    
+    <header>
+        <div class="logo">Edu-Free.</div>
+        
+        <ul class="nav-menu">
+            <li><a href="index.html" class="nav-link">Beranda</a></li>
+            <li><a href="../HalamanUtama/tim/tim.html" class="nav-link">Tim Kami</a></li>
+            <li><a href="tentang.html" class="nav-link">Tentang</a></li>
+            <li><a href="berita.html" class="active nav-link">Berita</a></li>
+        </ul>
+
+        <div class="header-right">
+            <div class="auth-buttons">
+                <a href="login.html"><button class="btn btn-login">Masuk</button></a>
+                <a href="register.html"><button class="btn btn-register">Daftar Gratis</button></a>
+            </div>
+            
+            <input type="checkbox" id="theme-toggle" class="theme-checkbox" hidden>
+            <label for="theme-toggle" class="theme-toggle-label">
+                <span class="icon-moon">🌙Gelap</span>
+                <span class="icon-sun">☀️Terang</span>
+            </label>
+        </div>
+    </header>
+
+    <main>
+        <div class="news-wrapper">
+            <div class="news-header">
+                <h2>Berita & Artikel IT Terbaru</h2>
+                <p style="color: var(--text-muted, #aaa); margin-top: 10px;">Informasi terbaru seputar platform Edu-Free.</p>
+            </div>
+            
+            <div class="news-grid" id="news-container">
+                </div>
+        </div>
+    </main>
+
+    <script>
+        // 1. Logika Toggle Tema
+        const themeToggle = document.getElementById("theme-toggle");
+        if (localStorage.getItem("theme") === "light") { themeToggle.checked = true; }
+        themeToggle.addEventListener("change", function() {
+            if (this.checked) { localStorage.setItem("theme", "light"); } 
+            else { localStorage.setItem("theme", "dark"); }
+        });
+
+        // 2. LOGIKA LOAD BERITA (MEMBACA DARI FILE ADMIN)
+        function loadNews() {
+            const newsDatabase = JSON.parse(localStorage.getItem('eduFreeNewsWithImage')) || [];
+            const container = document.getElementById('news-container');
+            container.innerHTML = ''; 
+
+            if (newsDatabase.length === 0) {
+                container.innerHTML = '<p style="text-align:center; grid-column: 1 / -1; color: var(--text-muted, #aaa); margin-top: 20px;">Belum ada berita yang dipublikasikan saat ini.</p>';
+                return; 
+            }
+
+            [...newsDatabase].reverse().forEach(news => {
+                let imageHTML = '';
+                if (news.imageBase64) {
+                    imageHTML = `
+                        <div class="news-img-container">
+                            <img src="${news.imageBase64}" alt="Thumbnail Berita">
+                        </div>
+                    `;
+                }
+
+                const newsHTML = `
+                    <div class="news-card">
+                        ${imageHTML}
+                        <span class="news-date">📅 ${news.date}</span>
+                        <h3 class="news-title">${news.title}</h3>
+                        <p class="news-desc">${news.desc}</p>
+                    </div>
+                `;
+                container.innerHTML += newsHTML;
+            });
+        }
+
+        // Jalankan fungsi load saat halaman berita dibuka
+        loadNews();
+    </script>
+</body>
+</html>
