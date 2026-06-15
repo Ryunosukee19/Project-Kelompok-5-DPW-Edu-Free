@@ -601,19 +601,26 @@
         // if (!activeUserString) { window.location.href = "login.html"; } // Buka komen jika di-deploy dengan sistem login
         
         // Mock data agar tetap bisa berjalan meskipun tanpa login untuk keperluan desain
-        const user = activeUserString ? JSON.parse(activeUserString) : { nama: "Dosen Penguji", role: "dosen", matkul: ["Struktur Data", "DPW"] };
+        const user = activeUserString ? JSON.parse(activeUserString) : { id: "dosen_dpw_01", nama: "Dosen DPW", role: "dosen", matkul: ["DPW", "Struktur Data"] };
 
         if(user.role !== 'dosen') { /* window.location.href = "login.html"; */ }
 
-        // Set nama di Header
-        document.getElementById('top-name').textContent = user.nama || "Dosen Penguji";
+        // ==========================================
+        // PERBAIKAN: PISAHKAN DATABASE PROFIL & SESI
+        // ==========================================
+        // Kita buat key khusus (seolah-olah tabel database) yang tidak akan dihapus saat log out
+        const profileDbKey = `profil_data_${user.id || 'dosen_dpw_01'}`;
+        let savedProfile = JSON.parse(localStorage.getItem(profileDbKey)) || {};
+
+        // Set nama di Header (Ambil dari DB Profil dulu, kalau kosong baru dari Sesi)
+        document.getElementById('top-name').textContent = savedProfile.nama || user.nama || "Dosen Penguji";
         
-        // Load data LocalStorage ke form Profil
-        document.getElementById('input-profil-nama').value = user.nama || "";
-        document.getElementById('input-profil-nip').value = user.nip || "";
-        document.getElementById('input-profil-tgl').value = user.tglLahir || "";
-        document.getElementById('input-profil-univ').value = user.univ || "Universitas Trunojoyo Madura";
-        document.getElementById('input-profil-alamat').value = user.alamat || "";
+        // Load data LocalStorage ke form Profil dari DATABASE PROFIL
+        document.getElementById('input-profil-nama').value = savedProfile.nama || user.nama || "";
+        document.getElementById('input-profil-nip').value = savedProfile.nip || "";
+        document.getElementById('input-profil-tgl').value = savedProfile.tglLahir || "";
+        document.getElementById('input-profil-univ').value = savedProfile.univ || "Universitas Trunojoyo Madura";
+        document.getElementById('input-profil-alamat').value = savedProfile.alamat || "";
         
         // FUNGSI SIMPAN PROFIL BARU
         window.simpanProfil = function() {
@@ -623,23 +630,25 @@
             const univBaru = document.getElementById('input-profil-univ').value;
             const alamatBaru = document.getElementById('input-profil-alamat').value;
 
-            // Ambil data user yang ada
-            let currentUser = JSON.parse(localStorage.getItem('loggedInUser')) || { role: "dosen", matkul: ["Struktur Data", "DPW"] };
+            // 1. Simpan ke Database Profil (TIDAK AKAN HILANG SAAT LOGOUT)
+            let updatedProfile = {
+                nama: namaBaru,
+                nip: nipBaru,
+                tglLahir: tglBaru,
+                univ: univBaru,
+                alamat: alamatBaru
+            };
+            localStorage.setItem(profileDbKey, JSON.stringify(updatedProfile));
             
-            // Update data
+            // 2. Update juga Sesi Login yang sedang aktif (agar sinkron)
+            let currentUser = JSON.parse(localStorage.getItem('loggedInUser')) || user;
             currentUser.nama = namaBaru;
-            currentUser.nip = nipBaru;
-            currentUser.tglLahir = tglBaru;
-            currentUser.univ = univBaru;
-            currentUser.alamat = alamatBaru;
-
-            // Simpan kembali ke localStorage
             localStorage.setItem('loggedInUser', JSON.stringify(currentUser));
             
             // Update tampilan nama di header langsung
             document.getElementById('top-name').textContent = namaBaru;
             
-            alert("Data Profil Edu-Free berhasil diperbarui dan disimpan!");
+            alert("Data Profil Edu-Free berhasil diperbarui dan disimpan permanen!");
         };
 
         let activeMatkulGlobal = ""; 
@@ -980,7 +989,7 @@
             if (db.length === 0) return chatBox.innerHTML = `<div style="text-align:center; padding: 40px 20px;"><i class="fas fa-bullhorn" style="font-size:3rem; color:var(--border-color); margin-bottom:15px;"></i><p style="color:var(--text-muted); font-size:0.9rem;">Belum ada interaksi. Kirim pesan pertama Anda ke mahasiswa.</p></div>`;
             chatBox.innerHTML = '';
             db.forEach(m => {
-                const isMe = m.userId === (user.userId || 'dosen_1'); // Default jika tidak ada user ID
+                const isMe = m.userId === (user.userId || 'dosen_dpw_01'); 
                 const roleTag = m.role === 'dosen' ? ' <i class="fas fa-check-circle" style="color:#fcd34d;" title="Dosen"></i>' : '';
                 chatBox.innerHTML += `<div class="message ${isMe ? 'msg-me' : 'msg-other'}"><span class="sender">${m.nama} ${roleTag} • ${m.waktu}</span>${m.text}</div>`;
             });
@@ -994,9 +1003,9 @@
             let db = JSON.parse(localStorage.getItem(`forum_${activeMatkulGlobal}`)) || [];
             
             // Mengambil nama terbaru dari Local Storage atau variabel user
-            const currentName = JSON.parse(localStorage.getItem('loggedInUser'))?.nama || user.nama || "Dosen";
+            const currentName = savedProfile.nama || user.nama || "Dosen DPW";
             
-            db.push({ userId: user.userId || 'dosen_1', nama: currentName, role: "dosen", text, waktu: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) });
+            db.push({ userId: user.userId || 'dosen_dpw_01', nama: currentName, role: "dosen", text, waktu: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) });
             localStorage.setItem(`forum_${activeMatkulGlobal}`, JSON.stringify(db));
             document.getElementById('chat-input').value = '';
             loadForumMessages(activeMatkulGlobal); 
