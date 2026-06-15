@@ -316,7 +316,7 @@
                 <ul class="dropdown-container show" id="menu-prak-saya"></ul>
             </li>
 
-            <li style="margin-top: 15px;"><a href="index.html"><i class="fas fa-sign-out-alt" style="margin-right:10px; color:var(--danger-red);"></i>Log Out</a></li>
+            <li style="margin-top: 15px;"><a href="#" id="logout-btn"><i class="fas fa-sign-out-alt" style="margin-right:10px; color:var(--danger-red);"></i>Log Out</a></li>
         </ul>
     </nav>
 
@@ -330,7 +330,7 @@
             <div class="notif-dropdown" id="notifDropdown">
                 <div class="notif-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; border-bottom:1px solid var(--border-color); padding-bottom:10px;">
                     <h3 style="color:var(--text-main); font-size:1.1rem;"><i class="fas fa-bell" style="color:var(--primary); margin-right:5px;"></i> Notifikasi</h3>
-                    <button id="clear-all-notif" style="background:transparent; border:none; color:var(--text-muted); cursor:pointer; font-size:0.8rem; font-weight:bold; transition:0.3s;">Bersihkan</button>
+                    <button id="clear-all-notif" style="background:transparent; border:none; color:var(--text-muted); cursor:pointer; font-size:0.8rem; font-weight:bold; transition:0.3s;">Tandai Semua Dibaca</button>
                 </div>
                 <div id="notif-list" style="max-height: 300px; overflow-y: auto;"></div>
             </div>
@@ -632,45 +632,99 @@
         document.addEventListener('click', (e) => { if (!notifDropdown.contains(e.target) && !notifTrigger.contains(e.target)) notifDropdown.classList.remove('show'); });
 
         function loadNotifikasi() {
-            let dismissedNotifs = JSON.parse(localStorage.getItem('dismissed_notifs_' + user.userId)) || [];
-            let activeNotifs = [];
+            let readNotifs = JSON.parse(localStorage.getItem('read_notifs_' + user.userId)) || [];
+            let allNotifs = [];
+
             if (user.matkul && user.matkul.length > 0) {
                 user.matkul.forEach(mk => {
                     let dbTugas = JSON.parse(localStorage.getItem(`tugas_${mk}`)) || [];
-                    dbTugas.forEach(t => { if (!dismissedNotifs.includes(t.id)) activeNotifs.push({ id: t.id, title: `Tugas Dosen: ${t.judul}`, desc: `MK: ${mk} - Tenggat: ${t.deadline}`, type: 'tugas' }); });
+                    dbTugas.forEach(t => allNotifs.push({ id: t.id, title: `Tugas Dosen: ${t.judul}`, desc: `MK: ${mk} - Tenggat: ${t.deadline}`, type: 'tugas', isRead: readNotifs.includes(t.id) }));
+                    
                     let dbMateri = JSON.parse(localStorage.getItem(`materi_${mk}`)) || [];
-                    dbMateri.forEach(m => { if (!dismissedNotifs.includes(m.id)) activeNotifs.push({ id: m.id, title: `Materi Dosen: ${m.judul}`, desc: `MK: ${mk}`, type: 'materi' }); });
+                    dbMateri.forEach(m => allNotifs.push({ id: m.id, title: `Materi Dosen: ${m.judul}`, desc: `MK: ${mk}`, type: 'materi', isRead: readNotifs.includes(m.id) }));
                     
                     let dbUjian = JSON.parse(localStorage.getItem(`ujian_${mk}`)) || [];
-                    dbUjian.forEach(u => { if (!dismissedNotifs.includes(u.id)) activeNotifs.push({ id: u.id, title: `Ujian: ${u.judul}`, desc: `MK: ${mk} - Tenggat: ${u.deadline}`, type: 'ujian' }); });
+                    dbUjian.forEach(u => allNotifs.push({ id: u.id, title: `Ujian: ${u.judul}`, desc: `MK: ${mk} - Tenggat: ${u.deadline}`, type: 'ujian', isRead: readNotifs.includes(u.id) }));
+                    
                     let dbKuis = JSON.parse(localStorage.getItem(`kuis_${mk}`)) || [];
-                    dbKuis.forEach(k => { if (!dismissedNotifs.includes(k.id)) activeNotifs.push({ id: k.id, title: `Kuis: ${k.judul}`, desc: `MK: ${mk} - Tenggat: ${k.deadline}`, type: 'kuis' }); });
+                    dbKuis.forEach(k => allNotifs.push({ id: k.id, title: `Kuis: ${k.judul}`, desc: `MK: ${mk} - Tenggat: ${k.deadline}`, type: 'kuis', isRead: readNotifs.includes(k.id) }));
 
                     let pTugas = JSON.parse(localStorage.getItem(`prak_tugas_${mk}`)) || [];
-                    pTugas.forEach(t => { if (!dismissedNotifs.includes(t.id)) activeNotifs.push({ id: t.id, title: `Tugas Praktikum: ${t.judul}`, desc: `MK: ${mk} - Tenggat: ${t.deadline}`, type: 'prak_tugas' }); });
+                    pTugas.forEach(t => allNotifs.push({ id: t.id, title: `Tugas Praktikum: ${t.judul}`, desc: `MK: ${mk} - Tenggat: ${t.deadline}`, type: 'prak_tugas', isRead: readNotifs.includes(t.id) }));
+                    
                     let pPengumuman = JSON.parse(localStorage.getItem(`prak_pengumuman_${mk}`)) || [];
-                    pPengumuman.forEach(p => { if (!dismissedNotifs.includes(p.id)) activeNotifs.push({ id: p.id, title: `Pengumuman Asprak: ${p.judul}`, desc: `MK: ${mk}`, type: 'prak_pengumuman' }); });
+                    pPengumuman.forEach(p => allNotifs.push({ id: p.id, title: `Pengumuman Asprak: ${p.judul}`, desc: `MK: ${mk}`, type: 'prak_pengumuman', isRead: readNotifs.includes(p.id) }));
                 });
             }
-            const notifCount = document.getElementById('notifCount'); const notifList = document.getElementById('notif-list');
-            if (activeNotifs.length > 0) {
-                notifCount.textContent = activeNotifs.length; notifCount.style.display = 'flex'; notifList.innerHTML = '';
-                activeNotifs.reverse().forEach(n => {
+
+            const notifCount = document.getElementById('notifCount'); 
+            const notifList = document.getElementById('notif-list');
+            
+            let unreadCount = allNotifs.filter(n => !n.isRead).length;
+
+            if (allNotifs.length > 0) {
+                if (unreadCount > 0) {
+                    notifCount.textContent = unreadCount; 
+                    notifCount.style.display = 'flex';
+                } else {
+                    notifCount.style.display = 'none';
+                }
+                
+                notifList.innerHTML = '';
+                allNotifs.reverse().forEach(n => {
                     let icon = '<i class="fas fa-bell" style="color:var(--primary); font-size:1.2rem;"></i>';
                     if(n.type.includes('tugas')) icon = '<i class="fas fa-clipboard-list" style="color:var(--warning); font-size:1.2rem;"></i>';
                     if(n.type.includes('ujian') || n.type.includes('kuis')) icon = '<i class="fas fa-file-alt" style="color:var(--danger-red); font-size:1.2rem;"></i>';
                     if(n.type.includes('prak_')) icon = '<i class="fas fa-flask" style="color:#f59e0b; font-size:1.2rem;"></i>';
-                    notifList.innerHTML += `<div class="notif-item" style="display:flex; justify-content:space-between; align-items:flex-start;"><div style="display:flex; gap:12px;"><div style="margin-top:2px;">${icon}</div><div><span style="font-weight:700; color:var(--text-main); font-size:0.95rem;">${n.title}</span><small style="color:var(--text-muted); display:block; margin-top:4px;">${n.desc}</small></div></div><button onclick="dismissNotif('${n.id}', event)" title="Hapus" style="background:none; border:none; color:var(--danger-red); cursor:pointer; padding:5px;"><i class="fas fa-times"></i></button></div>`;
+
+                    let readStyle = n.isRead ? 'opacity: 0.6; border-color: transparent; background: transparent;' : '';
+                    let actionBtn = n.isRead ? `<span style="color:var(--success); font-size:0.8rem;" title="Sudah Dibaca"><i class="fas fa-check-double"></i></span>` : `<button onclick="markNotifRead('${n.id}', event)" title="Tandai Dibaca" style="background:none; border:none; color:var(--success); cursor:pointer; padding:5px;"><i class="fas fa-check"></i></button>`;
+
+                    notifList.innerHTML += `
+                        <div class="notif-item" style="display:flex; justify-content:space-between; align-items:flex-start; ${readStyle}">
+                            <div style="display:flex; gap:12px;">
+                                <div style="margin-top:2px;">${icon}</div>
+                                <div>
+                                    <span style="font-weight:700; color:var(--text-main); font-size:0.95rem;">${n.title}</span>
+                                    <small style="color:var(--text-muted); display:block; margin-top:4px;">${n.desc}</small>
+                                </div>
+                            </div>
+                            ${actionBtn}
+                        </div>`;
                 });
             } else {
-                notifCount.style.display = 'none'; notifList.innerHTML = `<div style="text-align:center; padding:20px; color:var(--text-muted); font-size:0.85rem;">Tidak ada notifikasi baru untuk saat ini.</div>`;
+                notifCount.style.display = 'none'; 
+                notifList.innerHTML = `<div style="text-align:center; padding:20px; color:var(--text-muted); font-size:0.85rem;">Tidak ada notifikasi untuk saat ini.</div>`;
             }
         }
-        window.dismissNotif = function(id, event) { event.stopPropagation(); let d = JSON.parse(localStorage.getItem('dismissed_notifs_' + user.userId)) || []; d.push(id); localStorage.setItem('dismissed_notifs_' + user.userId, JSON.stringify(d)); loadNotifikasi(); };
-        document.getElementById('clear-all-notif').addEventListener('click', (e) => { e.stopPropagation(); let d = JSON.parse(localStorage.getItem('dismissed_notifs_' + user.userId)) || []; let activeIds = [];
-            if (user.matkul) { user.matkul.forEach(mk => { ['tugas_','materi_', 'ujian_', 'kuis_', 'prak_tugas_','prak_pengumuman_'].forEach(k => { let db = JSON.parse(localStorage.getItem(k+mk)) || []; db.forEach(item => activeIds.push(item.id)); }); }); }
-            activeIds.forEach(id => { if(!d.includes(id)) d.push(id); }); localStorage.setItem('dismissed_notifs_' + user.userId, JSON.stringify(d)); loadNotifikasi();
+
+        window.markNotifRead = function(id, event) { 
+            event.stopPropagation(); 
+            let d = JSON.parse(localStorage.getItem('read_notifs_' + user.userId)) || []; 
+            if(!d.includes(id)) {
+                d.push(id); 
+                localStorage.setItem('read_notifs_' + user.userId, JSON.stringify(d)); 
+            }
+            loadNotifikasi(); 
+        };
+
+        document.getElementById('clear-all-notif').addEventListener('click', (e) => { 
+            e.stopPropagation(); 
+            let d = JSON.parse(localStorage.getItem('read_notifs_' + user.userId)) || []; 
+            let activeIds = [];
+            if (user.matkul) { 
+                user.matkul.forEach(mk => { 
+                    ['tugas_','materi_', 'ujian_', 'kuis_', 'prak_tugas_','prak_pengumuman_'].forEach(k => { 
+                        let db = JSON.parse(localStorage.getItem(k+mk)) || []; 
+                        db.forEach(item => activeIds.push(item.id)); 
+                    }); 
+                }); 
+            }
+            activeIds.forEach(id => { if(!d.includes(id)) d.push(id); }); 
+            localStorage.setItem('read_notifs_' + user.userId, JSON.stringify(d)); 
+            loadNotifikasi();
         });
+        
         loadNotifikasi();
 
         // NAVIGASI
@@ -854,16 +908,33 @@
             
             wadah.innerHTML = '';
             dbUjian.forEach(ujian => {
-                let btnBukaUjian = ujian.link ? `<a href="${ujian.link}" target="_blank" class="btn-action"><i class="fas fa-external-link-alt"></i> Buka Akses Ujian</a>` : '';
+                const sudahKumpul = (JSON.parse(localStorage.getItem(`pengumpulan_${ujian.id}`)) || []).find(p => p.userId === user.userId);
+                let btnBukaUjian = ujian.link ? `<a href="${ujian.link}" target="_blank" style="margin-right:10px; color:var(--primary); font-size:0.85rem;"><i class="fas fa-external-link-alt"></i> Buka Soal Ujian</a>` : '';
+                
+                let aksiHtml = sudahKumpul ? `<span style="color:var(--success); font-weight:bold; font-size:0.9rem;"><i class="fas fa-check-circle"></i> Jawaban Ujian Terkirim</span>` : `<div class="upload-tugas-area"><input type="url" id="link_ujian_${ujian.id}" placeholder="Link Jawaban Ujian Anda"><button onclick="kumpulkanUjian('${ujian.id}')" class="btn-action">Kirim</button></div>`;
+
                 wadah.innerHTML += `
-                    <div class="item-card">
-                        <div class="item-info">
-                            <h3>${ujian.judul}</h3>
-                            <p style="color:var(--danger-red); font-weight:700;"><i class="fas fa-exclamation-circle"></i> Deadline: ${ujian.deadline}</p>
+                    <div class="item-card" style="flex-direction: column; align-items: stretch;">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <div class="item-info">
+                                <h3>${ujian.judul}</h3>
+                                <p style="color:var(--danger-red); font-weight:700;"><i class="fas fa-exclamation-circle"></i> Deadline: ${ujian.deadline}</p>
+                                ${btnBukaUjian}
+                            </div>
                         </div>
-                        <div>${btnBukaUjian}</div>
+                        ${aksiHtml}
                     </div>`;
             });
+        }
+
+        window.kumpulkanUjian = function(ujianId) {
+            const linkInput = document.getElementById(`link_ujian_${ujianId}`);
+            if(!linkInput.value.trim()) return alert("Harap masukkan link jawaban ujian!");
+            let db = JSON.parse(localStorage.getItem(`pengumpulan_${ujianId}`)) || [];
+            db.push({ userId: user.userId, namaMahasiswa: user.nama, waktu: new Date().toLocaleString('id-ID'), linkJawaban: linkInput.value.trim(), nilai: "" });
+            localStorage.setItem(`pengumpulan_${ujianId}`, JSON.stringify(db));
+            alert("Jawaban Ujian berhasil dikumpulkan!"); 
+            renderUjian(activeMatkulGlobal);
         }
 
         // KUIS
@@ -874,16 +945,33 @@
             
             wadah.innerHTML = '';
             dbKuis.forEach(kuis => {
-                let btnBukaKuis = kuis.link ? `<a href="${kuis.link}" target="_blank" class="btn-action"><i class="fas fa-external-link-alt"></i> Buka Link Kuis</a>` : '';
+                const sudahKumpul = (JSON.parse(localStorage.getItem(`pengumpulan_${kuis.id}`)) || []).find(p => p.userId === user.userId);
+                let btnBukaKuis = kuis.link ? `<a href="${kuis.link}" target="_blank" style="margin-right:10px; color:var(--primary); font-size:0.85rem;"><i class="fas fa-external-link-alt"></i> Buka Link Kuis</a>` : '';
+                
+                let aksiHtml = sudahKumpul ? `<span style="color:var(--success); font-weight:bold; font-size:0.9rem;"><i class="fas fa-check-circle"></i> Jawaban Kuis Terkirim</span>` : `<div class="upload-tugas-area"><input type="url" id="link_kuis_${kuis.id}" placeholder="Link Jawaban Kuis Anda"><button onclick="kumpulkanKuis('${kuis.id}')" class="btn-action">Kirim</button></div>`;
+
                 wadah.innerHTML += `
-                    <div class="item-card">
-                        <div class="item-info">
-                            <h3>${kuis.judul}</h3>
-                            <p style="color:var(--warning); font-weight:700;"><i class="fas fa-clock"></i> Deadline: ${kuis.deadline}</p>
+                    <div class="item-card" style="flex-direction: column; align-items: stretch;">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <div class="item-info">
+                                <h3>${kuis.judul}</h3>
+                                <p style="color:var(--warning); font-weight:700;"><i class="fas fa-clock"></i> Deadline: ${kuis.deadline}</p>
+                                ${btnBukaKuis}
+                            </div>
                         </div>
-                        <div>${btnBukaKuis}</div>
+                        ${aksiHtml}
                     </div>`;
             });
+        }
+
+        window.kumpulkanKuis = function(kuisId) {
+            const linkInput = document.getElementById(`link_kuis_${kuisId}`);
+            if(!linkInput.value.trim()) return alert("Harap masukkan link jawaban kuis!");
+            let db = JSON.parse(localStorage.getItem(`pengumpulan_${kuisId}`)) || [];
+            db.push({ userId: user.userId, namaMahasiswa: user.nama, waktu: new Date().toLocaleString('id-ID'), linkJawaban: linkInput.value.trim(), nilai: "" });
+            localStorage.setItem(`pengumpulan_${kuisId}`, JSON.stringify(db));
+            alert("Jawaban Kuis berhasil dikumpulkan!"); 
+            renderKuis(activeMatkulGlobal);
         }
 
         // ABSEN TEORI
@@ -928,12 +1016,11 @@
             wadah.innerHTML = adaData ? html + `</tbody></table></div>` : `<div class="empty-box">Belum ada item di kategori ini.</div>`;
         }
 
-        // KUISIONER EVALUASI PEMBELAJARAN (FUNGSI BARU)
+        // KUISIONER EVALUASI PEMBELAJARAN
         window.kirimKuisioner = function() {
             const pesan = document.getElementById('input-pesan-kuisioner').value.trim();
             if(!pesan) return alert("Pesan kuisioner tidak boleh kosong!");
             
-            // Menyimpan ke db admin di local storage
             let dbAdmin = JSON.parse(localStorage.getItem('kuisioner_admin')) || [];
             dbAdmin.push({
                 id: generateId(),
@@ -1141,7 +1228,6 @@
             let w = document.getElementById('prak-konten-nilai');
             if(db.length === 0) return w.innerHTML = `<div class="empty-box">Belum ada nilai praktikum.</div>`;
             
-            // Tambahkan wrapper table-responsive agar tidak merusak tata letak
             let html = `<div class="table-responsive"><table class="styled-table"><thead><tr><th style="background:var(--prak-color);">Tugas Laporan</th><th style="background:var(--prak-color);">Status</th><th style="background:var(--prak-color);">Nilai</th></tr></thead><tbody>`;
             let adaData = false;
             db.forEach(t => {
@@ -1217,7 +1303,7 @@
                 if (!isDown) return;
                 e.preventDefault();
                 const x = e.pageX - container.offsetLeft;
-                const walk = (x - startX) * 2; // Angka 2 mengatur kecepatan gerak/scroll
+                const walk = (x - startX) * 2; 
                 container.scrollLeft = scrollLeft - walk;
             });
         });
