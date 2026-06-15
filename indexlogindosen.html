@@ -9,16 +9,19 @@
     
     <style>
         /* =========================================
-           TEMA & RESET DASAR (Modern UI/UX)
+           TEMA DOSEN: EMERALD / TEAL & RESET DASAR
         ========================================= */
         :root {
             --bg-body: #0f172a; 
             --bg-sidebar: #1e293b; 
             --bg-card: #1f2937;
             --bg-card-hover: #334155;
-            --primary: #38bdf8; 
-            --primary-hover: #0ea5e9;
-            --secondary: #818cf8; 
+            
+            /* Warna Dosen (Emerald Green) */
+            --primary: #10b981; 
+            --primary-hover: #059669;
+            --secondary: #f59e0b; /* Aksen Amber/Emas */
+            
             --success: #10b981;
             --warning: #f59e0b;
             --danger-red: #ef4444;
@@ -28,8 +31,8 @@
             --sidebar-width: 260px;
             --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             --shadow-lg: 0 10px 25px -3px rgba(0, 0, 0, 0.2);
-            --shadow-glow: 0 0 15px rgba(56, 189, 248, 0.3); /* Tambahan Glow */
-            --banner-gradient: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
+            --shadow-glow: 0 0 15px rgba(16, 185, 129, 0.3); 
+            --banner-gradient: linear-gradient(135deg, #064e3b 0%, #0f172a 100%);
         }
 
         body:has(#theme-toggle:checked) {
@@ -37,16 +40,19 @@
             --bg-sidebar: #ffffff; 
             --bg-card: #ffffff;
             --bg-card-hover: #f1f5f9;
-            --primary: #0284c7; 
-            --primary-hover: #0369a1;
-            --secondary: #6366f1; 
+            
+            /* Warna Dosen Light Mode */
+            --primary: #059669; 
+            --primary-hover: #047857;
+            --secondary: #d97706; 
+            
             --text-main: #0f172a;
             --text-muted: #64748b; 
             --border-color: rgba(0, 0, 0, 0.08); 
             --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
             --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
-            --shadow-glow: 0 4px 15px rgba(2, 132, 199, 0.2);
-            --banner-gradient: linear-gradient(135deg, #e0e7ff 0%, #f3e8ff 100%);
+            --shadow-glow: 0 4px 15px rgba(5, 150, 105, 0.2);
+            --banner-gradient: linear-gradient(135deg, #d1fae5 0%, #f3f4f6 100%);
         }
         
         .icon-sun { display: none; } 
@@ -59,16 +65,16 @@
         ul { list-style: none; }
 
         /* =========================================
-           ANIMASI TAMBAHAN BIAR GAK BOSAN
+           ANIMASI
         ========================================= */
         @keyframes slideUpFade {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
         @keyframes pulseGlow {
-            0% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(56, 189, 248, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0); }
+            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
         }
 
         /* =========================================
@@ -88,11 +94,11 @@
         .nav-links::-webkit-scrollbar { width: 4px; } .nav-links::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
         
         .nav-links li a { display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; color: var(--text-muted); font-weight: 600; font-size: 0.95rem; border-radius: 12px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; margin-bottom: 5px; }
-        .nav-links li a:hover { background-color: rgba(255,255,255,0.03); color: var(--text-main); transform: translateX(5px);} /* Efek geser dikit */
-        .nav-links li a.active { background-color: rgba(56, 189, 248, 0.1); color: var(--primary); border-left: 4px solid var(--primary); border-radius: 0 12px 12px 0; transform: translateX(0); }
+        .nav-links li a:hover { background-color: rgba(255,255,255,0.03); color: var(--text-main); transform: translateX(5px);} 
+        .nav-links li a.active { background-color: rgba(16, 185, 129, 0.1); color: var(--primary); border-left: 4px solid var(--primary); border-radius: 0 12px 12px 0; transform: translateX(0); }
         
         .nav-links i { width: 20px; text-align: center; margin-right: 12px; font-size: 1.1rem; transition: transform 0.3s ease;}
-        .nav-links li a:hover i { transform: scale(1.1); color: var(--primary); } /* Ikon sedikit membesar */
+        .nav-links li a:hover i { transform: scale(1.1); color: var(--primary); } 
         
         .dropdown-btn { cursor: pointer; } 
         .arrow { font-size: 0.7rem; transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); } 
@@ -102,8 +108,8 @@
         @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
         
         .dropdown-container li a { padding: 10px 15px; font-size: 0.85rem; border-radius: 8px; margin-bottom: 2px; transition: all 0.3s ease;} 
-        .dropdown-container li a:hover { padding-left: 20px; color: var(--primary); background: rgba(56, 189, 248, 0.05); }
-        .dropdown-container li a.sub-active { color: var(--primary); background: rgba(56, 189, 248, 0.1); font-weight: 700; border-left: none; }
+        .dropdown-container li a:hover { padding-left: 20px; color: var(--primary); background: rgba(16, 185, 129, 0.05); }
+        .dropdown-container li a.sub-active { color: var(--primary); background: rgba(16, 185, 129, 0.1); font-weight: 700; border-left: none; }
         
         .btn-logout { margin-top: auto; color: #ef4444 !important; }
 
@@ -130,10 +136,10 @@
         .hero-content { flex: 1.2; z-index: 2; animation: fadeRight 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
         @keyframes fadeRight { from { opacity: 0; transform: translateX(-30px); } to { opacity: 1; transform: translateX(0); } }
 
-        .badge-hero { display: inline-flex; align-items: center; gap: 8px; background: rgba(56, 189, 248, 0.15); color: var(--primary); padding: 8px 20px; border-radius: 30px; font-size: 0.85rem; font-weight: 700; margin-bottom: 25px; border: 1px solid rgba(56, 189, 248, 0.2); text-transform: uppercase; letter-spacing: 1px; animation: pulseGlow 2s infinite;}
+        .badge-hero { display: inline-flex; align-items: center; gap: 8px; background: rgba(16, 185, 129, 0.15); color: var(--primary); padding: 8px 20px; border-radius: 30px; font-size: 0.85rem; font-weight: 700; margin-bottom: 25px; border: 1px solid rgba(16, 185, 129, 0.2); text-transform: uppercase; letter-spacing: 1px; animation: pulseGlow 2s infinite;}
         .hero-content h1 { font-size: 3.2rem; font-weight: 800; line-height: 1.15; margin-bottom: 20px; letter-spacing: -1px; }
         .hero-content h1 span { color: var(--primary); position: relative; display: inline-block;}
-        .hero-content h1 span::after { content: ''; position: absolute; bottom: 5px; left: 0; width: 100%; height: 8px; background: var(--primary); opacity: 0.2; z-index: -1; border-radius: 4px; transform: skewX(-15deg);} /* Aksen stabilo halus */
+        .hero-content h1 span::after { content: ''; position: absolute; bottom: 5px; left: 0; width: 100%; height: 8px; background: var(--primary); opacity: 0.2; z-index: -1; border-radius: 4px; transform: skewX(-15deg);} 
         
         .hero-content p { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 35px; line-height: 1.7; max-width: 90%; }
         
@@ -143,18 +149,18 @@
         @keyframes floatImg { 0% { transform: translateY(0px); } 50% { transform: translateY(-15px); } 100% { transform: translateY(0px); } }
 
         /* =========================================
-           SECTION PROFIL (BARU)
+           SECTION PROFIL
         ========================================= */
         #section-profil { display: none; width: 100%; animation: slideUpFade 0.5s ease; margin-top: 50px; padding-top: 20px;}
         .profile-container-main { background: var(--bg-card); border-radius: 24px; border: 1px solid var(--border-color); padding: 50px; display: flex; gap: 50px; box-shadow: var(--shadow-sm); flex-wrap: wrap; transition: transform 0.3s;}
         .profile-container-main:hover { box-shadow: var(--shadow-lg); }
         
         .profile-left-col { display: flex; flex-direction: column; align-items: center; width: 260px; }
-        .profile-img-glow { width: 220px; height: 220px; border-radius: 50%; border: 4px solid var(--primary); padding: 4px; box-shadow: 0 0 30px rgba(56, 189, 248, 0.3); margin-bottom: 30px; position: relative; background: var(--bg-body); transition: transform 0.4s;}
+        .profile-img-glow { width: 220px; height: 220px; border-radius: 50%; border: 4px solid var(--primary); padding: 4px; box-shadow: 0 0 30px rgba(16, 185, 129, 0.3); margin-bottom: 30px; position: relative; background: var(--bg-body); transition: transform 0.4s;}
         .profile-img-glow:hover { transform: scale(1.05); }
         .profile-img-glow img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
         
-        .btn-outline-primary { width: 100%; background: rgba(56, 189, 248, 0.05); border: 1px solid var(--primary); color: var(--primary); padding: 12px; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.3s; margin-bottom: 12px; display:flex; justify-content:center; align-items:center; gap:8px;}
+        .btn-outline-primary { width: 100%; background: rgba(16, 185, 129, 0.05); border: 1px solid var(--primary); color: var(--primary); padding: 12px; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.3s; margin-bottom: 12px; display:flex; justify-content:center; align-items:center; gap:8px;}
         .btn-outline-primary:hover { background: var(--primary); color: #fff; transform: translateY(-2px); box-shadow: var(--shadow-glow);}
         .btn-outline-danger { width: 100%; background: rgba(239, 68, 68, 0.05); border: 1px solid var(--danger-red); color: var(--danger-red); padding: 12px; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.3s; display:flex; justify-content:center; align-items:center; gap:8px;}
         .btn-outline-danger:hover { background: var(--danger-red); color: #fff; transform: translateY(-2px); box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);}
@@ -169,7 +175,7 @@
         .form-group-ui { display: flex; flex-direction: column; gap: 8px;}
         .form-group-ui label { font-size: 0.9rem; color: var(--text-muted); font-weight: 600; transition: color 0.3s;}
         .form-group-ui input, .form-group-ui textarea { width: 100%; padding: 16px; background: var(--bg-body); border: 1px solid var(--border-color); border-radius: 12px; color: var(--text-main); outline: none; font-family: inherit; font-size: 0.95rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);}
-        .form-group-ui input:focus, .form-group-ui textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.1); transform: translateY(-1px);}
+        .form-group-ui input:focus, .form-group-ui textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1); transform: translateY(-1px);}
         .form-group-ui input:focus + label, .form-group-ui textarea:focus + label { color: var(--primary); }
 
         /* =========================================
@@ -186,16 +192,54 @@
         .matkul-title-box p { color: rgba(255,255,255,0.7); font-size: 1.05rem; font-weight: 500; display: flex; align-items: center; gap: 8px;}
         body:has(#theme-toggle:checked) .matkul-title-box p { color: var(--text-muted); }
         
-        /* TABS - DIBAKIN LEBIH INTERAKTIF */
-        .tabs { display: inline-flex; gap: 5px; background: rgba(255,255,255,0.02); padding: 8px; border-radius: 16px; border: 1px solid var(--border-color); margin-bottom: 35px; box-shadow: var(--shadow-sm); overflow-x: auto; max-width: 100%; animation: slideUpFade 0.7s ease;}
+        /* TABS - BISA DIGESER (SCROLLABLE) & FULL NAMA */
+        .tabs { 
+            display: flex; 
+            gap: 8px; 
+            background: rgba(255,255,255,0.02); 
+            padding: 10px; 
+            border-radius: 16px; 
+            border: 1px solid var(--border-color); 
+            margin-bottom: 35px; 
+            box-shadow: var(--shadow-sm); 
+            overflow-x: auto; /* Memungkinkan geser kanan-kiri */
+            max-width: 100%; 
+            animation: slideUpFade 0.7s ease;
+            white-space: nowrap; /* Teks tidak akan turun ke bawah */
+            flex-wrap: nowrap; /* Memastikan tab sejajar 1 baris */
+            scroll-behavior: smooth;
+        }
+        
+        /* Kustomisasi Scrollbar Khusus Tab Menu */
+        .tabs::-webkit-scrollbar { height: 6px; }
+        .tabs::-webkit-scrollbar-track { background: transparent; border-radius: 10px; }
+        .tabs::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
+        .tabs:hover::-webkit-scrollbar-thumb { background: var(--primary); }
+
         body:has(#theme-toggle:checked) .tabs { background: #ffffff; }
         
-        .tab-btn { background: transparent; border: none; padding: 12px 24px; border-radius: 12px; color: var(--text-muted); font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); white-space: nowrap; display: flex; align-items: center; gap: 8px; position: relative; overflow: hidden;}
+        .tab-btn { 
+            flex: 0 0 auto; /* Supaya ukuran tab menyesuaikan teks, tidak mengecil */
+            background: transparent; 
+            border: none; 
+            padding: 12px 24px; 
+            border-radius: 12px; 
+            color: var(--text-muted); 
+            font-weight: 600; 
+            font-size: 0.95rem; 
+            cursor: pointer; 
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+            position: relative; 
+            overflow: hidden;
+        }
         .tab-btn::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 0; height: 3px; background: var(--primary); transition: width 0.3s ease; border-radius: 3px 3px 0 0;}
         .tab-btn:hover { color: var(--text-main); background: rgba(255,255,255,0.05); transform: translateY(-2px);}
         .tab-btn:hover::after { width: 40%; }
         body:has(#theme-toggle:checked) .tab-btn:hover { background: rgba(0,0,0,0.03); }
-        .tab-btn.active { background: var(--primary); color: #fff; box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3); transform: translateY(-2px);}
+        .tab-btn.active { background: var(--primary); color: #fff; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); transform: translateY(-2px);}
         .tab-btn.active::after { display: none; }
 
         .tab-content { display: none; background: transparent; min-height: 400px; }
@@ -204,22 +248,22 @@
 
         /* FORM UPLOAD & KARTU YANG LEBIH POP */
         .upload-form-card { background: var(--bg-card); padding: 30px; border-radius: 20px; border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); margin-bottom: 25px; transition: transform 0.3s, box-shadow 0.3s; }
-        .upload-form-card:focus-within { box-shadow: var(--shadow-lg); border-color: rgba(56, 189, 248, 0.3);}
+        .upload-form-card:focus-within { box-shadow: var(--shadow-lg); border-color: rgba(16, 185, 129, 0.3);}
         
         .input-group { margin-bottom: 15px; }
         .input-group label { display: block; margin-bottom: 8px; font-size: 0.9rem; color: var(--text-muted); font-weight: 600; transition: color 0.3s;}
         .input-group input, .input-group textarea, .input-group select { width: 100%; padding: 14px; background: var(--bg-body); border: 1px solid var(--border-color); border-radius: 12px; color: var(--text-main); outline: none; font-family: inherit; transition: all 0.3s ease;}
-        .input-group input:focus, .input-group textarea:focus, .input-group select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.1); transform: translateY(-1px);}
+        .input-group input:focus, .input-group textarea:focus, .input-group select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1); transform: translateY(-1px);}
         
         .btn-action { background: var(--primary); color: white; border: none; padding: 12px 24px; border-radius: 12px; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: inline-flex; align-items: center; gap: 8px;}
         .btn-action:hover { background: var(--primary-hover); transform: translateY(-3px); box-shadow: var(--shadow-glow);}
         .btn-action:active { transform: translateY(0); }
 
-        /* ITEM CARD YANG LEBIH INTERAKTIF */
+        /* ITEM CARD */
         .item-card { background: var(--bg-card); border: 1px solid var(--border-color); padding: 20px 25px; border-radius: 16px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden; }
         .item-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--primary); transform: scaleY(0); transition: transform 0.4s ease; transform-origin: bottom;}
         .item-card:hover::before { transform: scaleY(1); }
-        .item-card:hover { transform: translateY(-4px); border-color: rgba(56, 189, 248, 0.3); box-shadow: var(--shadow-lg); background: var(--bg-card-hover);}
+        .item-card:hover { transform: translateY(-4px); border-color: rgba(16, 185, 129, 0.3); box-shadow: var(--shadow-lg); background: var(--bg-card-hover);}
         
         .item-info h3 { font-size: 1.1rem; margin-bottom: 4px; color: var(--text-main); font-weight: 700; transition: color 0.3s;}
         .item-card:hover .item-info h3 { color: var(--primary); }
@@ -234,11 +278,11 @@
         .styled-table tbody tr:hover td { background-color: rgba(255, 255, 255, 0.03); }
         .styled-table tbody tr:last-child td { border-bottom: none; }
         .input-nilai { width: 80px; padding: 8px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-body); color: var(--text-main); text-align: center; font-weight: bold; transition: all 0.3s;}
-        .input-nilai:focus { border-color: var(--secondary); outline:none; box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.1); transform: scale(1.05);}
+        .input-nilai:focus { border-color: var(--secondary); outline:none; box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1); transform: scale(1.05);} /* Fokus pakai warna amber (secondary) */
 
-        /* FORUM DISKUSI LEBIH SEGAR */
+        /* FORUM DISKUSI */
         .chat-box { border: 1px solid var(--border-color); border-radius: 24px; height: 500px; display: flex; flex-direction: column; background: var(--bg-card); overflow: hidden; box-shadow: var(--shadow-sm); transition: box-shadow 0.3s;}
-        .chat-box:focus-within { box-shadow: var(--shadow-lg); border-color: rgba(56, 189, 248, 0.3);}
+        .chat-box:focus-within { box-shadow: var(--shadow-lg); border-color: rgba(16, 185, 129, 0.3);}
         .chat-header-info { padding: 15px 25px; border-bottom: 1px solid var(--border-color); background: rgba(0,0,0,0.1); display: flex; align-items: center; gap: 10px; backdrop-filter: blur(5px);}
         .chat-header-info i { color: var(--primary); font-size: 1.2rem;}
         .chat-header-info span { font-weight: 600; font-size: 0.9rem;}
@@ -250,12 +294,12 @@
         .message .sender { font-size: 0.75rem; font-weight: 700; margin-bottom: 6px; display: block; letter-spacing: 0.5px;}
         .msg-other { background: rgba(255,255,255,0.05); align-self: flex-start; border: 1px solid var(--border-color); border-bottom-left-radius: 4px; }
         .msg-other .sender { color: var(--secondary); }
-        .msg-me { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%); color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; border: none; box-shadow: 0 4px 10px rgba(56, 189, 248, 0.2);}
+        .msg-me { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%); color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; border: none; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2);}
         .msg-me .sender { color: rgba(255,255,255,0.9); }
         
         .chat-input-area { padding: 20px; background: rgba(0,0,0,0.1); border-top: 1px solid var(--border-color); display: flex; gap: 15px; align-items: center; backdrop-filter: blur(5px);}
         .chat-input-area input { flex: 1; padding: 16px 20px; border: 1px solid var(--border-color); border-radius: 20px; background: var(--bg-body); color: var(--text-main); outline: none; font-size: 0.95rem; font-weight: 500; transition: all 0.3s;}
-        .chat-input-area input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.1);}
+        .chat-input-area input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);}
         .chat-input-area button { background: var(--primary); color: white; border: none; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; display: flex; justify-content: center; align-items: center; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);}
         .chat-input-area button:hover { background: var(--primary-hover); transform: scale(1.1) rotate(10deg); box-shadow: var(--shadow-glow);}
     </style>
@@ -367,13 +411,13 @@
                 </div>
             </div>
 
+            <!-- MENU TAB SEKARANG BISA DIGESER (SCROLLABLE) -->
             <nav class="tabs">
                 <button class="tab-btn active" onclick="bukaTabKelas('tab-kontrak', this)"><i class="fas fa-file-signature"></i> Kontrak Kuliah</button>
                 <button class="tab-btn" onclick="bukaTabKelas('tab-materi', this)"><i class="fas fa-file-upload"></i> Kelola Materi</button>
                 <button class="tab-btn" onclick="bukaTabKelas('tab-tugas', this)"><i class="fas fa-tasks"></i> Kelola Tugas</button>
                 <button class="tab-btn" onclick="bukaTabKelas('tab-ujian', this)"><i class="fas fa-file-alt"></i> UTS / UAS</button>
                 <button class="tab-btn" onclick="bukaTabKelas('tab-kuis', this)"><i class="fas fa-question-circle"></i> Kuis</button>
-                
                 <button class="tab-btn" onclick="bukaTabKelas('tab-absensi', this)"><i class="fas fa-user-check"></i> Absensi</button>
                 <button class="tab-btn" onclick="bukaTabKelas('tab-nilai', this)"><i class="fas fa-star-half-alt"></i> Cek & Input Nilai</button>
                 <button class="tab-btn" onclick="bukaTabKelas('tab-forum', this)"><i class="fas fa-comments"></i> Forum Diskusi</button>
@@ -561,17 +605,17 @@
         const menuContainer = document.getElementById('menu-matkul-saya');
         const sectionBeranda = document.getElementById('section-beranda');
         const sectionMatkul = document.getElementById('section-matkul');
-        const sectionProfil = document.getElementById('section-profil'); // Ambil referensi section profil
+        const sectionProfil = document.getElementById('section-profil'); 
         
         const btnMenuBeranda = document.getElementById('menu-beranda');
-        const btnMenuProfil = document.getElementById('menu-profil'); // Ambil referensi tombol menu profil
+        const btnMenuProfil = document.getElementById('menu-profil'); 
 
         // Event Klik Beranda
         btnMenuBeranda.addEventListener('click', (e) => {
             e.preventDefault();
             sectionBeranda.style.display = 'flex';
             sectionMatkul.style.display = 'none';
-            sectionProfil.style.display = 'none'; // Sembunyikan profil
+            sectionProfil.style.display = 'none'; 
             
             document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active', 'sub-active'));
             btnMenuBeranda.classList.add('active');
@@ -582,7 +626,7 @@
             e.preventDefault();
             sectionBeranda.style.display = 'none';
             sectionMatkul.style.display = 'none';
-            sectionProfil.style.display = 'block'; // Tampilkan profil
+            sectionProfil.style.display = 'block'; 
             
             document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active', 'sub-active'));
             btnMenuProfil.classList.add('active');
@@ -600,7 +644,7 @@
                 linkMatkul.addEventListener('click', (e) => {
                     e.preventDefault();
                     sectionBeranda.style.display = 'none';
-                    sectionProfil.style.display = 'none'; // Sembunyikan profil saat masuk kelas
+                    sectionProfil.style.display = 'none'; 
                     sectionMatkul.style.display = 'block';
                     
                     document.querySelectorAll('.nav-links li a').forEach(a => a.classList.remove('active', 'sub-active'));
@@ -673,7 +717,6 @@
             
             w.innerHTML = '';
             db.forEach((d, i) => {
-                // Tambahkan style delay animasi untuk efek staggering yang lebih manis
                 w.innerHTML += `<div class="item-card" style="animation: slideUpFade 0.4s ease backwards; animation-delay: ${i * 0.1}s;"><div class="item-info"><h3>${d.judul}</h3><p><i class="far fa-clock"></i> ${d.tanggal}</p></div><div><a href="${d.link}" target="_blank" class="btn-action" style="margin-right:10px;"><i class="fas fa-external-link-alt"></i> Buka Dokumen</a><button onclick="hapusData('kontrak', ${i})" class="btn-action" style="background:transparent; color:var(--danger-red); border:1px solid var(--danger-red);"><i class="fas fa-trash"></i></button></div></div>`;
             });
         }
