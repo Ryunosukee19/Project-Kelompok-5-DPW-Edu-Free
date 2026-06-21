@@ -600,10 +600,9 @@
         const activeUserString = localStorage.getItem('loggedInUser');
         // if (!activeUserString) { window.location.href = "login.html"; } // Buka komen jika di-deploy dengan sistem login
         
-        // Mock data agar tetap bisa berjalan meskipun tanpa login untuk keperluan desain
-        // Mengubah Mock data default agar sesuai dengan format pendaftaran yang baru: "Matkul (Kelas X)"
-        const user = activeUserString ? JSON.parse(activeUserString) : { id: "dosen_dpw_01", nama: "Dosen DPW", role: "dosen", matkul: ["DPW (Kelas A, B)", "Struktur Data (Kelas C)"] };
-
+       // Mock data agar tetap bisa berjalan meskipun tanpa login untuk keperluan desain
+        // Mengubah Mock data default agar sesuai dengan format pendaftaran yang baru yang dipisah per kelas
+        const user = activeUserString ? JSON.parse(activeUserString) : { id: "dosen_dpw_01", nama: "Dosen DPW", role: "dosen", matkul: ["DPW (Kelas A)", "DPW (Kelas B)", "Struktur Data (Kelas C)"] };
         if(user.role !== 'dosen') { /* window.location.href = "login.html"; */ }
 
         // ==========================================
