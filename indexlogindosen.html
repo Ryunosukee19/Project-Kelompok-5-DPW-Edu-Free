@@ -117,7 +117,7 @@
         .dropdown-container.show { display: flex; animation: slideDown 0.4s ease; } 
         @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
         
-        .dropdown-container li a { padding: 10px 15px; font-size: 0.85rem; border-radius: 8px; margin-bottom: 2px; transition: all 0.3s ease;} 
+        .dropdown-container li a { padding: 10px 15px; font-size: 0.85rem; border-radius: 8px; margin-bottom: 2px; transition: all 0.3s ease; line-height: 1.3;} 
         .dropdown-container li a:hover { padding-left: 20px; color: var(--primary); background: rgba(16, 185, 129, 0.05); }
         .dropdown-container li a.sub-active { color: var(--primary); background: rgba(16, 185, 129, 0.1); font-weight: 700; border-left: none; }
         
@@ -197,7 +197,7 @@
         .matkul-header::after { content: ''; position: absolute; right: -50px; top: -50px; width: 300px; height: 300px; background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%); border-radius: 50%; pointer-events: none; animation: floatImg 8s ease-in-out infinite;}
 
         .matkul-title-box { z-index: 2; position: relative; }
-        .matkul-title-box h1 { font-size: 2.8rem; color: #ffffff; margin-bottom: 12px; font-weight: 800; letter-spacing: -0.5px; text-shadow: 0 2px 10px rgba(0,0,0,0.2);}
+        .matkul-title-box h1 { font-size: 2.4rem; color: #ffffff; margin-bottom: 12px; font-weight: 800; letter-spacing: -0.5px; text-shadow: 0 2px 10px rgba(0,0,0,0.2); line-height: 1.2;}
         body:has(#theme-toggle:checked) .matkul-title-box h1 { color: var(--text-main); text-shadow: none;}
         .matkul-title-box p { color: rgba(255,255,255,0.7); font-size: 1.05rem; font-weight: 500; display: flex; align-items: center; gap: 8px;}
         body:has(#theme-toggle:checked) .matkul-title-box p { color: var(--text-muted); }
@@ -601,7 +601,8 @@
         // if (!activeUserString) { window.location.href = "login.html"; } // Buka komen jika di-deploy dengan sistem login
         
         // Mock data agar tetap bisa berjalan meskipun tanpa login untuk keperluan desain
-        const user = activeUserString ? JSON.parse(activeUserString) : { id: "dosen_dpw_01", nama: "Dosen DPW", role: "dosen", matkul: ["DPW", "Struktur Data"] };
+        // Mengubah Mock data default agar sesuai dengan format pendaftaran yang baru: "Matkul (Kelas X)"
+        const user = activeUserString ? JSON.parse(activeUserString) : { id: "dosen_dpw_01", nama: "Dosen DPW", role: "dosen", matkul: ["DPW (Kelas A, B)", "Struktur Data (Kelas C)"] };
 
         if(user.role !== 'dosen') { /* window.location.href = "login.html"; */ }
 
@@ -675,7 +676,7 @@
             btnMenuProfil.classList.add('active');
         });
 
-        // Render Dropdown Matkul
+        // Render Dropdown Matkul (Sekarang menampilkan nama matkul lengkap beserta kelasnya)
         if (user.matkul && user.matkul.length > 0) {
             menuContainer.innerHTML = ''; 
             user.matkul.forEach(mk => {
@@ -693,6 +694,7 @@
                     document.querySelectorAll('.nav-links li a').forEach(a => a.classList.remove('active', 'sub-active'));
                     linkMatkul.classList.add('sub-active');
 
+                    // Menggunakan string lengkap (termasuk "(Kelas X)") sebagai kunci penyimpanan database agar lebih unik dan spesifik
                     bukaHalamanMatkul(mk);
                 });
                 li.appendChild(linkMatkul);
@@ -701,7 +703,11 @@
         }
 
         function bukaHalamanMatkul(namaMatkul) {
-            activeMatkulGlobal = namaMatkul; 
+            // Karena namaMatkul sekarang mengandung spasi dan tanda kurung (e.g. "DPW (Kelas A, B)"),
+            // kita bersihkan string-nya agar aman dijadikan key di localStorage (mengganti spasi, kurung, dan koma dengan underscore)
+            const safeMatkulKey = namaMatkul.replace(/[^a-zA-Z0-9]/g, '_');
+            activeMatkulGlobal = safeMatkulKey; 
+            
             document.getElementById('matkul-title-text').textContent = namaMatkul;
             document.getElementById('forum-matkul-name').textContent = `[ ${namaMatkul} ]`;
 
@@ -714,7 +720,7 @@
             renderUjian(); 
             renderKuis();  
             renderAbsensi();
-            loadForumMessages(namaMatkul);
+            loadForumMessages(safeMatkulKey);
         }
 
         function bukaTabKelas(tabId, btnElement) {
@@ -765,22 +771,17 @@
 
         // 1. MATERI 
         document.getElementById('btn-upload-materi').addEventListener('click', function() {
-            // Menggunakan .trim() agar spasi kosong di awal/akhir tidak ikut terbaca
             const judul = document.getElementById('input-judul-materi').value.trim();
             const linkMateri = document.getElementById('input-link-materi').value.trim();
             if (!judul || !linkMateri) return alert("Lengkapi data!");
 
             let db = JSON.parse(localStorage.getItem(`materi_${activeMatkulGlobal}`)) || [];
 
-            // --- TAMBAHAN LOGIKA VALIDASI DUPLIKASI JUDUL ---
-            // Mengecek apakah sudah ada judul yang sama persis (mengabaikan huruf besar/kecil)
             const isDuplicate = db.some(item => item.judul.toLowerCase() === judul.toLowerCase());
             
             if (isDuplicate) {
-                // Hentikan eksekusi dan munculkan peringatan
                 return alert(`Materi dengan judul "${judul}" sudah pernah diupload. Silakan gunakan judul lain atau hapus materi sebelumnya jika ingin memperbarui.`);
             }
-            // ------------------------------------------------
 
             const materiBaru = { id: generateId(), judul, tanggal: new Date().toLocaleDateString('id-ID'), link: linkMateri };
             db.push(materiBaru);
@@ -955,7 +956,6 @@
             db.forEach((p, index) => {
                 let linkBtn = 'Tidak ada file';
                 
-                // Logika Pengecekan: Apakah gambar (screenshot) atau link URL biasa
                 if (p.linkJawaban) {
                     if (p.tipeJawaban === 'image') {
                         linkBtn = `<button onclick="bukaGambarUtuh('${p.linkJawaban}')" style="background:rgba(245, 158, 11, 0.1); border:1px solid rgba(245, 158, 11, 0.3); border-radius:8px; padding:6px 12px; color:var(--warning); font-weight:bold; cursor:pointer; transition:0.3s;" onmouseover="this.style.background='var(--warning)'; this.style.color='#fff';" onmouseout="this.style.background='rgba(245, 158, 11, 0.1)'; this.style.color='var(--warning)';"><i class="fas fa-image"></i> Lihat Bukti (Gambar)</button>`;
@@ -1008,9 +1008,9 @@
         }
 
         // 5. FORUM 
-        function loadForumMessages(matkul) {
+        function loadForumMessages(matkulKey) {
             const chatBox = document.getElementById('chat-messages');
-            let db = JSON.parse(localStorage.getItem(`forum_${matkul}`)) || [];
+            let db = JSON.parse(localStorage.getItem(`forum_${matkulKey}`)) || [];
             if (db.length === 0) return chatBox.innerHTML = `<div style="text-align:center; padding: 40px 20px;"><i class="fas fa-bullhorn" style="font-size:3rem; color:var(--border-color); margin-bottom:15px;"></i><p style="color:var(--text-muted); font-size:0.9rem;">Belum ada interaksi. Kirim pesan pertama Anda ke mahasiswa.</p></div>`;
             chatBox.innerHTML = '';
             db.forEach(m => {
