@@ -114,7 +114,7 @@
             }
         });
 
-        // FUNGSI UNTUK MENAMPILKAN/MENYEMBUNYIKAN KELAS (KHUSUS DOSEN)
+        // FUNGSI UNTUK MENAMPILKAN/MENYEMBUNYIKAN KELAS
         window.toggleClasses = function(checkbox, safeId) {
             const classDiv = document.getElementById(`classes-${safeId}`);
             if(classDiv) {
@@ -123,7 +123,7 @@
                 } else {
                     classDiv.classList.remove('active');
                     // Hapus centang kelas jika matkul dibatalkan
-                    classDiv.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+                    classDiv.querySelectorAll('input').forEach(cb => cb.checked = false);
                 }
             }
         }
@@ -143,7 +143,7 @@
 
             if (roleSelect.value === 'mahasiswa') {
                 listToRender = semesterSelect.value === "1" ? matkulSem1 : matkulSem2;
-                courseInstruction.textContent = `Pilih mata kuliah untuk Semester ${semesterSelect.value} (Bisa pilih lebih dari satu):`;
+                courseInstruction.textContent = `Pilih mata kuliah untuk Semester ${semesterSelect.value} beserta kelasnya:`;
             } else if (roleSelect.value === 'dosen') {
                 listToRender = semuaMatkul;
                 isDosen = true;
@@ -151,28 +151,27 @@
             } else if (roleSelect.value === 'asprak') {
                 listToRender = matkulAsprak;
                 isAsprak = true;
-                courseInstruction.textContent = `Pilih maksimal 2 Mata Kuliah Praktikum yang diampu:`;
+                courseInstruction.textContent = `Pilih maksimal 2 Mata Kuliah Praktikum beserta kelas yang diampu:`;
             }
+
+            // PERUBAHAN: Dosen & Asprak = checkbox (bisa banyak kelas), Mahasiswa = radio (hanya 1 kelas per matkul)
+            let classInputType = (isDosen || isAsprak) ? "checkbox" : "radio";
 
             listToRender.forEach(mk => {
                 let safeId = mk.replace(/\s+/g, '-');
-                let classSelectionHTML = "";
                 
-                // Tambahkan elemen HTML Kelas khusus untuk Dosen
-                if (isDosen) {
-                    classSelectionHTML = `
-                        <div class="class-options" id="classes-${safeId}">
-                            <label><input type="checkbox" name="kelas-${mk}" value="A"> Kelas A</label>
-                            <label><input type="checkbox" name="kelas-${mk}" value="B"> Kelas B</label>
-                            <label><input type="checkbox" name="kelas-${mk}" value="C"> Kelas C</label>
-                        </div>
-                    `;
-                }
+                let classSelectionHTML = `
+                    <div class="class-options" id="classes-${safeId}">
+                        <label><input type="${classInputType}" name="kelas-${mk}" value="A"> Kelas A</label>
+                        <label><input type="${classInputType}" name="kelas-${mk}" value="B"> Kelas B</label>
+                        <label><input type="${classInputType}" name="kelas-${mk}" value="C"> Kelas C</label>
+                    </div>
+                `;
 
                 courseContainer.innerHTML += `
                     <div class="course-item-container">
                         <label class="course-item">
-                            <input type="checkbox" name="pilihanMatkul" value="${mk}" ${isAsprak ? 'class="checkbox-asprak"' : ''} ${isDosen ? `onchange="toggleClasses(this, '${safeId}')"` : ''}>
+                            <input type="checkbox" name="pilihanMatkul" value="${mk}" ${isAsprak ? 'class="checkbox-asprak"' : ''} onchange="toggleClasses(this, '${safeId}')">
                             <span>${mk}</span>
                         </label>
                         ${classSelectionHTML}
@@ -180,7 +179,7 @@
                 `;
             });
 
-            // Logika Pembatasan Maksimal 2 Checkbox khusus Asprak
+            // Logika Pembatasan Maksimal 2 Matkul khusus Asprak
             if (isAsprak) {
                 const asprakCheckboxes = document.querySelectorAll('.checkbox-asprak');
                 asprakCheckboxes.forEach(cb => {
@@ -188,6 +187,7 @@
                         const checkedCount = document.querySelectorAll('.checkbox-asprak:checked').length;
                         if (checkedCount > 2) {
                             this.checked = false; 
+                            toggleClasses(this, this.value.replace(/\s+/g, '-')); // Sembunyikan kelasnya
                             alert("Anda maksimal hanya boleh memilih 2 Mata Kuliah Praktikum!");
                         }
                     });
@@ -205,7 +205,7 @@
             document.getElementById('form-title').textContent = "Buat Akun Baru";
         });
 
-        // PROSES REGISTER MURNI LOCALSTORAGE
+        // PROSES REGISTER
         document.getElementById('registerForm').addEventListener('submit', function(e) {
             e.preventDefault();
 
@@ -216,29 +216,21 @@
                 return alert("Anda wajib memilih minimal 1 Mata Kuliah!");
             }
 
-            // Logika pengumpulan data berdasarkan role
             for (let el of selectedMatkulElements) {
                 let mkName = el.value;
                 
-                if (roleSelect.value === 'dosen') {
-                    // Cari kelas yang dicentang untuk mata kuliah ini
-                    let checkedClasses = document.querySelectorAll(`input[name="kelas-${mkName}"]:checked`);
-                    
-                    // Validasi: Jika matkul dicentang, kelas wajib diisi
-                    if (checkedClasses.length === 0) {
-                        return alert(`Harap pilih minimal 1 kelas untuk mata kuliah: ${mkName}`);
-                    }
-                    
-                    // --- PERUBAHAN: PISAHKAN SETIAP KELAS MENJADI ARRAY TERSENDIRI ---
-                    Array.from(checkedClasses).forEach(cb => {
-                        finalMatkulList.push(`${mkName} (Kelas ${cb.value})`);
-                    });
-                    // -----------------------------------------------------------------
-
-                } else {
-                    // Untuk Mahasiswa dan Asprak
-                    finalMatkulList.push(mkName);
+                // Cari kelas yang dicentang/dipilih untuk mata kuliah ini
+                let checkedClasses = document.querySelectorAll(`input[name="kelas-${mkName}"]:checked`);
+                
+                // Validasi: Jika matkul dicentang, kelas wajib diisi
+                if (checkedClasses.length === 0) {
+                    return alert(`Harap pilih minimal 1 kelas untuk mata kuliah: ${mkName}`);
                 }
+                
+                // Masukkan masing-masing kelas menjadi array string yang utuh ("DPW (Kelas A)")
+                Array.from(checkedClasses).forEach(cb => {
+                    finalMatkulList.push(`${mkName} (Kelas ${cb.value})`);
+                });
             }
 
             const userData = {
@@ -261,7 +253,7 @@
             
             console.log("Data Disimpan:", userData);
             
-            alert("Registrasi Berhasil! Data mata kuliah tersimpan.");
+            alert("Registrasi Berhasil! Data mata kuliah dan kelas tersimpan.");
             window.location.href = "login.html";
         });
     </script>
