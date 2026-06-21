@@ -32,7 +32,7 @@
             gap: 25px;
             margin-right: auto;
             margin-left: 50px;
-            list-style: none; /* Menghilangkan titik pada list */
+            list-style: none;
             padding: 0;
         }
 
@@ -92,7 +92,66 @@
         .news-img-container img { width: 100%; height: 100%; object-fit: cover; }
         .news-date { font-size: 0.85rem; color: var(--primary, #38bdf8); margin-bottom: 10px; display: block; }
         .news-title { font-size: 1.3rem; margin-bottom: 15px; }
-        .news-desc { font-size: 0.95rem; line-height: 1.6; opacity: 0.8; }
+        .news-desc { font-size: 0.95rem; line-height: 1.6; opacity: 0.8; white-space: pre-wrap; }
+
+        /* --- TAMBAHAN UNTUK LINK DETAIL & MODAL --- */
+        .detail-link {
+            margin-top: auto; /* Memastikan link selalu berada di bawah kartu */
+            color: var(--primary, #38bdf8);
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+            display: inline-block;
+        }
+        .detail-link:hover {
+            color: #fff;
+            text-decoration: underline;
+        }
+
+        /* Gaya Pop-up Modal */
+        .modal-overlay {
+            display: none; /* Sembunyikan secara default */
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .modal-content {
+            background: var(--bg-card, #1e293b);
+            color: var(--text-main, #fff);
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+            border: 1px solid var(--border-color, rgba(255,255,255,0.1));
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+        .modal-close {
+            position: absolute;
+            top: 15px; right: 20px;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: #ef4444;
+            transition: 0.2s;
+        }
+        .modal-close:hover {
+            color: #ff6b6b;
+        }
+        .modal-img {
+            width: 100%;
+            max-height: 300px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
@@ -136,6 +195,16 @@
         </div>
     </main>
 
+    <div id="detail-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="modal-close" onclick="tutupDetail()">&times;</span>
+            <div id="modal-image-container"></div>
+            <span id="modal-date" class="news-date" style="margin-top: 10px;"></span>
+            <h2 id="modal-title" style="margin-bottom: 20px; font-size: 1.8rem;"></h2>
+            <div id="modal-desc" class="news-desc"></div>
+        </div>
+    </div>
+
     <script>
         // 1. Logika Toggle Tema
         const themeToggle = document.getElementById("theme-toggle");
@@ -145,7 +214,7 @@
             else { localStorage.setItem("theme", "dark"); }
         });
 
-        // 2. LOGIKA LOAD BERITA (MEMBACA DARI FILE ADMIN)
+        // 2. LOGIKA LOAD BERITA
         function loadNews() {
             const newsDatabase = JSON.parse(localStorage.getItem('eduFreeNewsWithImage')) || [];
             const container = document.getElementById('news-container');
@@ -166,16 +235,52 @@
                     `;
                 }
 
+                // Perhatikan: Menghilangkan deskripsi dari kartu dan menambahkan link detail
                 const newsHTML = `
                     <div class="news-card">
                         ${imageHTML}
                         <span class="news-date">📅 ${news.date}</span>
                         <h3 class="news-title">${news.title}</h3>
-                        <p class="news-desc">${news.desc}</p>
+                        <a href="#" class="detail-link" onclick="bukaDetail(${news.id}); return false;">Lihat Detail &rarr;</a>
                     </div>
                 `;
                 container.innerHTML += newsHTML;
             });
+        }
+
+        // 3. LOGIKA UNTUK MODAL DETAIL BERITA
+        function bukaDetail(id) {
+            const newsDatabase = JSON.parse(localStorage.getItem('eduFreeNewsWithImage')) || [];
+            const news = newsDatabase.find(n => n.id === id); // Cari berita berdasarkan ID
+            
+            if(news) {
+                // Isi konten modal dengan data berita
+                document.getElementById('modal-title').innerText = news.title;
+                document.getElementById('modal-date').innerText = `📅 ${news.date}`;
+                document.getElementById('modal-desc').innerText = news.desc;
+                
+                const imgContainer = document.getElementById('modal-image-container');
+                if(news.imageBase64) {
+                    imgContainer.innerHTML = `<img src="${news.imageBase64}" class="modal-img" alt="Gambar Berita">`;
+                } else {
+                    imgContainer.innerHTML = ''; // Kosongkan jika tidak ada gambar
+                }
+
+                // Tampilkan modal
+                document.getElementById('detail-modal').style.display = 'flex';
+            }
+        }
+
+        function tutupDetail() {
+            document.getElementById('detail-modal').style.display = 'none';
+        }
+
+        // Tutup modal jika user mengklik area gelap di luar kotak modal
+        window.onclick = function(event) {
+            const modal = document.getElementById('detail-modal');
+            if (event.target === modal) {
+                tutupDetail();
+            }
         }
 
         // Jalankan fungsi load saat halaman berita dibuka
