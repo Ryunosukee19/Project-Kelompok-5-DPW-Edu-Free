@@ -85,7 +85,7 @@
         </form>
     </div>
 
-    <script>
+   <script>
         const matkulSem1 = ["PTI", "Alpro", "Matematika Teknik", "Matematika Diskret"];
         const matkulSem2 = ["Struktur Data", "DPW", "Orkom", "Metode Statistika", "Komputasi Aljabar Linier"];
         const semuaMatkul = [...matkulSem1, ...matkulSem2];
@@ -229,9 +229,12 @@
                         return alert(`Harap pilih minimal 1 kelas untuk mata kuliah: ${mkName}`);
                     }
                     
-                    // Format output: "DPW (Kelas A, B)"
-                    let classArr = Array.from(checkedClasses).map(cb => cb.value);
-                    finalMatkulList.push(`${mkName} (Kelas ${classArr.join(', ')})`);
+                    // --- PERUBAHAN: PISAHKAN SETIAP KELAS MENJADI ARRAY TERSENDIRI ---
+                    Array.from(checkedClasses).forEach(cb => {
+                        finalMatkulList.push(`${mkName} (Kelas ${cb.value})`);
+                    });
+                    // -----------------------------------------------------------------
+
                 } else {
                     // Untuk Mahasiswa dan Asprak
                     finalMatkulList.push(mkName);
@@ -256,7 +259,6 @@
             // Simpan Data Permanen di Browser
             localStorage.setItem(userData.userId, JSON.stringify(userData));
             
-            // Console log untuk memastikan format array sudah benar
             console.log("Data Disimpan:", userData);
             
             alert("Registrasi Berhasil! Data mata kuliah tersimpan.");
