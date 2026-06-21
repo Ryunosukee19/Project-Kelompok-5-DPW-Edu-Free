@@ -765,12 +765,24 @@
 
         // 1. MATERI 
         document.getElementById('btn-upload-materi').addEventListener('click', function() {
-            const judul = document.getElementById('input-judul-materi').value;
-            const linkMateri = document.getElementById('input-link-materi').value;
+            // Menggunakan .trim() agar spasi kosong di awal/akhir tidak ikut terbaca
+            const judul = document.getElementById('input-judul-materi').value.trim();
+            const linkMateri = document.getElementById('input-link-materi').value.trim();
             if (!judul || !linkMateri) return alert("Lengkapi data!");
 
-            const materiBaru = { id: generateId(), judul, tanggal: new Date().toLocaleDateString('id-ID'), link: linkMateri };
             let db = JSON.parse(localStorage.getItem(`materi_${activeMatkulGlobal}`)) || [];
+
+            // --- TAMBAHAN LOGIKA VALIDASI DUPLIKASI JUDUL ---
+            // Mengecek apakah sudah ada judul yang sama persis (mengabaikan huruf besar/kecil)
+            const isDuplicate = db.some(item => item.judul.toLowerCase() === judul.toLowerCase());
+            
+            if (isDuplicate) {
+                // Hentikan eksekusi dan munculkan peringatan
+                return alert(`Materi dengan judul "${judul}" sudah pernah diupload. Silakan gunakan judul lain atau hapus materi sebelumnya jika ingin memperbarui.`);
+            }
+            // ------------------------------------------------
+
+            const materiBaru = { id: generateId(), judul, tanggal: new Date().toLocaleDateString('id-ID'), link: linkMateri };
             db.push(materiBaru);
             localStorage.setItem(`materi_${activeMatkulGlobal}`, JSON.stringify(db));
             
@@ -932,9 +944,6 @@
             renderTabelPengumpulan(itemId);
         });
 
-        // ===================================================================
-        // MODIFIKASI: FUNGSI RENDER TABEL & BUKA GAMBAR BASE64
-        // ===================================================================
         function renderTabelPengumpulan(itemId) {
             const tbody = document.getElementById('tbody-pengumpulan');
             
@@ -960,7 +969,6 @@
             });
         }
 
-        // Fungsi Baru untuk Merender Gambar di Tab Baru (Aman dari pemblokiran browser)
         window.bukaGambarUtuh = function(base64String) {
             let win = window.open();
             win.document.write(`
@@ -972,7 +980,6 @@
                 </html>
             `);
         }
-        // ===================================================================
 
         window.simpanNilai = function(itemId, index) {
             let inputElement = document.getElementById(`nilai_${itemId}_${index}`);
