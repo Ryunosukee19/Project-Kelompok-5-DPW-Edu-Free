@@ -497,8 +497,10 @@
         const activeUserString = localStorage.getItem('loggedInUser');
         // if (!activeUserString) { window.location.href = "login.html"; } // Hilangkan komentar untuk pakai login sungguhan
         
-        // Mock data agar tetap bisa berjalan
-        const user = activeUserString ? JSON.parse(activeUserString) : { userId: "250411100157", nama: "Dwi Farhan Hidayat", role: "asprak", matkul: ["DPW", "Alpro"] };
+        // ====================================================================
+        // PERUBAHAN 1: Mock data di-update ke format Matkul (Kelas X)
+        // ====================================================================
+        const user = activeUserString ? JSON.parse(activeUserString) : { userId: "250411100157", nama: "Dwi Farhan Hidayat", role: "asprak", matkul: ["DPW (Kelas A)", "Alpro (Kelas B)"] };
 
         if(user.role !== 'asprak') { /* window.location.href = "login.html"; */ }
 
@@ -566,7 +568,16 @@
         // FILTER & NAVIGASI
         const allowedMatkul = ["alpro", "pti", "struktur data", "dpw"];
         let matkulAsprak = [];
-        if(user.matkul) { matkulAsprak = user.matkul.filter(m => allowedMatkul.includes(m.toLowerCase())); }
+        
+        // ====================================================================
+        // PERUBAHAN 2: Filter Sidebar dengan Split agar Base Matkul terbaca
+        // ====================================================================
+        if(user.matkul) { 
+            matkulAsprak = user.matkul.filter(m => {
+                const baseMatkul = m.split(' (')[0].trim().toLowerCase();
+                return allowedMatkul.includes(baseMatkul);
+            }); 
+        }
 
         let activePrakGlobal = ""; 
 
@@ -606,7 +617,8 @@
                 const li = document.createElement('li');
                 const linkMatkul = document.createElement('a');
                 linkMatkul.href = "#";
-                linkMatkul.innerHTML = `<i class="fas fa-flask" style="margin-right: 8px;"></i> Praktikum ${mk}`;
+                // Tampilkan nama utuh beserta kelas di sidebar
+                linkMatkul.innerHTML = `<i class="fas fa-flask" style="margin-right: 8px;"></i> Prak. ${mk}`;
                 
                 linkMatkul.addEventListener('click', (e) => {
                     e.preventDefault();
@@ -629,7 +641,12 @@
         }
 
         function bukaHalamanPrak(namaMatkul) {
-            activePrakGlobal = namaMatkul; 
+            // ====================================================================
+            // PERUBAHAN 3: Gunakan safeMatkulKey (mengubah spasi/kurung jadi _)
+            // ====================================================================
+            const safePrakKey = namaMatkul.replace(/[^a-zA-Z0-9]/g, '_');
+            activePrakGlobal = safePrakKey; 
+            
             document.getElementById('matkul-title-text').textContent = "Praktikum " + namaMatkul;
 
             bukaTabPrak('tab-p-pengumuman', document.querySelectorAll('.tab-btn')[0]);
@@ -836,7 +853,7 @@
             }
         }
 
-        // 8. MENU BARU: MANAJEMEN CUTI MAHASISWA
+        // 8. MANAJEMEN CUTI MAHASISWA
         function renderCutiAsprak() {
             let db = JSON.parse(localStorage.getItem(`prak_cuti_${activePrakGlobal}`)) || [];
             let wadah = document.getElementById('p-list-cuti');
