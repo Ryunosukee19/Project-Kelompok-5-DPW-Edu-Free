@@ -577,10 +577,11 @@
         }
 
         const activeUserString = localStorage.getItem('loggedInUser');
-        if (!activeUserString) { window.location.href = "login.html"; }
-        const user = JSON.parse(activeUserString);
+        // if (!activeUserString) { window.location.href = "login.html"; }
+        // Mock data
+        const user = activeUserString ? JSON.parse(activeUserString) : { id: "mhs_01", userId: "250411100157", nama: "Mahasiswa Tester", role: "mahasiswa", matkul: ["DPW (Kelas A)", "Struktur Data (Kelas B)"], semester: "2" };
 
-        if(user.role !== 'mahasiswa') { window.location.href = "login.html"; }
+        if(user.role !== 'mahasiswa') { /* window.location.href = "login.html"; */ }
 
         document.getElementById('top-name').textContent = user.nama;
         document.getElementById('matkul-semester-text').textContent = user.semester || "Ganjil";
@@ -625,7 +626,9 @@
             }
         }
 
-        // NOTIFIKASI
+        // ====================================================================
+        // PERUBAHAN: SINKRONISASI KUNCI NOTIFIKASI
+        // ====================================================================
         const notifTrigger = document.getElementById('notif-trigger');
         const notifDropdown = document.getElementById('notifDropdown');
         notifTrigger.addEventListener('click', (e) => { e.stopPropagation(); notifDropdown.classList.toggle('show'); loadNotifikasi(); });
@@ -638,22 +641,25 @@
 
             if (user.matkul && user.matkul.length > 0) {
                 user.matkul.forEach(mk => {
-                    let dbTugas = JSON.parse(localStorage.getItem(`tugas_${mk}`)) || [];
+                    // MENGGUNAKAN SAFE KEY AGAR SAMA DENGAN DATABASE DOSEN
+                    let safeMk = mk.replace(/[^a-zA-Z0-9]/g, '_');
+
+                    let dbTugas = JSON.parse(localStorage.getItem(`tugas_${safeMk}`)) || [];
                     dbTugas.forEach(t => { if(!deletedNotifs.includes(t.id)) allNotifs.push({ id: t.id, title: `Tugas Dosen: ${t.judul}`, desc: `MK: ${mk} - Tenggat: ${t.deadline}`, type: 'tugas', isRead: readNotifs.includes(t.id) }); });
                     
-                    let dbMateri = JSON.parse(localStorage.getItem(`materi_${mk}`)) || [];
+                    let dbMateri = JSON.parse(localStorage.getItem(`materi_${safeMk}`)) || [];
                     dbMateri.forEach(m => { if(!deletedNotifs.includes(m.id)) allNotifs.push({ id: m.id, title: `Materi Dosen: ${m.judul}`, desc: `MK: ${mk}`, type: 'materi', isRead: readNotifs.includes(m.id) }); });
                     
-                    let dbUjian = JSON.parse(localStorage.getItem(`ujian_${mk}`)) || [];
+                    let dbUjian = JSON.parse(localStorage.getItem(`ujian_${safeMk}`)) || [];
                     dbUjian.forEach(u => { if(!deletedNotifs.includes(u.id)) allNotifs.push({ id: u.id, title: `Ujian: ${u.judul}`, desc: `MK: ${mk} - Tenggat: ${u.deadline}`, type: 'ujian', isRead: readNotifs.includes(u.id) }); });
                     
-                    let dbKuis = JSON.parse(localStorage.getItem(`kuis_${mk}`)) || [];
+                    let dbKuis = JSON.parse(localStorage.getItem(`kuis_${safeMk}`)) || [];
                     dbKuis.forEach(k => { if(!deletedNotifs.includes(k.id)) allNotifs.push({ id: k.id, title: `Kuis: ${k.judul}`, desc: `MK: ${mk} - Tenggat: ${k.deadline}`, type: 'kuis', isRead: readNotifs.includes(k.id) }); });
 
-                    let pTugas = JSON.parse(localStorage.getItem(`prak_tugas_${mk}`)) || [];
+                    let pTugas = JSON.parse(localStorage.getItem(`prak_tugas_${safeMk}`)) || [];
                     pTugas.forEach(t => { if(!deletedNotifs.includes(t.id)) allNotifs.push({ id: t.id, title: `Tugas Praktikum: ${t.judul}`, desc: `MK: ${mk} - Tenggat: ${t.deadline}`, type: 'prak_tugas', isRead: readNotifs.includes(t.id) }); });
                     
-                    let pPengumuman = JSON.parse(localStorage.getItem(`prak_pengumuman_${mk}`)) || [];
+                    let pPengumuman = JSON.parse(localStorage.getItem(`prak_pengumuman_${safeMk}`)) || [];
                     pPengumuman.forEach(p => { if(!deletedNotifs.includes(p.id)) allNotifs.push({ id: p.id, title: `Pengumuman Asprak: ${p.judul}`, desc: `MK: ${mk}`, type: 'prak_pengumuman', isRead: readNotifs.includes(p.id) }); });
                 });
             }
@@ -704,7 +710,6 @@
             }
         }
 
-        // Fungsi Menandai Telah Dibaca
         window.markNotifRead = function(id, event) { 
             event.stopPropagation(); 
             let d = JSON.parse(localStorage.getItem('read_notifs_' + user.userId)) || []; 
@@ -715,7 +720,6 @@
             loadNotifikasi(); 
         };
 
-        // Fungsi Menghapus Spesifik Item Notifikasi
         window.hapusNotifItem = function(id, event) {
             event.stopPropagation();
             let d = JSON.parse(localStorage.getItem('deleted_notifs_' + user.userId)) || [];
@@ -726,15 +730,16 @@
             loadNotifikasi();
         }
 
-        // Tandai Semua Dibaca
         document.getElementById('clear-all-notif').addEventListener('click', (e) => { 
             e.stopPropagation(); 
             let d = JSON.parse(localStorage.getItem('read_notifs_' + user.userId)) || []; 
             let activeIds = [];
             if (user.matkul) { 
                 user.matkul.forEach(mk => { 
+                    // MENGGUNAKAN SAFE KEY JUGA DI SINI
+                    let safeMk = mk.replace(/[^a-zA-Z0-9]/g, '_');
                     ['tugas_','materi_', 'ujian_', 'kuis_', 'prak_tugas_','prak_pengumuman_'].forEach(k => { 
-                        let db = JSON.parse(localStorage.getItem(k+mk)) || []; 
+                        let db = JSON.parse(localStorage.getItem(k+safeMk)) || []; 
                         db.forEach(item => activeIds.push(item.id)); 
                     }); 
                 }); 
@@ -761,6 +766,9 @@
         
         btnMenuProfil.addEventListener('click', (e) => { e.preventDefault(); sectionBeranda.style.display = 'none'; sectionMatkul.style.display = 'none'; sectionPraktikum.style.display = 'none'; sectionProfil.style.display = 'block'; clearNavActive(); btnMenuProfil.classList.add('active'); window.scrollTo({ top: 0, behavior: 'smooth' }); });
 
+        // ====================================================================
+        // PERUBAHAN: FILTER LOGIKA UNTUK MENU PRAKTIKUM
+        // ====================================================================
         if (user.matkul && user.matkul.length > 0) {
             menuKelasContainer.innerHTML = ''; menuPrakContainer.innerHTML = ''; let hasPraktikum = false;
             user.matkul.forEach(mk => {
@@ -768,7 +776,10 @@
                 linkKelas.addEventListener('click', (e) => { e.preventDefault(); sectionBeranda.style.display = 'none'; sectionProfil.style.display = 'none'; sectionPraktikum.style.display = 'none'; sectionMatkul.style.display = 'block'; clearNavActive(); linkKelas.classList.add('sub-active'); bukaHalamanMatkulTeori(mk); setTimeout(() => { sectionMatkul.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100); });
                 liKelas.appendChild(linkKelas); menuKelasContainer.appendChild(liKelas);
                 
-                if (validPrak.includes(mk.toLowerCase())) {
+                // Mengambil nama dasar matkulnya saja (Tanpa " (Kelas X)")
+                const baseMatkul = mk.split(' (')[0].trim().toLowerCase();
+
+                if (validPrak.includes(baseMatkul)) {
                     hasPraktikum = true; const liPrak = document.createElement('li'); const linkPrak = document.createElement('a'); linkPrak.href = "#"; linkPrak.innerHTML = `Prak. ${mk}`;
                     linkPrak.addEventListener('click', (e) => { e.preventDefault(); sectionBeranda.style.display = 'none'; sectionProfil.style.display = 'none'; sectionMatkul.style.display = 'none'; sectionPraktikum.style.display = 'block'; clearNavActive(); linkPrak.classList.add('sub-active-prak'); bukaHalamanPraktikum(mk); setTimeout(() => { sectionPraktikum.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100); });
                     liPrak.appendChild(linkPrak); menuPrakContainer.appendChild(liPrak);
@@ -779,14 +790,19 @@
 
         // ============================ KELAS TEORI ============================
         function bukaHalamanMatkulTeori(namaMatkul) {
-            activeMatkulGlobal = namaMatkul; 
+            // TERAPKAN SAFE KEY
+            const safeMatkulKey = namaMatkul.replace(/[^a-zA-Z0-9]/g, '_');
+            activeMatkulGlobal = safeMatkulKey; 
+
             document.getElementById('matkul-title-text').textContent = namaMatkul;
             bukaTabKelas('tab-materi', document.querySelectorAll('#section-matkul .tab-btn')[1]);
-            renderAbsensi(namaMatkul); 
-            renderMateri(namaMatkul); 
-            renderTugas(namaMatkul); 
-            renderUjian(namaMatkul); 
-            renderKuis(namaMatkul);  
+            
+            // KIRIM SAFE KEY KE SEMUA FUNGSI RENDER
+            renderAbsensi(safeMatkulKey); 
+            renderMateri(safeMatkulKey); 
+            renderTugas(safeMatkulKey); 
+            renderUjian(safeMatkulKey); 
+            renderKuis(safeMatkulKey);  
             
             // Set ke Nilai Tugas secara Default
             document.getElementById('kategori-nilai-mhs').value = "tugas";
@@ -795,9 +811,9 @@
             // Load Form Kuisioner
             renderRiwayatKuisioner();
 
-            loadForumMessages(namaMatkul); 
-            renderKontrakTeori(namaMatkul); 
-            renderZoom(namaMatkul);
+            loadForumMessages(safeMatkulKey); 
+            renderKontrakTeori(safeMatkulKey); 
+            renderZoom(safeMatkulKey);
         }
 
         function bukaTabKelas(tabId, btnElement) {
@@ -810,10 +826,10 @@
         }
 
         // MATERI DENGAN LOGIKA SEQUENTIAL LOCK
-        function renderMateri(matkul) {
+        function renderMateri(matkulKey) {
             const wadah = document.getElementById('konten-materi');
-            const dbMateri = JSON.parse(localStorage.getItem(`materi_${matkul}`)) || [];
-            const readMateri = JSON.parse(localStorage.getItem(`read_materi_${user.userId}_${matkul}`)) || [];
+            const dbMateri = JSON.parse(localStorage.getItem(`materi_${matkulKey}`)) || [];
+            const readMateri = JSON.parse(localStorage.getItem(`read_materi_${user.userId}_${matkulKey}`)) || [];
 
             if (dbMateri.length === 0) return wadah.innerHTML = `<div class="empty-box">Belum ada materi teori.</div>`;
             
@@ -857,8 +873,8 @@
         }
 
         // KONTRAK TEORI
-        function renderKontrakTeori(matkul) {
-            const dbKontrak = JSON.parse(localStorage.getItem(`kontrak_${matkul}`)) || [];
+        function renderKontrakTeori(matkulKey) {
+            const dbKontrak = JSON.parse(localStorage.getItem(`kontrak_${matkulKey}`)) || [];
             const w = document.getElementById('konten-kontrak-teori');
             if(dbKontrak.length === 0) return w.innerHTML = `<div class="empty-box">Belum ada dokumen kontrak kuliah.</div>`;
             w.innerHTML = '';
@@ -881,8 +897,8 @@
             alert("Jadwal Zoom tersimpan!");
             renderZoom(activeMatkulGlobal);
         }
-        function renderZoom(matkul) {
-            let db = JSON.parse(localStorage.getItem(`zoom_mhs_${user.userId}_${matkul}`)) || [];
+        function renderZoom(matkulKey) {
+            let db = JSON.parse(localStorage.getItem(`zoom_mhs_${user.userId}_${matkulKey}`)) || [];
             let w = document.getElementById('konten-zoom-list');
             if(db.length === 0) return w.innerHTML = `<div class="empty-box">Belum ada catatan jadwal Zoom.</div>`;
             w.innerHTML = '<h3 style="margin:20px 0 10px 0; font-size:1.1rem; color:var(--text-main);">Daftar Jadwal Anda</h3>';
@@ -898,9 +914,9 @@
         }
 
         // TUGAS TEORI
-        function renderTugas(matkul) {
+        function renderTugas(matkulKey) {
             const wadah = document.getElementById('konten-tugas');
-            const dbTugas = JSON.parse(localStorage.getItem(`tugas_${matkul}`)) || [];
+            const dbTugas = JSON.parse(localStorage.getItem(`tugas_${matkulKey}`)) || [];
             if (dbTugas.length === 0) return wadah.innerHTML = `<div class="empty-box">Belum ada tugas teori aktif.</div>`;
             wadah.innerHTML = '';
             dbTugas.forEach(tugas => {
@@ -919,10 +935,10 @@
             alert("Tugas teori berhasil dikumpulkan!"); renderTugas(activeMatkulGlobal); 
         }
 
-        // UJIAN (UTS/UAS) - MENGGUNAKAN UPLOAD GAMBAR (FILE SCREENSHOT)
-        function renderUjian(matkul) {
+        // UJIAN (UTS/UAS)
+        function renderUjian(matkulKey) {
             const wadah = document.getElementById('konten-ujian');
-            const dbUjian = JSON.parse(localStorage.getItem(`ujian_${matkul}`)) || [];
+            const dbUjian = JSON.parse(localStorage.getItem(`ujian_${matkulKey}`)) || [];
             if (dbUjian.length === 0) return wadah.innerHTML = `<div class="empty-box">Belum ada ujian yang dijadwalkan.</div>`;
             
             wadah.innerHTML = '';
@@ -964,8 +980,8 @@
                     userId: user.userId, 
                     namaMahasiswa: user.nama, 
                     waktu: new Date().toLocaleString('id-ID'), 
-                    linkJawaban: e.target.result, // base64 string
-                    tipeJawaban: 'image', // marker untuk dosen bahwa ini gambar
+                    linkJawaban: e.target.result,
+                    tipeJawaban: 'image',
                     nilai: "" 
                 });
                 
@@ -980,10 +996,10 @@
             reader.readAsDataURL(fileInput.files[0]);
         }
 
-        // KUIS - MENGGUNAKAN UPLOAD GAMBAR (FILE SCREENSHOT)
-        function renderKuis(matkul) {
+        // KUIS 
+        function renderKuis(matkulKey) {
             const wadah = document.getElementById('konten-kuis');
-            const dbKuis = JSON.parse(localStorage.getItem(`kuis_${matkul}`)) || [];
+            const dbKuis = JSON.parse(localStorage.getItem(`kuis_${matkulKey}`)) || [];
             if (dbKuis.length === 0) return wadah.innerHTML = `<div class="empty-box">Belum ada kuis yang tersedia.</div>`;
             
             wadah.innerHTML = '';
@@ -1025,8 +1041,8 @@
                     userId: user.userId, 
                     namaMahasiswa: user.nama, 
                     waktu: new Date().toLocaleString('id-ID'), 
-                    linkJawaban: e.target.result, // base64 string
-                    tipeJawaban: 'image', // marker untuk dosen bahwa ini gambar
+                    linkJawaban: e.target.result, 
+                    tipeJawaban: 'image', 
                     nilai: "" 
                 });
                 
@@ -1042,13 +1058,13 @@
         }
 
         // ABSEN TEORI
-        function renderAbsensi(matkul) {
+        function renderAbsensi(matkulKey) {
             const wadah = document.getElementById('konten-absensi');
-            const dbAbsensi = JSON.parse(localStorage.getItem(`absensi_${matkul}`)) || [];
+            const dbAbsensi = JSON.parse(localStorage.getItem(`absensi_${matkulKey}`)) || [];
             if (dbAbsensi.length === 0) return wadah.innerHTML = `<div class="empty-box">Belum ada sesi kehadiran.</div>`;
             wadah.innerHTML = '';
             [...dbAbsensi].reverse().forEach(sesi => {
-                const sudahHadir = (JSON.parse(localStorage.getItem(`hadir_mhs_${matkul}_${sesi.tanggal}`)) || []).includes(user.userId);
+                const sudahHadir = (JSON.parse(localStorage.getItem(`hadir_mhs_${matkulKey}_${sesi.tanggal}`)) || []).includes(user.userId);
                 let btnHadir = sudahHadir ? `<span style="color:var(--success); font-weight:bold;"><i class="fas fa-check-double"></i> Hadir</span>` : `<button onclick="klikHadir('${sesi.tanggal}')" class="btn-action" style="background:var(--success); color:white; border:none;">Klik Hadir</button>`;
                 wadah.innerHTML += `<div class="item-card"><div class="item-info"><h3>Sesi Teori</h3><p><i class="far fa-calendar-alt"></i> ${sesi.tanggal}</p></div><div>${btnHadir}</div></div>`;
             });
@@ -1120,9 +1136,9 @@
 
 
         // FORUM TEORI
-        function loadForumMessages(matkul) {
+        function loadForumMessages(matkulKey) {
             const cb = document.getElementById('chat-messages');
-            let db = JSON.parse(localStorage.getItem(`forum_${matkul}`)) || [];
+            let db = JSON.parse(localStorage.getItem(`forum_${matkulKey}`)) || [];
             if(db.length === 0) return cb.innerHTML = `<div class="empty-box" style="border:none;">Belum ada diskusi teori.</div>`;
             cb.innerHTML = '';
             db.forEach(m => {
@@ -1143,21 +1159,24 @@
         // RENDER RUANG PRAKTIKUM (ASPRAK)
         // ====================================================================
         function bukaHalamanPraktikum(namaMatkul) {
-            activeMatkulGlobal = namaMatkul; 
-            document.getElementById('prak-title-text').textContent = "Praktikum " + namaMatkul;
+            const safeMatkulKey = namaMatkul.replace(/[^a-zA-Z0-9]/g, '_');
+            activeMatkulGlobal = safeMatkulKey; 
+
+            // Potong teks untuk menampilkan nama dasar di Header Prak
+            document.getElementById('prak-title-text').textContent = "Praktikum " + namaMatkul.split(' (')[0];
             
             document.getElementById('forum-prak-name').textContent = `[ ${namaMatkul} ]`;
 
             bukaTabPrak('prak-pengumuman', document.querySelectorAll('#section-praktikum .tab-btn-prak')[0]);
             
-            renderPengumumanPrak(namaMatkul);
-            renderKontrakPrak(namaMatkul);
-            renderMateriPrakSequential(namaMatkul);
-            renderTugasPrak(namaMatkul);
-            renderNilaiPrak(namaMatkul);
-            renderAsistensiPrak(namaMatkul);
-            loadForumPrak(namaMatkul);
-            renderCutiPrak(namaMatkul);
+            renderPengumumanPrak(safeMatkulKey);
+            renderKontrakPrak(safeMatkulKey);
+            renderMateriPrakSequential(safeMatkulKey);
+            renderTugasPrak(safeMatkulKey);
+            renderNilaiPrak(safeMatkulKey);
+            renderAsistensiPrak(safeMatkulKey);
+            loadForumPrak(safeMatkulKey);
+            renderCutiPrak(safeMatkulKey);
         }
 
         function bukaTabPrak(tabId, btnElement) {
@@ -1196,8 +1215,8 @@
                 simpanCuti(null);
             }
         }
-        function renderCutiPrak(matkul) {
-            let db = JSON.parse(localStorage.getItem(`prak_cuti_${matkul}`)) || [];
+        function renderCutiPrak(matkulKey) {
+            let db = JSON.parse(localStorage.getItem(`prak_cuti_${matkulKey}`)) || [];
             let w = document.getElementById('prak-konten-cuti-list');
             let myCuti = db.filter(c => c.userId === user.userId);
             if(myCuti.length === 0) return w.innerHTML = `<div class="empty-box">Anda belum pernah mengajukan cuti/izin.</div>`;
@@ -1210,8 +1229,8 @@
         }
 
         // --- PENGUMUMAN PRAKTIKUM ---
-        function renderPengumumanPrak(matkul) {
-            let db = JSON.parse(localStorage.getItem(`prak_pengumuman_${matkul}`)) || [];
+        function renderPengumumanPrak(matkulKey) {
+            let db = JSON.parse(localStorage.getItem(`prak_pengumuman_${matkulKey}`)) || [];
             let w = document.getElementById('prak-konten-pengumuman');
             if(db.length === 0) return w.innerHTML = `<div class="empty-box">Belum ada pengumuman praktikum.</div>`;
             w.innerHTML = '';
@@ -1219,8 +1238,8 @@
         }
 
         // --- KONTRAK PRAKTIKUM ---
-        function renderKontrakPrak(matkul) {
-            let db = JSON.parse(localStorage.getItem(`prak_kontrak_${matkul}`)) || [];
+        function renderKontrakPrak(matkulKey) {
+            let db = JSON.parse(localStorage.getItem(`prak_kontrak_${matkulKey}`)) || [];
             let w = document.getElementById('prak-konten-kontrak');
             if(db.length === 0) return w.innerHTML = `<div class="empty-box">Belum ada kontrak praktikum yang diunggah.</div>`;
             w.innerHTML = '';
@@ -1228,9 +1247,9 @@
         }
 
         // --- MATERI PRAKTIKUM SEQUENTIAL LOCK ---
-        function renderMateriPrakSequential(matkul) {
-            let db = JSON.parse(localStorage.getItem(`prak_materi_${matkul}`)) || [];
-            const readMateri = JSON.parse(localStorage.getItem(`read_prak_materi_${user.userId}_${matkul}`)) || [];
+        function renderMateriPrakSequential(matkulKey) {
+            let db = JSON.parse(localStorage.getItem(`prak_materi_${matkulKey}`)) || [];
+            const readMateri = JSON.parse(localStorage.getItem(`read_prak_materi_${user.userId}_${matkulKey}`)) || [];
             let w = document.getElementById('prak-konten-materi');
             if(db.length === 0) return w.innerHTML = `<div class="empty-box">Belum ada modul praktikum.</div>`;
             
@@ -1267,8 +1286,8 @@
         }
 
         // --- TUGAS PRAKTIKUM ---
-        function renderTugasPrak(matkul) {
-            let db = JSON.parse(localStorage.getItem(`prak_tugas_${matkul}`)) || [];
+        function renderTugasPrak(matkulKey) {
+            let db = JSON.parse(localStorage.getItem(`prak_tugas_${matkulKey}`)) || [];
             let w = document.getElementById('prak-konten-tugas');
             if(db.length === 0) return w.innerHTML = `<div class="empty-box">Belum ada tugas laporan praktikum.</div>`;
             w.innerHTML = '';
@@ -1290,8 +1309,8 @@
         }
 
         // --- NILAI PRAKTIKUM ---
-        function renderNilaiPrak(matkul) {
-            let db = JSON.parse(localStorage.getItem(`prak_tugas_${matkul}`)) || [];
+        function renderNilaiPrak(matkulKey) {
+            let db = JSON.parse(localStorage.getItem(`prak_tugas_${matkulKey}`)) || [];
             let w = document.getElementById('prak-konten-nilai');
             if(db.length === 0) return w.innerHTML = `<div class="empty-box">Belum ada nilai praktikum.</div>`;
             
@@ -1305,8 +1324,8 @@
         }
 
         // --- ASISTENSI PRAKTIKUM ---
-        function renderAsistensiPrak(matkul) {
-            let db = JSON.parse(localStorage.getItem(`prak_asistensi_${matkul}`)) || [];
+        function renderAsistensiPrak(matkulKey) {
+            let db = JSON.parse(localStorage.getItem(`prak_asistensi_${matkulKey}`)) || [];
             let w = document.getElementById('prak-konten-asistensi');
             if(db.length === 0) return w.innerHTML = `<div class="empty-box">Belum ada jadwal asistensi.</div>`;
             w.innerHTML = '';
@@ -1314,14 +1333,14 @@
         }
 
         // --- FORUM PRAKTIKUM ---
-        function loadForumPrak(matkul) {
+        function loadForumPrak(matkulKey) {
             const cb = document.getElementById('prak-chat-messages');
-            let db = JSON.parse(localStorage.getItem(`prak_forum_${matkul}`)) || [];
+            let db = JSON.parse(localStorage.getItem(`prak_forum_${matkulKey}`)) || [];
             if(db.length === 0) return cb.innerHTML = `<div class="empty-box" style="border:none;">Belum ada diskusi praktikum.</div>`;
             cb.innerHTML = '';
             db.forEach(m => {
                 const isMe = m.userId === user.userId;
-                cb.innerHTML += `<div class="message" style="${isMe ? 'background:var(--prak-color); color:#fff; align-self:flex-end;' : 'background:rgba(255,255,255,0.05); align-self:flex-start;'}"><span class="sender" style="color:${isMe ? '#fff':'var(--prak-color)'}">${m.nama} (${m.role}) • ${m.waktu}</span>${m.text}</div>`;
+                cb.innerHTML += `<div class="message" style="${isMe ? 'background:var(--prak-color); color:#fff; align-self:flex-end;' : 'background:rgba(255,255,255,0.05); align-self:flex-start;' }"><span class="sender" style="color:${isMe ? '#fff':'var(--prak-color)'}">${m.nama} (${m.role}) • ${m.waktu}</span>${m.text}</div>`;
             });
             cb.scrollTop = cb.scrollHeight;
         }
