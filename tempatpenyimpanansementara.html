@@ -3,1224 +3,183 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beranda & Ruang Kelas | Edu Free</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Berita | Edu Free - Platform Kursus Online</title>
+    <link rel="stylesheet" href="styleindex.css">
     
     <style>
         /* =========================================
-           TEMA & RESET DASAR
+           1. LAYOUT DASAR & HEADER
         ========================================= */
-        :root {
-            --bg-body: #0f172a; 
-            --bg-sidebar: #1e293b; 
-            --bg-card: #1e293b;
-            --bg-card-hover: #334155;
-            --primary: #38bdf8; 
-            --primary-hover: #0ea5e9;
-            --secondary: #818cf8; 
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger-red: #ef4444;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8; 
-            --border-color: rgba(255, 255, 255, 0.05); 
-            --sidebar-width: 260px;
-            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            --shadow-lg: 0 10px 25px -3px rgba(0, 0, 0, 0.2);
-            --banner-gradient: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
-            --prak-color: #f59e0b; 
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-main, #0f172a);
         }
 
-        body:has(#theme-toggle:checked) {
-            --bg-body: #f8fafc; 
-            --bg-sidebar: #ffffff; 
-            --bg-card: #ffffff;
-            --bg-card-hover: #f1f5f9;
-            --primary: #0284c7; 
-            --primary-hover: #0369a1;
-            --secondary: #6366f1; 
-            --text-main: #0f172a;
-            --text-muted: #64748b; 
-            --border-color: rgba(0, 0, 0, 0.08); 
-            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
-            --banner-gradient: linear-gradient(135deg, #e0e7ff 0%, #f3e8ff 100%);
-            --prak-color: #d97706;
-        }
-        
-        .icon-sun { display: none; } 
-        body:has(#theme-toggle:checked) .icon-moon { display: none; } 
-        body:has(#theme-toggle:checked) .icon-sun { display: inline; color: #f59e0b; }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
-        body { background-color: var(--bg-body); color: var(--text-main); display: flex; transition: background-color 0.4s ease, color 0.4s ease; overflow-x: hidden;}
-        a { text-decoration: none; color: inherit; } 
-        ul { list-style: none; }
-
-        /* SIDEBAR MODERN */
-        .sidebar { position: fixed; top: 0; left: 0; width: var(--sidebar-width); height: 100vh; background-color: var(--bg-sidebar); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; z-index: 1000; transition: all 0.4s ease; }
-        .sidebar-header { display: flex; justify-content: center; align-items: center; padding: 30px 20px; border-bottom: 1px solid var(--border-color); }
-        .logo { font-size: 2rem; font-weight: 800; color: var(--primary); letter-spacing: -0.5px; }
-        .logo span { color: var(--secondary); }
-        
-        .theme-switch-wrapper { padding: 20px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: center; } 
-        .theme-toggle-label { cursor: pointer; color: var(--text-muted); display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 0.9rem; font-weight: 600; transition: all 0.3s ease; width: 100%;} 
-        .theme-toggle-label:hover { color: var(--text-main); } 
-        .theme-checkbox { display: none; } 
-        
-        .nav-links { padding: 20px 15px; flex-grow: 1; overflow-y: auto; } 
-        .nav-links::-webkit-scrollbar { width: 4px; } .nav-links::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
-        .nav-links li > a { display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; color: var(--text-muted); font-weight: 600; font-size: 0.95rem; border-radius: 12px; transition: all 0.3s ease; cursor: pointer; margin-bottom: 5px; }
-        .nav-links li > a:hover { background-color: rgba(255,255,255,0.03); color: var(--text-main); }
-        .nav-links li > a.active { background-color: rgba(56, 189, 248, 0.1); color: var(--primary); border-left: 4px solid var(--primary); border-radius: 0 12px 12px 0; }
-        .nav-links li > a.active-prak { background-color: rgba(245, 158, 11, 0.1); color: var(--prak-color); border-left: 4px solid var(--prak-color); border-radius: 0 12px 12px 0; }
-        
-        .nav-links i { width: 20px; text-align: center; margin-right: 12px; font-size: 1.1rem; }
-        
-        .dropdown-btn { cursor: pointer; } 
-        .arrow { font-size: 0.7rem; transition: transform 0.3s ease; } 
-        .dropdown-btn.open .arrow { transform: rotate(180deg); }
-        .dropdown-container { display: none; background-color: transparent; flex-direction: column; padding-left: 10px; margin-top: 5px; border-left: 2px solid var(--border-color); margin-left: 20px; } 
-        .dropdown-container.show { display: flex; animation: slideDown 0.3s ease; } 
-        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .dropdown-container li a { padding: 10px 15px; font-size: 0.85rem; border-radius: 8px; margin-bottom: 2px; } 
-        .dropdown-container li a:hover { padding-left: 20px; color: var(--text-main); background: rgba(255,255,255,0.05); }
-        .dropdown-container li a.sub-active { color: var(--primary); background: rgba(56, 189, 248, 0.1); font-weight: 700; border-left: none; }
-        .dropdown-container li a.sub-active-prak { color: var(--prak-color); background: rgba(245, 158, 11, 0.1); font-weight: 700; border-left: none; }
-        
-        .btn-logout { margin-top: auto; color: #ef4444 !important; }
-
-        /* KONTEN UTAMA & HEADER ATAS */
-        .main-content { margin-left: var(--sidebar-width); width: calc(100% - var(--sidebar-width)); min-height: 100vh; padding: 40px 50px; }
-
-        .header-top-right { position: fixed; top: 30px; right: 50px; display: flex; gap: 15px; z-index: 100; align-items: center;}
-        .header-notif { position: relative; display: flex; align-items: center; justify-content: center; cursor: pointer; width: 45px; height: 45px; border-radius: 50%; transition: all 0.3s ease; background: var(--bg-card); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); backdrop-filter: blur(10px);}
-        .header-notif:hover { transform: translateY(-3px); border-color: var(--primary); }
-        .notif-count { position: absolute; top: -2px; right: -2px; background: var(--danger-red); color: white; width: 18px; height: 18px; border-radius: 50%; font-size: 0.7rem; display: none; justify-content: center; align-items: center; font-weight: bold; box-shadow: 0 0 8px var(--danger-red); animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); } 70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); } 100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } }
-
-        .notif-dropdown { position: absolute; top: 60px; right: 60px; width: 340px; background: var(--bg-card); backdrop-filter: blur(16px); border: 1px solid var(--border-color); border-radius: 20px; padding: 20px; box-shadow: var(--shadow-lg); display: flex; flex-direction: column; opacity: 0; visibility: hidden; transform: translateY(-15px); transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); z-index: 2000; }
-        .notif-dropdown.show { opacity: 1; visibility: visible; transform: translateY(0); }
-        .notif-item { background: var(--bg-body); padding: 12px; border-radius: 12px; margin-bottom: 10px; border: 1px solid var(--border-color); transition: 0.3s;}
-        .notif-item:hover { border-color: var(--primary); }
-
-        .header-profile { display: flex; align-items: center; cursor: pointer; padding: 6px 15px 6px 6px; border-radius: 50px; transition: all 0.3s ease; background: var(--bg-card); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); backdrop-filter: blur(10px); }
-        .header-profile:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: var(--primary); }
-        .header-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid transparent; background-color: #fff; }
-
-        /* SECTION BERANDA */
-        #section-beranda { display: flex; align-items: center; justify-content: space-between; gap: 50px; background: var(--bg-card); padding: 60px 50px; border-radius: 30px; border: 1px solid var(--border-color); width: 100%; min-height: 450px; position: relative; overflow: hidden; box-shadow: var(--shadow-sm); margin-top: 50px;}
-        .hero-content { flex: 1.2; z-index: 2; animation: fadeRight 0.6s ease; }
-        @keyframes fadeRight { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
-        .badge-hero { display: inline-flex; align-items: center; gap: 8px; background: rgba(56, 189, 248, 0.15); color: var(--primary); padding: 8px 20px; border-radius: 30px; font-size: 0.85rem; font-weight: 700; margin-bottom: 25px; border: 1px solid rgba(56, 189, 248, 0.2); text-transform: uppercase; letter-spacing: 1px;}
-        .hero-content h1 { font-size: 3.2rem; font-weight: 800; line-height: 1.15; margin-bottom: 20px; letter-spacing: -1px; }
-        .hero-content h1 span { color: var(--primary); }
-        .hero-content p { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 35px; line-height: 1.7; max-width: 90%; }
-        .hero-image { flex: 1; z-index: 1; display: flex; justify-content: center; animation: floatImg 6s ease-in-out infinite; } 
-        .hero-image img { width: 100%; max-width: 450px; border-radius: 24px; box-shadow: var(--shadow-lg); border: 1px solid var(--border-color);}
-        @keyframes floatImg { 0% { transform: translateY(0px); } 50% { transform: translateY(-15px); } 100% { transform: translateY(0px); } }
-
-        /* SECTION PROFIL */
-        #section-profil { display: none; width: 100%; animation: fadeIn 0.4s ease; margin-top: 50px; }
-        .profil-container { background: var(--bg-card); border-radius: 30px; border: 1px solid var(--border-color); padding: 50px; box-shadow: var(--shadow-lg); display: flex; gap: 50px; align-items: flex-start;}
-        .profil-foto-area { display: flex; flex-direction: column; align-items: center; gap: 20px; width: 250px; text-align: center;}
-        .profil-img-large { width: 180px; height: 180px; border-radius: 50%; object-fit: cover; border: 4px solid var(--primary); box-shadow: 0 10px 25px rgba(56, 189, 248, 0.2); background-color: #fff;}
-        .btn-upload-foto { background: var(--bg-body); border: 1px solid var(--border-color); color: var(--text-main); padding: 10px 20px; border-radius: 20px; cursor: pointer; transition: 0.3s; font-size: 0.85rem; font-weight: 600;}
-        .btn-upload-foto:hover { border-color: var(--primary); color: var(--primary); }
-        .profil-form-area { flex: 1; }
-        .profil-form-area h2 { font-size: 2rem; color: var(--text-main); margin-bottom: 30px; }
-        .input-group { margin-bottom: 20px; }
-        .input-group label { display: block; font-size: 0.9rem; color: var(--text-muted); font-weight: 600; margin-bottom: 8px;}
-        .input-group input, .input-group textarea, .input-group select { width: 100%; padding: 15px; background: var(--bg-body); border: 1px solid var(--border-color); border-radius: 12px; color: var(--text-main); outline: none; font-size: 0.95rem; transition: 0.3s;}
-        .input-group input:focus, .input-group textarea:focus, .input-group select:focus { border-color: var(--primary); }
-        .input-group input:disabled { opacity: 0.6; cursor: not-allowed; }
-
-        /* SECTION RUANG KELAS (DOSEN) */
-        #section-matkul { display: none; width: 100%; animation: fadeIn 0.4s ease; margin-top: 60px; padding-top: 20px;}
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .matkul-header { display: flex; flex-direction: column; justify-content: center; margin-bottom: 25px; padding: 45px 50px; border-radius: 24px; background: var(--banner-gradient); box-shadow: var(--shadow-sm); position: relative; overflow: hidden; border: 1px solid var(--border-color);}
-        .matkul-header::after { content: ''; position: absolute; right: 0; top: 0; width: 40%; height: 100%; background-image: radial-gradient(rgba(255,255,255,0.08) 2px, transparent 2px); background-size: 20px 20px; pointer-events: none;}
-        .matkul-title-box { z-index: 2; position: relative; }
-        .matkul-title-box h1 { font-size: 2.8rem; color: #ffffff; margin-bottom: 12px; font-weight: 800; letter-spacing: -0.5px;}
-        body:has(#theme-toggle:checked) .matkul-title-box h1 { color: var(--text-main); }
-        .matkul-title-box p { color: rgba(255,255,255,0.7); font-size: 1.05rem; font-weight: 500; display: flex; align-items: center; gap: 8px;}
-        body:has(#theme-toggle:checked) .matkul-title-box p { color: var(--text-muted); }
-        
-        /* TABS UTAMA & PRAKTIKUM (DAPAT DIGESER KE SAMPING) */
-        .tabs, .tabs-prak { 
-            display: flex; 
-            flex-wrap: nowrap; 
-            overflow-x: auto; 
-            gap: 5px; 
-            padding: 8px; 
-            border-radius: 16px; 
-            border: 1px solid var(--border-color); 
-            margin-bottom: 35px; 
-            box-shadow: var(--shadow-sm); 
-            max-width: 100%; 
-            background: rgba(255,255,255,0.02);
-            scroll-behavior: smooth;
-            padding-bottom: 12px; 
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background-color: inherit;
         }
 
-        /* Styling Scrollbar Khusus Tabs */
-        .tabs::-webkit-scrollbar, .tabs-prak::-webkit-scrollbar { height: 6px; }
-        .tabs::-webkit-scrollbar-track, .tabs-prak::-webkit-scrollbar-track { 
-            background: rgba(255,255,255,0.05); 
-            border-radius: 10px; 
+        .nav-menu {
+            display: flex;
+            gap: 25px;
+            margin-right: auto;
+            margin-left: 50px;
+            list-style: none; /* Menghilangkan titik pada list */
+            padding: 0;
         }
-        .tabs::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
-        .tabs-prak::-webkit-scrollbar-thumb { background: var(--prak-color); border-radius: 10px; }
 
-        body:has(#theme-toggle:checked) .tabs, 
-        body:has(#theme-toggle:checked) .tabs-prak { background: #ffffff; }
-        body:has(#theme-toggle:checked) .tabs::-webkit-scrollbar-track,
-        body:has(#theme-toggle:checked) .tabs-prak::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); }
-        
-        .tab-btn { background: transparent; border: none; padding: 12px 24px; border-radius: 12px; color: var(--text-muted); font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); white-space: nowrap; display: flex; align-items: center; gap: 8px; flex-shrink: 0;}
-        .tab-btn:hover { color: var(--text-main); background: rgba(255,255,255,0.05); }
-        body:has(#theme-toggle:checked) .tab-btn:hover { background: rgba(0,0,0,0.03); }
-        .tab-btn.active { background: var(--primary); color: #fff; box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3); }
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-main, #fff);
+            font-weight: 500;
+        }
 
-        .tab-content { display: none; background: transparent; min-height: 400px; animation: fadeIn 0.3s ease;}
-        .tab-content.active { display: block; }
-        .section-title-tab { margin-bottom: 25px; font-size: 1.6rem; color: var(--text-main); font-weight: 800; display: flex; align-items: center; gap: 12px;}
+        .nav-link.active {
+            color: var(--primary, #38bdf8);
+        }
 
-        /* CSS GRID MATERI (DENGAN KUNCI/LOCK) */
-        .materi-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 25px; }
-        .materi-card { position: relative; background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-color); border-radius: 20px; padding: 45px 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: all 0.3s ease; cursor: pointer; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-decoration: none;}
-        body:has(#theme-toggle:checked) .materi-card { background: var(--bg-card); box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
-        .materi-card:hover { transform: translateY(-6px); background: rgba(56, 189, 248, 0.05); }
-        
-        .materi-badge { position: absolute; top: 15px; right: 15px; font-size: 0.75rem; font-weight: 700; padding: 5px 12px; border-radius: 20px; transition: 0.3s;}
-        .materi-badge.unread { background: rgba(239, 68, 68, 0.1); color: var(--danger-red); border: 1px solid rgba(239, 68, 68, 0.2); }
-        .materi-badge.read { background: rgba(16, 185, 129, 0.1); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.2); }
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 25px; 
+        }
 
-        .materi-icon { font-size: 3.8rem; margin-bottom: 20px; transition: 0.3s; opacity: 0.8;}
-        .materi-card:hover .materi-icon { transform: scale(1.1); opacity: 1;}
-        .materi-title { font-size: 1.3rem; font-weight: 800; margin-bottom: 10px; color: var(--text-main); }
-        
-        /* CARD LOCKED STATE */
-        .materi-card.locked { opacity: 0.6; cursor: not-allowed; border-color: var(--text-muted) !important; background: rgba(0,0,0,0.2) !important; pointer-events: none;}
-        .materi-card.locked:hover { transform: none; background: rgba(0,0,0,0.2) !important;}
-        .materi-badge.locked-badge { background: rgba(148, 163, 184, 0.1); color: var(--text-muted); border: 1px solid rgba(148, 163, 184, 0.2); }
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+        }
 
-        /* ITEM CARD LIST UMUM */
-        .item-card { background: var(--bg-card); border: 1px solid var(--border-color); padding: 24px 30px; border-radius: 20px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; transition: all 0.3s ease; }
-        .item-card:hover { transform: translateY(-2px); border-color: rgba(56, 189, 248, 0.3); }
-        .item-info h3 { font-size: 1.15rem; margin-bottom: 6px; color: var(--text-main); font-weight: 700;}
-        .item-info p { font-size: 0.9rem; color: var(--text-muted); font-weight: 500; display: flex; align-items: center; gap: 6px; margin-top:5px;}
-        
-        .btn-action { background: rgba(56, 189, 248, 0.1); color: var(--primary); border: 1px solid rgba(56, 189, 248, 0.2); padding: 10px 24px; border-radius: 12px; font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: all 0.3s ease; display: inline-block;}
-        .btn-action:hover { background: var(--primary); color: #fff; }
-
-        .upload-tugas-area { margin-top: 15px; display: flex; gap: 10px; align-items: center; }
-        .upload-tugas-area input[type="url"], .upload-tugas-area input[type="file"] { padding: 10px 15px; background: var(--bg-body); border: 1px solid var(--border-color); border-radius: 12px; color: var(--text-main); font-size: 0.9rem; flex: 1; outline:none;}
-        .upload-tugas-area input:focus { border-color: var(--primary); }
-
-        .empty-box { text-align: center; color: var(--text-muted); font-size: 1.1rem; padding: 40px; background: rgba(255,255,255,0.02); border-radius: 16px; border: 1px solid var(--border-color); }
-        body:has(#theme-toggle:checked) .empty-box { background: #f8fafc; }
-
-        /* BUNGKUSAN TABEL AGAR BISA DI SCROLL KE SAMPING */
-        .table-responsive {
+        main {
             width: 100%;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch; 
-            border-radius: 12px;
         }
 
-        .styled-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.95em; border-radius: 12px; overflow: hidden; background-color: var(--bg-card); border: 1px solid var(--border-color); }
-        .styled-table thead tr { background-color: var(--primary); color: #ffffff; text-align: left; }
-        .styled-table th, .styled-table td { padding: 15px 20px; border-bottom: 1px solid var(--border-color); min-width: 150px; }
-        .styled-table tbody tr:hover { background-color: rgba(255, 255, 255, 0.02); }
-
-        /* CHAT BOX */
-        .chat-box { border: 1px solid var(--border-color); border-radius: 24px; height: 500px; display: flex; flex-direction: column; background: var(--bg-card); overflow: hidden;}
-        .chat-header-info { padding: 15px 25px; border-bottom: 1px solid var(--border-color); background: rgba(0,0,0,0.2); display: flex; align-items: center; gap: 10px;}
-        .chat-header-info i { color: var(--primary); font-size: 1.2rem;}
-        .chat-header-info span { font-weight: 600; font-size: 0.9rem;}
-        .chat-messages { flex: 1; padding: 25px; overflow-y: auto; display: flex; flex-direction: column; gap: 18px; scroll-behavior: smooth; }
-        .chat-messages::-webkit-scrollbar { width: 6px; } .chat-messages::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
-        .message { max-width: 75%; padding: 14px 18px; font-size: 0.95rem; line-height: 1.5; position: relative; border-radius: 16px;}
-        .message .sender { font-size: 0.75rem; font-weight: 700; margin-bottom: 6px; display: block; letter-spacing: 0.5px;}
-        .msg-other { background: rgba(255,255,255,0.05); align-self: flex-start; border: 1px solid var(--border-color); border-bottom-left-radius: 4px; }
-        .msg-other .sender { color: var(--secondary); }
-        .msg-me { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%); color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; border: none; }
-        .msg-me .sender { color: rgba(255,255,255,0.8); }
-        .chat-input-area { padding: 20px; background: rgba(0,0,0,0.2); border-top: 1px solid var(--border-color); display: flex; gap: 15px; align-items: center; }
-        .chat-input-area input { flex: 1; padding: 16px 20px; border: 1px solid var(--border-color); border-radius: 16px; background: var(--bg-body); color: var(--text-main); outline: none; font-size: 0.95rem; font-weight: 500; transition: border 0.3s;}
-        .chat-input-area input:focus { border-color: var(--primary); }
-        .chat-input-area button { background: var(--primary); color: white; border: none; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; display: flex; justify-content: center; align-items: center;}
-
-        /* SECTION PRAKTIKUM */
-        #section-praktikum { display: none; width: 100%; animation: fadeIn 0.4s ease; margin-top: 60px; padding-top: 20px;}
-        .prak-header { display: flex; flex-direction: column; justify-content: center; margin-bottom: 25px; padding: 45px 50px; border-radius: 24px; background: linear-gradient(135deg, #78350f 0%, #0f172a 100%); box-shadow: var(--shadow-sm); position: relative; overflow: hidden; border: 1px solid var(--border-color);}
-        body:has(#theme-toggle:checked) .prak-header { background: linear-gradient(135deg, #fef3c7 0%, #fff7ed 100%); }
-        .prak-header::after { content: ''; position: absolute; right: 0; top: 0; width: 40%; height: 100%; background-image: radial-gradient(rgba(255,255,255,0.08) 2px, transparent 2px); background-size: 20px 20px; pointer-events: none;}
-        .prak-title-box { z-index: 2; position: relative; }
-        .prak-title-box h1 { font-size: 2.8rem; color: #ffffff; margin-bottom: 12px; font-weight: 800; letter-spacing: -0.5px;}
-        body:has(#theme-toggle:checked) .prak-title-box h1 { color: var(--text-main); }
-        .prak-title-box p { color: rgba(255,255,255,0.7); font-size: 1.05rem; font-weight: 500; display: flex; align-items: center; gap: 8px;}
-        body:has(#theme-toggle:checked) .prak-title-box p { color: var(--text-muted); }
-
-        .tab-btn-prak { background: transparent; border: none; padding: 12px 24px; border-radius: 12px; color: var(--text-muted); font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); white-space: nowrap; display: flex; align-items: center; gap: 8px; flex-shrink: 0;}
-        .tab-btn-prak:hover { color: var(--text-main); background: rgba(255,255,255,0.05); }
-        body:has(#theme-toggle:checked) .tab-btn-prak:hover { background: rgba(0,0,0,0.03); }
-        .tab-btn-prak.active { background: var(--prak-color); color: #fff; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3); }
+        /* =========================================
+           2. CSS UNTUK HALAMAN BERITA
+        ========================================= */
+        .news-wrapper { padding: 40px 8%; max-width: 1200px; margin: 0 auto; min-height: 80vh; }
+        .news-header { text-align: center; margin-bottom: 40px; }
+        .news-header h2 { font-size: 2.5rem; color: var(--text-main, #fff); margin-bottom: 10px; }
         
-        .tab-content-prak { display: none; background: transparent; min-height: 400px; animation: fadeIn 0.3s ease;}
-        .tab-content-prak.active { display: block; }
-        .btn-action-prak { background: rgba(245, 158, 11, 0.1); color: var(--prak-color); border: 1px solid rgba(245, 158, 11, 0.2); padding: 10px 24px; border-radius: 12px; font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: all 0.3s ease; display: inline-block;}
-        .btn-action-prak:hover { background: var(--prak-color); color: #fff; }
-        .item-card-prak { background: var(--bg-card); border: 1px solid var(--border-color); padding: 24px 30px; border-radius: 20px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; transition: all 0.3s ease; }
-        .item-card-prak:hover { transform: translateY(-2px); border-color: rgba(245, 158, 11, 0.3); }
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        .news-card {
+            background: var(--bg-card, #1e293b);
+            border: 1px solid var(--border-color, rgba(255,255,255,0.1));
+            border-radius: 15px;
+            padding: 25px;
+            transition: transform 0.3s ease;
+            color: var(--text-main, #fff);
+            display: flex;
+            flex-direction: column;
+        }
+        .news-card:hover { transform: translateY(-5px); border-color: var(--primary, #38bdf8); }
         
-        /* FORM ZOOM & CUTI */
-        .form-card { background: var(--bg-card); padding: 30px; border-radius: 20px; border: 1px solid var(--border-color); margin-bottom: 25px; }
+        .news-img-container {
+            width: 100%; height: 180px; overflow: hidden;
+            border-radius: 10px; margin-bottom: 15px; background: rgba(0,0,0,0.2);
+        }
+        .news-img-container img { width: 100%; height: 100%; object-fit: cover; }
+        .news-date { font-size: 0.85rem; color: var(--primary, #38bdf8); margin-bottom: 10px; display: block; }
+        .news-title { font-size: 1.3rem; margin-bottom: 15px; }
+        .news-desc { font-size: 0.95rem; line-height: 1.6; opacity: 0.8; }
     </style>
 </head>
 <body>
-
-    <nav class="sidebar">
-        <div class="sidebar-header">
-            <div class="logo">Edu<span>-Free.</span></div>
-        </div>
+    <a href="https://wa.me/082143511969" class="floating-wa" target="_blank" title="Hubungi Kami di WhatsApp">
+    <img src="./logowa.png" alt="WhatsApp Icon" width="40" height="35">
+    </a>
+    
+    <header>
+        <div class="logo">Edu-Free.</div>
         
-        <div class="theme-switch-wrapper">
-            <input type="checkbox" id="theme-toggle" class="theme-checkbox">
+        <ul class="nav-menu">
+            <li><a href="index.html" class="nav-link">Beranda</a></li>
+            <li><a href="tim.html" class="nav-link">Tim Kami</a></li>
+            <li><a href="tentang.html" class="nav-link">Tentang</a></li>
+            <li><a href="berita.html" class="active nav-link">Berita</a></li>
+        </ul>
+
+        <div class="header-right">
+            <div class="auth-buttons">
+                <a href="login.html"><button class="btn btn-login">Masuk</button></a>
+                <a href="register.html"><button class="btn btn-register">Daftar Gratis</button></a>
+            </div>
+            
+            <input type="checkbox" id="theme-toggle" class="theme-checkbox" hidden>
             <label for="theme-toggle" class="theme-toggle-label">
-                <i class="fas fa-moon icon-moon"></i> Mode Gelap
+                <span class="icon-moon">🌙Gelap</span>
+                <span class="icon-sun">☀️Terang</span>
             </label>
         </div>
+    </header>
 
-        <ul class="nav-links">
-            <li><a href="#" id="menu-beranda" class="active"><i class="fas fa-home" style="margin-right:10px;"></i> Beranda</a></li>
-            <li><a href="#" id="menu-profil"><i class="fas fa-user-circle" style="margin-right:10px;"></i> Profil Saya</a></li>
-
-            <li>
-                <a class="dropdown-btn open">
-                    <span><i class="fas fa-layer-group" style="margin-right:10px;"></i> Ruang Kelas</span>
-                    <span class="arrow"><i class="fas fa-chevron-down"></i></span>
-                </a>
-                <ul class="dropdown-container show" id="menu-matkul-saya"></ul>
-            </li>
-
-            <li id="menu-group-praktikum" style="display: none; margin-top:5px;">
-                <a class="dropdown-btn open">
-                    <span><i class="fas fa-flask" style="margin-right:10px;"></i> Ruang Praktikum</span>
-                    <span class="arrow"><i class="fas fa-chevron-down"></i></span>
-                </a>
-                <ul class="dropdown-container show" id="menu-prak-saya"></ul>
-            </li>
-
-            <li style="margin-top: 15px;"><a href="index.html"><i class="fas fa-sign-out-alt" style="margin-right:10px; color:var(--danger-red);"></i>Log Out</a></li>
-        </ul>
-    </nav>
-
-    <main class="main-content">
-        <div class="header-top-right">
-            <div class="header-notif" id="notif-trigger" title="Notifikasi Baru">
-                <i class="fas fa-bell"></i>
-                <span class="notif-count" id="notifCount">0</span>
+    <main>
+        <div class="news-wrapper">
+            <div class="news-header">
+                <h2>Berita & Artikel IT Terbaru</h2>
+                <p style="color: var(--text-muted, #aaa); margin-top: 10px;">Informasi terbaru seputar platform Edu-Free.</p>
             </div>
             
-            <div class="notif-dropdown" id="notifDropdown">
-                <div class="notif-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; border-bottom:1px solid var(--border-color); padding-bottom:10px;">
-                    <h3 style="color:var(--text-main); font-size:1.1rem;"><i class="fas fa-bell" style="color:var(--primary); margin-right:5px;"></i> Notifikasi</h3>
-                    <button id="clear-all-notif" style="background:transparent; border:none; color:var(--text-muted); cursor:pointer; font-size:0.8rem; font-weight:bold; transition:0.3s;">Bersihkan</button>
+            <div class="news-grid" id="news-container">
                 </div>
-                <div id="notif-list" style="max-height: 300px; overflow-y: auto;"></div>
-            </div>
-
-            <div class="header-profile" title="Profil Anda" onclick="document.getElementById('menu-profil').click();">
-                <div style="text-align: right; margin-right: 12px; margin-left: 8px;">
-                    <div id="top-name" style="font-size: 0.9rem; font-weight: 700; letter-spacing: 0.2px;">Nama</div>
-                    <div id="top-role" style="font-size: 0.75rem; color: var(--primary); font-weight: 600;">Mahasiswa</div>
-                </div>
-                <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png" id="header-avatar" class="header-avatar">
-            </div>
         </div>
-
-        <section id="section-beranda">
-            <div class="hero-content">
-                <div class="badge-hero"><i class="fas fa-rocket"></i> Platform E-Learning</div>
-                <h1>Tingkatkan <span style="color: var(--primary);">Skill Coding</span> Bersama Kami.</h1>
-                <p id="welcome-message">Selamat Datang di ruang belajar interaktif. Silakan pilih kelas atau praktikum di menu samping untuk memulai perjalanan Kamu hari ini.</p>
-            </div>
-            <div class="hero-image">
-                <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Dashboard Belajar" style="object-fit: cover;">
-            </div>
-        </section>
-
-        <section id="section-profil">
-            <div class="profil-container">
-                <div class="profil-foto-area">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png" id="profil-img-preview" class="profil-img-large" alt="Foto Profil">
-                    <div>
-                        <input type="file" id="profil-upload-input" accept="image/png, image/jpeg, image/jpg" style="display:none;" onchange="previewProfilePic(event)">
-                        <button class="btn-action" style="width:100%; margin-bottom:10px; justify-content:center;" onclick="document.getElementById('profil-upload-input').click();"><i class="fas fa-camera"></i> Ubah Foto</button>
-                        <button class="btn-action" style="color:var(--danger-red); border-color:var(--danger-red); background:transparent; width:100%; justify-content:center;" onclick="hapusProfilePic()"><i class="fas fa-trash"></i> Hapus Foto</button>
-                    </div>
-                </div>
-                <div class="profil-form-area">
-                    <h2><i class="fas fa-user-edit" style="color:var(--primary); margin-right:10px;"></i> Detail Profil Mahasiswa</h2>
-                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
-                        <div class="input-group">
-                            <label>Nama Lengkap</label><input type="text" id="prof-nama" disabled>
-                        </div>
-                        <div class="input-group">
-                            <label>Nomor Induk Mahasiswa (NIM)</label><input type="text" id="prof-nim" disabled>
-                        </div>
-                    </div>
-                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
-                        <div class="input-group">
-                            <label>Tanggal Lahir</label><input type="date" id="prof-tgl">
-                        </div>
-                        <div class="input-group">
-                            <label>Universitas / Institusi</label><input type="text" id="prof-univ" placeholder="Contoh: Universitas Trunojoyo Madura">
-                        </div>
-                    </div>
-                    <div class="input-group">
-                        <label>Alamat Domisili</label><textarea id="prof-alamat" rows="3" placeholder="Masukkan alamat lengkap..."></textarea>
-                    </div>
-                    <button class="btn-action" style="padding: 15px 30px; font-size: 1.05rem;" onclick="simpanProfil()"><i class="fas fa-save"></i> Simpan Perubahan Profil</button>
-                </div>
-            </div>
-        </section>
-
-        <section id="section-matkul">
-            <div class="matkul-header">
-                <div class="matkul-title-box">
-                    <h1 id="matkul-title-text">Nama Mata Kuliah</h1>
-                    <p><i class="fas fa-graduation-cap"></i> Kelas Teori (Dosen Pengampu) — Semester <span id="matkul-semester-text" style="margin-left: 5px;">X</span></p>
-                </div>
-            </div>
-
-            <nav class="tabs">
-                <button class="tab-btn" onclick="bukaTabKelas('tab-absensi', this)"><i class="fas fa-user-check"></i> Kehadiran</button>
-                <button class="tab-btn active" onclick="bukaTabKelas('tab-materi', this)"><i class="fas fa-book-open"></i> Materi Teori</button>
-                <button class="tab-btn" onclick="bukaTabKelas('tab-tugas', this)"><i class="fas fa-laptop-code"></i> Tugas Dosen</button>
-                
-                <button class="tab-btn" onclick="bukaTabKelas('tab-ujian', this)"><i class="fas fa-file-alt"></i> UTS / UAS</button>
-                <button class="tab-btn" onclick="bukaTabKelas('tab-kuis', this)"><i class="fas fa-question-circle"></i> Kuis</button>
-
-                <button class="tab-btn" onclick="bukaTabKelas('tab-nilai', this)"><i class="fas fa-star"></i> Penilaian Dosen</button>
-                <button class="tab-btn" onclick="bukaTabKelas('tab-forum', this)"><i class="fas fa-comments"></i> Forum Kelas</button>
-                <button class="tab-btn" onclick="bukaTabKelas('tab-kontrak-teori', this)"><i class="fas fa-file-signature"></i> Kontrak Kuliah</button>
-                <button class="tab-btn" onclick="bukaTabKelas('tab-zoom', this)"><i class="fas fa-video"></i> Jadwal Zoom</button>
-                <button class="tab-btn" onclick="bukaTabKelas('tab-kuisioner', this)"><i class="fas fa-clipboard-check"></i> Kuisioner</button>
-            </nav>
-
-            <div id="tab-absensi" class="tab-content"><div id="konten-absensi"></div></div>
-            <div id="tab-materi" class="tab-content active"><div id="konten-materi"></div></div>
-            <div id="tab-tugas" class="tab-content"><div id="konten-tugas"></div></div>
-            
-            <div id="tab-ujian" class="tab-content">
-                <h2 class="section-title-tab"><i class="fas fa-file-alt" style="color: var(--primary);"></i> Ujian (UTS / UAS)</h2>
-                <div id="konten-ujian"></div>
-            </div>
-            
-            <div id="tab-kuis" class="tab-content">
-                <h2 class="section-title-tab"><i class="fas fa-question-circle" style="color: var(--primary);"></i> Kuis</h2>
-                <div id="konten-kuis"></div>
-            </div>
-
-            <div id="tab-nilai" class="tab-content">
-                <h2 class="section-title-tab"><i class="fas fa-star" style="color: var(--primary);"></i> Penilaian Dosen</h2>
-                <div class="upload-form-card">
-                    <div class="input-group">
-                        <label>Pilih Kategori Penilaian</label>
-                        <select id="kategori-nilai-mhs" onchange="renderTabelNilaiKategori()" style="padding:12px; border-radius:10px; width:100%; background:var(--bg-body); color:var(--text-main); border:1px solid var(--border-color);">
-                            <option value="tugas">Tugas Dosen</option>
-                            <option value="ujian">UTS / UAS</option>
-                            <option value="kuis">Kuis</option>
-                        </select>
-                    </div>
-                </div>
-                <div id="konten-nilai-kategori"></div>
-            </div>
-            
-            <div id="tab-forum" class="tab-content">
-                <div class="chat-box">
-                    <div class="chat-header-info"><i class="fas fa-shield-alt"></i> <span>Tanya jawab dengan dosen pengampu.</span></div>
-                    <div class="chat-messages" id="chat-messages"></div>
-                    <form class="chat-input-area" id="form-chat">
-                        <input type="text" id="chat-input" placeholder="Ketik pertanyaan ke dosen di sini..." autocomplete="off">
-                        <button type="submit"><i class="fas fa-paper-plane"></i></button>
-                    </form>
-                </div>
-            </div>
-
-            <div id="tab-kontrak-teori" class="tab-content">
-                <h2 class="section-title-tab"><i class="fas fa-file-signature" style="color: var(--primary);"></i> Dokumen Kontrak Kuliah</h2>
-                <div id="konten-kontrak-teori"></div>
-            </div>
-
-            <div id="tab-zoom" class="tab-content">
-                <h2 class="section-title-tab"><i class="fas fa-video" style="color: var(--primary);"></i> Jadwal Zoom Kelas</h2>
-                <div class="form-card">
-                    <div class="input-group">
-                        <label>Hari</label>
-                        <select id="zoom-hari">
-                            <option value="Senin">Senin</option><option value="Selasa">Selasa</option>
-                            <option value="Rabu">Rabu</option><option value="Kamis">Kamis</option>
-                            <option value="Jumat">Jumat</option><option value="Sabtu">Sabtu</option>
-                        </select>
-                    </div>
-                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
-                        <div class="input-group">
-                            <label>Tanggal</label><input type="date" id="zoom-tgl">
-                        </div>
-                        <div class="input-group">
-                            <label>Jam (WIB)</label><input type="time" id="zoom-jam">
-                        </div>
-                    </div>
-                    <div class="input-group">
-                        <label>Link Zoom Meeting</label><input type="url" id="zoom-link" placeholder="https://zoom.us/j/...">
-                    </div>
-                    <button class="btn-action" onclick="simpanZoom()"><i class="fas fa-save"></i> Simpan Jadwal Zoom</button>
-                </div>
-                <div id="konten-zoom-list"></div>
-            </div>
-
-            <div id="tab-kuisioner" class="tab-content">
-                <h2 class="section-title-tab"><i class="fas fa-comment-dots" style="color: var(--primary);"></i> Kuisioner Evaluasi Pembelajaran</h2>
-                <div class="form-card">
-                    <p style="color:var(--text-muted); margin-bottom: 20px;">Berikan penilaian dan saran Anda untuk mata kuliah ini. Masukan Anda akan dikirim langsung ke Admin Universitas.</p>
-                    <div class="input-group">
-                        <label>Pesan / Saran / Evaluasi</label>
-                        <textarea id="input-pesan-kuisioner" rows="5" placeholder="Tulis masukan Anda terkait dosen, materi, atau sistem di mata kuliah ini..."></textarea>
-                    </div>
-                    <button class="btn-action" onclick="kirimKuisioner()"><i class="fas fa-paper-plane"></i> Kirim Kuisioner</button>
-                </div>
-                <h3 style="margin-bottom: 15px; font-size:1.1rem; color:var(--text-main);">Riwayat Kuisioner Anda</h3>
-                <div id="konten-riwayat-kuisioner"></div>
-            </div>
-
-        </section>
-
-        <section id="section-praktikum">
-            <div class="prak-header">
-                <div class="prak-title-box">
-                    <h1 id="prak-title-text">Nama Praktikum</h1>
-                    <p><i class="fas fa-flask"></i> Laboratorium Komputer (Asisten Praktikum)</p>
-                </div>
-            </div>
-
-            <nav class="tabs-prak">
-                <button class="tab-btn-prak active" onclick="bukaTabPrak('prak-pengumuman', this)"><i class="fas fa-bullhorn"></i> Pengumuman</button>
-                <button class="tab-btn-prak" onclick="bukaTabPrak('prak-materi', this)"><i class="fas fa-file-alt"></i> Modul Praktikum</button>
-                <button class="tab-btn-prak" onclick="bukaTabPrak('prak-tugas', this)"><i class="fas fa-laptop-code"></i> Tugas/Laporan</button>
-                <button class="tab-btn-prak" onclick="bukaTabPrak('prak-nilai', this)"><i class="fas fa-star"></i> Nilai Laporan</button>
-                <button class="tab-btn-prak" onclick="bukaTabPrak('prak-asistensi', this)"><i class="fas fa-calendar-check"></i> Jadwal Asistensi</button>
-                <button class="tab-btn-prak" onclick="bukaTabPrak('prak-forum', this)"><i class="fas fa-comments"></i> Diskusi Asprak</button>
-                <button class="tab-btn-prak" onclick="bukaTabPrak('prak-kontrak', this)"><i class="fas fa-file-signature"></i> Kontrak Praktikum</button>
-                <button class="tab-btn-prak" onclick="bukaTabPrak('prak-cuti', this)"><i class="fas fa-notes-medical"></i> Pengajuan Cuti</button>
-            </nav>
-
-            <div id="prak-pengumuman" class="tab-content-prak active"><div id="prak-konten-pengumuman"></div></div>
-            <div id="prak-materi" class="tab-content-prak"><div id="prak-konten-materi"></div></div>
-            <div id="prak-tugas" class="tab-content-prak"><div id="prak-konten-tugas"></div></div>
-            <div id="prak-nilai" class="tab-content-prak"><div id="prak-konten-nilai"></div></div>
-            <div id="prak-asistensi" class="tab-content-prak"><div id="prak-konten-asistensi"></div></div>
-
-            <div id="prak-forum" class="tab-content-prak">
-                <div class="chat-box" style="border-color: var(--prak-color);">
-                    <div class="chat-header-info" style="background: rgba(245, 158, 11, 0.05);"><i class="fas fa-flask" style="color: var(--prak-color);"></i> <span>Ruang diskusi khusus dengan Asisten Praktikum <strong id="forum-prak-name"></strong></span></div>
-                    <div class="chat-messages" id="prak-chat-messages"></div>
-                    <form class="chat-input-area" id="prak-form-chat">
-                        <input type="text" id="prak-chat-input" placeholder="Tanya asprak di sini..." autocomplete="off">
-                        <button type="submit" style="background:var(--prak-color);"><i class="fas fa-paper-plane"></i></button>
-                    </form>
-                </div>
-            </div>
-
-            <div id="prak-kontrak" class="tab-content-prak">
-                <h2 class="section-title-tab" style="color:var(--prak-color);"><i class="fas fa-file-signature"></i> Dokumen Kontrak Praktikum</h2>
-                <div id="prak-konten-kontrak"></div>
-            </div>
-
-            <div id="prak-cuti" class="tab-content-prak">
-                <h2 class="section-title-tab" style="color:var(--prak-color);"><i class="fas fa-notes-medical"></i> Pengajuan Izin / Cuti Praktikum</h2>
-                <div class="form-card">
-                    <div class="input-group">
-                        <label>Jenis Pengajuan</label>
-                        <select id="cuti-jenis">
-                            <option value="Sakit">Sakit</option>
-                            <option value="Izin">Izin Keperluan Mendesak</option>
-                        </select>
-                    </div>
-                    <div class="input-group">
-                        <label>Keterangan / Alasan Detail</label>
-                        <textarea id="cuti-alasan" rows="3" placeholder="Sebutkan alasan detail dan tanggal tidak bisa hadir..."></textarea>
-                    </div>
-                    <div class="input-group">
-                        <label>Upload Bukti (Surat Dokter / Dokumen Pendukung)</label>
-                        <input type="file" id="cuti-file" accept="image/*, .pdf" style="padding:10px;">
-                    </div>
-                    <button class="btn-action-prak" onclick="ajukanCutiPrak()"><i class="fas fa-paper-plane"></i> Kirim Pengajuan</button>
-                </div>
-                <h3 style="margin-bottom: 15px; font-size:1.1rem; color:var(--text-main);">Riwayat Pengajuan Saya</h3>
-                <div id="prak-konten-cuti-list"></div>
-            </div>
-
-        </section>
     </main>
 
     <script>
-        // FUNGSI HELPER
-        function generateId() {
-            return '_' + Math.random().toString(36).substr(2, 9);
-        }
-
-        const activeUserString = localStorage.getItem('loggedInUser');
-        if (!activeUserString) { window.location.href = "login.html"; }
-        const user = JSON.parse(activeUserString);
-
-        if(user.role !== 'mahasiswa') { window.location.href = "login.html"; }
-
-        document.getElementById('top-name').textContent = user.nama;
-        document.getElementById('matkul-semester-text').textContent = user.semester || "Ganjil";
-
-        // PROFIL
-        function muatDataProfil() {
-            document.getElementById('prof-nama').value = user.nama;
-            document.getElementById('prof-nim').value = user.userId;
-            const savedProfileData = JSON.parse(localStorage.getItem('profileData_' + user.userId)) || {};
-            if(savedProfileData.tglLahir) document.getElementById('prof-tgl').value = savedProfileData.tglLahir;
-            if(savedProfileData.univ) document.getElementById('prof-univ').value = savedProfileData.univ;
-            if(savedProfileData.alamat) document.getElementById('prof-alamat').value = savedProfileData.alamat;
-            const savedPhoto = localStorage.getItem('profilePic_' + user.userId);
-            document.getElementById('header-avatar').src = savedPhoto || "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png";
-            document.getElementById('profil-img-preview').src = savedPhoto || "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png";
-        }
-        muatDataProfil();
-
-        window.simpanProfil = function() {
-            const dataToSave = { tglLahir: document.getElementById('prof-tgl').value, univ: document.getElementById('prof-univ').value, alamat: document.getElementById('prof-alamat').value };
-            localStorage.setItem('profileData_' + user.userId, JSON.stringify(dataToSave));
-            alert("Data profil berhasil diperbarui!");
-        }
-
-        window.previewProfilePic = function(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    try {
-                        localStorage.setItem('profilePic_' + user.userId, e.target.result);
-                        document.getElementById('profil-img-preview').src = e.target.result;
-                        document.getElementById('header-avatar').src = e.target.result;
-                    } catch(err) { alert("Gagal mengunggah foto! Ukuran file terlalu besar."); }
-                };
-                reader.readAsDataURL(file);
-            }
-        }
-        window.hapusProfilePic = function() {
-            if(confirm("Apakah Anda yakin ingin menghapus foto profil?")) {
-                localStorage.removeItem('profilePic_' + user.userId); muatDataProfil(); 
-            }
-        }
-
-        // NOTIFIKASI
-        const notifTrigger = document.getElementById('notif-trigger');
-        const notifDropdown = document.getElementById('notifDropdown');
-        notifTrigger.addEventListener('click', (e) => { e.stopPropagation(); notifDropdown.classList.toggle('show'); loadNotifikasi(); });
-        document.addEventListener('click', (e) => { if (!notifDropdown.contains(e.target) && !notifTrigger.contains(e.target)) notifDropdown.classList.remove('show'); });
-
-        function loadNotifikasi() {
-            let dismissedNotifs = JSON.parse(localStorage.getItem('dismissed_notifs_' + user.userId)) || [];
-            let activeNotifs = [];
-            if (user.matkul && user.matkul.length > 0) {
-                user.matkul.forEach(mk => {
-                    let dbTugas = JSON.parse(localStorage.getItem(`tugas_${mk}`)) || [];
-                    dbTugas.forEach(t => { if (!dismissedNotifs.includes(t.id)) activeNotifs.push({ id: t.id, title: `Tugas Dosen: ${t.judul}`, desc: `MK: ${mk} - Tenggat: ${t.deadline}`, type: 'tugas' }); });
-                    let dbMateri = JSON.parse(localStorage.getItem(`materi_${mk}`)) || [];
-                    dbMateri.forEach(m => { if (!dismissedNotifs.includes(m.id)) activeNotifs.push({ id: m.id, title: `Materi Dosen: ${m.judul}`, desc: `MK: ${mk}`, type: 'materi' }); });
-                    
-                    let dbUjian = JSON.parse(localStorage.getItem(`ujian_${mk}`)) || [];
-                    dbUjian.forEach(u => { if (!dismissedNotifs.includes(u.id)) activeNotifs.push({ id: u.id, title: `Ujian: ${u.judul}`, desc: `MK: ${mk} - Tenggat: ${u.deadline}`, type: 'ujian' }); });
-                    let dbKuis = JSON.parse(localStorage.getItem(`kuis_${mk}`)) || [];
-                    dbKuis.forEach(k => { if (!dismissedNotifs.includes(k.id)) activeNotifs.push({ id: k.id, title: `Kuis: ${k.judul}`, desc: `MK: ${mk} - Tenggat: ${k.deadline}`, type: 'kuis' }); });
-
-                    let pTugas = JSON.parse(localStorage.getItem(`prak_tugas_${mk}`)) || [];
-                    pTugas.forEach(t => { if (!dismissedNotifs.includes(t.id)) activeNotifs.push({ id: t.id, title: `Tugas Praktikum: ${t.judul}`, desc: `MK: ${mk} - Tenggat: ${t.deadline}`, type: 'prak_tugas' }); });
-                    let pPengumuman = JSON.parse(localStorage.getItem(`prak_pengumuman_${mk}`)) || [];
-                    pPengumuman.forEach(p => { if (!dismissedNotifs.includes(p.id)) activeNotifs.push({ id: p.id, title: `Pengumuman Asprak: ${p.judul}`, desc: `MK: ${mk}`, type: 'prak_pengumuman' }); });
-                });
-            }
-            const notifCount = document.getElementById('notifCount'); const notifList = document.getElementById('notif-list');
-            if (activeNotifs.length > 0) {
-                notifCount.textContent = activeNotifs.length; notifCount.style.display = 'flex'; notifList.innerHTML = '';
-                activeNotifs.reverse().forEach(n => {
-                    let icon = '<i class="fas fa-bell" style="color:var(--primary); font-size:1.2rem;"></i>';
-                    if(n.type.includes('tugas')) icon = '<i class="fas fa-clipboard-list" style="color:var(--warning); font-size:1.2rem;"></i>';
-                    if(n.type.includes('ujian') || n.type.includes('kuis')) icon = '<i class="fas fa-file-alt" style="color:var(--danger-red); font-size:1.2rem;"></i>';
-                    if(n.type.includes('prak_')) icon = '<i class="fas fa-flask" style="color:#f59e0b; font-size:1.2rem;"></i>';
-                    notifList.innerHTML += `<div class="notif-item" style="display:flex; justify-content:space-between; align-items:flex-start;"><div style="display:flex; gap:12px;"><div style="margin-top:2px;">${icon}</div><div><span style="font-weight:700; color:var(--text-main); font-size:0.95rem;">${n.title}</span><small style="color:var(--text-muted); display:block; margin-top:4px;">${n.desc}</small></div></div><button onclick="dismissNotif('${n.id}', event)" title="Hapus" style="background:none; border:none; color:var(--danger-red); cursor:pointer; padding:5px;"><i class="fas fa-times"></i></button></div>`;
-                });
-            } else {
-                notifCount.style.display = 'none'; notifList.innerHTML = `<div style="text-align:center; padding:20px; color:var(--text-muted); font-size:0.85rem;">Tidak ada notifikasi baru untuk saat ini.</div>`;
-            }
-        }
-        window.dismissNotif = function(id, event) { event.stopPropagation(); let d = JSON.parse(localStorage.getItem('dismissed_notifs_' + user.userId)) || []; d.push(id); localStorage.setItem('dismissed_notifs_' + user.userId, JSON.stringify(d)); loadNotifikasi(); };
-        document.getElementById('clear-all-notif').addEventListener('click', (e) => { e.stopPropagation(); let d = JSON.parse(localStorage.getItem('dismissed_notifs_' + user.userId)) || []; let activeIds = [];
-            if (user.matkul) { user.matkul.forEach(mk => { ['tugas_','materi_', 'ujian_', 'kuis_', 'prak_tugas_','prak_pengumuman_'].forEach(k => { let db = JSON.parse(localStorage.getItem(k+mk)) || []; db.forEach(item => activeIds.push(item.id)); }); }); }
-            activeIds.forEach(id => { if(!d.includes(id)) d.push(id); }); localStorage.setItem('dismissed_notifs_' + user.userId, JSON.stringify(d)); loadNotifikasi();
-        });
-        loadNotifikasi();
-
-        // NAVIGASI
-        const menuKelasContainer = document.getElementById('menu-matkul-saya');
-        const menuPrakContainer = document.getElementById('menu-prak-saya');
-        const menuPrakGroup = document.getElementById('menu-group-praktikum');
-        const sectionBeranda = document.getElementById('section-beranda'), sectionMatkul = document.getElementById('section-matkul'), sectionProfil = document.getElementById('section-profil'), sectionPraktikum = document.getElementById('section-praktikum');
-        const btnMenuBeranda = document.getElementById('menu-beranda'), btnMenuProfil = document.getElementById('menu-profil');
-        const validPrak = ["alpro", "pti", "struktur data", "dpw"];
-        let activeMatkulGlobal = ""; 
-
-        function clearNavActive() { document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active', 'sub-active', 'active-prak', 'sub-active-prak')); }
-        
-        btnMenuBeranda.addEventListener('click', (e) => { e.preventDefault(); sectionBeranda.style.display = 'flex'; sectionProfil.style.display = 'none'; sectionMatkul.style.display = 'none'; sectionPraktikum.style.display = 'none'; clearNavActive(); btnMenuBeranda.classList.add('active'); window.scrollTo({ top: 0, behavior: 'smooth' }); });
-        
-        btnMenuProfil.addEventListener('click', (e) => { e.preventDefault(); sectionBeranda.style.display = 'none'; sectionMatkul.style.display = 'none'; sectionPraktikum.style.display = 'none'; sectionProfil.style.display = 'block'; clearNavActive(); btnMenuProfil.classList.add('active'); window.scrollTo({ top: 0, behavior: 'smooth' }); });
-
-        if (user.matkul && user.matkul.length > 0) {
-            menuKelasContainer.innerHTML = ''; menuPrakContainer.innerHTML = ''; let hasPraktikum = false;
-            user.matkul.forEach(mk => {
-                const liKelas = document.createElement('li'); const linkKelas = document.createElement('a'); linkKelas.href = "#"; linkKelas.innerHTML = `${mk}`;
-                linkKelas.addEventListener('click', (e) => { e.preventDefault(); sectionBeranda.style.display = 'none'; sectionProfil.style.display = 'none'; sectionPraktikum.style.display = 'none'; sectionMatkul.style.display = 'block'; clearNavActive(); linkKelas.classList.add('sub-active'); bukaHalamanMatkulTeori(mk); setTimeout(() => { sectionMatkul.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100); });
-                liKelas.appendChild(linkKelas); menuKelasContainer.appendChild(liKelas);
-                
-                if (validPrak.includes(mk.toLowerCase())) {
-                    hasPraktikum = true; const liPrak = document.createElement('li'); const linkPrak = document.createElement('a'); linkPrak.href = "#"; linkPrak.innerHTML = `Prak. ${mk}`;
-                    linkPrak.addEventListener('click', (e) => { e.preventDefault(); sectionBeranda.style.display = 'none'; sectionProfil.style.display = 'none'; sectionMatkul.style.display = 'none'; sectionPraktikum.style.display = 'block'; clearNavActive(); linkPrak.classList.add('sub-active-prak'); bukaHalamanPraktikum(mk); setTimeout(() => { sectionPraktikum.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100); });
-                    liPrak.appendChild(linkPrak); menuPrakContainer.appendChild(liPrak);
-                }
-            });
-            if (hasPraktikum) { menuPrakGroup.style.display = 'block'; }
-        }
-
-        // ============================ KELAS TEORI ============================
-        function bukaHalamanMatkulTeori(namaMatkul) {
-            activeMatkulGlobal = namaMatkul; 
-            document.getElementById('matkul-title-text').textContent = namaMatkul;
-            bukaTabKelas('tab-materi', document.querySelectorAll('#section-matkul .tab-btn')[1]);
-            renderAbsensi(namaMatkul); 
-            renderMateri(namaMatkul); 
-            renderTugas(namaMatkul); 
-            renderUjian(namaMatkul); 
-            renderKuis(namaMatkul);  
-            
-            // Set ke Nilai Tugas secara Default
-            document.getElementById('kategori-nilai-mhs').value = "tugas";
-            renderTabelNilaiKategori(); 
-            
-            // Load Form Kuisioner
-            renderRiwayatKuisioner();
-
-            loadForumMessages(namaMatkul); 
-            renderKontrakTeori(namaMatkul); 
-            renderZoom(namaMatkul);
-        }
-
-        function bukaTabKelas(tabId, btnElement) {
-            document.querySelectorAll('#section-matkul .tab-content').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('#section-matkul .tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active'); btnElement.classList.add('active');
-            
-            if(tabId === 'tab-forum') document.getElementById('chat-messages').scrollTop = document.getElementById('chat-messages').scrollHeight;
-            if(tabId === 'tab-nilai') renderTabelNilaiKategori(); 
-        }
-
-        // MATERI DENGAN LOGIKA SEQUENTIAL LOCK
-        function renderMateri(matkul) {
-            const wadah = document.getElementById('konten-materi');
-            const dbMateri = JSON.parse(localStorage.getItem(`materi_${matkul}`)) || [];
-            const readMateri = JSON.parse(localStorage.getItem(`read_materi_${user.userId}_${matkul}`)) || [];
-
-            if (dbMateri.length === 0) return wadah.innerHTML = `<div class="empty-box">Belum ada materi teori.</div>`;
-            
-            wadah.innerHTML = '<div class="materi-grid"></div>';
-            const gridWadah = wadah.querySelector('.materi-grid');
-            
-            let previousRead = true; // By default materi pertama terbuka
-            
-            dbMateri.forEach((m) => {
-                let isRead = readMateri.includes(m.id);
-                let isLocked = !previousRead;
-                
-                let badgeClass = isLocked ? 'locked-badge' : (isRead ? 'read' : 'unread');
-                let badgeText = isLocked ? '<i class="fas fa-lock"></i> Terkunci' : (isRead ? '<i class="fas fa-check-circle"></i> Sudah Dibaca' : '<i class="fas fa-circle"></i> Belum Dibaca');
-                let borderColor = isLocked ? 'var(--text-muted)' : (isRead ? 'var(--success)' : 'var(--danger-red)');
-                let iconColor = isLocked ? 'var(--text-muted)' : (isRead ? 'var(--success)' : 'var(--danger-red)');
-                let linkHref = isLocked ? 'javascript:void(0)' : (m.link ? m.link : '#');
-                let cardClass = isLocked ? 'materi-card locked' : 'materi-card';
-                let onclickAction = isLocked ? '' : `onclick="markMateriRead('${m.id}')" target="_blank"`;
-
-                gridWadah.innerHTML += `
-                    <a href="${linkHref}" ${onclickAction} class="${cardClass}" style="border-top: 4px solid ${borderColor};">
-                        <div class="materi-badge ${badgeClass}">${badgeText}</div>
-                        <i class="fas fa-file-alt materi-icon" style="color: ${iconColor};"></i>
-                        <div class="materi-title">${m.judul}</div>
-                        <span style="font-size:0.9rem; margin-top:10px; color: ${isLocked ? 'var(--text-muted)' : 'var(--primary)'}; font-weight: bold;"><i class="fas ${isLocked ? 'fa-lock' : 'fa-external-link-alt'}"></i> ${isLocked ? 'Selesaikan Materi Sebelumnya' : 'Buka Materi'}</span>
-                    </a>
-                `;
-                previousRead = isRead; // Update rules untuk index berikutnya
-            });
-        }
-
-        window.markMateriRead = function(materiId) {
-            const key = `read_materi_${user.userId}_${activeMatkulGlobal}`;
-            let readMateri = JSON.parse(localStorage.getItem(key)) || [];
-            if (!readMateri.includes(materiId)) {
-                readMateri.push(materiId);
-                localStorage.setItem(key, JSON.stringify(readMateri));
-                setTimeout(() => { renderMateri(activeMatkulGlobal); }, 100);
-            }
-        }
-
-        // KONTRAK TEORI
-        function renderKontrakTeori(matkul) {
-            const dbKontrak = JSON.parse(localStorage.getItem(`kontrak_${matkul}`)) || [];
-            const w = document.getElementById('konten-kontrak-teori');
-            if(dbKontrak.length === 0) return w.innerHTML = `<div class="empty-box">Belum ada dokumen kontrak kuliah.</div>`;
-            w.innerHTML = '';
-            dbKontrak.forEach(k => {
-                w.innerHTML += `<div class="item-card"><div class="item-info"><h3 style="font-size:1rem;">${k.judul}</h3><p style="font-size:0.8rem;"><i class="far fa-clock"></i> Diunggah: ${k.tanggal}</p></div><a href="${k.link}" target="_blank" class="btn-action"><i class="fas fa-external-link-alt"></i> Baca Kontrak</a></div>`;
-            });
-        }
-
-        // ZOOM MAHASISWA
-        window.simpanZoom = function() {
-            const hari = document.getElementById('zoom-hari').value;
-            const tgl = document.getElementById('zoom-tgl').value;
-            const jam = document.getElementById('zoom-jam').value;
-            const link = document.getElementById('zoom-link').value;
-            if(!tgl || !jam || !link) return alert("Lengkapi data Jadwal Zoom!");
-            
-            let db = JSON.parse(localStorage.getItem(`zoom_mhs_${user.userId}_${activeMatkulGlobal}`)) || [];
-            db.push({ id: generateId(), hari, tgl, jam, link });
-            localStorage.setItem(`zoom_mhs_${user.userId}_${activeMatkulGlobal}`, JSON.stringify(db));
-            alert("Jadwal Zoom tersimpan!");
-            renderZoom(activeMatkulGlobal);
-        }
-        function renderZoom(matkul) {
-            let db = JSON.parse(localStorage.getItem(`zoom_mhs_${user.userId}_${matkul}`)) || [];
-            let w = document.getElementById('konten-zoom-list');
-            if(db.length === 0) return w.innerHTML = `<div class="empty-box">Belum ada catatan jadwal Zoom.</div>`;
-            w.innerHTML = '<h3 style="margin:20px 0 10px 0; font-size:1.1rem; color:var(--text-main);">Daftar Jadwal Anda</h3>';
-            db.forEach((z, i) => {
-                w.innerHTML += `<div class="item-card"><div class="item-info"><h3>${z.hari}, ${z.tgl}</h3><p style="color:var(--primary); font-weight:bold;"><i class="far fa-clock"></i> ${z.jam} WIB</p></div><div><a href="${z.link}" target="_blank" class="btn-action" style="margin-right:10px;"><i class="fas fa-video"></i> Gabung</a><button onclick="hapusZoom(${i})" class="btn-action" style="background:transparent; color:var(--danger-red); border-color:var(--danger-red);"><i class="fas fa-trash"></i></button></div></div>`;
-            });
-        }
-        window.hapusZoom = function(i) {
-            let db = JSON.parse(localStorage.getItem(`zoom_mhs_${user.userId}_${activeMatkulGlobal}`));
-            db.splice(i, 1);
-            localStorage.setItem(`zoom_mhs_${user.userId}_${activeMatkulGlobal}`, JSON.stringify(db));
-            renderZoom(activeMatkulGlobal);
-        }
-
-        // TUGAS TEORI
-        function renderTugas(matkul) {
-            const wadah = document.getElementById('konten-tugas');
-            const dbTugas = JSON.parse(localStorage.getItem(`tugas_${matkul}`)) || [];
-            if (dbTugas.length === 0) return wadah.innerHTML = `<div class="empty-box">Belum ada tugas teori aktif.</div>`;
-            wadah.innerHTML = '';
-            dbTugas.forEach(tugas => {
-                const sudahKumpul = (JSON.parse(localStorage.getItem(`pengumpulan_${tugas.id}`)) || []).find(p => p.userId === user.userId);
-                let btnBukaSoal = tugas.linkTugas ? `<a href="${tugas.linkTugas}" target="_blank" style="margin-right:10px; color:var(--primary); font-size:0.85rem;"><i class="fas fa-external-link-alt"></i> Buka Soal</a>` : '';
-                let aksiHtml = sudahKumpul ? `<span style="color:var(--success); font-weight:bold; font-size:0.9rem;"><i class="fas fa-check-circle"></i> Sudah Dikumpulkan</span>` : `<div class="upload-tugas-area"><input type="url" id="link_tugas_${tugas.id}" placeholder="Link Jawaban Anda"><button onclick="kumpulkanTugas('${tugas.id}')" class="btn-action">Kirim</button></div>`;
-                wadah.innerHTML += `<div class="item-card" style="flex-direction: column; align-items: stretch;"><div style="display:flex; justify-content:space-between; align-items:center;"><div class="item-info"><h3>${tugas.judul}</h3><p><i class="far fa-calendar-times"></i> Tenggat: <strong style="margin-left:5px; color:var(--warning);">${tugas.deadline}</strong></p>${btnBukaSoal}</div></div>${aksiHtml}</div>`;
-            });
-        }
-        window.kumpulkanTugas = function(tugasId) {
-            const linkInput = document.getElementById(`link_tugas_${tugasId}`);
-            if(!linkInput.value.trim()) return alert("Harap masukkan link jawaban!");
-            let db = JSON.parse(localStorage.getItem(`pengumpulan_${tugasId}`)) || [];
-            db.push({ userId: user.userId, namaMahasiswa: user.nama, waktu: new Date().toLocaleString('id-ID'), linkJawaban: linkInput.value.trim(), nilai: "" });
-            localStorage.setItem(`pengumpulan_${tugasId}`, JSON.stringify(db));
-            alert("Tugas teori berhasil dikumpulkan!"); renderTugas(activeMatkulGlobal); 
-        }
-
-        // UJIAN (UTS/UAS)
-        function renderUjian(matkul) {
-            const wadah = document.getElementById('konten-ujian');
-            const dbUjian = JSON.parse(localStorage.getItem(`ujian_${matkul}`)) || [];
-            if (dbUjian.length === 0) return wadah.innerHTML = `<div class="empty-box">Belum ada ujian yang dijadwalkan.</div>`;
-            
-            wadah.innerHTML = '';
-            dbUjian.forEach(ujian => {
-                let btnBukaUjian = ujian.link ? `<a href="${ujian.link}" target="_blank" class="btn-action"><i class="fas fa-external-link-alt"></i> Buka Akses Ujian</a>` : '';
-                wadah.innerHTML += `
-                    <div class="item-card">
-                        <div class="item-info">
-                            <h3>${ujian.judul}</h3>
-                            <p style="color:var(--danger-red); font-weight:700;"><i class="fas fa-exclamation-circle"></i> Deadline: ${ujian.deadline}</p>
-                        </div>
-                        <div>${btnBukaUjian}</div>
-                    </div>`;
-            });
-        }
-
-        // KUIS
-        function renderKuis(matkul) {
-            const wadah = document.getElementById('konten-kuis');
-            const dbKuis = JSON.parse(localStorage.getItem(`kuis_${matkul}`)) || [];
-            if (dbKuis.length === 0) return wadah.innerHTML = `<div class="empty-box">Belum ada kuis yang tersedia.</div>`;
-            
-            wadah.innerHTML = '';
-            dbKuis.forEach(kuis => {
-                let btnBukaKuis = kuis.link ? `<a href="${kuis.link}" target="_blank" class="btn-action"><i class="fas fa-external-link-alt"></i> Buka Link Kuis</a>` : '';
-                wadah.innerHTML += `
-                    <div class="item-card">
-                        <div class="item-info">
-                            <h3>${kuis.judul}</h3>
-                            <p style="color:var(--warning); font-weight:700;"><i class="fas fa-clock"></i> Deadline: ${kuis.deadline}</p>
-                        </div>
-                        <div>${btnBukaKuis}</div>
-                    </div>`;
-            });
-        }
-
-        // ABSEN TEORI
-        function renderAbsensi(matkul) {
-            const wadah = document.getElementById('konten-absensi');
-            const dbAbsensi = JSON.parse(localStorage.getItem(`absensi_${matkul}`)) || [];
-            if (dbAbsensi.length === 0) return wadah.innerHTML = `<div class="empty-box">Belum ada sesi kehadiran.</div>`;
-            wadah.innerHTML = '';
-            [...dbAbsensi].reverse().forEach(sesi => {
-                const sudahHadir = (JSON.parse(localStorage.getItem(`hadir_mhs_${matkul}_${sesi.tanggal}`)) || []).includes(user.userId);
-                let btnHadir = sudahHadir ? `<span style="color:var(--success); font-weight:bold;"><i class="fas fa-check-double"></i> Hadir</span>` : `<button onclick="klikHadir('${sesi.tanggal}')" class="btn-action" style="background:var(--success); color:white; border:none;">Klik Hadir</button>`;
-                wadah.innerHTML += `<div class="item-card"><div class="item-info"><h3>Sesi Teori</h3><p><i class="far fa-calendar-alt"></i> ${sesi.tanggal}</p></div><div>${btnHadir}</div></div>`;
-            });
-        }
-        window.klikHadir = function(tgl) {
-            let db = JSON.parse(localStorage.getItem(`hadir_mhs_${activeMatkulGlobal}_${tgl}`)) || [];
-            db.push(user.userId); localStorage.setItem(`hadir_mhs_${activeMatkulGlobal}_${tgl}`, JSON.stringify(db));
-            alert("Presensi teori dicatat!"); renderAbsensi(activeMatkulGlobal);
-        }
-
-        // PENILAIAN DOSEN (MODIFIKASI KATEGORI)
-        window.renderTabelNilaiKategori = function() {
-            const kategori = document.getElementById('kategori-nilai-mhs').value;
-            const wadah = document.getElementById('konten-nilai-kategori');
-            if(!kategori || !activeMatkulGlobal) return;
-
-            const dbItem = JSON.parse(localStorage.getItem(`${kategori}_${activeMatkulGlobal}`)) || [];
-            if(dbItem.length === 0) return wadah.innerHTML = `<div class="empty-box">Belum ada evaluasi dari dosen untuk kategori ini.</div>`;
-
-            let html = `<div class="table-responsive"><table class="styled-table"><thead><tr><th>Item Evaluasi</th><th>Status Pengerjaan</th><th>Nilai</th></tr></thead><tbody>`;
-            let adaData = false;
-
-            dbItem.forEach(item => {
-                const hasil = (JSON.parse(localStorage.getItem(`pengumpulan_${item.id}`)) || []).find(p => p.userId === user.userId);
-                let status = hasil ? `<span style="color:var(--success);"><i class="fas fa-check-circle"></i> Sudah Dikerjakan</span>` : `<span style="color:var(--danger-red);"><i class="fas fa-times-circle"></i> Belum Dikerjakan</span>`;
-                let n = (hasil && hasil.nilai) ? `<strong style="color:var(--success); font-size:1.1rem;">${hasil.nilai}</strong>` : `<span style="color:var(--warning);">Pending</span>`;
-                
-                html += `<tr><td><strong>${item.judul}</strong></td><td>${status}</td><td>${n}</td></tr>`;
-                adaData = true;
-            });
-            
-            wadah.innerHTML = adaData ? html + `</tbody></table></div>` : `<div class="empty-box">Belum ada item di kategori ini.</div>`;
-        }
-
-        // KUISIONER EVALUASI PEMBELAJARAN (FUNGSI BARU)
-        window.kirimKuisioner = function() {
-            const pesan = document.getElementById('input-pesan-kuisioner').value.trim();
-            if(!pesan) return alert("Pesan kuisioner tidak boleh kosong!");
-            
-            // Menyimpan ke db admin di local storage
-            let dbAdmin = JSON.parse(localStorage.getItem('kuisioner_admin')) || [];
-            dbAdmin.push({
-                id: generateId(),
-                matkul: activeMatkulGlobal,
-                userId: user.userId,
-                namaMahasiswa: user.nama,
-                pesan: pesan,
-                waktu: new Date().toLocaleString('id-ID')
-            });
-            localStorage.setItem('kuisioner_admin', JSON.stringify(dbAdmin));
-
-            alert("Kuisioner berhasil dikirim ke Admin!");
-            document.getElementById('input-pesan-kuisioner').value = '';
-            renderRiwayatKuisioner();
-        }
-
-        function renderRiwayatKuisioner() {
-            let dbAdmin = JSON.parse(localStorage.getItem('kuisioner_admin')) || [];
-            let w = document.getElementById('konten-riwayat-kuisioner');
-            
-            let myKuis = dbAdmin.filter(k => k.userId === user.userId && k.matkul === activeMatkulGlobal);
-            
-            if(myKuis.length === 0) return w.innerHTML = `<div class="empty-box">Anda belum pernah mengirim kuisioner untuk mata kuliah ini.</div>`;
-            
-            w.innerHTML = '';
-            [...myKuis].reverse().forEach(k => {
-                w.innerHTML += `<div class="item-card"><div class="item-info"><h3>Masukan Terkirim</h3><p style="color:var(--text-main); font-size:0.95rem; margin-top:5px;">"${k.pesan}"</p><p style="font-size:0.8rem; margin-top:8px; color:var(--primary);"><i class="far fa-clock"></i> ${k.waktu}</p></div></div>`;
-            });
-        }
-
-
-        // FORUM TEORI
-        function loadForumMessages(matkul) {
-            const cb = document.getElementById('chat-messages');
-            let db = JSON.parse(localStorage.getItem(`forum_${matkul}`)) || [];
-            if(db.length === 0) return cb.innerHTML = `<div class="empty-box" style="border:none;">Belum ada diskusi teori.</div>`;
-            cb.innerHTML = '';
-            db.forEach(m => {
-                const isMe = m.userId === user.userId;
-                cb.innerHTML += `<div class="message ${isMe ? 'msg-me':'msg-other'}"><span class="sender">${m.nama} (${m.role}) • ${m.waktu}</span>${m.text}</div>`;
-            });
-            cb.scrollTop = cb.scrollHeight;
-        }
-        document.getElementById('form-chat').addEventListener('submit', function(e) {
-            e.preventDefault(); const text = document.getElementById('chat-input').value.trim(); if(!text) return;
-            let db = JSON.parse(localStorage.getItem(`forum_${activeMatkulGlobal}`)) || [];
-            db.push({ userId: user.userId, nama: user.nama, role: 'Mahasiswa', text, waktu: new Date().toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'}) });
-            localStorage.setItem(`forum_${activeMatkulGlobal}`, JSON.stringify(db));
-            document.getElementById('chat-input').value = ''; loadForumMessages(activeMatkulGlobal); 
-        });
-
-        // ====================================================================
-        // RENDER RUANG PRAKTIKUM (ASPRAK)
-        // ====================================================================
-        function bukaHalamanPraktikum(namaMatkul) {
-            activeMatkulGlobal = namaMatkul; 
-            document.getElementById('prak-title-text').textContent = "Praktikum " + namaMatkul;
-            
-            document.getElementById('forum-prak-name').textContent = `[ ${namaMatkul} ]`;
-
-            bukaTabPrak('prak-pengumuman', document.querySelectorAll('#section-praktikum .tab-btn-prak')[0]);
-            
-            renderPengumumanPrak(namaMatkul);
-            renderKontrakPrak(namaMatkul);
-            renderMateriPrakSequential(namaMatkul);
-            renderTugasPrak(namaMatkul);
-            renderNilaiPrak(namaMatkul);
-            renderAsistensiPrak(namaMatkul);
-            loadForumPrak(namaMatkul);
-            renderCutiPrak(namaMatkul);
-        }
-
-        function bukaTabPrak(tabId, btnElement) {
-            document.querySelectorAll('#section-praktikum .tab-content-prak').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('#section-praktikum .tab-btn-prak').forEach(btn => btn.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            btnElement.classList.add('active');
-            if(tabId === 'prak-forum') { document.getElementById('prak-chat-messages').scrollTop = document.getElementById('prak-chat-messages').scrollHeight; }
-        }
-
-        // --- CUTI PRAKTIKUM ---
-        window.ajukanCutiPrak = function() {
-            const jenis = document.getElementById('cuti-jenis').value;
-            const alasan = document.getElementById('cuti-alasan').value.trim();
-            const fileInput = document.getElementById('cuti-file');
-            
-            if(!alasan) return alert("Alasan wajib diisi!");
-            
-            const req = { id: generateId(), userId: user.userId, nama: user.nama, jenis, alasan, waktu: new Date().toLocaleString('id-ID'), status: 'Pending' };
-            
-            const simpanCuti = (base64) => {
-                if(base64) req.fileBase64 = base64;
-                let db = JSON.parse(localStorage.getItem(`prak_cuti_${activeMatkulGlobal}`)) || [];
-                db.push(req);
-                localStorage.setItem(`prak_cuti_${activeMatkulGlobal}`, JSON.stringify(db));
-                alert("Pengajuan cuti/izin berhasil dikirim ke Asisten Praktikum!");
-                document.getElementById('cuti-alasan').value = ''; fileInput.value = '';
-                renderCutiPrak(activeMatkulGlobal);
-            };
-
-            if (fileInput.files && fileInput.files[0]) {
-                const reader = new FileReader();
-                reader.onload = e => simpanCuti(e.target.result);
-                reader.readAsDataURL(fileInput.files[0]);
-            } else {
-                simpanCuti(null);
-            }
-        }
-        function renderCutiPrak(matkul) {
-            let db = JSON.parse(localStorage.getItem(`prak_cuti_${matkul}`)) || [];
-            let w = document.getElementById('prak-konten-cuti-list');
-            let myCuti = db.filter(c => c.userId === user.userId);
-            if(myCuti.length === 0) return w.innerHTML = `<div class="empty-box">Anda belum pernah mengajukan cuti/izin.</div>`;
-            w.innerHTML = '';
-            [...myCuti].reverse().forEach(c => {
-                let badge = c.status === 'Pending' ? `<span style="color:var(--warning); font-weight:bold;">Menunggu Verifikasi</span>` : (c.status === 'Diterima' ? `<span style="color:var(--success); font-weight:bold;">Disetujui</span>` : `<span style="color:var(--danger-red); font-weight:bold;">Ditolak</span>`);
-                let lampiran = c.fileBase64 ? `<a href="${c.fileBase64}" target="_blank" style="color:var(--prak-color); font-size:0.8rem; margin-top:5px; display:inline-block;"><i class="fas fa-file-image"></i> Lihat Lampiran</a>` : '';
-                w.innerHTML += `<div class="item-card"><div class="item-info"><h3 style="color:var(--prak-color);">${c.jenis}</h3><p style="color:var(--text-main); font-size:0.9rem;">${c.alasan}</p><p style="font-size:0.8rem;"><i class="far fa-clock"></i> ${c.waktu}</p>${lampiran}</div><div>${badge}</div></div>`;
-            });
-        }
-
-        // --- PENGUMUMAN PRAKTIKUM ---
-        function renderPengumumanPrak(matkul) {
-            let db = JSON.parse(localStorage.getItem(`prak_pengumuman_${matkul}`)) || [];
-            let w = document.getElementById('prak-konten-pengumuman');
-            if(db.length === 0) return w.innerHTML = `<div class="empty-box">Belum ada pengumuman praktikum.</div>`;
-            w.innerHTML = '';
-            [...db].reverse().forEach(p => { w.innerHTML += `<div class="item-card-prak"><div class="item-info"><h3 style="color:var(--prak-color);">${p.judul}</h3><p style="color:var(--text-main); font-size:1rem; margin-top:8px;">${p.isi}</p><p style="margin-top:10px; font-size:0.8rem;"><i class="far fa-clock"></i> ${p.tanggal}</p></div></div>`; });
-        }
-
-        // --- KONTRAK PRAKTIKUM ---
-        function renderKontrakPrak(matkul) {
-            let db = JSON.parse(localStorage.getItem(`prak_kontrak_${matkul}`)) || [];
-            let w = document.getElementById('prak-konten-kontrak');
-            if(db.length === 0) return w.innerHTML = `<div class="empty-box">Belum ada kontrak praktikum yang diunggah.</div>`;
-            w.innerHTML = '';
-            db.forEach(k => { w.innerHTML += `<div class="item-card"><div class="item-info"><h3>${k.judul}</h3><p><i class="far fa-clock"></i> Diunggah: ${k.tanggal}</p></div><a href="${k.link}" target="_blank" class="btn-action-prak"><i class="fas fa-external-link-alt"></i> Baca Kontrak</a></div>`; });
-        }
-
-        // --- MATERI PRAKTIKUM SEQUENTIAL LOCK ---
-        function renderMateriPrakSequential(matkul) {
-            let db = JSON.parse(localStorage.getItem(`prak_materi_${matkul}`)) || [];
-            const readMateri = JSON.parse(localStorage.getItem(`read_prak_materi_${user.userId}_${matkul}`)) || [];
-            let w = document.getElementById('prak-konten-materi');
-            if(db.length === 0) return w.innerHTML = `<div class="empty-box">Belum ada modul praktikum.</div>`;
-            
-            w.innerHTML = '<div class="materi-grid"></div>';
-            let grid = w.querySelector('.materi-grid');
-            let previousRead = true; 
-
-            db.forEach(m => {
-                let isRead = readMateri.includes(m.id);
-                let isLocked = !previousRead;
-                
-                let badgeClass = isLocked ? 'locked-badge' : (isRead ? 'read' : 'unread');
-                let badgeText = isLocked ? '<i class="fas fa-lock"></i> Terkunci' : (isRead ? '<i class="fas fa-check-circle"></i> Sudah Dibaca' : '<i class="fas fa-circle"></i> Belum Dibaca');
-                let borderColor = isLocked ? 'var(--text-muted)' : (isRead ? 'var(--success)' : 'var(--danger-red)');
-                let iconColor = isLocked ? 'var(--text-muted)' : (isRead ? 'var(--success)' : 'var(--danger-red)');
-                let linkHref = isLocked ? 'javascript:void(0)' : (m.link ? m.link : '#');
-                let cardClass = isLocked ? 'materi-card locked' : 'materi-card';
-                let onclickAction = isLocked ? '' : `onclick="markPrakMateriRead('${m.id}')" target="_blank"`;
-
-                grid.innerHTML += `
-                    <a href="${linkHref}" ${onclickAction} class="${cardClass}" style="border-top:4px solid ${borderColor};">
-                        <div class="materi-badge ${badgeClass}">${badgeText}</div>
-                        <i class="fas fa-file-alt materi-icon" style="color:${iconColor};"></i>
-                        <div class="materi-title">${m.judul}</div>
-                        <span style="font-size:0.9rem; margin-top:10px; color:${isLocked ? 'var(--text-muted)' : 'var(--prak-color)'};"><i class="fas ${isLocked ? 'fa-lock' : 'fa-download'}"></i> ${isLocked ? 'Modul Terkunci' : 'Buka Modul'}</span>
-                    </a>`;
-                previousRead = isRead;
-            });
-        }
-        window.markPrakMateriRead = function(mId) {
-            const key = `read_prak_materi_${user.userId}_${activeMatkulGlobal}`;
-            let r = JSON.parse(localStorage.getItem(key)) || [];
-            if (!r.includes(mId)) { r.push(mId); localStorage.setItem(key, JSON.stringify(r)); setTimeout(() => { renderMateriPrakSequential(activeMatkulGlobal); }, 100); }
-        }
-
-        // --- TUGAS PRAKTIKUM ---
-        function renderTugasPrak(matkul) {
-            let db = JSON.parse(localStorage.getItem(`prak_tugas_${matkul}`)) || [];
-            let w = document.getElementById('prak-konten-tugas');
-            if(db.length === 0) return w.innerHTML = `<div class="empty-box">Belum ada tugas laporan praktikum.</div>`;
-            w.innerHTML = '';
-            db.forEach(t => {
-                let cekKumpul = (JSON.parse(localStorage.getItem(`prak_pengumpulan_${t.id}`))||[]).find(p => p.userId === user.userId);
-                let aksiHtml = cekKumpul ? `<span style="color:var(--success); font-weight:bold; font-size:0.9rem;"><i class="fas fa-check-circle"></i> Laporan Terkirim</span>`
-                    : `<div class="upload-tugas-area"><input type="url" id="link_prak_tugas_${t.id}" placeholder="Link Laporan"><button onclick="kumpulkanPrak('${t.id}')" class="btn-action-prak">Kirim</button></div>`;
-                let linkSoal = t.linkTugas ? `<a href="${t.linkTugas}" target="_blank" style="margin-right:10px; color:var(--prak-color); font-size:0.85rem;"><i class="fas fa-external-link-alt"></i> Ketentuan Tugas</a>` : '';
-                w.innerHTML += `<div class="item-card-prak" style="flex-direction:column; align-items:stretch;"><div style="display:flex; justify-content:space-between;"><div class="item-info"><h3>${t.judul}</h3><p style="color:var(--danger-red);">Deadline: ${t.deadline}</p>${linkSoal}</div></div>${aksiHtml}</div>`;
-            });
-        }
-        window.kumpulkanPrak = function(id) {
-            const val = document.getElementById(`link_prak_tugas_${id}`).value.trim();
-            if(!val) return alert("Masukkan link laporan praktikum!");
-            let db = JSON.parse(localStorage.getItem(`prak_pengumpulan_${id}`)) || [];
-            db.push({ userId: user.userId, namaMahasiswa: user.nama, linkJawaban: val, nilai: "", waktu: new Date().toLocaleString('id-ID') });
-            localStorage.setItem(`prak_pengumpulan_${id}`, JSON.stringify(db));
-            alert("Laporan berhasil dikirim ke Asprak!"); renderTugasPrak(activeMatkulGlobal);
-        }
-
-        // --- NILAI PRAKTIKUM ---
-        function renderNilaiPrak(matkul) {
-            let db = JSON.parse(localStorage.getItem(`prak_tugas_${matkul}`)) || [];
-            let w = document.getElementById('prak-konten-nilai');
-            if(db.length === 0) return w.innerHTML = `<div class="empty-box">Belum ada nilai praktikum.</div>`;
-            
-            // Tambahkan wrapper table-responsive agar tidak merusak tata letak
-            let html = `<div class="table-responsive"><table class="styled-table"><thead><tr><th style="background:var(--prak-color);">Tugas Laporan</th><th style="background:var(--prak-color);">Status</th><th style="background:var(--prak-color);">Nilai</th></tr></thead><tbody>`;
-            let adaData = false;
-            db.forEach(t => {
-                let cek = (JSON.parse(localStorage.getItem(`prak_pengumpulan_${t.id}`))||[]).find(p => p.userId === user.userId);
-                if(cek) { adaData = true; let n = cek.nilai ? `<strong style="color:var(--success);">${cek.nilai}</strong>` : `<span style="color:var(--warning);">Pending</span>`; html += `<tr><td>${t.judul}</td><td style="color:var(--success);">Terkumpul</td><td>${n}</td></tr>`; }
-            });
-            w.innerHTML = adaData ? html + `</tbody></table></div>` : `<div class="empty-box">Anda belum mengumpulkan laporan apa pun.</div>`;
-        }
-
-        // --- ASISTENSI PRAKTIKUM ---
-        function renderAsistensiPrak(matkul) {
-            let db = JSON.parse(localStorage.getItem(`prak_asistensi_${matkul}`)) || [];
-            let w = document.getElementById('prak-konten-asistensi');
-            if(db.length === 0) return w.innerHTML = `<div class="empty-box">Belum ada jadwal asistensi.</div>`;
-            w.innerHTML = '';
-            [...db].reverse().forEach(a => { w.innerHTML += `<div class="item-card-prak"><div class="item-info"><h3>Waktu: ${a.waktu}</h3><p><i class="fas fa-map-marker-alt" style="color:var(--prak-color);"></i> Lokasi/Link: <strong style="color:var(--text-main); margin-left:5px;">${a.lokasi}</strong></p></div></div>`; });
-        }
-
-        // --- FORUM PRAKTIKUM ---
-        function loadForumPrak(matkul) {
-            const cb = document.getElementById('prak-chat-messages');
-            let db = JSON.parse(localStorage.getItem(`prak_forum_${matkul}`)) || [];
-            if(db.length === 0) return cb.innerHTML = `<div class="empty-box" style="border:none;">Belum ada diskusi praktikum.</div>`;
-            cb.innerHTML = '';
-            db.forEach(m => {
-                const isMe = m.userId === user.userId;
-                cb.innerHTML += `<div class="message" style="${isMe ? 'background:var(--prak-color); color:#fff; align-self:flex-end;' : 'background:rgba(255,255,255,0.05); align-self:flex-start;'}"><span class="sender" style="color:${isMe ? '#fff':'var(--prak-color)'}">${m.nama} (${m.role}) • ${m.waktu}</span>${m.text}</div>`;
-            });
-            cb.scrollTop = cb.scrollHeight;
-        }
-        document.getElementById('prak-form-chat').addEventListener('submit', function(e) {
-            e.preventDefault(); const text = document.getElementById('prak-chat-input').value.trim(); if(!text) return;
-            let db = JSON.parse(localStorage.getItem(`prak_forum_${activeMatkulGlobal}`)) || [];
-            db.push({ userId: user.userId, nama: user.nama, role: 'Mahasiswa', text, waktu: new Date().toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'}) });
-            localStorage.setItem(`prak_forum_${activeMatkulGlobal}`, JSON.stringify(db));
-            document.getElementById('prak-chat-input').value = ''; loadForumPrak(activeMatkulGlobal);
-        });
-
-        // UMUM (DROPDOWN, LOGOUT, TEMA)
-        for (let d of document.getElementsByClassName("dropdown-btn")) { d.addEventListener("click", function() { this.classList.toggle("open"); this.nextElementSibling.classList.toggle("show"); }); }
-        document.getElementById('logout-btn').addEventListener('click', (e) => { e.preventDefault(); localStorage.removeItem('loggedInUser'); window.location.href="login.html"; });
+        // 1. Logika Toggle Tema
         const themeToggle = document.getElementById("theme-toggle");
-        if (localStorage.getItem("theme") === "light") themeToggle.checked = true;
-        themeToggle.addEventListener("change", function() { localStorage.setItem("theme", this.checked ? "light" : "dark"); });
-
-        // ====================================================================
-        // FITUR DRAG TO SCROLL UNTUK SEMUA TABS MENU
-        // ====================================================================
-        const tabContainers = document.querySelectorAll('.tabs, .tabs-prak');
-        tabContainers.forEach(container => {
-            let isDown = false;
-            let startX;
-            let scrollLeft;
-
-            container.addEventListener('mousedown', (e) => {
-                isDown = true;
-                container.style.cursor = 'grabbing';
-                startX = e.pageX - container.offsetLeft;
-                scrollLeft = container.scrollLeft;
-            });
-
-            container.addEventListener('mouseleave', () => {
-                isDown = false;
-                container.style.cursor = 'pointer';
-            });
-
-            container.addEventListener('mouseup', () => {
-                isDown = false;
-                container.style.cursor = 'pointer';
-            });
-
-            container.addEventListener('mousemove', (e) => {
-                if (!isDown) return;
-                e.preventDefault();
-                const x = e.pageX - container.offsetLeft;
-                const walk = (x - startX) * 2; // Angka 2 mengatur kecepatan gerak/scroll
-                container.scrollLeft = scrollLeft - walk;
-            });
+        if (localStorage.getItem("theme") === "light") { themeToggle.checked = true; }
+        themeToggle.addEventListener("change", function() {
+            if (this.checked) { localStorage.setItem("theme", "light"); } 
+            else { localStorage.setItem("theme", "dark"); }
         });
+
+        // 2. LOGIKA LOAD BERITA (MEMBACA DARI FILE ADMIN)
+        function loadNews() {
+            const newsDatabase = JSON.parse(localStorage.getItem('eduFreeNewsWithImage')) || [];
+            const container = document.getElementById('news-container');
+            container.innerHTML = ''; 
+
+            if (newsDatabase.length === 0) {
+                container.innerHTML = '<p style="text-align:center; grid-column: 1 / -1; color: var(--text-muted, #aaa); margin-top: 20px;">Belum ada berita yang dipublikasikan saat ini.</p>';
+                return; 
+            }
+
+            [...newsDatabase].reverse().forEach(news => {
+                let imageHTML = '';
+                if (news.imageBase64) {
+                    imageHTML = `
+                        <div class="news-img-container">
+                            <img src="${news.imageBase64}" alt="Thumbnail Berita">
+                        </div>
+                    `;
+                }
+
+                const newsHTML = `
+                    <div class="news-card">
+                        ${imageHTML}
+                        <span class="news-date">📅 ${news.date}</span>
+                        <h3 class="news-title">${news.title}</h3>
+                        <p class="news-desc">${news.desc}</p>
+                    </div>
+                `;
+                container.innerHTML += newsHTML;
+            });
+        }
+
+        // Jalankan fungsi load saat halaman berita dibuka
+        loadNews();
     </script>
 </body>
 </html>
