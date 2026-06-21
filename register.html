@@ -22,10 +22,17 @@
         .btn-secondary { background: #334155; margin-top: 10px; }
         
         .course-list { display: grid; gap: 10px; margin-top: 10px; }
-        .course-item { display: flex; align-items: center; gap: 10px; background: #1e293b; padding: 12px; border-radius: 8px; border: 1px solid #334155; cursor: pointer; transition: 0.3s; }
-        .course-item:hover { border-color: #38bdf8; }
+        .course-item-container { background: #1e293b; border: 1px solid #334155; border-radius: 8px; transition: 0.3s; overflow: hidden; }
+        .course-item-container:hover { border-color: #38bdf8; }
+        .course-item { display: flex; align-items: center; gap: 10px; padding: 12px; cursor: pointer; }
         .course-item input { width: 18px; height: 18px; cursor: pointer; }
         
+        /* GAYA UNTUK PILIHAN KELAS */
+        .class-options { display: none; background: #0f172a; padding: 10px 12px 10px 40px; gap: 15px; border-top: 1px solid #334155; }
+        .class-options.active { display: flex; flex-wrap: wrap; }
+        .class-options label { display: flex; align-items: center; gap: 6px; font-size: 13px; color: #cbd5e1; cursor: pointer; margin-bottom: 0; }
+        .class-options input { width: 14px; height: 14px; cursor: pointer; accent-color: #38bdf8; }
+
         .step-2 { display: none; } 
     </style>
 </head>
@@ -70,7 +77,7 @@
             <div id="step-2" class="step-2">
                 <p style="font-size: 14px; color: #9ca3af; margin-bottom: 15px;" id="course-instruction">Pilih Mata Kuliah Anda:</p>
                 <div class="course-list" id="course-container"></div>
-                <div style="display: flex; gap: 10px;">
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
                     <button type="button" class="btn-primary btn-secondary" id="btn-back">⬅ Kembali</button>
                     <button type="submit" class="btn-primary">Daftar Sekarang</button>
                 </div>
@@ -83,7 +90,6 @@
         const matkulSem2 = ["Struktur Data", "DPW", "Orkom", "Metode Statistika", "Komputasi Aljabar Linier"];
         const semuaMatkul = [...matkulSem1, ...matkulSem2];
         
-        // Daftar khusus untuk Asprak
         const matkulAsprak = ["PTI", "Alpro", "Struktur Data", "DPW"];
 
         const roleSelect = document.getElementById('role');
@@ -108,6 +114,20 @@
             }
         });
 
+        // FUNGSI UNTUK MENAMPILKAN/MENYEMBUNYIKAN KELAS (KHUSUS DOSEN)
+        window.toggleClasses = function(checkbox, safeId) {
+            const classDiv = document.getElementById(`classes-${safeId}`);
+            if(classDiv) {
+                if(checkbox.checked) {
+                    classDiv.classList.add('active');
+                } else {
+                    classDiv.classList.remove('active');
+                    // Hapus centang kelas jika matkul dibatalkan
+                    classDiv.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+                }
+            }
+        }
+
         document.getElementById('btn-next').addEventListener('click', () => {
             if(!document.getElementById('nama').value || !document.getElementById('userId').value || !document.getElementById('password').value) {
                 return alert("Harap isi semua data diri!");
@@ -118,30 +138,45 @@
 
             courseContainer.innerHTML = "";
             let listToRender = [];
-            let inputType = "checkbox";
             let isAsprak = false;
+            let isDosen = false;
 
             if (roleSelect.value === 'mahasiswa') {
                 listToRender = semesterSelect.value === "1" ? matkulSem1 : matkulSem2;
-                inputType = "checkbox";
                 courseInstruction.textContent = `Pilih mata kuliah untuk Semester ${semesterSelect.value} (Bisa pilih lebih dari satu):`;
             } else if (roleSelect.value === 'dosen') {
                 listToRender = semuaMatkul;
-                inputType = "radio"; // Dosen hanya bisa 1 matkul (radio button membatasi otomatis)
-                courseInstruction.textContent = `Pilih 1 Mata Kuliah yang Anda ampu:`;
+                isDosen = true;
+                courseInstruction.textContent = `Pilih Mata Kuliah & Kelas yang Anda ampu (Bisa lebih dari satu):`;
             } else if (roleSelect.value === 'asprak') {
                 listToRender = matkulAsprak;
-                inputType = "checkbox"; // Asprak bisa lebih dari 1, jadi pakai checkbox
                 isAsprak = true;
                 courseInstruction.textContent = `Pilih maksimal 2 Mata Kuliah Praktikum yang diampu:`;
             }
 
             listToRender.forEach(mk => {
+                let safeId = mk.replace(/\s+/g, '-');
+                let classSelectionHTML = "";
+                
+                // Tambahkan elemen HTML Kelas khusus untuk Dosen
+                if (isDosen) {
+                    classSelectionHTML = `
+                        <div class="class-options" id="classes-${safeId}">
+                            <label><input type="checkbox" name="kelas-${mk}" value="A"> Kelas A</label>
+                            <label><input type="checkbox" name="kelas-${mk}" value="B"> Kelas B</label>
+                            <label><input type="checkbox" name="kelas-${mk}" value="C"> Kelas C</label>
+                        </div>
+                    `;
+                }
+
                 courseContainer.innerHTML += `
-                    <label class="course-item">
-                        <input type="${inputType}" name="pilihanMatkul" value="${mk}" ${isAsprak ? 'class="checkbox-asprak"' : ''}>
-                        <span>${mk}</span>
-                    </label>
+                    <div class="course-item-container">
+                        <label class="course-item">
+                            <input type="checkbox" name="pilihanMatkul" value="${mk}" ${isAsprak ? 'class="checkbox-asprak"' : ''} ${isDosen ? `onchange="toggleClasses(this, '${safeId}')"` : ''}>
+                            <span>${mk}</span>
+                        </label>
+                        ${classSelectionHTML}
+                    </div>
                 `;
             });
 
@@ -152,7 +187,7 @@
                     cb.addEventListener('change', function() {
                         const checkedCount = document.querySelectorAll('.checkbox-asprak:checked').length;
                         if (checkedCount > 2) {
-                            this.checked = false; // Batalkan centangan jika lebih dari 2
+                            this.checked = false; 
                             alert("Anda maksimal hanya boleh memilih 2 Mata Kuliah Praktikum!");
                         }
                     });
@@ -175,10 +210,32 @@
             e.preventDefault();
 
             const selectedMatkulElements = document.querySelectorAll('input[name="pilihanMatkul"]:checked');
-            let selectedMatkul = Array.from(selectedMatkulElements).map(el => el.value);
+            let finalMatkulList = [];
 
-            if (selectedMatkul.length === 0) {
+            if (selectedMatkulElements.length === 0) {
                 return alert("Anda wajib memilih minimal 1 Mata Kuliah!");
+            }
+
+            // Logika pengumpulan data berdasarkan role
+            for (let el of selectedMatkulElements) {
+                let mkName = el.value;
+                
+                if (roleSelect.value === 'dosen') {
+                    // Cari kelas yang dicentang untuk mata kuliah ini
+                    let checkedClasses = document.querySelectorAll(`input[name="kelas-${mkName}"]:checked`);
+                    
+                    // Validasi: Jika matkul dicentang, kelas wajib diisi
+                    if (checkedClasses.length === 0) {
+                        return alert(`Harap pilih minimal 1 kelas untuk mata kuliah: ${mkName}`);
+                    }
+                    
+                    // Format output: "DPW (Kelas A, B)"
+                    let classArr = Array.from(checkedClasses).map(cb => cb.value);
+                    finalMatkulList.push(`${mkName} (Kelas ${classArr.join(', ')})`);
+                } else {
+                    // Untuk Mahasiswa dan Asprak
+                    finalMatkulList.push(mkName);
+                }
             }
 
             const userData = {
@@ -187,7 +244,7 @@
                 userId: document.getElementById('userId').value,
                 password: document.getElementById('password').value,
                 semester: roleSelect.value === 'mahasiswa' ? semesterSelect.value : "-",
-                matkul: selectedMatkul 
+                matkul: finalMatkulList 
             };
 
             // Cek apakah ID sudah dipakai
@@ -198,6 +255,10 @@
 
             // Simpan Data Permanen di Browser
             localStorage.setItem(userData.userId, JSON.stringify(userData));
+            
+            // Console log untuk memastikan format array sudah benar
+            console.log("Data Disimpan:", userData);
+            
             alert("Registrasi Berhasil! Data mata kuliah tersimpan.");
             window.location.href = "login.html";
         });
