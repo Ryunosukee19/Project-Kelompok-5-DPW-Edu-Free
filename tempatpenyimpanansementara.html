@@ -1,948 +1,453 @@
 <!DOCTYPE html>
-<html lang="id">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel Asisten Praktikum | Edu Free</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
-    <style>
-        /* =========================================
-           TEMA KHUSUS ASPRAK (AMBER / ORANGE)
-        ========================================= */
-        :root {
-            --bg-body: #0f172a; 
-            --bg-sidebar: #1e293b; 
-            --bg-card: #1e293b;
-            --primary: #f59e0b; /* Orange/Amber untuk Asprak */
-            --primary-hover: #d97706;
-            --secondary: #10b981; 
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8; 
-            --border-color: rgba(255, 255, 255, 0.05); 
-            --sidebar-width: 260px;
-            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            --shadow-lg: 0 10px 25px -3px rgba(0, 0, 0, 0.2);
-            --banner-gradient: linear-gradient(135deg, #78350f 0%, #0f172a 100%);
-            --danger-red: #ef4444;
-        }
-
-        body:has(#theme-toggle:checked) {
-            --bg-body: #f8fafc; 
-            --bg-sidebar: #ffffff; 
-            --bg-card: #ffffff;
-            --primary: #d97706; 
-            --primary-hover: #b45309;
-            --secondary: #059669; 
-            --text-main: #0f172a;
-            --text-muted: #64748b; 
-            --border-color: rgba(0, 0, 0, 0.08); 
-            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
-            --banner-gradient: linear-gradient(135deg, #fef3c7 0%, #fff7ed 100%);
-        }
-        
-        .icon-sun { display: none; } 
-        body:has(#theme-toggle:checked) .icon-moon { display: none; } 
-        body:has(#theme-toggle:checked) .icon-sun { display: inline; color: #f59e0b; }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
-        body { background-color: var(--bg-body); color: var(--text-main); display: flex; transition: all 0.4s ease; overflow-x: hidden;}
-        a { text-decoration: none; color: inherit; } 
-        ul { list-style: none; }
-
-        /* HEADER & SIDEBAR */
-        .sidebar { position: fixed; top: 0; left: 0; width: var(--sidebar-width); height: 100vh; background-color: var(--bg-sidebar); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; z-index: 1000; transition: all 0.4s ease;}
-        .sidebar-header { display: flex; justify-content: center; align-items: center; padding: 30px 20px; border-bottom: 1px solid var(--border-color); }
-        
-        /* LOGO EDU-FREE BERGRADASI */
-        .logo { 
-            font-size: 1.8rem; 
-            font-weight: 800; 
-            letter-spacing: -0.5px; 
-            background: linear-gradient(90deg, #38bdf8 0%, #818cf8 50%, #c084fc 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            position: relative; 
-            z-index: 2;
-        }
-        
-        .theme-switch-wrapper { padding: 20px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: center; } 
-        .theme-toggle-label { cursor: pointer; color: var(--text-muted); display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 0.9rem; font-weight: 600; width: 100%; transition: all 0.3s ease;} 
-        .theme-toggle-label:hover { color: var(--text-main); }
-        .theme-checkbox { display: none; } 
-        
-        .nav-links { padding: 20px 15px; flex-grow: 1; overflow-y: auto; } 
-        .nav-links::-webkit-scrollbar { width: 4px; } .nav-links::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
-        .nav-links li a { display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; color: var(--text-muted); font-weight: 600; font-size: 0.95rem; border-radius: 12px; transition: all 0.3s ease; cursor: pointer; margin-bottom: 5px; }
-        .nav-links li a:hover { background-color: rgba(245, 158, 11, 0.05); color: var(--text-main); }
-        .nav-links li a.active { background-color: rgba(245, 158, 11, 0.1); color: var(--primary); border-left: 4px solid var(--primary); border-radius: 0 12px 12px 0; }
-        
-        .nav-links i { width: 20px; text-align: center; margin-right: 12px; font-size: 1.1rem; }
-        .dropdown-btn { cursor: pointer; } 
-        .arrow { font-size: 0.7rem; transition: transform 0.3s ease; } 
-        .dropdown-btn.open .arrow { transform: rotate(180deg); }
-        .dropdown-container { display: none; flex-direction: column; padding-left: 10px; margin-top: 5px; border-left: 2px solid var(--border-color); margin-left: 20px; } 
-        .dropdown-container.show { display: flex; animation: slideDown 0.3s ease;} 
-        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .dropdown-container li a { padding: 10px 15px; font-size: 0.85rem; border-radius: 8px; margin-bottom: 2px; } 
-        .dropdown-container li a:hover { padding-left: 20px; color: var(--primary); background: rgba(245, 158, 11, 0.05); }
-        .dropdown-container li a.sub-active { color: var(--primary); background: rgba(245, 158, 11, 0.1); font-weight: 700; border-left: none; }
-        
-        .btn-logout { margin-top: auto; color: #ef4444 !important; background: rgba(239, 68, 68, 0.05); }
-        .btn-logout:hover { background: #ef4444 !important; color: white !important; transform: translateY(-2px) !important; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3); }
-
-        .main-content { margin-left: var(--sidebar-width); width: calc(100% - var(--sidebar-width)); min-height: 100vh; padding: 40px 50px; overflow-x: hidden;}
-        .header-top-right { position: fixed; top: 30px; right: 50px; display: flex; gap: 15px; z-index: 100; align-items: center;}
-        .header-profile { display: flex; align-items: center; padding: 6px 15px 6px 6px; border-radius: 50px; background: var(--bg-card); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); backdrop-filter: blur(10px); cursor: pointer; transition: 0.3s;}
-        .header-profile:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: var(--primary); }
-        .header-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; background-color: #fff; }
-
-        /* BERANDA PERBAIKAN */
-        #section-beranda { display: flex; align-items: center; justify-content: space-between; gap: 50px; background: var(--bg-card); padding: 60px 50px; border-radius: 30px; border: 1px solid var(--border-color); min-height: 450px; margin-top: 50px; box-shadow: var(--shadow-sm);}
-        .hero-content { flex: 1.2; z-index: 2; animation: fadeRight 0.6s ease; }
-        @keyframes fadeRight { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
-        .badge-hero { display: inline-flex; align-items: center; gap: 8px; background: rgba(245, 158, 11, 0.15); color: var(--primary); padding: 8px 20px; border-radius: 30px; font-size: 0.85rem; font-weight: 700; margin-bottom: 25px; border: 1px solid rgba(245, 158, 11, 0.2); text-transform: uppercase; }
-        .hero-content h1 { font-size: 3.2rem; font-weight: 800; line-height: 1.15; margin-bottom: 20px; }
-        .hero-content h1 span { color: var(--primary); }
-        .hero-content p { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 35px; line-height: 1.7; max-width: 90%; }
-        
-        .hero-image { flex: 1; z-index: 1; display: flex; justify-content: center; animation: floatImg 6s ease-in-out infinite; } 
-        .hero-image img { width: 100%; max-width: 450px; max-height: 350px; border-radius: 24px; box-shadow: var(--shadow-lg); border: 1px solid var(--border-color); object-fit: cover;} 
-        @keyframes floatImg { 0% { transform: translateY(0px); } 50% { transform: translateY(-15px); } 100% { transform: translateY(0px); } }
-        
-        .btn-action { background: var(--primary); color: white; border: none; padding: 12px 24px; border-radius: 12px; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 8px;}
-        .btn-action:hover { background: var(--primary-hover); transform: translateY(-2px);}
-
-        /* SECTION PROFIL */
-        #section-profil { display: none; width: 100%; animation: fadeIn 0.4s ease; margin-top: 50px; }
-        .profil-container { background: var(--bg-card); border-radius: 30px; border: 1px solid var(--border-color); padding: 50px; box-shadow: var(--shadow-lg); display: flex; gap: 50px; align-items: flex-start;}
-        .profil-foto-area { display: flex; flex-direction: column; align-items: center; gap: 20px; width: 250px; text-align: center;}
-        .profil-img-large { width: 180px; height: 180px; border-radius: 50%; object-fit: cover; border: 4px solid var(--primary); box-shadow: 0 10px 25px rgba(245, 158, 11, 0.2); background-color: #fff;}
-        .btn-upload-foto { background: var(--bg-body); border: 1px solid var(--border-color); color: var(--text-main); padding: 10px 20px; border-radius: 20px; cursor: pointer; transition: 0.3s; font-size: 0.85rem; font-weight: 600; width: 100%;}
-        .btn-upload-foto:hover { border-color: var(--primary); color: var(--primary); }
-        .profil-form-area { flex: 1; }
-        .profil-form-area h2 { font-size: 2rem; color: var(--text-main); margin-bottom: 30px; }
-        .input-group { margin-bottom: 15px; }
-        .input-group label { display: block; margin-bottom: 8px; font-size: 0.9rem; color: var(--text-muted); font-weight: 600;}
-        .input-group input, .input-group textarea { width: 100%; padding: 14px; background: var(--bg-body); border: 1px solid var(--border-color); border-radius: 12px; color: var(--text-main); outline: none; font-family: inherit;}
-        .input-group input:focus, .input-group textarea:focus { border-color: var(--primary); }
-        .input-group input:disabled { opacity: 0.6; cursor: not-allowed; }
-
-        /* MATKUL HEADER */
-        #section-matkul { display: none; width: 100%; margin-top: 60px;}
-        .matkul-header { display: flex; flex-direction: column; justify-content: center; margin-bottom: 30px; padding: 40px 50px; border-radius: 24px; background: var(--banner-gradient); border: 1px solid var(--border-color);}
-        .matkul-title-box h1 { font-size: 2.8rem; color: var(--primary); margin-bottom: 8px; font-weight: 800; }
-        .matkul-title-box p { color: var(--text-muted); font-size: 1.05rem; font-weight: 500;}
-        
-        /* =========================================
-           TABS - MODIFIKASI SCROLL HORIZONTAL
-        ========================================= */
-        .tabs { 
-            display: flex; 
-            flex-wrap: nowrap; 
-            overflow-x: auto; 
-            gap: 5px; 
-            background: rgba(255,255,255,0.02); 
-            padding: 8px; 
-            border-radius: 16px; 
-            border: 1px solid var(--border-color); 
-            margin-bottom: 30px; 
-            scroll-behavior: smooth;
-            padding-bottom: 12px; 
-        }
-        /* Mempercantik Scrollbar Tab */
-        .tabs::-webkit-scrollbar { height: 6px; }
-        .tabs::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 10px; }
-        .tabs::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
-
-        body:has(#theme-toggle:checked) .tabs { background: #ffffff; }
-        body:has(#theme-toggle:checked) .tabs::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); }
-
-        .tab-btn { 
-            background: transparent; 
-            border: none; 
-            padding: 12px 20px; 
-            border-radius: 12px; 
-            color: var(--text-muted); 
-            font-weight: 600; 
-            font-size: 0.9rem; 
-            cursor: pointer; 
-            transition: 0.3s; 
-            display: flex; 
-            align-items: center; 
-            gap: 8px;
-            white-space: nowrap; /* Kunci agar teks tidak turun */
-            flex-shrink: 0; /* Cegah tombol mengecil */
-        }
-        .tab-btn:hover { color: var(--text-main); background: rgba(245, 158, 11, 0.05);}
-        .tab-btn.active { background: var(--primary); color: #fff; }
-
-        .tab-content { display: none; animation: fadeIn 0.3s ease; min-height: 400px;}
-        .tab-content.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .section-title-tab { margin-bottom: 25px; font-size: 1.5rem; color: var(--text-main); font-weight: 700; display: flex; align-items: center; gap: 10px;}
-
-        /* BUNGKUSAN TABEL RESPONSIVE (Penting untuk Penilaian dan Cuti) */
-        .table-responsive {
-            width: 100%;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            border-radius: 12px;
-            margin-top: 10px;
-        }
-
-        /* FORM & CARDS */
-        .form-card { background: var(--bg-card); padding: 30px; border-radius: 20px; border: 1px solid var(--border-color); margin-bottom: 25px; }
-        .item-card { background: var(--bg-card); border: 1px solid var(--border-color); padding: 20px 25px; border-radius: 16px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
-        .item-info h3 { font-size: 1.1rem; margin-bottom: 4px; color: var(--text-main);}
-        .item-info p { font-size: 0.85rem; color: var(--text-muted);}
-
-        .styled-table { width: 100%; border-collapse: collapse; font-size: 0.9em; border-radius: 12px; overflow: hidden; background: var(--bg-card); }
-        .styled-table thead tr { background-color: var(--primary); color: #ffffff; text-align: left; }
-        .styled-table th, .styled-table td { padding: 15px 20px; border-bottom: 1px solid var(--border-color); min-width: 120px; }
-        .input-nilai { width: 80px; padding: 8px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-body); color: var(--text-main); text-align: center; font-weight: bold;}
-
-        /* CHAT BOX */
-        .chat-box { border: 1px solid var(--border-color); border-radius: 24px; height: 500px; display: flex; flex-direction: column; background: var(--bg-card); overflow: hidden;}
-        .chat-header-info { padding: 15px 25px; border-bottom: 1px solid var(--border-color); background: rgba(0,0,0,0.02); display: flex; align-items: center; gap: 10px;}
-        .chat-header-info i { color: var(--secondary); font-size: 1.2rem;}
-        .chat-header-info span { font-weight: 600; font-size: 0.9rem;}
-        .chat-messages { flex: 1; padding: 25px; overflow-y: auto; display: flex; flex-direction: column; gap: 18px; scroll-behavior: smooth; }
-        .chat-messages::-webkit-scrollbar { width: 6px; } .chat-messages::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
-        .message { max-width: 75%; padding: 14px 18px; font-size: 0.95rem; line-height: 1.5; position: relative; border-radius: 16px;}
-        .message .sender { font-size: 0.75rem; font-weight: 700; margin-bottom: 6px; display: block; letter-spacing: 0.5px;}
-        .msg-other { background: rgba(255,255,255,0.05); align-self: flex-start; border: 1px solid var(--border-color); border-bottom-left-radius: 4px; }
-        .msg-other .sender { color: var(--primary); }
-        .msg-me { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%); color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; border: none; }
-        .msg-me .sender { color: rgba(255,255,255,0.8); }
-        .chat-input-area { padding: 20px; background: rgba(0,0,0,0.2); border-top: 1px solid var(--border-color); display: flex; gap: 15px; }
-        .chat-input-area input { flex: 1; padding: 16px 20px; border: 1px solid var(--border-color); border-radius: 16px; background: var(--bg-body); color: var(--text-main); outline: none;}
-        .chat-input-area button { background: var(--primary); color: white; border: none; width: 50px; height: 50px; border-radius: 50%; cursor: pointer;}
-    </style>
+    <title>Blog Pribadi & Project Edu-Free</title>
+    <link rel="stylesheet" href="styleimel.css">
 </head>
 <body>
 
-    <nav class="sidebar">
-        <div class="sidebar-header">
-            <div class="logo">Edu-Free.</div>
-        </div>
+    <div class="header-container">
+        <h1>Identitas Pribadi & Project</h1>
+        <img src="FotoPribadi.jpeg" width="150" height="200" alt="Foto Pribadi" class="profile-img">
+        <p>
+            <b>Imel Fiana Safira</b><br>
+            NIM: 250411100206<br>
+            Kelas: 2B
+        </p>
+        <hr>
+        <p>
+            <b>Judul Project:</b> Platform Kursus Online "Edu-Free"<br>
+            <b>Jobdesk (Progres 100%):</b> Membuat Sistem Kuis Ringkas
+        </p>
         
-        <div class="theme-switch-wrapper">
-            <input type="checkbox" id="theme-toggle" class="theme-checkbox">
-            <label for="theme-toggle" class="theme-toggle-label">
-                <i class="fas fa-moon icon-moon"></i> Mode Gelap
-            </label>
+        <div class="nav-container">
+            <b>Navigasi 10 Interface:</b><br>
+            <a href="#home">[1. Home]</a> | 
+            <a href="#profil">[2. Profil]</a> | 
+            <a href="#kampus">[3. Kampus]</a> | 
+            <a href="#pengalaman">[4. Pengalaman]</a> | 
+            <a href="#galeri">[5. Galeri]</a> | 
+            <a href="#intro-kuis">[6. Intro Kuis]</a> | 
+            <a href="#soal-kuis">[7. Soal Kuis]</a> | 
+            <a href="#skor-akhir">[8. Skor Akhir]</a> | 
+            <a href="#pembahasan">[9. Pembahasan]</a> | 
+            <a href="#kontak">[10. Kontak]</a>
         </div>
+    </div>
 
-        <ul class="nav-links">
-            <li><a href="#" id="menu-beranda" class="active"><i class="fas fa-home"></i> Beranda Utama</a></li>
-            <li><a href="#" id="menu-profil"><i class="fas fa-user-circle"></i> Profil Asprak</a></li>
-            <li>
-                <a class="dropdown-btn open">
-                    <span><i class="fas fa-flask"></i> Ruang Praktikum</span>
-                    <span class="arrow"><i class="fas fa-chevron-down"></i></span>
-                </a>
-                <ul class="dropdown-container show" id="menu-matkul-saya">
-                    </ul>
-            </li>
-            <li style="margin-top: 15px;"><a href="index.html"><i class="fas fa-sign-out-alt"></i>Log Out</a></li>
-        </ul>
-    </nav>
+    <div class="main-content">
 
-    <main class="main-content">
-        <div class="header-top-right">
-            <div class="header-profile" title="Profil Asprak" onclick="document.getElementById('menu-profil').click();">
-                <div style="text-align: right; margin-right: 12px; margin-left: 8px;">
-                    <div id="top-name" style="font-size: 0.9rem; font-weight: 700;">Nama Asprak</div>
-                    <div id="top-role" style="font-size: 0.75rem; color: var(--primary); font-weight: 600;">Asisten Praktikum</div>
+        <h2 id="home">1. Interface: Home (Dashboard Blog Pribadi)</h2>
+        <p><i>Aktor: Pemilik Blog | Progres: 100%</i></p>
+        <div class="interface-card app-view">
+            <div class="app-header">
+                <h2>👋 Selamat Datang di Blog Imel!</h2>
+                <p>Dashboard Blog Pribadi & Portofolio</p>
+            </div>
+            <div class="dashboard-stats">
+                <div class="stat-card">
+                    <h3>💻 10</h3>
+                    <p>Interface Kode Selesai</p>
                 </div>
-                <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png" id="header-avatar" class="header-avatar">
+                <div class="stat-card highlight-card">
+                    <h3>🧩 1</h3>
+                    <p>Modul Kuis Tuntas</p>
+                </div>
+                <div class="stat-card">
+                    <h3>✅ 100%</h3>
+                    <p>Progress Coding Project</p>
+                </div>
+            </div>
+            <div class="app-body">
+                <p>Dari dashboard ini Anda dapat melihat ringkasan kode yang sudah diselesaikan untuk blog pribadi dan project Edu-Free.</p>
+                <a href="#profil" class="btn-primary">Lihat Profil & Project &rarr;</a>
             </div>
         </div>
+        <hr><br>
 
-        <section id="section-beranda">
-            <div class="hero-content">
-                <div class="badge-hero"><i class="fas fa-laptop-code"></i> Manajemen Praktikum</div>
-                <h1>Kelola Modul & Asistensi Praktikum<span>Lebih Gampang.</span></h1>
-                <p id="welcome-message">Selamat Datang di Pusat Kendali Asisten Praktikum. Akses ke menu ini terbatas hanya pada mata kuliah praktikum spesifik saja.</p>
-                <button class="btn-action" style="padding: 14px 30px; font-size: 1rem;" onclick="document.querySelector('.dropdown-btn').click();"><i class="fas fa-flask"></i> Buka Laboratorium</button>
-            </div>
-            <div class="hero-image">
-                <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Dashboard Asprak">
-            </div>
-        </section>
-
-        <section id="section-profil">
-            <div class="profil-container">
-                <div class="profil-foto-area">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png" id="profil-img-preview" class="profil-img-large" alt="Foto Profil">
-                    <div style="width: 100%;">
-                        <input type="file" id="profil-upload-input" accept="image/png, image/jpeg, image/jpg" style="display:none;" onchange="previewProfilePic(event)">
-                        <button class="btn-action" style="width:100%; margin-bottom:10px; justify-content:center;" onclick="document.getElementById('profil-upload-input').click();"><i class="fas fa-camera"></i> Ubah Foto</button>
-                        <button class="btn-upload-foto" style="color:var(--danger-red); border-color:var(--danger-red);" onclick="hapusProfilePic()"><i class="fas fa-trash"></i> Hapus Foto</button>
-                    </div>
+        <h2 id="profil">2. Interface: Profil Pengguna</h2>
+        <p><i>Aktor: Siswa / Admin | Progres: 100%</i></p>
+        <div class="interface-card app-view">
+            <div class="profile-layout">
+                <div class="profile-sidebar">
+                    <img src="FotoPribadi.jpeg" alt="Foto Imel" class="avatar-large">
+                    <span class="badge-role">Quiz Developer</span>
                 </div>
-                
-                <div class="profil-form-area">
-                    <h2><i class="fas fa-user-edit" style="color:var(--primary); margin-right:10px;"></i> Profil Asisten Praktikum</h2>
-                    
-                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
-                        <div class="input-group">
-                            <label>Nama Lengkap</label>
-                            <input type="text" id="prof-nama" disabled>
+                <div class="profile-details">
+                    <h3 style="margin-top: 0;">Imel Fiana Safira</h3>
+                    <p style="color: #7f8c8d;">@vianasfra | Bergabung sejak Jan 2026</p>
+                    <hr>
+                    <p><b>Bio:</b> Mahasiswa yang fokus pada pengembangan antarmuka web yang interaktif. Di proyek Edu-Free, saya bertanggung jawab merancang dan memastikan alur sistem kuis berjalan lancar dari awal hingga skor akhir.</p>
+
+                    <p><b>Minat Utama:</b> Frontend Web Development untuk kuis yang mudah dipahami siswa.</p>
+
+                    <div class="profile-meta">
+                        <div class="profile-meta-item">
+                            <h4>Peran di Edu-Free</h4>
+                            <p>Quiz Developer &amp; Interface Designer untuk modul evaluasi HTML dasar.</p>
                         </div>
-                        <div class="input-group">
-                            <label>ID Asprak / NIM</label>
-                            <input type="text" id="prof-nim" disabled>
+                        <div class="profile-meta-item">
+                            <h4>Stack Teknologi</h4>
+                            <p>HTML5 dan CSS3.</p>
+                            <!-- <p>HTML5, CSS3, dan dasar-dasar JavaScript untuk validasi serta interaksi ringan.</p> -->
                         </div>
-                    </div>
-                    
-                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
-                        <div class="input-group">
-                            <label>Tanggal Lahir</label>
-                            <input type="date" id="prof-tgl">
-                        </div>
-                        <div class="input-group">
-                            <label>Universitas / Institusi</label>
-                            <input type="text" id="prof-univ" placeholder="Contoh: Universitas Trunojoyo Madura">
+                        <div class="profile-meta-item">
+                            <h4>Durasi Proyek</h4>
+                            <p>Feb 2026 &ndash; Mar 2026 (penyusunan flow kuis dari Intro hingga Skor Akhir).</p>
                         </div>
                     </div>
 
-                    <div style="display:grid; grid-template-columns: 1fr 2fr; gap:20px;">
-                        <div class="input-group">
-                            <label>Jml. Praktikum Diampu</label>
-                            <input type="number" id="prof-jml-prak" placeholder="Contoh: 2">
-                        </div>
-                        <div class="input-group">
-                            <label>Nama Praktikum (Pisahkan Koma)</label>
-                            <input type="text" id="prof-nama-prak" placeholder="Contoh: Alpro, PTI">
-                        </div>
-                    </div>
-
-                    <div class="input-group">
-                        <label>Dosen Pengampu Teori Terkait</label>
-                        <input type="text" id="prof-dosen" placeholder="Contoh: Bapak Ahmad, S.Kom., M.T.">
-                    </div>
-
-                    <div class="input-group">
-                        <label>Alamat Domisili</label>
-                        <textarea id="prof-alamat" rows="2" placeholder="Masukkan alamat domisili..."></textarea>
-                    </div>
-                    
-                    <button class="btn-action" style="padding: 15px 30px; font-size: 1.05rem;" onclick="simpanProfil()"><i class="fas fa-save"></i> Simpan Perubahan Profil</button>
+                    <p><b>Fokus Saat Ini:</b> Menyusun dokumentasi interface, merapikan tampilan dashboard blog pribadi, dan menghubungkan setiap halaman kuis agar alurnya konsisten untuk pengguna.</p>
                 </div>
             </div>
-        </section>
+        </div>
+        <hr><br>
 
-        <section id="section-matkul">
-            <div class="matkul-header">
-                <div class="matkul-title-box">
-                    <h1 id="matkul-title-text">Nama Praktikum</h1>
-                    <p><i class="fas fa-flask"></i> Laboratorium Teknik Informatika</p>
+        <h2 id="kampus">3. Interface: Profil Kampus</h2>
+        <p><i>Aktor: Admin Sistem / Calon Mahasiswa | Progres: 100%</i></p>
+        <div class="interface-card app-view">
+            <div class="academic-card">
+                <div class="academic-header">
+                    <h3>Universitas Trunodjoyo Madura</h3>
+                    <span class="badge-active">Kampus Negeri &amp; Terakreditasi A</span>
                 </div>
-            </div>
 
-            <nav class="tabs">
-                <button class="tab-btn active" onclick="bukaTabPrak('tab-p-pengumuman', this)"><i class="fas fa-bullhorn"></i> Pengumuman</button>
-                <button class="tab-btn" onclick="bukaTabPrak('tab-p-kontrak', this)"><i class="fas fa-file-signature"></i> Kontrak Praktikum</button>
-                <button class="tab-btn" onclick="bukaTabPrak('tab-p-materi', this)"><i class="fas fa-file-alt"></i> Materi</button>
-                <button class="tab-btn" onclick="bukaTabPrak('tab-p-tugas', this)"><i class="fas fa-laptop-code"></i> Tugas</button>
-                <button class="tab-btn" onclick="bukaTabPrak('tab-p-asistensi', this)"><i class="fas fa-calendar-check"></i> Jadwal Asistensi</button>
-                <button class="tab-btn" onclick="bukaTabPrak('tab-p-nilai', this)"><i class="fas fa-star"></i> Penilaian</button>
-                <button class="tab-btn" onclick="bukaTabPrak('tab-p-forum', this)"><i class="fas fa-comments"></i> Diskusi</button>
-                <button class="tab-btn" onclick="bukaTabPrak('tab-p-cuti', this)"><i class="fas fa-notes-medical"></i> Cuti Mahasiswa</button>
-            </nav>
-
-            <div id="tab-p-pengumuman" class="tab-content active">
-                <h2 class="section-title-tab"><i class="fas fa-bullhorn" style="color: var(--primary);"></i> Pengumuman Praktikum</h2>
-                <div class="form-card">
-                    <div class="input-group">
-                        <label>Judul Pengumuman</label>
-                        <input type="text" id="p-input-judul-pengumuman" placeholder="Cth: Info Pelaksanaan Modul 1">
-                    </div>
-                    <div class="input-group">
-                        <label>Isi Informasi</label>
-                        <textarea id="p-input-isi-pengumuman" rows="3" placeholder="Tuliskan detail jadwal atau persyaratan..."></textarea>
-                    </div>
-                    <button class="btn-action" onclick="simpanPengumuman()"><i class="fas fa-paper-plane"></i> Publikasikan</button>
-                </div>
-                <div id="p-list-pengumuman"></div>
-            </div>
-
-            <div id="tab-p-kontrak" class="tab-content">
-                <h2 class="section-title-tab"><i class="fas fa-file-signature" style="color: var(--primary);"></i> Dokumen Kontrak Praktikum</h2>
-                <div class="form-card">
-                    <div class="input-group">
-                        <label>Judul Kontrak</label>
-                        <input type="text" id="p-input-judul-kontrak" placeholder="Cth: Kontrak Praktikum Alpro Genap 2026">
-                    </div>
-                    <div class="input-group">
-                        <label>Link Dokumen (Google Drive/PDF URL)</label>
-                        <input type="url" id="p-input-link-kontrak" placeholder="Cth: https://docs.google.com/...">
-                    </div>
-                    <button class="btn-action" onclick="simpanKontrakPrak()"><i class="fas fa-upload"></i> Unggah Kontrak</button>
-                </div>
-                <h3 style="margin-bottom: 15px; font-size:1.1rem; color:var(--text-main);">Kontrak Praktikum Aktif</h3>
-                <div id="p-list-kontrak"></div>
-            </div>
-
-            <div id="tab-p-materi" class="tab-content">
-                <h2 class="section-title-tab"><i class="fas fa-file-alt" style="color: var(--primary);"></i> Modul Materi Praktikum</h2>
-                <div class="form-card">
-                    <div class="input-group">
-                        <label>Judul Modul</label>
-                        <input type="text" id="p-input-judul-materi" placeholder="Cth: Modul 1 - Tipe Data">
-                    </div>
-                    <div class="input-group">
-                        <label>Link Modul (Google Drive/PDF URL)</label>
-                        <input type="url" id="p-input-link-materi" placeholder="https://...">
-                    </div>
-                    <button class="btn-action" onclick="simpanMateriPrak()"><i class="fas fa-upload"></i> Unggah Modul</button>
-                </div>
-                <div id="p-list-materi"></div>
-            </div>
-
-            <div id="tab-p-tugas" class="tab-content">
-                <h2 class="section-title-tab"><i class="fas fa-laptop-code" style="color: var(--primary);"></i> Tugas & Laporan Praktikum</h2>
-                <div class="form-card">
-                    <div class="input-group">
-                        <label>Judul Tugas Laporan</label>
-                        <input type="text" id="p-input-judul-tugas" placeholder="Cth: Laporan Resmi Modul 1">
-                    </div>
-                    <div class="input-group">
-                        <label>Link Soal/Ketentuan (Opsional)</label>
-                        <input type="url" id="p-input-link-tugas" placeholder="https://...">
-                    </div>
-                    <div class="input-group">
-                        <label>Deadline Pengumpulan</label>
-                        <input type="date" id="p-input-deadline-tugas">
-                    </div>
-                    <button class="btn-action" onclick="simpanTugasPrak()"><i class="fas fa-plus-square"></i> Buat Tugas</button>
-                </div>
-                <div id="p-list-tugas"></div>
-            </div>
-
-            <div id="tab-p-asistensi" class="tab-content">
-                <h2 class="section-title-tab"><i class="fas fa-calendar-check" style="color: var(--primary);"></i> Jadwal Asistensi</h2>
-                <div class="form-card">
-                    <div class="input-group">
-                        <label>Tanggal & Waktu Asistensi</label>
-                        <input type="datetime-local" id="p-input-waktu-asistensi">
-                    </div>
-                    <div class="input-group">
-                        <label>Lokasi / Link Meet</label>
-                        <input type="text" id="p-input-lokasi-asistensi" placeholder="Cth: Lab Pemrograman / G-Meet">
-                    </div>
-                    <button class="btn-action" onclick="simpanAsistensi()"><i class="fas fa-calendar-plus"></i> Tambah Jadwal</button>
-                </div>
-                <div id="p-list-asistensi"></div>
-            </div>
-
-            <div id="tab-p-nilai" class="tab-content">
-                <h2 class="section-title-tab"><i class="fas fa-star" style="color: var(--primary);"></i> Cek Pengumpulan & Nilai Laporan</h2>
-                <div class="form-card">
-                    <div class="input-group">
-                        <label>Pilih Tugas/Laporan</label>
-                        <select id="p-select-tugas" style="padding:12px; border-radius:10px; width:100%; background:var(--bg-body); color:var(--text-main); border:1px solid var(--border-color);">
-                            <option value="">-- Pilih --</option>
-                        </select>
-                    </div>
-                    <button class="btn-action" onclick="loadTabelPenilaianPrak()"><i class="fas fa-search"></i> Tampilkan</button>
-                </div>
-                
-                <div id="p-panel-nilai" style="display:none;">
-                    <div class="table-responsive">
-                        <table class="styled-table">
-                            <thead>
-                                <tr>
-                                    <th>NIM</th>
-                                    <th>Nama Praktikan</th>
-                                    <th>Link Jawaban</th>
-                                    <th>Nilai</th>
-                                    <th>Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody id="p-tbody-nilai"></tbody>
+                <div class="campus-layout">
+                    <div class="campus-main">
+                        <table class="info-table">
+                            <tr>
+                                <th>Lokasi Kampus</th>
+                                <td>Bangkalan, Jawa Timur, Indonesia</td>
+                            </tr>
+                            <tr>
+                                <th>Status</th>
+                                <td>Perguruan Tinggi Negeri (PTN)</td>
+                            </tr>
+                            <tr>
+                                <th>Website Resmi</th>
+                                <td>https://ww2.trunojoyo.ac.id/</td>
+                            </tr>
+                            <tr>
+                                <th>Fokus Keilmuan</th>
+                                <td>Teknik, Sains, Sosial Humaniora, dan Ilmu Pendidikan.</td>
+                            </tr>
                         </table>
+
+                        <div class="campus-description">
+                            <p>Universitas Trunodjoyo Madura (UTM) merupakan perguruan tinggi negeri yang menjadi pusat pendidikan tinggi di wilayah Madura. Lingkungan kampus didukung fasilitas laboratorium, perpustakaan, dan ruang belajar yang menunjang pengembangan kompetensi mahasiswa.</p>
+                        </div>
                     </div>
+
+                    <div class="campus-side">
+                        <h4>Fakultas &amp; Contoh Program Studi</h4>
+                        <ul class="campus-list">
+                            <li><b>Fakultas Teknik</b> &ndash; Teknik Informatika, Teknik Industri, Teknik Elektro.</li>
+                            <li><b>Fakultas Pertanian</b> &ndash; Agribisnis, Agroteknologi.</li>
+                            <li><b>Fakultas Ekonomi &amp; Bisnis</b> &ndash; Manajemen, Akuntansi.</li>
+                        </ul>
+
+                        <h4>Fasilitas Utama Kampus</h4>
+                        <ul class="campus-list">
+                            <li>Laboratorium komputer untuk praktikum pemrograman dan jaringan.</li>
+                            <li>Perpustakaan pusat dengan koleksi buku cetak dan digital.</li>
+                            <li>Ruang diskusi dan area co-working mahasiswa.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="academic-footer">
+                    <p>Dalam konteks project Edu-Free, sistem kuis yang dikembangkan dapat diintegrasikan dengan platform e-learning kampus untuk mendukung evaluasi pembelajaran berbasis web.</p>
+                </div>
+            </div>
+        </div>
+        <hr><br>
+
+        <h2 id="pengalaman">4. Interface: Pengalaman &amp; Skill</h2>
+        <p><i>Aktor: Pengunjung / Recruiter | Progres: 100%</i></p>
+        <div class="interface-card app-view">
+            <h3>Rangkuman Kegiatan &amp; Skill Akademik</h3>
+
+            <div class="skill-section">
+                <div class="skill-item">
+                    <div class="skill-label"><span>Algoritma &amp; Dasar Pemrograman</span> <span>90%</span></div>
+                    <div class="skill-bar-bg"><div class="skill-bar-fill" style="width: 90%;"></div></div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-label"><span>Pengantar Teknologi Informasi</span> <span>88%</span></div>
+                    <div class="skill-bar-bg"><div class="skill-bar-fill" style="width: 88%;"></div></div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-label"><span>Struktur Data</span> <span>85%</span></div>
+                    <div class="skill-bar-bg"><div class="skill-bar-fill" style="width: 85%;"></div></div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-label"><span>Menggambar / Desain Visual</span> <span>80%</span></div>
+                    <div class="skill-bar-bg"><div class="skill-bar-fill" style="width: 80%;"></div></div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-label"><span>Lomba &amp; Kompetisi</span> <span>75%</span></div>
+                    <div class="skill-bar-bg"><div class="skill-bar-fill" style="width: 75%;"></div></div>
                 </div>
             </div>
 
-            <div id="tab-p-forum" class="tab-content">
-                <h2 class="section-title-tab" style="margin-bottom: 10px;"><i class="fas fa-comments" style="color: var(--primary);"></i> Diskusi Praktikum</h2>
-                <div class="chat-box">
-                    <div class="chat-header-info" style="background: rgba(245, 158, 11, 0.05);">
-                        <i class="fas fa-flask" style="color: var(--primary);"></i> <span>Ruang diskusi khusus dengan Praktikan.</span>
-                    </div>
-                    <div class="chat-messages" id="p-chat-messages"></div>
-                    <form class="chat-input-area" id="p-form-chat" onsubmit="kirimChatPrak(event)">
-                        <input type="text" id="p-chat-input" placeholder="Ketik pesan..." autocomplete="off">
-                        <button type="submit" style="background:var(--primary);"><i class="fas fa-paper-plane"></i></button>
-                    </form>
+            <div class="activity-grid">
+                <div class="activity-column">
+                    <h4>Mata Kuliah Terkait</h4>
+                    <ul class="activity-list">
+                        <li><b>Algoritma &amp; Dasar Pemrograman</b> - menyusun flowchart, pseudocode, dan implementasi logika dasar.</li>
+                        <li><b>Pengantar Teknologi Informasi</b> - mengenal arsitektur komputer, jaringan, serta etika penggunaan TI.</li>
+                        <li><b>Struktur Data</b> - mengimplementasikan array, linked list, stack, dan queue untuk studi kasus sederhana.</li>
+                    </ul>
                 </div>
             </div>
 
-            <div id="tab-p-cuti" class="tab-content">
-                <h2 class="section-title-tab"><i class="fas fa-notes-medical" style="color: var(--primary);"></i> Pengajuan Cuti Mahasiswa</h2>
-                <div id="p-list-cuti"></div>
+            <div class="experience-timeline">
+                <p><b>Ringkasan:</b> Pengalaman belajar dan praktik di atas menjadi dasar dalam mengerjakan project Edu-Free, khususnya dalam merancang alur kuis, menyusun pertanyaan, dan mengimplementasikan tampilan yang sistematis.</p>
             </div>
+        </div>
+        <hr><br>
 
-        </section>
-    </main>
+        <h2 id="galeri">5. Interface: Galeri</h2>
+        <p><i>Aktor: Pengunjung Umum | Progres: 100%</i></p>
+        <div class="interface-card card-galeri">
+            <h3>Dokumentasi Pengerjaan Project Edu-Free</h3>
+            <p>Beberapa cuplikan tampilan antarmuka dan proses pengembangan sistem kuis yang telah dikerjakan.</p>
 
-    <script>
-        const activeUserString = localStorage.getItem('loggedInUser');
-        // if (!activeUserString) { window.location.href = "login.html"; } // Hilangkan komentar untuk pakai login sungguhan
-        
-        // Mock data agar tetap bisa berjalan
-        const user = activeUserString ? JSON.parse(activeUserString) : { userId: "250411100157", nama: "Dwi Farhan Hidayat", role: "asprak", matkul: ["DPW", "Alpro"] };
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="Dokumentasi1.png" alt="Desain Awal Interface Kuis" class="gallery-img">
+                    <div class="gallery-caption">
+                        <h4>Struktur HTML Halaman Kuis</h4>
+                        <p>Dokumentasi susunan elemen HTML (header, soal, opsi jawaban, dan tombol) yang menjadi kerangka utama interface kuis.</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="Dokumentasi2.png" alt="Dashboard & Alur Evaluasi" class="gallery-img">
+                    <div class="gallery-caption">
+                        <h4>Styling CSS &amp; Tampilan Akhir</h4>
+                        <p>Dokumentasi pengaturan warna, layout, dan efek visual dengan CSS untuk dashboard, kartu skor akhir, dan halaman pembahasan.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr><br>
 
-        if(user.role !== 'asprak') { /* window.location.href = "login.html"; */ }
+        <h2 id="intro-kuis">6. Interface: Intro Kuis (Modul Edu-Free)</h2>
+        <p><i>Aktor: Siswa | Progres: 100%</i></p>
+        <div class="intro-kuis-card">
+            <div class="intro-header">
+                <div>
+                    <h2>Kuis Evaluasi: Dasar HTML</h2>
+                    <p class="intro-subtitle">Modul penutup untuk memastikan konsep dasar HTML benar-benar dipahami.</p>
+                </div>
+                <span class="intro-badge">Level Pemula → Mahir</span>
+            </div>
+            <div class="intro-meta">
+                <div class="intro-meta-item">
+                    <h4>10 Soal</h4>
+                    <p>Pilihan ganda seputar tag, atribut, dan struktur dasar HTML.</p>
+                </div>
+                <div class="intro-meta-item">
+                    <h4>Target Nilai 100%</h4>
+                    <p>Latihan sampai tuntas. Siswa bisa mengulang kuis kapan saja.</p>
+                </div>
+                <div class="intro-meta-item">
+                    <h4>Sertifikat Otomatis</h4>
+                    <p>Jika semua soal benar, sistem akan memproses sertifikat digital.</p>
+                </div>
+            </div>
+            <p class="intro-note">Tips: Kerjakan dengan santai, baca setiap soal dengan teliti, dan fokus pada konsep, bukan sekadar menghafal.</p>
+            <a href="#soal-kuis" class="btn-primary">Mulai Kuis Sekarang</a>
+        </div>
+        <hr><br>
 
-        document.getElementById('top-name').textContent = user.nama;
-        
-        // SISTEM PROFIL ASPRAK
-        function muatDataProfil() {
-            document.getElementById('prof-nama').value = user.nama;
-            document.getElementById('prof-nim').value = user.userId;
+        <h2 id="soal-kuis">7. Interface: Soal Kuis</h2>
+        <p><i>Aktor: Siswa | Progres: 100%</i></p>
+        <div class="interface-card quiz-layout">
+            <div class="quiz-main">
+            <form action="#skor-akhir">
+                <fieldset class="quiz-question">
+                    <legend><b>Pertanyaan 1 dari 10</b></legend>
+                    <p>Tag HTML apa yang digunakan untuk membuat paragraf?</p>
+                    <input type="radio" id="p1a" name="q1" value="a"> <label for="p1a">A. &lt;h1&gt;</label><br>
+                    <input type="radio" id="p1b" name="q1" value="b"> <label for="p1b">B. &lt;p&gt;</label><br>
+                    <input type="radio" id="p1c" name="q1" value="c"> <label for="p1c">C. &lt;br&gt;</label>
+                </fieldset>
+                <br>
+                <fieldset class="quiz-question">
+                    <legend><b>Pertanyaan 2 dari 10</b></legend>
+                    <p>Atribut apa yang digunakan untuk menentukan alamat link pada tag &lt;a&gt;?</p>
+                    <input type="radio" id="p2a" name="q2" value="a"> <label for="p2a">A. src</label><br>
+                    <input type="radio" id="p2b" name="q2" value="b"> <label for="p2b">B. alt</label><br>
+                    <input type="radio" id="p2c" name="q2" value="c"> <label for="p2c">C. href</label>
+                </fieldset>
+                <br>
+                <fieldset class="quiz-question">
+                    <legend><b>Pertanyaan 3 dari 10</b></legend>
+                    <p>Manakah tag yang digunakan untuk membuat *Unordered List*?</p>
+                    <input type="radio" id="p3a" name="q3" value="a"> <label for="p3a">A. &lt;ol&gt;</label><br>
+                    <input type="radio" id="p3b" name="q3" value="b"> <label for="p3b">B. &lt;ul&gt;</label><br>
+                    <input type="radio" id="p3c" name="q3" value="c"> <label for="p3c">C. &lt;li&gt;</label>
+                </fieldset>
+                <br>
+                <fieldset class="quiz-question">
+                    <legend><b>Pertanyaan 4 dari 10</b></legend>
+                    <p>Tag apa yang digunakan untuk menampilkan gambar di halaman web?</p>
+                    <input type="radio" id="p4a" name="q4" value="a"> <label for="p4a">A. &lt;img&gt;</label><br>
+                    <input type="radio" id="p4b" name="q4" value="b"> <label for="p4b">B. &lt;picture&gt;</label><br>
+                    <input type="radio" id="p4c" name="q4" value="c"> <label for="p4c">C. &lt;src&gt;</label>
+                </fieldset>
+                <br>
+                <fieldset class="quiz-question">
+                    <legend><b>Pertanyaan 5 dari 10</b></legend>
+                    <p>Untuk membuat baris baru di dalam sebuah tabel, tag yang tepat adalah...</p>
+                    <input type="radio" id="p5a" name="q5" value="a"> <label for="p5a">A. &lt;td&gt;</label><br>
+                    <input type="radio" id="p5b" name="q5" value="b"> <label for="p5b">B. &lt;th&gt;</label><br>
+                    <input type="radio" id="p5c" name="q5" value="c"> <label for="p5c">C. &lt;tr&gt;</label>
+                </fieldset>
+                <br>
+                <fieldset class="quiz-question">
+                    <legend><b>Pertanyaan 6 dari 10</b></legend>
+                    <p>Tag mana yang menghasilkan teks judul (heading) dengan ukuran paling besar?</p>
+                    <input type="radio" id="p6a" name="q6" value="a"> <label for="p6a">A. &lt;h1&gt;</label><br>
+                    <input type="radio" id="p6b" name="q6" value="b"> <label for="p6b">B. &lt;h6&gt;</label><br>
+                    <input type="radio" id="p6c" name="q6" value="c"> <label for="p6c">C. &lt;header&gt;</label>
+                </fieldset>
+                <br>
+                <fieldset class="quiz-question">
+                    <legend><b>Pertanyaan 7 dari 10</b></legend>
+                    <p>Bagaimana cara membuat teks pindah ke baris baru (line break) tanpa membuat paragraf baru?</p>
+                    <input type="radio" id="p7a" name="q7" value="a"> <label for="p7a">A. &lt;lb&gt;</label><br>
+                    <input type="radio" id="p7b" name="q7" value="b"> <label for="p7b">B. &lt;br&gt;</label><br>
+                    <input type="radio" id="p7c" name="q7" value="c"> <label for="p7c">C. &lt;break&gt;</label>
+                </fieldset>
+                <br>
+                <fieldset class="quiz-question">
+                    <legend><b>Pertanyaan 8 dari 10</b></legend>
+                    <p>Tag yang secara semantik digunakan untuk menebalkan teks yang memiliki penekanan penting adalah...</p>
+                    <input type="radio" id="p8a" name="q8" value="a"> <label for="p8a">A. &lt;i&gt;</label><br>
+                    <input type="radio" id="p8b" name="q8" value="b"> <label for="p8b">B. &lt;mark&gt;</label><br>
+                    <input type="radio" id="p8c" name="q8" value="c"> <label for="p8c">C. &lt;strong&gt;</label>
+                </fieldset>
+                <br>
+                <fieldset class="quiz-question">
+                    <legend><b>Pertanyaan 9 dari 10</b></legend>
+                    <p>Deklarasi apa yang wajib diletakkan di baris paling atas untuk menentukan bahwa dokumen tersebut adalah HTML5?</p>
+                    <input type="radio" id="p9a" name="q9" value="a"> <label for="p9a">A. &lt;!DOCTYPE html&gt;</label><br>
+                    <input type="radio" id="p9b" name="q9" value="b"> <label for="p9b">B. &lt;html version="5"&gt;</label><br>
+                    <input type="radio" id="p9c" name="q9" value="c"> <label for="p9c">C. &lt;?html5?&gt;</label>
+                </fieldset>
+                <br>
+                <fieldset class="quiz-question">
+                    <legend><b>Pertanyaan 10 dari 10</b></legend>
+                    <p>Jika ingin membuat daftar yang memiliki nomor urut (1, 2, 3), tag pembungkus yang digunakan adalah...</p>
+                    <input type="radio" id="p10a" name="q10" value="a"> <label for="p10a">A. &lt;dl&gt;</label><br>
+                    <input type="radio" id="p10b" name="q10" value="b"> <label for="p10b">B. &lt;ol&gt;</label><br>
+                    <input type="radio" id="p10c" name="q10" value="c"> <label for="p10c">C. &lt;list&gt;</label>
+                </fieldset>
+                <br>
+                <button type="submit" class="btn-success">Kumpulkan Jawaban</button>
+            </form>
+            </div>
+            <aside class="quiz-sidebar">
+                <h4>Ringkasan Kuis</h4>
+                <ul>
+                    <li>Topik: Dasar HTML &amp; struktur dokumen.</li>
+                    <li>Jumlah Soal: 10 pilihan ganda.</li>
+                    <li>Target nilai: 100% untuk sertifikat.</li>
+                </ul>
+                <h4>Tips Pengerjaan</h4>
+                <p>Baca setiap pertanyaan sampai selesai, perhatikan kata kunci seperti nama tag, atribut, dan fungsi semantik sebelum memilih jawaban.</p>
+            </aside>
+        </div>
+        <hr><br>
 
-            const savedProfileData = JSON.parse(localStorage.getItem('profileDataAsprak_' + user.userId)) || {};
-            if(savedProfileData.tglLahir) document.getElementById('prof-tgl').value = savedProfileData.tglLahir;
-            if(savedProfileData.univ) document.getElementById('prof-univ').value = savedProfileData.univ;
-            if(savedProfileData.alamat) document.getElementById('prof-alamat').value = savedProfileData.alamat;
-            if(savedProfileData.jmlPrak) document.getElementById('prof-jml-prak').value = savedProfileData.jmlPrak;
-            if(savedProfileData.namaPrak) document.getElementById('prof-nama-prak').value = savedProfileData.namaPrak;
-            if(savedProfileData.dosen) document.getElementById('prof-dosen').value = savedProfileData.dosen;
+        <h2 id="skor-akhir">8. Interface: Skor Akhir</h2>
+        <p><i>Aktor: Siswa | Progres: 100%</i></p>
+        <div class="skor-card">
+            <h1>Selamat! Kuis Selesai.</h1>
+            <h2 class="skor-nilai">Skor Anda: 100 / 100</h2>
+            <p>Progres materi ini telah <b>selesai ditonton dan dipahami (100%)</b>. Sertifikat digital Anda sedang diproses oleh sistem.</p>
+            <div class="score-details">
+                <div class="score-item">
+                    <h4>Jawaban Benar</h4>
+                    <p>10 dari 10 soal dijawab dengan tepat.</p>
+                </div>
+                <div class="score-item">
+                    <h4>Status Kelulusan</h4>
+                    <p><span class="score-badge pass">Lulus (Perfect Score)</span></p>
+                </div>
+                <div class="score-item">
+                    <h4>Sertifikat</h4>
+                    <p>Akan dikirim ke email yang terdaftar di sistem.</p>
+                </div>
+            </div>
+            <a href="#pembahasan" class="link-pembahasan">Lihat Kunci Jawaban & Pembahasan &rarr;</a>
+        </div>
+        <hr><br>
 
-            const savedPhoto = localStorage.getItem('profilePicAsprak_' + user.userId);
-            if (savedPhoto) {
-                document.getElementById('header-avatar').src = savedPhoto;
-                document.getElementById('profil-img-preview').src = savedPhoto;
-            } else {
-                document.getElementById('header-avatar').src = "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png";
-                document.getElementById('profil-img-preview').src = "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png";
-            }
-        }
-        muatDataProfil();
+        <h2 id="pembahasan">9. Interface: Pembahasan</h2>
+        <p><i>Aktor: Siswa | Progres: 100%</i></p>
+        <div class="pembahasan-card">
+            <h3>Kunci Jawaban & Evaluasi</h3>
+            <p class="pembahasan-intro">Berikut ringkasan kunci jawaban beserta penjelasan singkat untuk setiap soal. Gunakan bagian ini untuk mereview kembali konsep-konsep penting HTML.</p>
+            <dl class="pembahasan-list">
+                <dt><span class="answer-badge">1</span> Jawaban B (&lt;p&gt;)</dt>
+                <dd>Tag &lt;p&gt; merupakan singkatan dari <i>paragraph</i> dan digunakan untuk membungkus teks paragraf.</dd>
 
-        window.simpanProfil = function() {
-            const dataToSave = {
-                tglLahir: document.getElementById('prof-tgl').value,
-                univ: document.getElementById('prof-univ').value,
-                alamat: document.getElementById('prof-alamat').value,
-                jmlPrak: document.getElementById('prof-jml-prak').value,
-                namaPrak: document.getElementById('prof-nama-prak').value,
-                dosen: document.getElementById('prof-dosen').value
-            };
-            localStorage.setItem('profileDataAsprak_' + user.userId, JSON.stringify(dataToSave));
-            alert("Data profil asisten praktikum berhasil diperbarui!");
-        }
+                <dt><span class="answer-badge">2</span> Jawaban C (href)</dt>
+                <dd><i>Hypertext Reference</i> (href) digunakan di dalam tag anchor &lt;a&gt; untuk menentukan alamat/URL tujuan.</dd>
 
-        window.previewProfilePic = function(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    try {
-                        localStorage.setItem('profilePicAsprak_' + user.userId, e.target.result);
-                        document.getElementById('profil-img-preview').src = e.target.result;
-                        document.getElementById('header-avatar').src = e.target.result;
-                    } catch(err) { alert("Gagal mengunggah foto! Ukuran file terlalu besar."); }
-                };
-                reader.readAsDataURL(file);
-            }
-        }
+                <dt><span class="answer-badge">3</span> Jawaban B (&lt;ul&gt;)</dt>
+                <dd>&lt;ul&gt; singkatan dari <i>Unordered List</i>, yaitu daftar dengan bullet tanpa penomoran.</dd>
 
-        window.hapusProfilePic = function() {
-            if(confirm("Apakah Anda yakin ingin menghapus foto profil?")) {
-                localStorage.removeItem('profilePicAsprak_' + user.userId);
-                muatDataProfil();
-            }
-        }
+                <dt><span class="answer-badge">4</span> Jawaban A (&lt;img&gt;)</dt>
+                <dd>Tag &lt;img&gt; digunakan untuk menyematkan gambar dengan atribut penting seperti <code>src</code> dan <code>alt</code>.</dd>
 
-        // FILTER & NAVIGASI
-        const allowedMatkul = ["alpro", "pti", "struktur data", "dpw"];
-        let matkulAsprak = [];
-        if(user.matkul) { matkulAsprak = user.matkul.filter(m => allowedMatkul.includes(m.toLowerCase())); }
+                <dt><span class="answer-badge">5</span> Jawaban C (&lt;tr&gt;)</dt>
+                <dd>&lt;tr&gt; (<i>table row</i>) berfungsi membuat baris pada tabel yang berisi sel &lt;td&gt; atau &lt;th&gt;.</dd>
 
-        let activePrakGlobal = ""; 
+                <dt><span class="answer-badge">6</span> Jawaban A (&lt;h1&gt;)</dt>
+                <dd>&lt;h1&gt; adalah heading dengan tingkat kepentingan tertinggi dalam struktur dokumen HTML.</dd>
 
-        const menuContainer = document.getElementById('menu-matkul-saya');
-        const sectionBeranda = document.getElementById('section-beranda');
-        const sectionMatkul = document.getElementById('section-matkul');
-        const sectionProfil = document.getElementById('section-profil');
-        
-        const btnMenuBeranda = document.getElementById('menu-beranda');
-        const btnMenuProfil = document.getElementById('menu-profil');
+                <dt><span class="answer-badge">7</span> Jawaban B (&lt;br&gt;)</dt>
+                <dd>&lt;br&gt; (<i>line break</i>) digunakan untuk memindahkan teks ke baris berikutnya tanpa membuat paragraf baru.</dd>
 
-        function clearNavActive() {
-            document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active', 'sub-active'));
-        }
+                <dt><span class="answer-badge">8</span> Jawaban C (&lt;strong&gt;)</dt>
+                <dd>Secara semantik &lt;strong&gt; menandakan teks yang memiliki penekanan penting, biasanya ditampilkan tebal.</dd>
 
-        btnMenuBeranda.addEventListener('click', (e) => {
-            e.preventDefault();
-            sectionBeranda.style.display = 'flex';
-            sectionMatkul.style.display = 'none';
-            sectionProfil.style.display = 'none';
-            clearNavActive();
-            btnMenuBeranda.classList.add('active');
-        });
+                <dt><span class="answer-badge">9</span> Jawaban A (&lt;!DOCTYPE html&gt;)</dt>
+                <dd>Deklarasi &lt;!DOCTYPE html&gt; memberi tahu browser bahwa dokumen menggunakan standar HTML5.</dd>
 
-        btnMenuProfil.addEventListener('click', (e) => {
-            e.preventDefault();
-            sectionBeranda.style.display = 'none';
-            sectionMatkul.style.display = 'none';
-            sectionProfil.style.display = 'block';
-            clearNavActive();
-            btnMenuProfil.classList.add('active');
-        });
+                <dt><span class="answer-badge">10</span> Jawaban B (&lt;ol&gt;)</dt>
+                <dd>&lt;ol&gt; (<i>Ordered List</i>) digunakan untuk daftar yang memiliki urutan bernomor (1, 2, 3, ...).</dd>
+            </dl>
+        </div>
+        <hr><br>
 
-        if (matkulAsprak.length > 0) {
-            menuContainer.innerHTML = ''; 
-            matkulAsprak.forEach(mk => {
-                const li = document.createElement('li');
-                const linkMatkul = document.createElement('a');
-                linkMatkul.href = "#";
-                linkMatkul.innerHTML = `<i class="fas fa-flask" style="margin-right: 8px;"></i> Praktikum ${mk}`;
-                
-                linkMatkul.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    sectionBeranda.style.display = 'none';
-                    sectionProfil.style.display = 'none';
-                    sectionMatkul.style.display = 'block';
-                    
-                    clearNavActive();
-                    linkMatkul.classList.add('sub-active');
+        <h2 id="kontak">10. Interface: Kontak</h2>
+        <p><i>Aktor: Pengunjung / Siswa / Admin | Progres: 100%</i></p>
+        <div class="interface-card contact-layout">
+            <div class="contact-info">
+                <h3>Butuh Bantuan Terkait Kuis?</h3>
+                <p>Silakan kirimkan pesan jika menemukan bug, kesulitan mengerjakan soal, atau memiliki saran pengembangan fitur baru untuk sistem kuis Edu-Free.</p>
+                <ul>
+                    <li>Email utama: <b>fianasfr@email.com</b></li>
+                    <li>Respon maksimal 1x24 jam pada hari kerja.</li>
+                    <li>Harap sertakan nama dan deskripsi masalah secara jelas.</li>
+                </ul>
+            </div>
+            <div class="contact-form">
+                <form action="mailto:fianasfr@email.com" method="POST" enctype="text/plain">
+                    <label for="nama">Nama Lengkap</label><br>
+                    <input type="text" id="nama" name="nama" size="30"><br><br>
+                    <label for="pesan">Pesan / Kendala Kuis</label><br>
+                    <textarea id="pesan" name="pesan" rows="4" cols="40"></textarea><br><br>
+                    <input type="submit" value="Kirim Pesan" class="btn-success">
+                </form>
+            </div>
+        </div>
 
-                    bukaHalamanPrak(mk);
-                });
-
-                li.appendChild(linkMatkul);
-                menuContainer.appendChild(li);
-            });
-        } else {
-            menuContainer.innerHTML = '<li><a style="color:var(--danger-red); font-size:0.8rem;">Tidak ada akses praktikum</a></li>';
-            document.getElementById('welcome-message').innerHTML += "<br><br><b style='color:#ef4444;'>Perhatian: Anda belum di-assign ke mata kuliah praktikum yang valid.</b>";
-        }
-
-        function bukaHalamanPrak(namaMatkul) {
-            activePrakGlobal = namaMatkul; 
-            document.getElementById('matkul-title-text').textContent = "Praktikum " + namaMatkul;
-
-            bukaTabPrak('tab-p-pengumuman', document.querySelectorAll('.tab-btn')[0]);
-            
-            renderPengumuman();
-            renderKontrakPrak(); 
-            renderMateriPrak();
-            renderTugasPrak();
-            renderAsistensi();
-            loadChatPrak();
-            renderCutiAsprak();
-        }
-
-        function bukaTabPrak(tabId, btnElement) {
-            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            btnElement.classList.add('active');
-
-            if(tabId === 'tab-p-forum') {
-                const chatBox = document.getElementById('p-chat-messages');
-                chatBox.scrollTop = chatBox.scrollHeight;
-            } else if (tabId === 'tab-p-nilai') {
-                isiDropdownTugasPrak(); 
-                document.getElementById('p-panel-nilai').style.display = 'none';
-            }
-        }
-
-        function generateId() { return 'PRAK_' + Math.random().toString(36).substr(2, 9); }
-
-        // ========================== CRUD MODULES ==========================
-        
-        // 1. PENGUMUMAN
-        function simpanPengumuman() {
-            const judul = document.getElementById('p-input-judul-pengumuman').value;
-            const isi = document.getElementById('p-input-isi-pengumuman').value;
-            if(!judul || !isi) return alert("Lengkapi data!");
-            let db = JSON.parse(localStorage.getItem(`prak_pengumuman_${activePrakGlobal}`)) || [];
-            db.push({ id: generateId(), judul, isi, tanggal: new Date().toLocaleString('id-ID') });
-            localStorage.setItem(`prak_pengumuman_${activePrakGlobal}`, JSON.stringify(db));
-            alert("Pengumuman tersimpan!");
-            document.getElementById('p-input-judul-pengumuman').value = ''; document.getElementById('p-input-isi-pengumuman').value = '';
-            renderPengumuman();
-        }
-        function renderPengumuman() {
-            let db = JSON.parse(localStorage.getItem(`prak_pengumuman_${activePrakGlobal}`)) || [];
-            let html = '';
-            [...db].reverse().forEach((d, i) => {
-                const oIndex = db.length - 1 - i;
-                html += `<div class="item-card"><div class="item-info"><h3>${d.judul}</h3><p style="margin-top:5px; color:var(--text-main); font-size:0.95rem;">${d.isi}</p><p style="margin-top:8px; font-size:0.8rem;"><i class="far fa-clock"></i> ${d.tanggal}</p></div><button onclick="hapusPrakData('pengumuman', ${oIndex})" class="btn-action" style="background:transparent; color:var(--danger-red); border:1px solid var(--danger-red);"><i class="fas fa-trash"></i></button></div>`;
-            });
-            document.getElementById('p-list-pengumuman').innerHTML = html || "<p class='text-muted'>Kosong.</p>";
-        }
-
-        // 2. KONTRAK PRAKTIKUM
-        function simpanKontrakPrak() {
-            const judul = document.getElementById('p-input-judul-kontrak').value;
-            const link = document.getElementById('p-input-link-kontrak').value;
-            if(!judul || !link) return alert("Lengkapi judul dan link kontrak!");
-            let db = JSON.parse(localStorage.getItem(`prak_kontrak_${activePrakGlobal}`)) || [];
-            db.push({ id: generateId(), judul, link, tanggal: new Date().toLocaleDateString('id-ID') });
-            localStorage.setItem(`prak_kontrak_${activePrakGlobal}`, JSON.stringify(db));
-            alert("Kontrak Praktikum berhasil diunggah!");
-            document.getElementById('p-input-judul-kontrak').value = ''; document.getElementById('p-input-link-kontrak').value = '';
-            renderKontrakPrak();
-        }
-        function renderKontrakPrak() {
-            let db = JSON.parse(localStorage.getItem(`prak_kontrak_${activePrakGlobal}`)) || [];
-            let html = '';
-            db.forEach((d, i) => {
-                html += `<div class="item-card"><div class="item-info"><h3>${d.judul}</h3><p><i class="far fa-clock"></i> ${d.tanggal}</p></div><div><a href="${d.link}" target="_blank" class="btn-action" style="margin-right:10px;"><i class="fas fa-external-link-alt"></i> Buka Dokumen</a><button onclick="hapusPrakData('kontrak', ${i})" class="btn-action" style="background:transparent; color:var(--danger-red); border:1px solid var(--danger-red);"><i class="fas fa-trash"></i></button></div></div>`;
-            });
-            document.getElementById('p-list-kontrak').innerHTML = html || "<p class='text-muted'>Belum ada kontrak praktikum yang diunggah.</p>";
-        }
-
-        // 3. MATERI
-        function simpanMateriPrak() {
-            const judul = document.getElementById('p-input-judul-materi').value;
-            const link = document.getElementById('p-input-link-materi').value;
-            if(!judul || !link) return alert("Lengkapi data!");
-            let db = JSON.parse(localStorage.getItem(`prak_materi_${activePrakGlobal}`)) || [];
-            db.push({ id: generateId(), judul, link, tanggal: new Date().toLocaleDateString('id-ID') });
-            localStorage.setItem(`prak_materi_${activePrakGlobal}`, JSON.stringify(db));
-            alert("Materi tersimpan!");
-            document.getElementById('p-input-judul-materi').value = ''; document.getElementById('p-input-link-materi').value = '';
-            renderMateriPrak();
-        }
-        function renderMateriPrak() {
-            let db = JSON.parse(localStorage.getItem(`prak_materi_${activePrakGlobal}`)) || [];
-            let html = '';
-            db.forEach((d, i) => {
-                html += `<div class="item-card"><div class="item-info"><h3>${d.judul}</h3><p><i class="far fa-clock"></i> ${d.tanggal}</p></div><div><a href="${d.link}" target="_blank" class="btn-action" style="margin-right:10px;"><i class="fas fa-external-link-alt"></i></a><button onclick="hapusPrakData('materi', ${i})" class="btn-action" style="background:transparent; color:var(--danger-red); border:1px solid var(--danger-red);"><i class="fas fa-trash"></i></button></div></div>`;
-            });
-            document.getElementById('p-list-materi').innerHTML = html || "<p class='text-muted'>Kosong.</p>";
-        }
-
-        // 4. TUGAS
-        function simpanTugasPrak() {
-            const judul = document.getElementById('p-input-judul-tugas').value;
-            const linkTugas = document.getElementById('p-input-link-tugas').value;
-            const deadline = document.getElementById('p-input-deadline-tugas').value;
-            if(!judul || !deadline) return alert("Lengkapi judul dan deadline!");
-            let db = JSON.parse(localStorage.getItem(`prak_tugas_${activePrakGlobal}`)) || [];
-            db.push({ id: generateId(), judul, linkTugas, deadline });
-            localStorage.setItem(`prak_tugas_${activePrakGlobal}`, JSON.stringify(db));
-            alert("Tugas tersimpan!");
-            document.getElementById('p-input-judul-tugas').value = ''; document.getElementById('p-input-link-tugas').value = ''; document.getElementById('p-input-deadline-tugas').value = '';
-            renderTugasPrak();
-        }
-        function renderTugasPrak() {
-            let db = JSON.parse(localStorage.getItem(`prak_tugas_${activePrakGlobal}`)) || [];
-            let html = '';
-            db.forEach((d, i) => {
-                let link = d.linkTugas ? `<a href="${d.linkTugas}" target="_blank" style="color:var(--primary); font-size:0.85rem; margin-right:10px;"><i class="fas fa-link"></i> Soal</a>` : '';
-                html += `<div class="item-card"><div class="item-info"><h3>${d.judul}</h3><p style="color:var(--danger-red);">Deadline: ${d.deadline}</p>${link}</div><button onclick="hapusPrakData('tugas', ${i})" class="btn-action" style="background:transparent; color:var(--danger-red); border:1px solid var(--danger-red);"><i class="fas fa-trash"></i></button></div>`;
-            });
-            document.getElementById('p-list-tugas').innerHTML = html || "<p class='text-muted'>Kosong.</p>";
-        }
-
-        // 5. ASISTENSI
-        function simpanAsistensi() {
-            const waktu = document.getElementById('p-input-waktu-asistensi').value;
-            const lokasi = document.getElementById('p-input-lokasi-asistensi').value;
-            if(!waktu || !lokasi) return alert("Lengkapi data!");
-            let db = JSON.parse(localStorage.getItem(`prak_asistensi_${activePrakGlobal}`)) || [];
-            db.push({ id: generateId(), waktu: new Date(waktu).toLocaleString('id-ID'), lokasi });
-            localStorage.setItem(`prak_asistensi_${activePrakGlobal}`, JSON.stringify(db));
-            alert("Jadwal tersimpan!");
-            renderAsistensi();
-        }
-        function renderAsistensi() {
-            let db = JSON.parse(localStorage.getItem(`prak_asistensi_${activePrakGlobal}`)) || [];
-            let html = '';
-            [...db].reverse().forEach((d, i) => {
-                const oIndex = db.length - 1 - i;
-                html += `<div class="item-card"><div class="item-info"><h3>Jadwal: ${d.waktu}</h3><p><i class="fas fa-map-marker-alt"></i> ${d.lokasi}</p></div><button onclick="hapusPrakData('asistensi', ${oIndex})" class="btn-action" style="background:transparent; color:var(--danger-red); border:1px solid var(--danger-red);"><i class="fas fa-trash"></i></button></div>`;
-            });
-            document.getElementById('p-list-asistensi').innerHTML = html || "<p class='text-muted'>Kosong.</p>";
-        }
-
-        // 6. NILAI
-        function isiDropdownTugasPrak() {
-            const sel = document.getElementById('p-select-tugas');
-            let db = JSON.parse(localStorage.getItem(`prak_tugas_${activePrakGlobal}`)) || [];
-            sel.innerHTML = '<option value="">-- Pilih Tugas Praktikum --</option>';
-            db.forEach(t => sel.innerHTML += `<option value="${t.id}">${t.judul}</option>`);
-        }
-        function loadTabelPenilaianPrak() {
-            const id = document.getElementById('p-select-tugas').value;
-            if(!id) return alert("Pilih tugas!");
-            document.getElementById('p-panel-nilai').style.display = 'block';
-            let dbPengumpulan = JSON.parse(localStorage.getItem(`prak_pengumpulan_${id}`)) || [];
-            const tbody = document.getElementById('p-tbody-nilai');
-            if(dbPengumpulan.length === 0) { tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">Belum ada pengumpulan.</td></tr>`; return; }
-            
-            tbody.innerHTML = '';
-            dbPengumpulan.forEach((p, i) => {
-                let link = p.linkJawaban ? `<a href="${p.linkJawaban}" target="_blank" style="color:var(--primary);"><i class="fas fa-link"></i> Link</a>` : '-';
-                tbody.innerHTML += `<tr><td style="color:var(--primary);">${p.userId}</td><td>${p.namaMahasiswa}</td><td>${link}</td>
-                    <td><input type="number" class="input-nilai" id="p-nilai_${id}_${i}" value="${p.nilai||''}"></td>
-                    <td><button onclick="simpanNilaiPrak('${id}', ${i})" class="btn-action" style="padding:6px 10px; font-size:0.8rem;">Simpan</button></td></tr>`;
-            });
-        }
-        function simpanNilaiPrak(idTugas, idx) {
-            let val = document.getElementById(`p-nilai_${idTugas}_${idx}`).value;
-            let db = JSON.parse(localStorage.getItem(`prak_pengumpulan_${idTugas}`));
-            db[idx].nilai = val;
-            localStorage.setItem(`prak_pengumpulan_${idTugas}`, JSON.stringify(db));
-            alert("Nilai laporan tersimpan!");
-        }
-
-        // 7. FORUM
-        function loadChatPrak() {
-            const box = document.getElementById('p-chat-messages');
-            let db = JSON.parse(localStorage.getItem(`prak_forum_${activePrakGlobal}`)) || [];
-            box.innerHTML = '';
-            db.forEach(m => {
-                const isMe = m.userId === user.userId;
-                box.innerHTML += `<div class="message ${isMe ? 'msg-me':'msg-other'}"><span class="sender">${m.nama} (${m.role}) • ${m.waktu}</span>${m.text}</div>`;
-            });
-            box.scrollTop = box.scrollHeight;
-        }
-        function kirimChatPrak(e) {
-            e.preventDefault();
-            const text = document.getElementById('p-chat-input').value.trim();
-            if(!text) return;
-            let db = JSON.parse(localStorage.getItem(`prak_forum_${activePrakGlobal}`)) || [];
-            db.push({ userId: user.userId, nama: user.nama, role: 'Asprak', text, waktu: new Date().toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'}) });
-            localStorage.setItem(`prak_forum_${activePrakGlobal}`, JSON.stringify(db));
-            document.getElementById('p-chat-input').value = '';
-            loadChatPrak();
-        }
-
-        function hapusPrakData(tipe, index) {
-            if(confirm('Hapus item ini?')) {
-                let db = JSON.parse(localStorage.getItem(`prak_${tipe}_${activePrakGlobal}`));
-                db.splice(index, 1);
-                localStorage.setItem(`prak_${tipe}_${activePrakGlobal}`, JSON.stringify(db));
-                if(tipe==='pengumuman') renderPengumuman();
-                if(tipe==='materi') renderMateriPrak();
-                if(tipe==='tugas') renderTugasPrak();
-                if(tipe==='asistensi') renderAsistensi();
-                if(tipe==='kontrak') renderKontrakPrak();
-            }
-        }
-
-        // 8. MENU BARU: MANAJEMEN CUTI MAHASISWA
-        function renderCutiAsprak() {
-            let db = JSON.parse(localStorage.getItem(`prak_cuti_${activePrakGlobal}`)) || [];
-            let wadah = document.getElementById('p-list-cuti');
-            
-            if(db.length === 0) {
-                wadah.innerHTML = `<div class="item-card" style="justify-content:center;"><p class="text-muted">Belum ada pengajuan izin/cuti dari praktikan.</p></div>`;
-                return;
-            }
-            
-            let html = `<div class="table-responsive">
-                            <table class="styled-table" style="min-width: 800px;">
-                                <thead>
-                                    <tr>
-                                        <th>Tanggal Pengajuan</th>
-                                        <th>NIM</th>
-                                        <th>Nama</th>
-                                        <th>Jenis</th>
-                                        <th>Alasan</th>
-                                        <th>Lampiran</th>
-                                        <th>Status</th>
-                                        <th>Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>`;
-            
-            [...db].reverse().forEach((c) => {
-                let lampiran = c.fileBase64 ? `<a href="${c.fileBase64}" target="_blank" style="color:var(--primary); font-weight:bold;"><i class="fas fa-file-image"></i> Lihat</a>` : '-';
-                
-                let badgeColor = 'var(--warning)';
-                if(c.status === 'Diterima') badgeColor = 'var(--secondary)';
-                if(c.status === 'Ditolak') badgeColor = 'var(--danger-red)';
-                
-                let aksiHtml = c.status === 'Pending' 
-                    ? `<button onclick="updateStatusCuti('${c.id}', 'Diterima')" class="btn-action" style="background:var(--secondary); padding:6px 12px; margin-right:5px; border:none;" title="Terima Izin"><i class="fas fa-check"></i></button>
-                       <button onclick="updateStatusCuti('${c.id}', 'Ditolak')" class="btn-action" style="background:var(--danger-red); padding:6px 12px; border:none;" title="Tolak Izin"><i class="fas fa-times"></i></button>`
-                    : `-`;
-
-                html += `<tr>
-                            <td>${c.waktu}</td>
-                            <td style="color:var(--primary); font-weight:bold;">${c.userId}</td>
-                            <td>${c.nama}</td>
-                            <td>${c.jenis}</td>
-                            <td>${c.alasan}</td>
-                            <td>${lampiran}</td>
-                            <td><strong style="color:${badgeColor};">${c.status}</strong></td>
-                            <td>${aksiHtml}</td>
-                        </tr>`;
-            });
-            
-            html += `</tbody></table></div>`;
-            wadah.innerHTML = html;
-        }
-
-        window.updateStatusCuti = function(id, statusBaru) {
-            if(!confirm(`Apakah Anda yakin ingin mengubah status pengajuan ini menjadi ${statusBaru}?`)) return;
-            
-            let db = JSON.parse(localStorage.getItem(`prak_cuti_${activePrakGlobal}`)) || [];
-            let index = db.findIndex(c => c.id === id);
-            
-            if(index !== -1) {
-                db[index].status = statusBaru;
-                localStorage.setItem(`prak_cuti_${activePrakGlobal}`, JSON.stringify(db));
-                renderCutiAsprak();
-            }
-        }
-
-        // Dropdown & General
-        var dropdowns = document.getElementsByClassName("dropdown-btn");
-        for (let d of dropdowns) { d.addEventListener("click", function() { this.classList.toggle("open"); this.nextElementSibling.classList.toggle("show"); }); }
-        
-        document.getElementById('logout-btn').addEventListener('click', (e) => { e.preventDefault(); localStorage.removeItem('loggedInUser'); window.location.href="login.html"; });
-        
-        const themeToggle = document.getElementById("theme-toggle");
-        if (localStorage.getItem("theme") === "light") themeToggle.checked = true;
-        themeToggle.addEventListener("change", function() { localStorage.setItem("theme", this.checked ? "light" : "dark"); });
-
-        // FITUR DRAG TO SCROLL UNTUK TABS
-        const tabContainers = document.querySelectorAll('.tabs');
-        tabContainers.forEach(container => {
-            let isDown = false;
-            let startX;
-            let scrollLeft;
-
-            container.addEventListener('mousedown', (e) => {
-                isDown = true;
-                container.style.cursor = 'grabbing';
-                startX = e.pageX - container.offsetLeft;
-                scrollLeft = container.scrollLeft;
-            });
-            container.addEventListener('mouseleave', () => {
-                isDown = false;
-                container.style.cursor = 'pointer';
-            });
-            container.addEventListener('mouseup', () => {
-                isDown = false;
-                container.style.cursor = 'pointer';
-            });
-            container.addEventListener('mousemove', (e) => {
-                if (!isDown) return;
-                e.preventDefault();
-                const x = e.pageX - container.offsetLeft;
-                const walk = (x - startX) * 2;
-                container.scrollLeft = scrollLeft - walk;
-            });
-        });
-
-    </script>
+    </div>
 </body>
 </html>
